@@ -1,18 +1,23 @@
 """
 Polynomial get item::
 
-    >>> from numpoly import polynomial
-    >>> poly = polynomial({(0,): [[1., 2.], [3., 4.]], (1,): [[4., 5.], [6., 7.]]})
+    >>> x, y = numpoly.symbols("x y")
+    >>> poly = numpoly.polynomial([[1-4*x, x**2], [y-3, x*y*y]])
     >>> print(poly)
-    [[1.0+4.0q0 2.0+5.0q0]
-     [3.0+6.0q0 4.0+7.0q0]]
-    >>> print(poly["1"])
-    [[4. 5.]
-     [6. 7.]]
+    [[1-4*x x**2]
+     [-3+y x*y**2]]
     >>> print(poly[0])
-    [1.0+4.0q0 2.0+5.0q0]
+    [1-4*x x**2]
     >>> print(poly[:, 1])
-    [2.0+5.0q0 4.0+7.0q0]
+    [x**2 x*y**2]
+
+Developer access using string::
+
+    >>> print(poly._exponents)
+    ['00' '01' '10' '12' '20']
+    >>> print(poly["10"])
+    [[-4  0]
+     [ 0  0]]
 """
 import numpy
 
@@ -30,9 +35,11 @@ def getitem(poly, index):
         index = (slice(None),) + index
     else:
         index = (slice(None), index)
-    out = construct.polynomial_from_attributes(
-        poly.exponents, numpy.array(poly.coefficients)[index])
-    return out
+    return construct.polynomial_from_attributes(
+        exponents=poly.exponents,
+        coefficients=numpy.array(poly.coefficients)[index],
+        indeterminants=poly._indeterminants,
+    )
 
 
 def setitem(poly, index, value):

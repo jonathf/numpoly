@@ -1,7 +1,7 @@
 import numpy
-from numpoly import polynomial, variable
+from numpoly import polynomial, symbols
 
-x, y = variable(2)
+x, y = symbols("x y")
 
 
 def test_numpy_absolute():
@@ -83,11 +83,16 @@ def test_numpy_positive():
 
 
 def test_numpy_power():
-    poly = polynomial([[0, y], [x-1, 1]])
-    assert numpy.all(poly ** 2 == polynomial([[0, y**2], [x*x-2*x+1, 1]]))
-#     assert numpy.all(poly ** [1, 2] == polynomial([[0, y**2], [x-1, 1]]))
-#     assert numpy.all(poly / [[1, 2], [2, 1]] ==
-#                      polynomial([[0, 0.5*y], [x*x-2*x+1, 1]]))
+    poly = polynomial([[0, y], [x-1, 2]])
+    assert numpy.all(x**[2] == polynomial([x**2]))
+    assert numpy.all(polynomial([x])**[2] == polynomial([x**2]))
+    assert numpy.all(polynomial([x, y])**[2] == polynomial([x**2, y**2]))
+    assert numpy.all(polynomial([x])**[1, 2] == polynomial([x, x**2]))
+    assert numpy.all((x*y)**[0, 1, 2, 3] == [1, x*y, x**2*y**2, x**3*y**3])
+    assert numpy.all(poly ** 2 == polynomial([[0, y**2], [x*x-2*x+1, 4]]))
+    assert numpy.all(poly ** [1, 2] == polynomial([[0, y**2], [x-1, 4]]))
+    assert numpy.all(poly ** [[1, 2], [2, 1]] ==
+                     polynomial([[0, y**2], [x*x-2*x+1, 2]]))
 
 
 def test_numpy_subtract():
@@ -107,17 +112,17 @@ def test_numpy_sum():
 
 
 def test_numpy_array_str():
-    assert str(4+6*x**2) == "4+6q0^2"
-    assert str(polynomial([1., -5*x, 3-x**2])) == "[1.0 -5.0q0 3.0-q0^2]"
+    assert str(4+6*x**2) == "4+6*x**2"
+    assert str(polynomial([1., -5*x, 3-x**2])) == "[1.0 -5.0*x 3.0-x**2]"
     assert str(polynomial([[[1, 2], [5, y]]])) == """\
 [[[1 2]
-  [5 q1]]]"""
+  [5 y]]]"""
 
 
 def test_numpy_array_repr():
-    assert repr(4+6*x**2) == "polynomial(4+6*q0**2)"
+    assert repr(4+6*x**2) == "polynomial(4+6*x**2)"
     assert (repr(polynomial([1., -5*x, 3-x**2])) ==
-            "polynomial([1.0, -5.0*q0, 3.0-q0**2])")
+            "polynomial([1.0, -5.0*x, 3.0-x**2])")
     assert repr(polynomial([[[1, 2], [5, y]]])) == """\
 polynomial([[[1, 2],
-             [5, q1]]])"""
+             [5, y]]])"""

@@ -1,12 +1,11 @@
 """
 Evaluate polynomial::
 
-    >>> from numpoly import polynomial
-    >>> poly = polynomial({
-    ...     (0, 1): [[1., 2.], [3., 4.]], (1, 0): [[4., 5.], [6., 7.]]})
+    >>> x, y = numpoly.symbols("x y")
+    >>> poly = numpoly.polynomial([[x, x-1], [y, y+x]])
     >>> print(poly)
-    [[q1+4.0q0 2.0q1+5.0q0]
-     [3.0q1+6.0q0 4.0q1+7.0q0]]
+    [[x -1+x]
+     [y y+x]]
 
     # >>> print(poly(1, 0))
     # [6. 8.]

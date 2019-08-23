@@ -5,8 +5,7 @@ from functools import wraps
 
 import numpy
 
-from .align import align_polynomials
-from . import construct, baseclass
+from . import align, construct, baseclass
 
 ARRAY_FUNCTIONS = {}
 
@@ -76,18 +75,20 @@ def process_parameters(poly, kwargs):
 def absolute(x, **kwargs):
     x = construct.polynomial(x)
     coefficients = numpy.absolute(x.coefficients, **kwargs)
-    return construct.polynomial_from_attributes(x.exponents, coefficients)
+    return construct.polynomial_from_attributes(
+        x.exponents, coefficients, x._indeterminants)
 
 
 @implements(numpy.add)
 def add(x1, x2):
-    x1, x2 = align_polynomials(x1, x2)
+    x1, x2 = align.align_polynomials(x1, x2)
     collection = x1.todict()
     for exponent, coefficient in x2.todict().items():
         collection[exponent] = collection.get(exponent, False)+coefficient
     exponents = sorted(collection)
     coefficients = [collection[exponent] for exponent in exponents]
-    return construct.polynomial_from_attributes(exponents, coefficients)
+    return construct.polynomial_from_attributes(
+        exponents, coefficients, x1._indeterminants)
 
 
 @implements(numpy.any)
@@ -106,11 +107,11 @@ def all(a, **kwargs):
 
 @implements(numpy.array_repr)
 def array_repr(a, **kwargs):
+    del kwargs
     from .string import construct_string_array
     prefix = "polynomial("
     suffix = ")"
-    array = construct_string_array(
-        a, sep="*", power="**", **kwargs)
+    array = construct_string_array(a)
     return prefix + numpy.array2string(
         numpy.array(array),
         separator=", ",
@@ -122,11 +123,11 @@ def array_repr(a, **kwargs):
 
 @implements(numpy.array_str)
 def array_str(a, **kwargs):
+    del kwargs
     from .string import construct_string_array
     prefix = ""
     suffix = ""
-    array = construct_string_array(
-        a, sep="", power="^", **kwargs)
+    array = construct_string_array(a)
     return prefix + numpy.array2string(
         numpy.array(array),
         separator=" ",
@@ -140,7 +141,7 @@ def array_str(a, **kwargs):
 def concatenate(arrays, axis=0, out=None):
     """Wrapper for numpy.concatenate."""
     assert out is None, "'out' argument currently no supported"
-    arrays = [construct.polynomial(arg) for arg in arrays]
+    arrays = align.align_polynomial_indeterminants(*arrays)
     collections = [arg.todict() for arg in arrays]
 
     out = {}
@@ -153,7 +154,11 @@ def concatenate(arrays, axis=0, out=None):
 
     exponents = sorted(out)
     coefficients = [out[exponent] for exponent in exponents]
-    return construct.polynomial_from_attributes(exponents, coefficients)
+    return construct.polynomial_from_attributes(
+        exponents=exponents,
+        coefficients=coefficients,
+        indeterminants=arrays[0].indeterminants,
+    )
 
 
 @implements(numpy.divide, numpy.true_divide)
@@ -164,7 +169,7 @@ def divide(x1, x2, **kwargs):
 
 @implements(numpy.equal)
 def equal(x1, x2, **kwargs):
-    x1, x2 = align_polynomials(x1, x2)
+    x1, x2 = align.align_polynomials(x1, x2)
     out = numpy.ones(x1.shape, dtype=bool)
     collection = x1.todict()
     for exponent, coefficient in x2.todict().items():
@@ -186,7 +191,7 @@ def floor_divide(x1, x2, **kwargs):
 @implements(numpy.multiply)
 def multiply(x1, x2, **kwargs):
     assert kwargs.get("out", None) is None, "object read-only"
-    x1, x2 = align_polynomials(x1, x2)
+    x1, x2 = align.align_polynomials(x1, x2)
     exponents = (numpy.tile(x1.exponents, (len(x2.exponents), 1))+
                  numpy.repeat(x2.exponents, len(x1.exponents), 0))
 
@@ -202,20 +207,21 @@ def multiply(x1, x2, **kwargs):
     exponents = sorted(collection)
     coefficients = [collection[exponent] for exponent in exponents]
 
-    return construct.polynomial_from_attributes(exponents, coefficients)
+    return construct.polynomial_from_attributes(
+        exponents, coefficients, x1._indeterminants)
 
 
 @implements(numpy.negative)
 def negative(x, out=None, **kwargs):
     x = x.copy()
-    for key in x._keys:
-        x[key] = numpy.negative(x[key], **kwargs)
+    for exponent in x._exponents:
+        x[exponent] = numpy.negative(x[exponent], **kwargs)
     return x
 
 
 @implements(numpy.not_equal)
 def not_equal(x1, x2, **kwargs):
-    x1, x2 = align_polynomials(x1, x2)
+    x1, x2 = align.align_polynomials(x1, x2)
     out = numpy.zeros(x1.shape, dtype=bool)
     collection = x1.todict()
     for exponent, coefficient in x2.todict().items():
@@ -231,44 +237,53 @@ def not_equal(x1, x2, **kwargs):
 @implements(numpy.positive)
 def positive(x, **kwargs):
     x = x.copy()
-    for key in x._keys:
-        x[key] = numpy.positive(x[key], **kwargs)
+    for exponent in x._exponents:
+        x[exponent] = numpy.positive(x[exponent], **kwargs)
     return x
 
 
 @implements(numpy.power)
 def power(x1, x2, **kwargs):
     x1 = x1.copy()
-    x2 = int(x2)
-    assert x2 >= 0, "only positive integers allowed"
-    out = construct.polynomial_from_attributes([(0,)], [numpy.ones(x1.shape, dtype=x1._dtype)])
-    for _ in range(x2):
-        out = multiply(out, x1, **kwargs)
+    x2 = numpy.asarray(x2, dtype=int)
+
+    if not x2.shape:
+        out = construct.polynomial_from_attributes(
+            [(0,)], [numpy.ones(x1.shape, dtype=x1._dtype)], x1._indeterminants[:1])
+        for _ in range(x2.item()):
+            out = multiply(out, x1, **kwargs)
+
+    elif x1.shape:
+        if x2.shape[-1] == 1:
+            x2 = x2.T[0].T
+            if x1.shape[-1] == 1:
+                out = power(x1.T[0].T, x2)
+            else:
+                out = concatenate([power(x, x2.T)[numpy.newaxis] for x in x1.T], axis=0).T
+        elif x1.shape[-1] == 1:
+            out = concatenate([power(x1.T[0].T, x.T).T[numpy.newaxis] for x in x2.T], axis=0).T
+        else:
+            out = concatenate([power(x1_, x2_).T[numpy.newaxis] for x1_, x2_ in zip(x1.T, x2.T)], axis=0).T
+    else:
+        out = concatenate([power(x1, x.T).T[numpy.newaxis] for x in x2.T], axis=0).T
     return out
-    # x1 = x1.copy()
-    # x2 = numpy.asarray(x2, dtype=int)
-    # assert numpy.all(x2 >= 0), "only positive integers allowed"
-    # out = construct.polynomial_from_attributes([(0,)], [numpy.ones(x1.shape, dtype=x1._dtype)])
-    # while numpy.any(x2):
-    #     indices = x2 >= 0
-    #     out[indices] = multiply(out[indices], x1[indices], **kwargs)
-    #     x2 -= 1
-    # return out
 
 
 @implements(numpy.subtract)
 def subtract(x1, x2, **kwargs):
-    x1, x2 = align_polynomials(x1, x2)
+    x1, x2 = align.align_polynomials(x1, x2)
     collection = x1.todict()
     for exponent, coefficient in x2.todict().items():
         collection[exponent] = collection.get(exponent, False)-coefficient
     exponents = sorted(collection)
     coefficients = [collection[exponent] for exponent in exponents]
-    return construct.polynomial_from_attributes(exponents, coefficients)
+    return construct.polynomial_from_attributes(
+        exponents, coefficients, x1._indeterminants)
 
 
 @implements(numpy.sum)
 def sum(a, **kwargs):
     coefficients, kwargs = process_parameters(a, kwargs)
     coefficients = numpy.sum(coefficients, **kwargs)
-    return construct.polynomial_from_attributes(a.exponents, coefficients)
+    return construct.polynomial_from_attributes(
+        a.exponents, coefficients, a._indeterminants)
