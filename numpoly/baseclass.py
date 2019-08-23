@@ -203,6 +203,11 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     # Override numpy properties to work with ndpoly
     # =============================================
 
+    @property
+    def dtype(self):
+        """Show coefficient dtype instead of the structured array"""
+        return self._dtype
+
     def all(self, axis=None, out=None, keepdims=False):
         """Wrapper for numpy.all"""
         return array_function.all(self, axis=axis, out=out, keepdims=keepdims)
