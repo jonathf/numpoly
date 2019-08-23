@@ -56,7 +56,7 @@ def align_polynomial_shape(*polys):
 
     polys = [construct.polynomial_from_attributes(
         exponents=poly.exponents,
-        coefficients=numpy.array(poly.coefficients)*common[numpy.newaxis],
+        coefficients=[coeff*common for coeff in poly.coefficients],
         indeterminants=poly.indeterminants,
     ) for poly in polys]
     assert numpy.all(common.shape == poly.shape for poly in polys)

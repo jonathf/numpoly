@@ -5,7 +5,7 @@ from functools import wraps
 
 import numpy
 
-from . import align, construct, baseclass
+from . import align, baseclass, construct, export
 
 ARRAY_FUNCTIONS = {}
 
@@ -108,10 +108,9 @@ def all(a, **kwargs):
 @implements(numpy.array_repr)
 def array_repr(a, **kwargs):
     del kwargs
-    from .string import construct_string_array
     prefix = "polynomial("
     suffix = ")"
-    array = construct_string_array(a)
+    array = export.to_array(a, as_type="str")
     return prefix + numpy.array2string(
         numpy.array(array),
         separator=", ",
@@ -124,10 +123,9 @@ def array_repr(a, **kwargs):
 @implements(numpy.array_str)
 def array_str(a, **kwargs):
     del kwargs
-    from .string import construct_string_array
     prefix = ""
     suffix = ""
-    array = construct_string_array(a)
+    array = export.to_array(a, as_type="str")
     return prefix + numpy.array2string(
         numpy.array(array),
         separator=" ",
@@ -255,11 +253,10 @@ def power(x1, x2, **kwargs):
 
     elif x1.shape:
         if x2.shape[-1] == 1:
-            x2 = x2.T[0].T
             if x1.shape[-1] == 1:
-                out = power(x1.T[0].T, x2)
+                out = power(x1.T[0].T, x2.T[0].T).T[numpy.newaxis].T
             else:
-                out = concatenate([power(x, x2.T)[numpy.newaxis] for x in x1.T], axis=0).T
+                out = concatenate([power(x, x2.T[0])[numpy.newaxis] for x in x1.T], axis=0).T
         elif x1.shape[-1] == 1:
             out = concatenate([power(x1.T[0].T, x.T).T[numpy.newaxis] for x in x2.T], axis=0).T
         else:

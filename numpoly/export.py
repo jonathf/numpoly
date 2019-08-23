@@ -23,7 +23,7 @@ Polynomial string representation::
 import numpy
 
 
-def construct_string_array(poly):
+def to_array(poly, as_type="str"):
     """
     Convert ndpoly object into an array of strings.
 
@@ -38,21 +38,36 @@ def construct_string_array(poly):
     Example:
         >>> x, y = numpoly.symbols("x y")
         >>> poly = numpoly.polynomial([[1, x**3], [y-1, -3-x]])
-        >>> print(construct_string_array(poly))
+        >>> print(to_array(poly))
         [['1' 'x**3']
          ['-1+y' '-3-x']]
+        >>> print(to_array(poly, as_type="sympy"))
+        [[1 x**3]
+         [y - 1 -x - 3]]
     """
     if not poly.shape:
-        return as_string(poly)
-    return numpy.array([construct_string_array(poly_) for poly_ in poly])
+        if as_type == "str":
+            out = to_string(poly)
+        elif as_type == "sympy":
+            out = to_sympy(poly)
+        return out
+    return numpy.array([
+        to_array(poly_, as_type=as_type) for poly_ in poly])
 
 
-def as_sympa(poly):
-    assert not poly.shape
+def to_sympy(poly):
+    if poly.shape:
+        return to_array(poly, as_type="sympy")
+    from sympy import symbols, Poly
+    locals_ = dict(zip(poly._indeterminants, symbols(poly._indeterminants)))
+    polynomial = eval(to_string(poly), locals_, {})
+    return polynomial
 
 
-def as_string(poly):
-    assert not poly.shape
+def to_string(poly):
+    if poly.shape:
+        return to_array(poly, as_type="str")
+
     output = []
     for exponents, coefficient in zip(
             poly.exponents.tolist(), poly.coefficients):
@@ -67,11 +82,11 @@ def as_string(poly):
         else:
             out = str(coefficient)
 
-        for exponent, varname_ in zip(exponents, poly._indeterminants):
+        for exponent, indeterminant in zip(exponents, poly._indeterminants):
             if exponent:
                 if out not in ("", "-"):
                     out += "*"
-                out += varname_
+                out += indeterminant
             if exponent > 1:
                 out += "**"+str(exponent)
         if output and float(coefficient) >= 0:
