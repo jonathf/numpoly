@@ -1,0 +1,42 @@
+version: 2
+jobs:
+    test-3.7: &test-template
+        docker:
+            - image: circleci/python:3.7.3
+        steps:
+            - checkout
+            - run:
+                name: "Python version"
+                command: |
+                    python --version > python.version
+            - restore_cache:
+                keys:
+                    - dependencies-{{ checksum "python.version" }}-{{ checksum "poetry.lock"}}
+                    - dependencies-{{ checksum "python.version" }}
+            - run:
+                name: "Installation"
+                command: |
+                    poetry install
+            - save_cache:
+                key: dependencies-{{ checksum "python.version" }}-{{ checksum "poetry.lock"}}
+                paths:
+                    - /home/circleci/.cache/pypoetry/virtualenvs
+            - run:
+                name: "Run tests"
+                command: |
+                    poetry run pytest --doctest-modules --cov=numpoly numpoly test
+            - run:
+                name: "Coverage report"
+                command: |
+                    poetry run codecov
+    test-3.6:
+        <<: *test-template
+        docker:
+            - image: circleci/python:3.6.8
+
+workflows:
+    version: 2
+    workflow:
+        jobs:
+            - test-3.6
+            - test-3.7
