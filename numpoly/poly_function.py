@@ -45,6 +45,8 @@ def symbols(names="q", asarray=False, dtype="i8"):
         [a b c]
         >>> print(numpoly.symbols("q:7"))
         [q0 q1 q2 q3 q4 q5 q6]
+        >>> print(numpoly.symbols("q3:6"))
+        [q3 q4 q5]
         >>> print(numpoly.symbols("za:f"))
         [za zb zc zd ze zf]
     """

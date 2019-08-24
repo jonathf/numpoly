@@ -19,6 +19,7 @@ def align_polynomials(*polys):
     """
     polys = align_polynomial_shape(*polys)
     polys = align_polynomial_indeterminants(*polys)
+    polys = align_polynomial_exponents(*polys)
     return polys
 
 
@@ -110,4 +111,32 @@ def align_polynomial_indeterminants(*polys):
             trim=False,
         )
 
+    return tuple(polys)
+
+
+def align_polynomial_exponents(*polys):
+    polys = [construct.polynomial(poly) for poly in polys]
+    if not all(
+            polys[0]._indeterminants == poly._indeterminants
+            for poly in polys
+    ):
+        polys = list(align_polynomial_indeterminants(*polys))
+
+    global_exponents = sorted({
+        tuple(exponent) for poly in polys for exponent in poly.exponents})
+    for idx, poly in enumerate(polys):
+        lookup = {
+            tuple(exponent): coefficient
+            for exponent, coefficient in zip(
+                poly.exponents, poly.coefficients)
+        }
+        zeros = numpy.zeros(poly.shape, dtype=poly.dtype)
+        coefficients = [lookup.get(exponent, zeros)
+                        for exponent in global_exponents]
+        polys[idx] = construct.polynomial_from_attributes(
+            exponents=global_exponents,
+            coefficients=coefficients,
+            indeterminants=poly._indeterminants,
+            trim=False,
+        )
     return tuple(polys)

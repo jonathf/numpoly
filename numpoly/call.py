@@ -1,50 +1,80 @@
 """
 Evaluate polynomial::
 
-    >>> x, y = numpoly.symbols("x y")
-    >>> poly = numpoly.polynomial([[x, x-1], [y, y+x]])
-    >>> print(poly)
-    [[x -1+x]
-     [y y+x]]
-
-    # >>> print(poly(1, 0))
-    # [6. 8.]
-    # >>> print(poly(0, 1))
-    # [4. 6.]
-    # >>> print(poly(1))
 """
+from itertools import product
 import numpy
 
+from . import construct, array_function
 
-def evaluate_polynomial(poly, *args, **kwargs):
+
+def call(poly, *args, **kwargs):
     """
-    Evaluate polynomial.
+    Evaluate polynomial by inserting new values in to the indeterminants.
+
+    Args:
+        poly (numpoly.ndpoly):
+            Polynomial to evaluate.
+        args (int, float, numpy.ndarray, numpoly.ndpoly):
+            Argument to evaluate indeterminants. Ordered positional by
+            ``poly.indeterminants``.
+        kwargs (int, float, numpy.ndarray, numpoly.ndpoly):
+            Same as ``args``, but positioned by name.
+
+    Returns:
+        (numpoly.ndpoly):
+            Evaluated polynomial.
+
+    Examples:
+        >>> x, y = numpoly.symbols("x y")
+        >>> poly = numpoly.polynomial([[x, x-1], [y, y+x]])
+        >>> print(poly)
+        [[x -1+x]
+         [y y+x]]
+        >>> print(poly(1, 0))
+        [[1 0]
+         [0 1]]
+        >>> print(poly(1, y=[0, 1, 2]))
+        [[[1 1 1]
+          [0 0 0]]
+        <BLANKLINE>
+         [[0 1 2]
+          [1 2 3]]]
+        >>> print(poly(y=x-1, x=2*y))
+        [[2*y -1+2*y]
+         [-1+x -1+2*y+x]]
     """
-    # clean up input:
-    args_ = [None]*poly.exponents.shape[-1]
-    for idx, arg in enumerate(args):
-        key = "q%s" % idx
-        if key in kwargs:
-            assert arg is None, "mixing positional and kwargs"
-            args_[idx] = kwargs.pop(key)
-        else:
-            args_[idx] = arg
+    # Make sure kwargs contains all args and nothing but indeterminants:
+    for arg, indeterminant in zip(args, poly._indeterminants):
+        if indeterminant in kwargs:
+            raise TypeError(
+                "multiple values for argument '%s'" % indeterminant)
+        kwargs[indeterminant] = arg
+    extra_args = [key for key in kwargs if key not in poly._indeterminants]
+    if extra_args:
+        raise TypeError("unexpected keyword argument '%s'" % extra_args[0])
 
-    coefficients = numpy.array(poly.coefficients)
-    output = coefficients.flatten()
-    exponents = numpy.repeat(poly.exponents.T,
-                             coefficients.size // len(poly.exponents), -1).T
+    if not kwargs:
+        return poly.copy()
 
-    shape = ()
-    for idx, arg in enumerate(args_):
-        arg = numpy.asarray(arg)
-        if len(arg.shape) > len(shape):
-            shape = arg.shape
-        arg = arg.flatten()
+    # Saturate kwargs with values not given:
+    for indeterminant in poly.indeterminants:
+        name = indeterminant._indeterminants[0]
+        if name not in kwargs:
+            kwargs[name] = indeterminant
 
-        s, t = numpy.mgrid[:coefficients.size, :len(arg)]
-        out = arg[t]**exponents[:, idx][s]
-        output = (output.T * out.reshape(len(exponents), *shape).T).T
+    # There can only be one shape:
+    ones = numpy.ones((), dtype=int)
+    for value in kwargs.values():
+        ones = ones * numpy.ones(construct.polynomial(value).shape, dtype=int)
 
-    output = numpy.sum(output.reshape(numpy.array(poly.coefficients).shape+shape), 0)
-    return output
+    # main loop:
+    out = 0
+    for exponent, coefficient in zip(poly.exponents, poly.coefficients):
+        term = ones
+        for power, name in zip(exponent, poly._indeterminants):
+            term = term*kwargs[name]**power
+        shape = coefficient.shape+ones.shape
+        out = out+array_function.outer(coefficient, term).reshape(shape)
+
+    return construct.polynomial(out)

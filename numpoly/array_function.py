@@ -57,20 +57,6 @@ def implements(*numpy_functions):
     return decorator
 
 
-def process_parameters(poly, kwargs):
-    coefficients = numpy.array(poly.coefficients)
-    assert kwargs.get("out", None) is None, "object read-only"
-    if "axis" in kwargs:
-        axis = kwargs["axis"]
-        if axis is None:
-            coefficients = coefficients.reshape(len(coefficients), -1)
-            axis = 1
-        else:
-            axis = axis+1 if axis >= 0 else len(coefficients.shape)+axis
-        kwargs["axis"] = axis
-    return coefficients, kwargs
-
-
 @implements(numpy.abs, numpy.absolute)
 def absolute(x, **kwargs):
     x = construct.polynomial(x)
@@ -110,9 +96,8 @@ def array_repr(a, **kwargs):
     del kwargs
     prefix = "polynomial("
     suffix = ")"
-    array = export.to_array(a, as_type="str")
     return prefix + numpy.array2string(
-        numpy.array(array),
+        numpy.asarray(export.to_string(a)),
         separator=", ",
         formatter={"all": str},
         prefix=prefix,
@@ -125,9 +110,8 @@ def array_str(a, **kwargs):
     del kwargs
     prefix = ""
     suffix = ""
-    array = export.to_array(a, as_type="str")
     return prefix + numpy.array2string(
-        numpy.array(array),
+        numpy.asarray(export.to_string(a)),
         separator=" ",
         formatter={"all": str},
         prefix=prefix,
@@ -157,6 +141,15 @@ def concatenate(arrays, axis=0, out=None):
         coefficients=coefficients,
         indeterminants=arrays[0].indeterminants,
     )
+
+
+@implements(numpy.cumsum)
+def cumsum(a, **kwargs):
+    a = construct.polynomial(a)
+    coefficients = [numpy.cumsum(coefficient, **kwargs)
+                    for coefficient in a.coefficients]
+    return construct.polynomial_from_attributes(
+        a.exponents, coefficients, a._indeterminants)
 
 
 @implements(numpy.divide, numpy.true_divide)
@@ -232,6 +225,15 @@ def not_equal(x1, x2, **kwargs):
     return out
 
 
+@implements(numpy.outer)
+def outer(a, b, **kwargs):
+    assert kwargs.get("out", None) is None, "object read-only"
+    a, b = align.align_polynomial_exponents(a, b)
+    a = a.flatten()
+    b = b.flatten()
+    return multiply(a[:, numpy.newaxis], b[numpy.newaxis, :], **kwargs)
+
+
 @implements(numpy.positive)
 def positive(x, **kwargs):
     x = x.copy()
@@ -280,7 +282,10 @@ def subtract(x1, x2, **kwargs):
 
 @implements(numpy.sum)
 def sum(a, **kwargs):
-    coefficients, kwargs = process_parameters(a, kwargs)
-    coefficients = numpy.sum(coefficients, **kwargs)
+    a = construct.polynomial(a)
+    coefficients = [
+        numpy.sum(coefficient, **kwargs)
+        for coefficient in a.coefficients
+    ]
     return construct.polynomial_from_attributes(
         a.exponents, coefficients, a._indeterminants)

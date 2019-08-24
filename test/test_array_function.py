@@ -42,6 +42,13 @@ def test_numpy_concatenate():
     assert numpy.all(numpy.concatenate([poly1, poly1], 1) ==
                      polynomial([[0, y, 0, y], [x, 1, x, 1]]))
 
+
+def test_numpy_cumsum():
+    poly1 = polynomial([[0, y], [x, 1]])
+    assert numpy.all(numpy.cumsum(poly1) == [0, y, x+y, 1+x+y])
+    assert numpy.all(numpy.cumsum(poly1, axis=0) == [[0, y], [x, y+1]])
+    assert numpy.all(numpy.cumsum(poly1, axis=1) == [[0, y], [x, x+1]])
+
 def test_numpy_floor_divide():
     poly = polynomial([[0., 2.*y], [x, 2.]])
     assert numpy.all(poly // 2 == polynomial([[0, y], [0, 1]]))
@@ -75,6 +82,11 @@ def test_numpy_true_divide():
     assert numpy.all(poly / [1, 2] == polynomial([[0, 0.5*y], [x, 0.5]]))
     assert numpy.all(poly / [[1, 2], [2, 1]] ==
                      polynomial([[0, 0.5*y], [0.5*x, 1]]))
+
+def test_numpy_outer():
+    poly1, poly2 = polynomial([[0, y], [x+1, 1]])
+    assert numpy.all(numpy.outer(poly1, poly2) == [[0, 0], [x*y+y, y]])
+
 
 def test_numpy_positive():
     poly = polynomial([[0, y], [x, 1]])

@@ -4,7 +4,7 @@ from string import printable  # pylint: disable=no-name-in-module
 
 import numpy
 
-from .call import evaluate_polynomial
+from .call import call
 from .item import getitem
 
 from . import construct, array_function
@@ -209,16 +209,19 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         return self._dtype
 
     def all(self, axis=None, out=None, keepdims=False):
-        """Wrapper for numpy.all"""
         return array_function.all(self, axis=axis, out=out, keepdims=keepdims)
 
     def any(self, axis=None, out=None, keepdims=False):
-        """Wrapper for numpy.any"""
         return array_function.any(self, axis=axis, out=out, keepdims=keepdims)
 
     def astype(self, dtype, **kwargs):
-        """Wrapper for numpy.astype"""
         coefficients = [coefficient.astype(dtype, **kwargs)
+                        for coefficient in self.coefficients]
+        return construct.polynomial_from_attributes(
+            self.exponents, coefficients, self._indeterminants)
+
+    def flatten(self):
+        coefficients = [coefficient.flatten()
                         for coefficient in self.coefficients]
         return construct.polynomial_from_attributes(
             self.exponents, coefficients, self._indeterminants)
@@ -227,9 +230,9 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     # Override dunder methods that isn't dealt with by dispatching
     # ============================================================
 
-    def __call__(self, *args):
+    def __call__(self, *args, **kwargs):
         """Evaluate polynomial"""
-        return evaluate_polynomial(self, *args)
+        return call(self, *args, **kwargs)
 
     def __eq__(self, other):
         """Left equality"""
