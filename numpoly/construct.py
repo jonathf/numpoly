@@ -146,13 +146,19 @@ def polynomial_from_attributes(
 def clean_attributes(exponents, coefficients, indeterminants):
     coefficients = [numpy.asarray(coefficient)
                     for coefficient in coefficients]
-    exponents, coefficients = zip(*[
+    pairs = [
         (exponent, coefficient)
         for exponent, coefficient in zip(exponents, coefficients)
         if numpy.any(coefficient) or not any(exponent)
-    ])
-    exponents = numpy.asarray(exponents, dtype=int)
+    ]
+    if pairs:
+        exponents, coefficients = zip(*pairs)
+    else:
+        exponents = [(0,)*len(indeterminants)]
+        coefficients = numpy.zeros(
+            (1,)+coefficients[0].shape, dtype=coefficients[0].dtype)
 
+    exponents = numpy.asarray(exponents, dtype=int)
     if isinstance(indeterminants, baseclass.ndpoly):
         indeterminants = indeterminants._indeterminants
 
