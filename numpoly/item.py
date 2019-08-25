@@ -13,21 +13,20 @@ Polynomial get item::
 
 Developer access using string::
 
-    >>> print(poly._exponents)
-    ['00' '01' '10' '12' '20']
+    >>> print([str(exponent) for exponent in poly._exponents])
+    ['00', '01', '10', '12', '20']
     >>> print(poly["10"])
     [[-4  0]
      [ 0  0]]
 """
 import numpy
-
-from . import construct
+import numpoly
 
 
 def getitem(poly, index):
     # for diagnostic purposes, allow to access coefficients directly through
     # string items
-    if isinstance(index, str):
+    if isinstance(index, (str, unicode)):
         out = super(poly.__class__, poly).__getitem__(index)
         return numpy.asarray(out)
 
@@ -36,7 +35,7 @@ def getitem(poly, index):
     else:
         index = (slice(None), index)
 
-    return construct.polynomial_from_attributes(
+    return numpoly.polynomial_from_attributes(
         exponents=poly.exponents,
         coefficients=numpy.array(poly.coefficients)[index],
         indeterminants=poly._indeterminants,

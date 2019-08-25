@@ -4,14 +4,14 @@ import inspect
 from functools import wraps
 
 import numpy
-
-from . import align, baseclass, construct, export
+import numpoly
 
 ARRAY_FUNCTIONS = {}
 
 
 def implements(*numpy_functions):
     """Register an __array_function__ implementation for Polynomial objects."""
+    logger = logging.getLogger(__name__)
 
     defaults = None
     try:
@@ -22,8 +22,11 @@ def implements(*numpy_functions):
 
     except AttributeError:
         try:
-            spec = inspect.getargspec(numpy_functions[0]).args
+            spec = inspect.getargspec(numpy_functions[0])
             defaults = dict(zip(spec.args, spec.defaults))
+        except TypeError:
+            pass
+
         except AttributeError as err:
             logger.exception("Python version not supported <=2.7,>=3.5")
             raise err
@@ -59,21 +62,21 @@ def implements(*numpy_functions):
 
 @implements(numpy.abs, numpy.absolute)
 def absolute(x, **kwargs):
-    x = construct.polynomial(x)
+    x = numpoly.polynomial(x)
     coefficients = numpy.absolute(x.coefficients, **kwargs)
-    return construct.polynomial_from_attributes(
+    return numpoly.polynomial_from_attributes(
         x.exponents, coefficients, x._indeterminants)
 
 
 @implements(numpy.add)
 def add(x1, x2):
-    x1, x2 = align.align_polynomials(x1, x2)
+    x1, x2 = numpoly.align_polynomials(x1, x2)
     collection = x1.todict()
     for exponent, coefficient in x2.todict().items():
         collection[exponent] = collection.get(exponent, False)+coefficient
     exponents = sorted(collection)
     coefficients = [collection[exponent] for exponent in exponents]
-    return construct.polynomial_from_attributes(
+    return numpoly.polynomial_from_attributes(
         exponents, coefficients, x1._indeterminants)
 
 
@@ -97,7 +100,7 @@ def array_repr(a, **kwargs):
     prefix = "polynomial("
     suffix = ")"
     return prefix + numpy.array2string(
-        numpy.asarray(export.to_string(a)),
+        numpy.asarray(numpoly.to_string(a)),
         separator=", ",
         formatter={"all": str},
         prefix=prefix,
@@ -111,7 +114,7 @@ def array_str(a, **kwargs):
     prefix = ""
     suffix = ""
     return prefix + numpy.array2string(
-        numpy.asarray(export.to_string(a)),
+        numpy.asarray(numpoly.to_string(a)),
         separator=" ",
         formatter={"all": str},
         prefix=prefix,
@@ -123,7 +126,7 @@ def array_str(a, **kwargs):
 def concatenate(arrays, axis=0, out=None):
     """Wrapper for numpy.concatenate."""
     assert out is None, "'out' argument currently no supported"
-    arrays = align.align_polynomial_indeterminants(*arrays)
+    arrays = numpoly.align_polynomial_indeterminants(*arrays)
     collections = [arg.todict() for arg in arrays]
 
     out = {}
@@ -136,7 +139,7 @@ def concatenate(arrays, axis=0, out=None):
 
     exponents = sorted(out)
     coefficients = [out[exponent] for exponent in exponents]
-    return construct.polynomial_from_attributes(
+    return numpoly.polynomial_from_attributes(
         exponents=exponents,
         coefficients=coefficients,
         indeterminants=arrays[0].indeterminants,
@@ -145,22 +148,22 @@ def concatenate(arrays, axis=0, out=None):
 
 @implements(numpy.cumsum)
 def cumsum(a, **kwargs):
-    a = construct.polynomial(a)
+    a = numpoly.polynomial(a)
     coefficients = [numpy.cumsum(coefficient, **kwargs)
                     for coefficient in a.coefficients]
-    return construct.polynomial_from_attributes(
+    return numpoly.polynomial_from_attributes(
         a.exponents, coefficients, a._indeterminants)
 
 
 @implements(numpy.divide, numpy.true_divide)
 def divide(x1, x2, **kwargs):
-    assert not isinstance(x2, baseclass.ndpoly), "not supported"
+    assert not isinstance(x2, numpoly.ndpoly), "not supported"
     return multiply(x1, 1/numpy.asarray(x2), **kwargs)
 
 
 @implements(numpy.equal)
 def equal(x1, x2, **kwargs):
-    x1, x2 = align.align_polynomials(x1, x2)
+    x1, x2 = numpoly.align_polynomials(x1, x2)
     out = numpy.ones(x1.shape, dtype=bool)
     collection = x1.todict()
     for exponent, coefficient in x2.todict().items():
@@ -175,14 +178,14 @@ def equal(x1, x2, **kwargs):
 
 @implements(numpy.floor_divide)
 def floor_divide(x1, x2, **kwargs):
-    assert not isinstance(x2, baseclass.ndpoly), "not supported"
+    assert not isinstance(x2, numpoly.ndpoly), "not supported"
     return multiply(x1, 1/numpy.asarray(x2), **kwargs).astype(int)
 
 
 @implements(numpy.multiply)
 def multiply(x1, x2, **kwargs):
     assert kwargs.get("out", None) is None, "object read-only"
-    x1, x2 = align.align_polynomials(x1, x2)
+    x1, x2 = numpoly.align_polynomials(x1, x2)
     exponents = (numpy.tile(x1.exponents, (len(x2.exponents), 1))+
                  numpy.repeat(x2.exponents, len(x1.exponents), 0))
 
@@ -198,7 +201,7 @@ def multiply(x1, x2, **kwargs):
     exponents = sorted(collection)
     coefficients = [collection[exponent] for exponent in exponents]
 
-    return construct.polynomial_from_attributes(
+    return numpoly.polynomial_from_attributes(
         exponents, coefficients, x1._indeterminants)
 
 
@@ -212,7 +215,7 @@ def negative(x, out=None, **kwargs):
 
 @implements(numpy.not_equal)
 def not_equal(x1, x2, **kwargs):
-    x1, x2 = align.align_polynomials(x1, x2)
+    x1, x2 = numpoly.align_polynomials(x1, x2)
     out = numpy.zeros(x1.shape, dtype=bool)
     collection = x1.todict()
     for exponent, coefficient in x2.todict().items():
@@ -228,7 +231,7 @@ def not_equal(x1, x2, **kwargs):
 @implements(numpy.outer)
 def outer(a, b, **kwargs):
     assert kwargs.get("out", None) is None, "object read-only"
-    a, b = align.align_polynomial_exponents(a, b)
+    a, b = numpoly.align_polynomial_exponents(a, b)
     a = a.flatten()
     b = b.flatten()
     return multiply(a[:, numpy.newaxis], b[numpy.newaxis, :], **kwargs)
@@ -248,7 +251,7 @@ def power(x1, x2, **kwargs):
     x2 = numpy.asarray(x2, dtype=int)
 
     if not x2.shape:
-        out = construct.polynomial_from_attributes(
+        out = numpoly.polynomial_from_attributes(
             [(0,)], [numpy.ones(x1.shape, dtype=x1._dtype)], x1._indeterminants[:1])
         for _ in range(x2.item()):
             out = multiply(out, x1, **kwargs)
@@ -270,22 +273,22 @@ def power(x1, x2, **kwargs):
 
 @implements(numpy.subtract)
 def subtract(x1, x2, **kwargs):
-    x1, x2 = align.align_polynomials(x1, x2)
+    x1, x2 = numpoly.align_polynomials(x1, x2)
     collection = x1.todict()
     for exponent, coefficient in x2.todict().items():
         collection[exponent] = collection.get(exponent, False)-coefficient
     exponents = sorted(collection)
     coefficients = [collection[exponent] for exponent in exponents]
-    return construct.polynomial_from_attributes(
+    return numpoly.polynomial_from_attributes(
         exponents, coefficients, x1._indeterminants)
 
 
 @implements(numpy.sum)
 def sum(a, **kwargs):
-    a = construct.polynomial(a)
+    a = numpoly.polynomial(a)
     coefficients = [
         numpy.sum(coefficient, **kwargs)
         for coefficient in a.coefficients
     ]
-    return construct.polynomial_from_attributes(
+    return numpoly.polynomial_from_attributes(
         a.exponents, coefficients, a._indeterminants)

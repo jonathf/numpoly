@@ -84,8 +84,8 @@ def to_string(poly):
         >>> print(string_array)
         [['1' 'x**3']
          ['-1+y' '-3*x']]
-        >>> type(string_array.item(-1))
-        <class 'str'>
+        >>> type(string_array.item(-1)) == str
+        True
     """
     if poly.shape:
         return to_array(poly, as_type="str")

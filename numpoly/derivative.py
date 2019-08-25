@@ -1,6 +1,5 @@
-from . import align, baseclass, construct
-
 import numpy
+import numpoly
 
 
 def diff(poly, *diffvars):
@@ -26,7 +25,7 @@ def diff(poly, *diffvars):
         >>> print(numpoly.diff(poly, x, y))
         [0 0 2*y]
     """
-    poly = construct.polynomial(poly)
+    poly = numpoly.polynomial(poly)
 
     for diffvar in diffvars:
         if isinstance(diffvar, str):
@@ -34,7 +33,7 @@ def diff(poly, *diffvars):
         elif isinstance(diffvar, int):
             idx = diffvar
         else:
-            diffvar = construct.polynomial(diffvar)
+            diffvar = numpoly.polynomial(diffvar)
             assert len(diffvar._indeterminants) == 1, "only one at the time"
             assert numpy.all(diffvar.exponents == 1), (
                 "derivative variable assumes singletons")
@@ -53,7 +52,7 @@ def diff(poly, *diffvars):
             exponents = numpy.delete(
                 exponents, numpy.argwhere(indices), axis=0)
 
-        poly = construct.polynomial_from_attributes(
+        poly = numpoly.polynomial_from_attributes(
             exponents=exponents,
             coefficients=coefficients,
             indeterminants=poly._indeterminants,
