@@ -35,6 +35,7 @@ def getitem(poly, index):
         index = (slice(None),) + index
     else:
         index = (slice(None), index)
+
     return construct.polynomial_from_attributes(
         exponents=poly.exponents,
         coefficients=numpy.array(poly.coefficients)[index],

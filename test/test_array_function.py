@@ -1,140 +1,151 @@
+"""Testing functions used for numpy compatible."""
+from packaging.version import parse
 import numpy
 from numpoly import polynomial, symbols
+import numpoly
 
-x, y = symbols("x y")
+if parse(numpy.__version__) < parse("1.17.0"):
+    # use the __array_function__ interface (Python 3 in practice)
+    INTERFACE = numpy
+else:
+    # Use internal interface (Python 2 in practice)
+    INTERFACE = numpoly
+
+X, Y = symbols("x y")
 
 
 def test_numpy_absolute():
-    assert abs(-x) == abs(x) == x
-    assert numpy.all(abs(polynomial([x-y, y-4])) == polynomial([x+y, y+4]))
+    assert abs(-X) == abs(X) == X
+    assert numpy.all(abs(polynomial([X-Y, Y-4])) == polynomial([X+Y, Y+4]))
 
 
 def test_numpy_add():
-    assert x+3 == 3+x
-    assert numpy.all(4 + polynomial([1, x, y]) == polynomial([5, 4+x, 4+y]))
-    assert numpy.all(polynomial([0, x]) + polynomial([y, 0]) == [y, x])
-    assert numpy.all(polynomial([[1, x], [y, x*y]]) + [2, x] ==
-                     polynomial([[3, 2*x], [2+y, x+x*y]]))
+    assert X+3 == 3+X
+    assert numpy.all(4 + polynomial([1, X, Y]) == polynomial([5, 4+X, 4+Y]))
+    assert numpy.all(polynomial([0, X]) + polynomial([Y, 0]) == [Y, X])
+    assert numpy.all(polynomial([[1, X], [Y, X*Y]]) + [2, X] ==
+                     polynomial([[3, 2*X], [2+Y, X+X*Y]]))
 
 
 def test_numpy_any():
-    poly = polynomial([[0, y], [0, 0]])
-    assert numpy.any(poly)
-    assert numpy.all(numpy.any(poly, 0) == [False, True])
-    assert numpy.all(numpy.any(poly, -1, keepdims=True) == [[True], [False]])
+    poly = polynomial([[0, Y], [0, 0]])
+    assert INTERFACE.any(poly)
+    assert numpy.all(INTERFACE.any(poly, 0) == [False, True])
+    assert numpy.all(INTERFACE.any(poly, -1, keepdims=True) ==
+                     [[True], [False]])
 
 
 def test_numpy_all():
-    poly = polynomial([[0, y], [x, 1]])
-    assert not numpy.all(poly)
-    assert numpy.all(numpy.all(poly, 0) == [False, True])
-    assert numpy.all(numpy.all(poly, -1, keepdims=True) == [[False], [True]])
+    poly = polynomial([[0, Y], [X, 1]])
+    assert not INTERFACE.all(poly)
+    assert numpy.all(INTERFACE.all(poly, 0) == [False, True])
+    assert numpy.all(INTERFACE.all(poly, -1, keepdims=True) ==
+                     [[False], [True]])
 
 
 def test_numpy_concatenate():
-    poly1 = polynomial([[0, y], [x, 1]])
-    assert numpy.all(numpy.concatenate([poly1, poly1]) ==
-                     polynomial([[0, y], [x, 1], [0, y], [x, 1]]))
-    assert numpy.all(numpy.concatenate([poly1, [[x*y, 1]]], 0) ==
-                     polynomial([[0, y], [x, 1], [x*y, 1]]))
-    assert numpy.all(numpy.concatenate([poly1, [[x*y], [1]]], 1) ==
-                     polynomial([[0, y, x*y], [x, 1, 1]]))
-    assert numpy.all(numpy.concatenate([poly1, poly1], 1) ==
-                     polynomial([[0, y, 0, y], [x, 1, x, 1]]))
+    poly1 = polynomial([[0, Y], [X, 1]])
+    assert numpy.all(INTERFACE.concatenate([poly1, poly1]) ==
+                     polynomial([[0, Y], [X, 1], [0, Y], [X, 1]]))
+    assert numpy.all(INTERFACE.concatenate([poly1, [[X*Y, 1]]], 0) ==
+                     polynomial([[0, Y], [X, 1], [X*Y, 1]]))
+    assert numpy.all(INTERFACE.concatenate([poly1, [[X*Y], [1]]], 1) ==
+                     polynomial([[0, Y, X*Y], [X, 1, 1]]))
+    assert numpy.all(INTERFACE.concatenate([poly1, poly1], 1) ==
+                     polynomial([[0, Y, 0, Y], [X, 1, X, 1]]))
 
 
 def test_numpy_cumsum():
-    poly1 = polynomial([[0, y], [x, 1]])
-    assert numpy.all(numpy.cumsum(poly1) == [0, y, x+y, 1+x+y])
-    assert numpy.all(numpy.cumsum(poly1, axis=0) == [[0, y], [x, y+1]])
-    assert numpy.all(numpy.cumsum(poly1, axis=1) == [[0, y], [x, x+1]])
+    poly1 = polynomial([[0, Y], [X, 1]])
+    assert numpy.all(INTERFACE.cumsum(poly1) == [0, Y, X+Y, 1+X+Y])
+    assert numpy.all(INTERFACE.cumsum(poly1, axis=0) == [[0, Y], [X, Y+1]])
+    assert numpy.all(INTERFACE.cumsum(poly1, axis=1) == [[0, Y], [X, X+1]])
 
 def test_numpy_floor_divide():
-    poly = polynomial([[0., 2.*y], [x, 2.]])
-    assert numpy.all(poly // 2 == polynomial([[0, y], [0, 1]]))
-    assert numpy.all(poly // [1, 2] == polynomial([[0, y], [x, 1]]))
-    assert numpy.all(poly // [[1, 2], [2, 1]] ==
-                     polynomial([[0, y], [0, 2]]))
+    poly = polynomial([[0., 2.*Y], [X, 2.]])
+    assert numpy.all(poly // 2 == polynomial([[0, Y], [0, 1]]))
+    assert numpy.all(poly // [1, 2] == polynomial([[0, Y], [X, 1]]))
+    assert numpy.all(poly // [[1, 2], [2, 1]] == polynomial([[0, Y], [0, 2]]))
 
 
 def test_numpy_multiply():
-    poly = polynomial([[0, 2+y], [x, 2]])
-    assert numpy.all(2*poly == [[0, 4+2*y], [2*x, 4]])
-    assert numpy.all([x, 1]*poly == [[0, 2+y], [x*x, 2]])
-    assert numpy.all([[x, 1], [y, 0]]*poly == [[0, 2+y], [x*y, 0]])
+    poly = polynomial([[0, 2+Y], [X, 2]])
+    assert numpy.all(2*poly == [[0, 4+2*Y], [2*X, 4]])
+    assert numpy.all([X, 1]*poly == [[0, 2+Y], [X*X, 2]])
+    assert numpy.all([[X, 1], [Y, 0]]*poly == [[0, 2+Y], [X*Y, 0]])
 
 
 def test_numpy_negative():
-    poly = polynomial([[x, -y], [-4, y]])
-    assert -(x-y-1) == 1-x+y
-    assert numpy.all(-poly == [[-x, y], [4, -y]])
+    poly = polynomial([[X, -Y], [-4, Y]])
+    assert -(X-Y-1) == 1-X+Y
+    assert numpy.all(-poly == [[-X, Y], [4, -Y]])
 
 
 def test_numpy_not_equal():
-    poly = polynomial([[0, 2+y], [x, 2]])
-    assert numpy.all(([x, 2+y] != poly) == [[True, False], [False, True]])
-    assert numpy.all((x != poly) == [[True, True], [False, True]])
+    poly = polynomial([[0, 2+Y], [X, 2]])
+    assert numpy.all(([X, 2+Y] != poly) == [[True, False], [False, True]])
+    assert numpy.all((X != poly) == [[True, True], [False, True]])
 
 
 def test_numpy_true_divide():
-    poly = polynomial([[0, y], [x, 1]])
-    assert numpy.all(poly / 2 == polynomial([[0, 0.5*y], [0.5*x, 0.5]]))
-    assert numpy.all(poly / [1, 2] == polynomial([[0, 0.5*y], [x, 0.5]]))
+    poly = polynomial([[0, Y], [X, 1]])
+    assert numpy.all(poly / 2 == polynomial([[0, 0.5*Y], [0.5*X, 0.5]]))
+    assert numpy.all(poly / [1, 2] == polynomial([[0, 0.5*Y], [X, 0.5]]))
     assert numpy.all(poly / [[1, 2], [2, 1]] ==
-                     polynomial([[0, 0.5*y], [0.5*x, 1]]))
+                     polynomial([[0, 0.5*Y], [0.5*X, 1]]))
 
 def test_numpy_outer():
-    poly1, poly2 = polynomial([[0, y], [x+1, 1]])
-    assert numpy.all(numpy.outer(poly1, poly2) == [[0, 0], [x*y+y, y]])
+    poly1, poly2 = polynomial([[0, Y], [X+1, 1]])
+    assert numpy.all(INTERFACE.outer(poly1, poly2) == [[0, 0], [X*Y+Y, Y]])
 
 
 def test_numpy_positive():
-    poly = polynomial([[0, y], [x, 1]])
+    poly = polynomial([[0, Y], [X, 1]])
     assert numpy.all(poly == +poly)
     assert poly is not +poly
 
 
 def test_numpy_power():
-    poly = polynomial([[0, y], [x-1, 2]])
-    assert numpy.all(x**[2] == polynomial([x**2]))
-    assert numpy.all(polynomial([x])**[2] == polynomial([x**2]))
-    assert numpy.all(polynomial([x, y])**[2] == polynomial([x**2, y**2]))
-    assert numpy.all(polynomial([x])**[1, 2] == polynomial([x, x**2]))
-    assert numpy.all((x*y)**[0, 1, 2, 3] == [1, x*y, x**2*y**2, x**3*y**3])
-    assert numpy.all(poly ** 2 == polynomial([[0, y**2], [x*x-2*x+1, 4]]))
-    assert numpy.all(poly ** [1, 2] == polynomial([[0, y**2], [x-1, 4]]))
+    poly = polynomial([[0, Y], [X-1, 2]])
+    assert numpy.all(X**[2] == polynomial([X**2]))
+    assert numpy.all(polynomial([X])**[2] == polynomial([X**2]))
+    assert numpy.all(polynomial([X, Y])**[2] == polynomial([X**2, Y**2]))
+    assert numpy.all(polynomial([X])**[1, 2] == polynomial([X, X**2]))
+    assert numpy.all((X*Y)**[0, 1, 2, 3] == [1, X*Y, X**2*Y**2, X**3*Y**3])
+    assert numpy.all(poly ** 2 == polynomial([[0, Y**2], [X*X-2*X+1, 4]]))
+    assert numpy.all(poly ** [1, 2] == polynomial([[0, Y**2], [X-1, 4]]))
     assert numpy.all(poly ** [[1, 2], [2, 1]] ==
-                     polynomial([[0, y**2], [x*x-2*x+1, 2]]))
+                     polynomial([[0, Y**2], [X*X-2*X+1, 2]]))
 
 
 def test_numpy_subtract():
-    assert -x+3 == 3-x
-    assert numpy.all(4 - polynomial([1, x, y]) == polynomial([3, 4-x, 4-y]))
-    assert numpy.all(polynomial([0, x]) - polynomial([y, 0]) == [-y, x])
-    assert numpy.all(polynomial([[1, x], [y, x*y]]) - [2, x] ==
-                     polynomial([[-1, 0], [y-2, x*y-x]]))
+    assert -X+3 == 3-X
+    assert numpy.all(4 - polynomial([1, X, Y]) == polynomial([3, 4-X, 4-Y]))
+    assert numpy.all(polynomial([0, X]) - polynomial([Y, 0]) == [-Y, X])
+    assert numpy.all(polynomial([[1, X], [Y, X*Y]]) - [2, X] ==
+                     polynomial([[-1, 0], [Y-2, X*Y-X]]))
 
 
 def test_numpy_sum():
-    poly = polynomial([[1, 5*x], [x+3, -y]])
-    assert numpy.sum(poly) == -y+x*6+4
-    assert numpy.all(numpy.sum(poly, axis=0) == polynomial([x+4, -y+x*5]))
-    assert numpy.all(
-        numpy.sum(poly, axis=-1, keepdims=True) == polynomial([[x*5+1], [x-y+3]]))
+    poly = polynomial([[1, 5*X], [X+3, -Y]])
+    assert INTERFACE.sum(poly) == -Y+X*6+4
+    assert numpy.all(INTERFACE.sum(poly, axis=0) == polynomial([X+4, -Y+X*5]))
+    assert numpy.all(INTERFACE.sum(poly, axis=-1, keepdims=True) ==
+                     polynomial([[X*5+1], [X-Y+3]]))
 
 
 def test_numpy_array_str():
-    assert str(4+6*x**2) == "4+6*x**2"
-    assert str(polynomial([1., -5*x, 3-x**2])) == "[1.0 -5.0*x 3.0-x**2]"
-    assert str(polynomial([[[1, 2], [5, y]]])) == """\
+    assert str(4+6*X**2) == "4+6*X**2"
+    assert str(polynomial([1., -5*X, 3-X**2])) == "[1.0 -5.0*X 3.0-X**2]"
+    assert str(polynomial([[[1, 2], [5, Y]]])) == """\
 [[[1 2]
-  [5 y]]]"""
+  [5 Y]]]"""
 
 
 def test_numpy_array_repr():
-    assert repr(4+6*x**2) == "polynomial(4+6*x**2)"
-    assert (repr(polynomial([1., -5*x, 3-x**2])) ==
-            "polynomial([1.0, -5.0*x, 3.0-x**2])")
-    assert repr(polynomial([[[1, 2], [5, y]]])) == """\
+    assert repr(4+6*X**2) == "polynomial(4+6*X**2)"
+    assert (repr(polynomial([1., -5*X, 3-X**2])) ==
+            "polynomial([1.0, -5.0*X, 3.0-X**2])")
+    assert repr(polynomial([[[1, 2], [5, Y]]])) == """\
 polynomial([[[1, 2],
-             [5, y]]])"""
+             [5, Y]]])"""

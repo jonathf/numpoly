@@ -10,3 +10,4 @@ from .call import call
 from .construct import polynomial
 from .export import to_array, to_string, to_sympy
 from .poly_function import *
+from .derivative import diff
