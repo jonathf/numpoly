@@ -1,25 +1,4 @@
-"""
-Polynomial string representation::
-
-    >>> x, y = numpoly.symbols("x y")
-    >>> poly = numpoly.polynomial(4+6*y**3)
-    >>> print(repr(poly))
-    polynomial(4+6*y**3)
-    >>> print(poly)
-    4+6*y**3
-    >>> poly = numpoly.polynomial([1., -5*x, 3-y**2])
-    >>> print(repr(poly))
-    polynomial([1.0, -5.0*x, 3.0-y**2])
-    >>> print(poly)
-    [1.0 -5.0*x 3.0-y**2]
-    >>> poly = numpoly.polynomial([[[1-4*x, x**2], [y-3, x*y*y]]])
-    >>> print(repr(poly))
-    polynomial([[[1-4*x, x**2],
-                 [-3+y, x*y**2]]])
-    >>> print(poly)
-    [[[1-4*x x**2]
-      [-3+y x*y**2]]]
-"""
+"""Polynomial string representation."""
 import numpy
 
 
@@ -56,15 +35,58 @@ def to_array(poly, as_type="str"):
 
 
 def to_sympy(poly):
+    """
+    Convert numpoly object to sympy object, or array of sympy objects.
+
+    Args:
+        poly (numpoly.ndpoly):
+            Polynomial object to convert to sympy.
+
+    Returns:
+        (numpy.ndarray, sympy.core.expr.Expr):
+            If scalar, a sympy expression object, or if array, numpy.array with
+            expression object values.
+
+    Examples:
+        >>> x, y = numpoly.symbols("x y")
+        >>> poly = numpoly.polynomial([[1, x**3], [y-1, -3*x]])
+        >>> sympy_poly = to_sympy(poly)
+        >>> print(sympy_poly)
+        [[1 x**3]
+         [y - 1 -3*x]]
+        >>> type(sympy_poly.item(-1))
+        <class 'sympy.core.mul.Mul'>
+    """
     if poly.shape:
         return to_array(poly, as_type="sympy")
-    from sympy import symbols, Poly
+    from sympy import symbols
     locals_ = dict(zip(poly._indeterminants, symbols(poly._indeterminants)))
     polynomial = eval(to_string(poly), locals_, {})
     return polynomial
 
 
 def to_string(poly):
+    """
+    Convert numpoly object to string object, or array of string objects.
+
+    Args:
+        poly (numpoly.ndpoly):
+            Polynomial object to convert to strings.
+
+    Returns:
+        (numpy.ndarray, str):
+            If scalar, a string, or if array, numpy.array with string values.
+
+    Examples:
+        >>> x, y = numpoly.symbols("x y")
+        >>> poly = numpoly.polynomial([[1, x**3], [y-1, -3*x]])
+        >>> string_array = to_string(poly)
+        >>> print(string_array)
+        [['1' 'x**3']
+         ['-1+y' '-3*x']]
+        >>> type(string_array.item(-1))
+        <class 'str'>
+    """
     if poly.shape:
         return to_array(poly, as_type="str")
 
