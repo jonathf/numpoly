@@ -1,7 +1,6 @@
 """Align polynomials."""
 import numpy
-
-from . import construct
+import numpoly
 
 
 def align_polynomials(*polys):
@@ -40,22 +39,30 @@ def align_polynomial_shape(*polys):
         >>> x, y = numpoly.symbols("x y")
         >>> poly1 = 4*x
         >>> poly2 = numpoly.polynomial([[2*x+1, 3*x-y]])
-        >>> print(poly1, poly2)
-        4*x [[1+2*x -y+3*x]]
-        >>> print(poly1.shape, poly2.shape)
-        () (1, 2)
+        >>> print(poly1)
+        4*x
+        >>> print(poly2)
+        [[1+2*x -y+3*x]]
+        >>> print(poly1.shape)
+        ()
+        >>> print(poly2.shape)
+        (1, 2)
         >>> poly1, poly2 = numpoly.align_polynomial_shape(poly1, poly2)
-        >>> print(poly1, poly2)
-        [[4*x 4*x]] [[1+2*x -y+3*x]]
-        >>> print(poly1.shape, poly2.shape)
-        (1, 2) (1, 2)
+        >>> print(poly1)
+        [[4*x 4*x]]
+        >>> print(poly2)
+        [[1+2*x -y+3*x]]
+        >>> print(poly1.shape)
+        (1, 2)
+        >>> print(poly2.shape)
+        (1, 2)
     """
-    polys = [construct.polynomial(poly) for poly in polys]
+    polys = [numpoly.polynomial(poly) for poly in polys]
     common = 1
     for poly in polys:
         common = numpy.ones(poly.coefficients[0].shape, dtype=int)*common
 
-    polys = [construct.polynomial_from_attributes(
+    polys = [numpoly.polynomial_from_attributes(
         exponents=poly.exponents,
         coefficients=[coeff*common for coeff in poly.coefficients],
         indeterminants=poly.indeterminants,
@@ -80,17 +87,25 @@ def align_polynomial_indeterminants(*polys):
     Examples:
         >>> x, y = numpoly.symbols("x y")
         >>> poly1, poly2 = numpoly.polynomial([2*x+1, 3*x-y])
-        >>> print(poly1, poly2)
-        1+2*x -y+3*x
-        >>> print(poly1.indeterminants, poly2.indeterminants)
-        [x] [x y]
+        >>> print(poly1)
+        1+2*x
+        >>> print(poly2)
+        -y+3*x
+        >>> print(poly1.indeterminants)
+        [x]
+        >>> print(poly2.indeterminants)
+        [x y]
         >>> poly1, poly2 = numpoly.align_polynomial_indeterminants(poly1, poly2)
-        >>> print(poly1, poly2)
-        1+2*x -y+3*x
-        >>> print(poly1.indeterminants, poly2.indeterminants)
-        [x y] [x y]
+        >>> print(poly1)
+        1+2*x
+        >>> print(poly2)
+        -y+3*x
+        >>> print(poly1.indeterminants)
+        [x y]
+        >>> print(poly2.indeterminants)
+        [x y]
     """
-    polys = [construct.polynomial(poly) for poly in polys]
+    polys = [numpoly.polynomial(poly) for poly in polys]
     common_indeterminates = sorted({
         indeterminant
         for poly in polys
@@ -104,7 +119,7 @@ def align_polynomial_indeterminants(*polys):
         exponents = numpy.zeros(
             (len(poly._exponents), len(common_indeterminates)), dtype=int)
         exponents[:, indices] = poly.exponents
-        polys[idx] = construct.polynomial_from_attributes(
+        polys[idx] = numpoly.polynomial_from_attributes(
             exponents=exponents,
             coefficients=poly.coefficients,
             indeterminants=common_indeterminates,
@@ -115,7 +130,7 @@ def align_polynomial_indeterminants(*polys):
 
 
 def align_polynomial_exponents(*polys):
-    polys = [construct.polynomial(poly) for poly in polys]
+    polys = [numpoly.polynomial(poly) for poly in polys]
     if not all(
             polys[0]._indeterminants == poly._indeterminants
             for poly in polys
@@ -133,7 +148,7 @@ def align_polynomial_exponents(*polys):
         zeros = numpy.zeros(poly.shape, dtype=poly.dtype)
         coefficients = [lookup.get(exponent, zeros)
                         for exponent in global_exponents]
-        polys[idx] = construct.polynomial_from_attributes(
+        polys[idx] = numpoly.polynomial_from_attributes(
             exponents=global_exponents,
             coefficients=coefficients,
             indeterminants=poly._indeterminants,

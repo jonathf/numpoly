@@ -1,7 +1,5 @@
-import re
 import numpy
-
-from . import align, baseclass
+import numpoly
 
 
 def polynomial(
@@ -59,7 +57,7 @@ def polynomial(
         x**5+3*x*y-4
     """
     if poly_like is None:
-        poly = baseclass.ndpoly(
+        poly = numpoly.ndpoly(
             exponents=[(0,)],
             shape=(),
             indeterminants=indeterminants,
@@ -68,7 +66,7 @@ def polynomial(
         poly["0"] = 0
 
     elif isinstance(poly_like, dict):
-        poly = baseclass.ndpoly(exponents=[(0,)], shape=())
+        poly = numpoly.ndpoly(exponents=[(0,)], shape=())
         exponents, coefficients = zip(*list(poly_like.items()))
         poly = polynomial_from_attributes(
             exponents=exponents,
@@ -77,12 +75,12 @@ def polynomial(
             dtype=dtype,
         )
 
-    elif isinstance(poly_like, baseclass.ndpoly):
+    elif isinstance(poly_like, numpoly.ndpoly):
         poly = poly_like.copy()
 
     # assume polynomial converted to structured array
     elif isinstance(poly_like, numpy.ndarray) and poly_like.dtype.names:
-        exponents = baseclass.INVERSE_MAP(numpy.array([
+        exponents = numpoly.INVERSE_MAP(numpy.array([
             tuple(name) for name in poly_like.dtype.names], dtype="S"))
         coefficients = [poly_like[key] for key in poly_like.dtype.names]
         poly = polynomial_from_attributes(
@@ -132,7 +130,7 @@ def polynomial_from_attributes(
         exponents, coefficients, indeterminants = clean_attributes(
             exponents, coefficients, indeterminants)
     dtype = coefficients[0].dtype if dtype is None else dtype
-    poly = baseclass.ndpoly(
+    poly = numpoly.ndpoly(
         exponents=exponents,
         shape=coefficients[0].shape,
         indeterminants=indeterminants,
@@ -146,14 +144,20 @@ def polynomial_from_attributes(
 def clean_attributes(exponents, coefficients, indeterminants):
     coefficients = [numpy.asarray(coefficient)
                     for coefficient in coefficients]
-    exponents, coefficients = zip(*[
+    pairs = [
         (exponent, coefficient)
         for exponent, coefficient in zip(exponents, coefficients)
         if numpy.any(coefficient) or not any(exponent)
-    ])
-    exponents = numpy.asarray(exponents, dtype=int)
+    ]
+    if pairs:
+        exponents, coefficients = zip(*pairs)
+    else:
+        exponents = [(0,)*len(indeterminants)]
+        coefficients = numpy.zeros(
+            (1,)+coefficients[0].shape, dtype=coefficients[0].dtype)
 
-    if isinstance(indeterminants, baseclass.ndpoly):
+    exponents = numpy.asarray(exponents, dtype=int)
+    if isinstance(indeterminants, numpoly.ndpoly):
         indeterminants = indeterminants._indeterminants
 
     if isinstance(indeterminants, str):
@@ -188,16 +192,16 @@ def compose_polynomial_array(
     shape = arrays.shape
     arrays = arrays.flatten()
 
-    indices = numpy.array([isinstance(array, baseclass.ndpoly)
+    indices = numpy.array([isinstance(array, numpoly.ndpoly)
                            for array in arrays])
-    arrays[indices] = align.align_polynomial_indeterminants(*arrays[indices])
+    arrays[indices] = numpoly.align_polynomial_indeterminants(*arrays[indices])
     indeterminants = arrays[indices][0] if numpy.any(indices) else "q"
     arrays = arrays.tolist()
 
     dtypes = []
     keys = {(0,)}
     for array in arrays:
-        if isinstance(array, baseclass.ndpoly):
+        if isinstance(array, numpoly.ndpoly):
             dtypes.append(array._dtype)
             keys = keys.union([tuple(key) for key in array.exponents.tolist()])
         elif isinstance(array, (numpy.generic, numpy.ndarray)):
@@ -211,7 +215,7 @@ def compose_polynomial_array(
 
     collection = {}
     for idx, array in enumerate(arrays):
-        if isinstance(array, baseclass.ndpoly):
+        if isinstance(array, numpoly.ndpoly):
             for key, value in zip(array.exponents, array.coefficients):
                 key = tuple(key)+(0,)*(length-len(key))
                 if key not in collection:
@@ -237,7 +241,7 @@ def compose_polynomial_array(
 
 
 def zeros(exponents, shape, dtype=None):
-    poly = baseclass.ndpoly(exponents=exponents, shape=shape, dtype=dtype)
+    poly = numpoly.ndpoly(exponents=exponents, shape=shape, dtype=dtype)
     for exponent in poly._exponents:
         poly[exponent] = 0
     return poly

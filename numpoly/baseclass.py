@@ -66,7 +66,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             shape=(),
             indeterminants="z",
             dtype=None,
-            **kwargs,
+            **kwargs
     ):
         exponents = numpy.array(exponents, dtype=int)
         dtype_ = "S%d" % exponents.shape[1]

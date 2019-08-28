@@ -1,11 +1,9 @@
-"""
-Evaluate polynomial::
-
-"""
+"""Evaluate polynomial."""
 from itertools import product
 import numpy
+import numpoly
 
-from . import construct, array_function
+from . import array_function
 
 
 def call(poly, *args, **kwargs):
@@ -66,7 +64,7 @@ def call(poly, *args, **kwargs):
     # There can only be one shape:
     ones = numpy.ones((), dtype=int)
     for value in kwargs.values():
-        ones = ones * numpy.ones(construct.polynomial(value).shape, dtype=int)
+        ones = ones * numpy.ones(numpoly.polynomial(value).shape, dtype=int)
 
     # main loop:
     out = 0
@@ -77,4 +75,4 @@ def call(poly, *args, **kwargs):
         shape = coefficient.shape+ones.shape
         out = out+array_function.outer(coefficient, term).reshape(shape)
 
-    return construct.polynomial(out)
+    return numpoly.polynomial(out)

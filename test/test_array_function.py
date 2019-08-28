@@ -6,12 +6,12 @@ import numpoly
 
 if parse(numpy.__version__) < parse("1.17.0"):
     # use the __array_function__ interface (Python 3 in practice)
-    INTERFACE = numpy
+    INTERFACE = numpoly
 else:
     # Use internal interface (Python 2 in practice)
-    INTERFACE = numpoly
+    INTERFACE = numpy
 
-X, Y = symbols("x y")
+X, Y = symbols("X Y")
 
 
 def test_numpy_absolute():
@@ -30,16 +30,16 @@ def test_numpy_add():
 def test_numpy_any():
     poly = polynomial([[0, Y], [0, 0]])
     assert INTERFACE.any(poly)
-    assert numpy.all(INTERFACE.any(poly, 0) == [False, True])
-    assert numpy.all(INTERFACE.any(poly, -1, keepdims=True) ==
+    assert numpy.all(INTERFACE.any(poly, axis=0) == [False, True])
+    assert numpy.all(INTERFACE.any(poly, axis=-1, keepdims=True) ==
                      [[True], [False]])
 
 
 def test_numpy_all():
     poly = polynomial([[0, Y], [X, 1]])
     assert not INTERFACE.all(poly)
-    assert numpy.all(INTERFACE.all(poly, 0) == [False, True])
-    assert numpy.all(INTERFACE.all(poly, -1, keepdims=True) ==
+    assert numpy.all(INTERFACE.all(poly, axis=0) == [False, True])
+    assert numpy.all(INTERFACE.all(poly, axis=-1, keepdims=True) ==
                      [[False], [True]])
 
 

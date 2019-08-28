@@ -2,7 +2,7 @@ import re
 import string
 
 import numpy
-from .construct import polynomial_from_attributes
+import numpoly
 
 
 def symbols(names="q", asarray=False, dtype="i8"):
@@ -84,7 +84,7 @@ def symbols(names="q", asarray=False, dtype="i8"):
     coefficients = numpy.eye(len(names), dtype=dtype)
     if len(names) == 1 and not asarray:
         coefficients = coefficients[0]
-    return polynomial_from_attributes(
+    return numpoly.polynomial_from_attributes(
         exponents=exponents,
         coefficients=coefficients,
         indeterminants=names,
