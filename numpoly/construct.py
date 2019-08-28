@@ -3,7 +3,7 @@ import numpoly
 
 
 def polynomial(
-        poly_like,
+        poly_like=None,
         indeterminants="q",
         dtype=None,
 ):
