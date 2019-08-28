@@ -19,6 +19,7 @@ Developer access using string::
     [[-4  0]
      [ 0  0]]
 """
+from six import string_types
 import numpy
 import numpoly
 
@@ -26,7 +27,7 @@ import numpoly
 def getitem(poly, index):
     # for diagnostic purposes, allow to access coefficients directly through
     # string items
-    if isinstance(index, (str, unicode)):
+    if isinstance(index, string_types):
         out = super(poly.__class__, poly).__getitem__(index)
         return numpy.asarray(out)
 
