@@ -38,6 +38,9 @@ def call(poly, *args, **kwargs):
         <BLANKLINE>
          [[0 1 2]
           [1 2 3]]]
+        >>> print(poly(y))
+        [[y -1+y]
+         [y 2*y]]
         >>> print(poly(y=x-1, x=2*y))
         [[2*y -1+2*y]
          [-1+x -1+2*y+x]]

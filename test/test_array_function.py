@@ -1,7 +1,7 @@
 """Testing functions used for numpy compatible."""
 from packaging.version import parse
 import numpy
-from numpoly import polynomial, symbols
+from numpoly import polynomial
 import numpoly
 
 if parse(numpy.__version__) < parse("1.17.0"):
@@ -11,7 +11,7 @@ else:
     # Use internal interface (Python 2 in practice)
     INTERFACE = numpy
 
-X, Y = symbols("X Y")
+X, Y = numpoly.symbols("X Y")
 
 
 def test_numpy_absolute():

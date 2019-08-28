@@ -41,7 +41,3 @@ def getitem(poly, index):
         coefficients=numpy.array(poly.coefficients)[index],
         indeterminants=poly._indeterminants,
     )
-
-
-def setitem(poly, index, value):
-    raise NotImplementedError("missing")

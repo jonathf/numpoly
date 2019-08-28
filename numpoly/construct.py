@@ -3,7 +3,7 @@ import numpoly
 
 
 def polynomial(
-        poly_like,
+        poly_like=None,
         indeterminants="q",
         dtype=None,
 ):
@@ -238,10 +238,3 @@ def compose_polynomial_array(
         coefficients=coefficients,
         indeterminants=indeterminants,
     )
-
-
-def zeros(exponents, shape, dtype=None):
-    poly = numpoly.ndpoly(exponents=exponents, shape=shape, dtype=dtype)
-    for exponent in poly._exponents:
-        poly[exponent] = 0
-    return poly
