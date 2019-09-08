@@ -7,7 +7,7 @@ import numpy
 from .call import call
 from .item import getitem
 
-from . import construct, array_function
+from . import construct, array_function, poly_function
 
 FORWARD_DICT = dict(enumerate(numpy.array(list(printable), dtype="S1")))
 FORWARD_MAP = numpy.vectorize(FORWARD_DICT.get)
@@ -198,6 +198,14 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         return {tuple(exponent): coefficient
                 for exponent, coefficient in zip(
                     self.exponents, self.coefficients)}
+
+    def isconstant(self):
+        """Check if a polynomial is constant or not."""
+        return poly_function.isconstant(self)
+
+    def toarray(self):
+        """Cast polynomial to numpy.ndarray, if possible."""
+        return poly_function.toarray(self)
 
     # =============================================
     # Override numpy properties to work with ndpoly
