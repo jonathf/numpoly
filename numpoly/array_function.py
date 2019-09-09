@@ -94,6 +94,18 @@ def all(a, **kwargs):
     return coefficients
 
 
+@implements(numpy.around, numpy.round, numpy.round_)
+def around(a, decimals=0, **kwargs):
+    a = numpoly.polynomial(a)
+    coefficients = [numpy.around(coefficient, decimals=decimals, **kwargs)
+                    for coefficient in a.coefficients]
+    return numpoly.polynomial_from_attributes(
+        exponents=a.exponents,
+        coefficients=coefficients,
+        indeterminants=a._indeterminants,
+    )
+
+
 @implements(numpy.array_repr)
 def array_repr(a, **kwargs):
     del kwargs
