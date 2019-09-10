@@ -1,18 +1,13 @@
 """Polynomial base class."""
 from __future__ import division
-from string import printable  # pylint: disable=no-name-in-module
 
 import numpy
 
 from .call import call
 from .item import getitem
+from .exponent import exponents_to_keys, keys_to_exponents
 
 from . import construct, array_function, poly_function
-
-FORWARD_DICT = dict(enumerate(numpy.array(list(printable), dtype="S1")))
-FORWARD_MAP = numpy.vectorize(FORWARD_DICT.get)
-INVERSE_DICT = {value: key for key, value in FORWARD_DICT.items()}
-INVERSE_MAP = numpy.vectorize(INVERSE_DICT.get)
 
 
 class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
@@ -26,16 +21,22 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     Arrays should be constructed using `polynomial`, `symbols` etc.
 
     Args:
-        exponents:
-            The exponents in an array like object with shape ``(N, D)``, where
+        exponents (numpy.ndarray):
+            The exponents in an integer array with shape ``(N, D)``, where
             ``N`` is the number of terms in the polynomial sum and ``D`` is the
             number of dimensions.
-        shape:
+        shape (Tuple[int, ...]):
             Shape of created array.
+        indeterminants (Union[str, Tuple[str], numpoly.ndpoly]):
+            The name of the indeterminant variables in te polynomial. If
+            polynomial, inherent from it. Else, pass argument to
+            `numpoly.symbols` to create the indeterminants. If only one name is
+            provided, but more than one is required, indeterminant will be
+            extended with an integer index.
         dtype:
             Any object that can be interpreted as a numpy data type.
         kwargs:
-            Extra arguments passed to `numpy.ndarray`.
+            Extra arguments passed to `numpy.ndarray` constructor.
 
     Examples:
         >>> poly = ndpoly(
@@ -69,26 +70,26 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             **kwargs
     ):
         exponents = numpy.array(exponents, dtype=int)
-        dtype_ = "S%d" % exponents.shape[1]
 
+        if isinstance(indeterminants, str):
+            indeterminants = poly_function.symbols(indeterminants)
         if isinstance(indeterminants, ndpoly):
             indeterminants = indeterminants._indeterminants
-        elif isinstance(indeterminants, str):
-            indeterminants = indeterminants.split(" ")
         if len(indeterminants) == 1 and exponents.shape[1] > 1:
-            indeterminants = ["%s%d" % (indeterminants[0], idx)
-                              for idx in range(exponents.shape[1])]
+            indeterminants = tuple(
+                "%s%d" % (str(indeterminants[0]), idx)
+                for idx in range(exponents.shape[1])
+            )
 
-        exponents = FORWARD_MAP(exponents).flatten()
-        exponents = numpy.array(exponents.view(dtype_), dtype="U")
+        keys = exponents_to_keys(exponents)
 
         dtype = int if dtype is None else dtype
-        dtype_ = numpy.dtype([(key, dtype) for key in exponents])
+        dtype_ = numpy.dtype([(key, dtype) for key in keys])
 
         obj = super(ndpoly, cls).__new__(
             cls, shape=shape, dtype=dtype_, **kwargs)
-        obj._dtype = dtype  # pylint: disable=protected-access
-        obj._exponents = exponents  # pylint: disable=protected-access
+        obj._dtype = numpy.dtype(dtype)  # pylint: disable=protected-access
+        obj._exponents = keys  # pylint: disable=protected-access
         obj._indeterminants = tuple(indeterminants)  # pylint: disable=protected-access
         return obj
 
@@ -100,12 +101,12 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         self._dtype = getattr(obj, "_dtype", None)
 
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
-        inputs = list(inputs)
-        for idx, input_ in enumerate(inputs):
-            input_ = construct.polynomial(input_)
-            if len(input_._exponents) != 1 or any(  # pylint: disable=protected-access
-                    [key != "0" for key in input_._exponents[0]]):  # pylint: disable=protected-access
-                inputs[idx] = input_
+        # inputs = list(inputs)
+        # for idx, input_ in enumerate(inputs):
+        #     input_ = construct.aspolynomial(input_)
+        #     if len(input_._exponents) != 1 or any(  # pylint: disable=protected-access
+        #             [key != "0" for key in input_._exponents[0]]):  # pylint: disable=protected-access
+        #         inputs[idx] = input_
 
         if ufunc not in array_function.ARRAY_FUNCTIONS:
             return super(ndpoly, self).__array_ufunc__(
@@ -116,8 +117,8 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         if func not in array_function.ARRAY_FUNCTIONS:
             return super(ndpoly, self).__array_function__(
                 func, types, args, kwargs)
-        if not all(issubclass(type_, ndpoly) for type_ in types):
-            return NotImplemented
+        # if not all(issubclass(type_, ndpoly) for type_ in types):
+        #     return NotImplemented
         return array_function.ARRAY_FUNCTIONS[func](*args, **kwargs)
 
     # ======================================
@@ -139,9 +140,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
              [0 2]
              [4 0]]
         """
-        exponents = numpy.array(self._exponents, dtype="S")
-        exponents = exponents.view("S1").reshape(len(exponents), -1)
-        return INVERSE_MAP(exponents)
+        return keys_to_exponents(self._exponents)
 
     @property
     def coefficients(self):

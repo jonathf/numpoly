@@ -80,8 +80,7 @@ def polynomial(
 
     # assume polynomial converted to structured array
     elif isinstance(poly_like, numpy.ndarray) and poly_like.dtype.names:
-        exponents = numpoly.INVERSE_MAP(numpy.array([
-            tuple(name) for name in poly_like.dtype.names], dtype="S"))
+        exponents = numpoly.keys_to_exponents(poly_like.dtype.names)
         coefficients = [poly_like[key] for key in poly_like.dtype.names]
         poly = polynomial_from_attributes(
             exponents=exponents,
@@ -117,6 +116,37 @@ def polynomial(
         )
 
     return poly
+
+
+def aspolynomial(
+        poly_like=None,
+        indeterminants=None,
+        dtype=None,
+):
+    remain = False
+    if isinstance(poly_like, numpoly.ndpoly):
+
+        remain = (dtype is not None or dtype == poly_like.dtype)
+        if indeterminants is not None:
+            if isinstance(indeterminants, numpoly.ndpoly):
+                indeterminants = indeterminants._indeterminants
+            if isinstance(indeterminants, str):
+                indeterminants = [indeterminants]
+            if len(indeterminants) == 1 and len(poly_like._indeterminants) > 1:
+                indeterminants = ["{}{}".format(indeterminants[0], idx)
+                                for idx in range(len(poly_like.indeterminants))]
+            remain |= indeterminants == poly_like._indeterminants
+
+    if remain:
+        return poly_like
+
+    if indeterminants is None:
+        indeterminants = "q"
+    return polynomial(
+        poly_like=poly_like,
+        indeterminants=indeterminants,
+        dtype=dtype,
+    )
 
 
 def polynomial_from_attributes(
@@ -184,12 +214,25 @@ def clean_attributes(exponents, coefficients, indeterminants):
     return exponents, coefficients, indeterminants
 
 
+def clean_polynomial_attributes(poly):
+    return polynomial_from_attributes(
+        exponents=poly.exponents,
+        coefficients=poly.coefficients,
+        indeterminants=poly._indeterminants,
+        dtype=poly.dtype,
+        trim=True,
+    )
+
+
 def compose_polynomial_array(
         arrays,
         dtype=None,
 ):
     arrays = numpy.array(arrays, dtype=object)
     shape = arrays.shape
+    if not arrays.size:
+        return numpoly.ndpoly(shape=(0,), dtype=dtype)
+
     arrays = arrays.flatten()
 
     indices = numpy.array([isinstance(array, numpoly.ndpoly)

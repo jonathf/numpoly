@@ -110,8 +110,13 @@ def isconstant(poly):
         >>> numpoly.isconstant(numpoly.polynomial([1]))
         True
     """
-    poly = numpoly.polynomial(poly)
-    return not numpy.any(poly.exponents)
+    poly = numpoly.aspolynomial(poly)
+    for exponent, coefficient in zip(poly.exponents, poly.coefficients):
+        if not numpy.any(exponent):
+            continue
+        if numpy.any(coefficient):
+            return False
+    return True
 
 
 def toarray(poly):

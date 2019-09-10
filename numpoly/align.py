@@ -57,7 +57,7 @@ def align_polynomial_shape(*polys):
         >>> print(poly2.shape)
         (1, 2)
     """
-    polys = [numpoly.polynomial(poly) for poly in polys]
+    polys = [numpoly.aspolynomial(poly) for poly in polys]
     common = 1
     for poly in polys:
         common = numpy.ones(poly.coefficients[0].shape, dtype=int)*common
@@ -105,7 +105,7 @@ def align_polynomial_indeterminants(*polys):
         >>> print(poly2.indeterminants)
         [x y]
     """
-    polys = [numpoly.polynomial(poly) for poly in polys]
+    polys = [numpoly.aspolynomial(poly) for poly in polys]
     common_indeterminates = sorted({
         indeterminant
         for poly in polys
@@ -130,7 +130,7 @@ def align_polynomial_indeterminants(*polys):
 
 
 def align_polynomial_exponents(*polys):
-    polys = [numpoly.polynomial(poly) for poly in polys]
+    polys = [numpoly.aspolynomial(poly) for poly in polys]
     if not all(
             polys[0]._indeterminants == poly._indeterminants
             for poly in polys

@@ -43,6 +43,23 @@ def test_numpy_all():
                      [[False], [True]])
 
 
+def test_numpy_array_repr():
+    assert repr(4+6*X**2) == "polynomial(4+6*X**2)"
+    assert (repr(polynomial([1., -5*X, 3-X**2])) ==
+            "polynomial([1.0, -5.0*X, 3.0-X**2])")
+    assert repr(polynomial([[[1, 2], [5, Y]]])) == """\
+polynomial([[[1, 2],
+             [5, Y]]])"""
+
+
+def test_numpy_array_str():
+    assert str(4+6*X**2) == "4+6*X**2"
+    assert str(polynomial([1., -5*X, 3-X**2])) == "[1.0 -5.0*X 3.0-X**2]"
+    assert str(polynomial([[[1, 2], [5, Y]]])) == """\
+[[[1 2]
+  [5 Y]]]"""
+
+
 def test_numpy_concatenate():
     poly1 = polynomial([[0, Y], [X, 1]])
     assert numpy.all(INTERFACE.concatenate([poly1, poly1]) ==
@@ -66,6 +83,11 @@ def test_numpy_floor_divide():
     assert numpy.all(poly // 2 == polynomial([[0, Y], [0, 1]]))
     assert numpy.all(poly // [1, 2] == polynomial([[0, Y], [X, 1]]))
     assert numpy.all(poly // [[1, 2], [2, 1]] == polynomial([[0, Y], [0, 2]]))
+
+
+def test_numpy_inner():
+    poly1, poly2 = polynomial([[0, Y], [X+1, 1]])
+    assert INTERFACE.inner(poly1, poly2) == Y
 
 
 def test_numpy_multiply():
@@ -132,20 +154,3 @@ def test_numpy_sum():
     assert numpy.all(INTERFACE.sum(poly, axis=0) == polynomial([X+4, -Y+X*5]))
     assert numpy.all(INTERFACE.sum(poly, axis=-1, keepdims=True) ==
                      polynomial([[X*5+1], [X-Y+3]]))
-
-
-def test_numpy_array_str():
-    assert str(4+6*X**2) == "4+6*X**2"
-    assert str(polynomial([1., -5*X, 3-X**2])) == "[1.0 -5.0*X 3.0-X**2]"
-    assert str(polynomial([[[1, 2], [5, Y]]])) == """\
-[[[1 2]
-  [5 Y]]]"""
-
-
-def test_numpy_array_repr():
-    assert repr(4+6*X**2) == "polynomial(4+6*X**2)"
-    assert (repr(polynomial([1., -5*X, 3-X**2])) ==
-            "polynomial([1.0, -5.0*X, 3.0-X**2])")
-    assert repr(polynomial([[[1, 2], [5, Y]]])) == """\
-polynomial([[[1, 2],
-             [5, Y]]])"""
