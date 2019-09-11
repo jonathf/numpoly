@@ -1,4 +1,4 @@
-""""""
+"""Sum of array elements over a given axis."""
 import numpy
 import numpoly
 
@@ -78,9 +78,9 @@ def sum(a, axis=None, dtype=None, out=None, keepdims=False, **kwargs):
             dtype=a.dtype,
         )
 
-    for key in a._exponents:
+    for key in a.keys:
         numpy.sum(a[key], axis=axis, dtype=dtype, out=out[key],
                   keepdims=keepdims, **kwargs)
     if no_output:
-        out = numpoly.clean_polynomial_attributes(out)
+        out = numpoly.clean_attributes(out)
     return out

@@ -5,7 +5,7 @@ import numpoly
 from .implements import implements
 
 
-@implements(numpy.positive)
+@implements(numpy.positive)  # pylint: disable=no-member
 def positive(x, out=None, where=True, **kwargs):
     """
     Numerical positive, element-wise.
@@ -47,6 +47,7 @@ def positive(x, out=None, where=True, **kwargs):
             indeterminants=x.indeterminants,
             dtype=x.dtype,
         )
-    for exponent in x._exponents:
-        numpy.positive(x[exponent], out=out[exponent], where=where, **kwargs)
+    for key in x.keys:
+        numpy.positive(  # pylint: disable=no-member
+            x[key], out=out[key], where=where, **kwargs)
     return out

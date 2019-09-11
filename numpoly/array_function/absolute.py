@@ -57,6 +57,6 @@ def absolute(x, out=None, where=True, **kwargs):
             indeterminants=x.indeterminants,
             dtype=dtype,
         )
-    for exponent in x._exponents:
+    for exponent in x.keys:
         numpy.absolute(x[exponent], out=out[exponent], where=where, **kwargs)
     return out

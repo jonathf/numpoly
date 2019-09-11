@@ -39,7 +39,7 @@ def concatenate(arrays, axis=0, out=None):
         >>> numpoly.concatenate((a, b), axis=None)
         polynomial([1, 2, 3, 4, x, y])
     """
-    arrays = numpoly.align_polynomial_indeterminants(*arrays)
+    arrays = numpoly.align_indeterminants(*arrays)
     collections = [arg.todict() for arg in arrays]
 
     output = {}
@@ -52,7 +52,7 @@ def concatenate(arrays, axis=0, out=None):
 
     exponents = sorted(output)
     coefficients = [output[exponent] for exponent in exponents]
-    return numpoly.polynomial_from_attributes(
+    return numpoly.ndpoly.from_attributes(
         exponents=exponents,
         coefficients=coefficients,
         indeterminants=arrays[0].indeterminants,

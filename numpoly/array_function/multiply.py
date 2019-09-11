@@ -61,10 +61,12 @@ def multiply(x1, x2, out=None, where=True, **kwargs):
         for expon2, coeff2 in zip(x2.exponents, x2.coefficients):
             key = numpoly.exponents_to_keys(expon1+expon2)
             if key in seen:
-                out[key] += coeff1*coeff2
+                out[key] += numpy.multiply(
+                    coeff1, coeff2, where=where, **kwargs)
             else:
-                out[key] = coeff1*coeff2
+                numpy.multiply(
+                    coeff1, coeff2, out=out[key], where=where, **kwargs)
             seen.add(key)
     if no_output:
-        out = numpoly.clean_polynomial_attributes(out)
+        out = numpoly.clean_attributes(out)
     return out

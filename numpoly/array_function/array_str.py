@@ -1,3 +1,4 @@
+"""Return a string representation of the data in an array."""
 import numpy
 import numpoly
 

@@ -1,4 +1,4 @@
-""""""
+"""Compute the truth value of x1 OR x2 element-wise."""
 import numpy
 import numpoly
 
@@ -55,8 +55,8 @@ def logical_or(x1, x2, out=None, where=True, **kwargs):
             indeterminants=x1.indeterminants,
             dtype=bool,
         )
-    for key in x1._exponents:
+    for key in x1.keys:
         numpy.logical_or(x1[key], x2[key], out=out[key], where=where, **kwargs)
     if no_output:
-        out = numpoly.clean_polynomial_attributes(out)
+        out = numpoly.clean_attributes(out)
     return out

@@ -47,6 +47,6 @@ def around(a, decimals=0, out=None):
             indeterminants=a.indeterminants,
             dtype=a.dtype,
         )
-    for key in a._exponents:
+    for key in a.keys:
         numpy.around(a[key], decimals=decimals, out=out[key])
     return out

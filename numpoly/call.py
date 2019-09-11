@@ -1,9 +1,6 @@
 """Evaluate polynomial."""
-from itertools import product
 import numpy
 import numpoly
-
-from . import array_function
 
 
 def call(poly, *args, **kwargs):
@@ -46,12 +43,12 @@ def call(poly, *args, **kwargs):
          [-1+x -1+2*y+x]]
     """
     # Make sure kwargs contains all args and nothing but indeterminants:
-    for arg, indeterminant in zip(args, poly._indeterminants):
+    for arg, indeterminant in zip(args, poly.names):
         if indeterminant in kwargs:
             raise TypeError(
                 "multiple values for argument '%s'" % indeterminant)
         kwargs[indeterminant] = arg
-    extra_args = [key for key in kwargs if key not in poly._indeterminants]
+    extra_args = [key for key in kwargs if key not in poly.names]
     if extra_args:
         raise TypeError("unexpected keyword argument '%s'" % extra_args[0])
 
@@ -60,7 +57,7 @@ def call(poly, *args, **kwargs):
 
     # Saturate kwargs with values not given:
     for indeterminant in poly.indeterminants:
-        name = indeterminant._indeterminants[0]
+        name = indeterminant.names[0]
         if name not in kwargs:
             kwargs[name] = indeterminant
 
@@ -73,9 +70,9 @@ def call(poly, *args, **kwargs):
     out = 0
     for exponent, coefficient in zip(poly.exponents, poly.coefficients):
         term = ones
-        for power, name in zip(exponent, poly._indeterminants):
+        for power, name in zip(exponent, poly.names):
             term = term*kwargs[name]**power
         shape = coefficient.shape+ones.shape
-        out = out+array_function.outer(coefficient, term).reshape(shape)
+        out = out+numpoly.outer(coefficient, term).reshape(shape)
 
     return numpoly.polynomial(out)

@@ -1,4 +1,4 @@
-""""""
+"""Numerical negative, element-wise."""
 import numpy
 import numpoly
 
@@ -47,6 +47,6 @@ def negative(x, out=None, where=True, **kwargs):
             indeterminants=x.indeterminants,
             dtype=x.dtype,
         )
-    for exponent in x._exponents:
+    for exponent in x.keys:
         numpy.negative(x[exponent], out=out[exponent], where=where, **kwargs)
     return out

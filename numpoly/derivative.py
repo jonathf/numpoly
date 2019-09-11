@@ -30,15 +30,15 @@ def diff(poly, *diffvars):
 
     for diffvar in diffvars:
         if isinstance(diffvar, str):
-            idx = poly._indeterminants.index(diffvar)
+            idx = poly.names.index(diffvar)
         elif isinstance(diffvar, int):
             idx = diffvar
         else:
             diffvar = numpoly.polynomial(diffvar)
-            assert len(diffvar._indeterminants) == 1, "only one at the time"
+            assert len(diffvar.names) == 1, "only one at the time"
             assert numpy.all(diffvar.exponents == 1), (
                 "derivative variable assumes singletons")
-            idx = poly._indeterminants.index(diffvar._indeterminants[0])
+            idx = poly.names.index(diffvar.names[0])
 
         exponents = poly.exponents
         coefficients = [
@@ -53,10 +53,10 @@ def diff(poly, *diffvars):
             exponents = numpy.delete(
                 exponents, numpy.argwhere(indices), axis=0)
 
-        poly = numpoly.polynomial_from_attributes(
+        poly = numpoly.ndpoly.from_attributes(
             exponents=exponents,
             coefficients=coefficients,
-            indeterminants=poly._indeterminants,
+            indeterminants=poly.names,
         )
     return poly
 
