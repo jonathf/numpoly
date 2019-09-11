@@ -1,7 +1,16 @@
 Numpoly is a generic library for creating, manipulating polynomial arrays.
 
-``numpoly`` is a subclass of ``numpy.ndarray`` and as such is compatible with
-most ``numpy`` functions, where that makes sense.
+Many numerical analysis, prominent in for example uncertainty quantification,
+uses polynomial approximations as proxy for real models to do analysis on.
+These models are often solutions to non-linear problems discretized with high
+mesh. As such, the corresponding polynomial approximation consist of high
+number of dimensions and large multi-dimensional polynomial coefficients.
+
+``numpoly`` is a subclass of ``numpy.ndarray`` implemented to represent
+polynomials as array element. As such is fast and scales very well with the
+size of the coefficients. It is also compatible with most ``numpy`` functions,
+where that makes sense, making the interface fairly intuitive. Some of the
+interface is also inspired by the ``sympy`` interface.
 
 |circleci| |codecov| |pypi|
 
@@ -89,6 +98,7 @@ There are also several polynomial specific operators:
    >>> print(numpoly.gradient(poly3))
    [[0 1 2*x 3*x**2]
     [-3*y**2 -2*y -1 0]]
+
 
 Development
 -----------
