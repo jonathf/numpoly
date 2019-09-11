@@ -43,6 +43,13 @@ def test_numpy_all():
                      [[False], [True]])
 
 
+def test_numpy_around():
+    poly = 123.45*X+Y
+    assert INTERFACE.around(poly) == 123.*X+Y
+    assert INTERFACE.around(poly, decimals=1) == 123.4*X+Y
+    assert INTERFACE.around(poly, decimals=-2) == 100.*X
+
+
 def test_numpy_array_repr():
     assert repr(4+6*X**2) == "polynomial(4+6*X**2)"
     assert (repr(polynomial([1., -5*X, 3-X**2])) ==
@@ -58,6 +65,12 @@ def test_numpy_array_str():
     assert str(polynomial([[[1, 2], [5, Y]]])) == """\
 [[[1 2]
   [5 Y]]]"""
+
+
+def test_numpy_common_type():
+    assert INTERFACE.common_type(numpy.array(2, dtype=numpy.float32)) == numpy.float32
+    assert INTERFACE.common_type(numpoly.symbols("x")) == numpy.float64
+    assert INTERFACE.common_type(numpy.arange(3), 1j*numpoly.symbols("x"), 45) == numpy.complex128
 
 
 def test_numpy_concatenate():
@@ -88,6 +101,12 @@ def test_numpy_floor_divide():
 def test_numpy_inner():
     poly1, poly2 = polynomial([[0, Y], [X+1, 1]])
     assert INTERFACE.inner(poly1, poly2) == Y
+
+
+def test_numpy_logical_or():
+    assert numpy.all(numpy.logical_or(0, [1, X]) == [1, X])
+    assert numpy.all(numpy.logical_or(1, [0, X]) == [1, 1])
+    assert numpy.all(numpy.logical_or([0, Y], [0, X]) == [0, Y])
 
 
 def test_numpy_multiply():

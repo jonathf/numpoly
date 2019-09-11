@@ -26,12 +26,13 @@ def common_type(*arrays):
             Data type code.
 
     Examples:
-        >>> numpoly.common_type(numpy.array(2, dtype=numpy.float32))
-        <class 'numpy.float32'>
-        >>> numpoly.common_type(numpoly.symbols("x"))
-        <class 'numpy.float64'>
-        >>> numpoly.common_type(numpy.arange(3), 1j*numpoly.symbols("x"), 45)
-        <class 'numpy.complex128'>
+        >>> numpoly.common_type(numpy.array(2, dtype=numpy.float32)).__name__
+        'float32'
+        >>> numpoly.common_type(numpoly.symbols("x")).__name__
+        'float64'
+        >>> numpoly.common_type(
+        ...     numpy.arange(3), 1j*numpoly.symbols("x"), 45).__name__
+        'complex128'
     """
     arrays = [numpoly.aspolynomial(array) for array in arrays]
     arrays = [array[array._exponents[0]] for array in arrays]

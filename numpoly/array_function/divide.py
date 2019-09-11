@@ -65,7 +65,7 @@ def divide(x1, x2, out=None, where=True, **kwargs):
             dtype=numpy.common_type(x1, numpy.array(1.)),
         )
     for key in x1._exponents:
-        numpy.divide(x1[key], x2, out=out[key], where=where, **kwargs)
+        numpy.true_divide(x1[key], x2, out=out[key], where=where, **kwargs)
     if no_output:
         out = numpoly.clean_polynomial_attributes(out)
     return out
