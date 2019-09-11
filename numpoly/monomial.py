@@ -51,6 +51,7 @@ def monomial(indeterminants, start, stop=None, ordering="G", cross_truncation=1.
         [x**4 x**3*y y**4 x**2*y**2 x*y**3]
         >>> print(numpoly.monomial(("x", "y"), [1, 1], [2, 2]))
         [x*y x*y**2 x**2*y x**2*y**2]
+
     """
     if stop is None:
         start, stop = numpy.array(0), start
@@ -93,7 +94,7 @@ def monomial(indeterminants, start, stop=None, ordering="G", cross_truncation=1.
 
 def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
     """
-    Generator for creating multi-indices.
+    Generate multi-indices for the monomial exponents.
 
     Args:
         start (Union[int, numpy.ndarray]):
@@ -138,6 +139,7 @@ def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
         ...     [1, 1], 3, 2, cross_truncation=0).tolist())
         [[1, 1], [1, 2], [2, 1], [1, 3], [2, 2],
             [3, 1], [2, 3], [3, 2], [3, 3]]
+
     """
     if stop is None:
         start, stop = 0, start

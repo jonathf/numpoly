@@ -41,6 +41,7 @@ def power(x1, x2, **kwargs):
         (numpoly.ndpoly):
             The bases in `x1` raised to the exponents in `x2`. This is a scalar
             if both `x1` and `x2` are scalars.
+
     """
     x1 = x1.copy()
     x2 = numpy.asarray(x2, dtype=int)

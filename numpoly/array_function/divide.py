@@ -1,4 +1,4 @@
-"""Returns a true division of the inputs, element-wise."""
+"""Return a true division of the inputs, element-wise."""
 from __future__ import division
 
 import numpy
@@ -10,7 +10,7 @@ from .implements import implements
 @implements(numpy.divide, numpy.true_divide)
 def divide(x1, x2, out=None, where=True, **kwargs):
     """
-    Returns a true division of the inputs, element-wise.
+    Return a true division of the inputs, element-wise.
 
     Instead of the Python traditional 'floor division', this returns a true
     division.  True division adjusts the output type to present the best
@@ -53,6 +53,7 @@ def divide(x1, x2, out=None, where=True, **kwargs):
         Traceback (most recent call last):
             ...
         ValueError: only constant polynomials can be converted to array.
+
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
     x2 = x2.toarray()

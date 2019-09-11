@@ -41,6 +41,7 @@ def call(poly, *args, **kwargs):
         >>> print(poly(y=x-1, x=2*y))
         [[2*y -1+2*y]
          [-1+x -1+2*y+x]]
+
     """
     # Make sure kwargs contains all args and nothing but indeterminants:
     for arg, indeterminant in zip(args, poly.names):

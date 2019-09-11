@@ -38,6 +38,7 @@ def concatenate(arrays, axis=0, out=None):
                     [3, 4, y]])
         >>> numpoly.concatenate((a, b), axis=None)
         polynomial([1, 2, 3, 4, x, y])
+
     """
     arrays = numpoly.align_indeterminants(*arrays)
     collections = [arg.todict() for arg in arrays]

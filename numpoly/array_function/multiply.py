@@ -43,6 +43,7 @@ def multiply(x1, x2, out=None, where=True, **kwargs):
         polynomial([[0.0, y, 2.0*z],
                     [3.0*x, 4.0*y, 5.0*z],
                     [6.0*x, 7.0*y, 8.0*z]])
+
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
     no_output = out is None

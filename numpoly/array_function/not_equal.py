@@ -43,6 +43,7 @@ def not_equal(x1, x2, out=None, where=True, **kwargs):
         >>> numpoly.not_equal([x, x], [[x, y], [y, x]])
         array([[False,  True],
                [ True, False]])
+
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
     for key in x1.keys:

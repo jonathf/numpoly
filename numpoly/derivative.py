@@ -25,6 +25,7 @@ def diff(poly, *diffvars):
         [0 1 y**2]
         >>> print(numpoly.diff(poly, x, y))
         [0 0 2*y]
+
     """
     poly = numpoly.polynomial(poly)
 
@@ -86,6 +87,7 @@ def gradient(poly):
         >>> print(numpoly.gradient(poly))
         [[0 3*x**2 y**2]
          [0 0 2*x*y]]
+
     """
     polys = [diff(poly, diffvar)[numpy.newaxis]
              for diffvar in poly.indeterminants]
@@ -94,6 +96,8 @@ def gradient(poly):
 
 def hessian(poly):
     """
+    Construct Hessian matrix of polynomials.
+
     Make Hessian matrix out of a polynomial. Tensor is returned if polynomial
     is a vector.
 
@@ -121,5 +125,6 @@ def hessian(poly):
         <BLANKLINE>
          [[0 0 2*y]
           [0 0 2*x]]]
+
     """
     return gradient(gradient(poly))

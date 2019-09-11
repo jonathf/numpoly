@@ -51,6 +51,7 @@ def floor_divide(x1, x2, out=None, where=True, **kwargs):
         Traceback (most recent call last):
             ...
         ValueError: only constant polynomials can be converted to array.
+
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
     x2 = x2.toarray()

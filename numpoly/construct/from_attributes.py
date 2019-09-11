@@ -36,6 +36,7 @@ def polynomial_from_attributes(
     Examples:
         (numpoly.ndpoly):
             Polynomial array with attributes determined by the input.
+
     """
     if clean:
         exponents, coefficients, indeterminants = clean_.postprocess_attributes(

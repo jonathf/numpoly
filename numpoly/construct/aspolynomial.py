@@ -30,6 +30,7 @@ def aspolynomial(
         False
         >>> numpoly.aspolynomial(x) is x
         True
+
     """
     remain = False
     if isinstance(poly_like, numpoly.ndpoly):

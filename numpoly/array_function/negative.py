@@ -38,6 +38,7 @@ def negative(x, out=None, where=True, **kwargs):
         >>> x = numpoly.symbols("x")
         >>> numpoly.negative([-x, x])
         polynomial([x, -x])
+
     """
     x = numpoly.aspolynomial(x)
     if out is None:

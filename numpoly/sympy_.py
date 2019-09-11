@@ -1,4 +1,4 @@
-"""Polynomial string representation."""
+"""Convert numpoly.ndpoly to sympy polynomial."""
 import numpy
 
 
@@ -24,6 +24,7 @@ def to_sympy(poly):
          [y - 1 -3*x]]
         >>> type(sympy_poly.item(-1))
         <class 'sympy.core.mul.Mul'>
+
     """
     if poly.shape:
         return numpy.array([to_sympy(poly_) for poly_ in poly])

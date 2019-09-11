@@ -54,6 +54,7 @@ def sum(a, axis=None, dtype=None, out=None, keepdims=False, **kwargs):
         polynomial(1+z+y+x)
         >>> numpoly.sum([[1, x], [y, z]], axis=0)
         polynomial([1+y, z+x])
+
     """
     a = numpoly.aspolynomial(a)
     no_output = out is None

@@ -45,6 +45,7 @@ def logical_or(x1, x2, out=None, where=True, **kwargs):
         >>> x = numpy.arange(5)
         >>> numpoly.logical_or(x < 1, x > 3)
         polynomial([True, False, False, False, True])
+
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
     no_output = out is None

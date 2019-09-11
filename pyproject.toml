@@ -15,7 +15,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.5||2.7.16"
-numpy = "*"
+numpy = "^1.16"
 
 [tool.poetry.dev-dependencies]
 sympy = "*"
@@ -25,3 +25,4 @@ pytest-cov = "*"
 codecov = "*"
 coverage = "*"
 Sphinx = "*"
+pydocstyle = "3.0.0"
