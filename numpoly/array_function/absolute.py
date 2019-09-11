@@ -47,6 +47,7 @@ def absolute(x, out=None, where=True, **kwargs):
         polynomial([x, 1j*x, (3+4j)*x])
         >>> numpoly.absolute(poly)
         polynomial([x, x, 5.0*x])
+
     """
     x = numpoly.aspolynomial(x)
     if out is None:

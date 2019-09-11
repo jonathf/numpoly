@@ -38,6 +38,7 @@ def around(a, decimals=0, out=None):
         polynomial([0.4, -23.4+1.6*x])
         >>> numpoly.around([0.37, 1.64*x-23.45], decimals=-1)
         polynomial([0.0, -20.0])
+
     """
     a = numpoly.aspolynomial(a)
     if out is None:

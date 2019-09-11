@@ -15,6 +15,7 @@ def align_polynomials(*polys):
         (Tuple[numpoly.ndpoly, ...]):
             Same as ``polys``, but internal adjustments made to make them
             compatible for further operations.
+
     """
     polys = align_shape(*polys)
     polys = align_indeterminants(*polys)
@@ -52,6 +53,7 @@ def align_shape(*polys):
         (1, 2)
         >>> print(poly2.shape)
         (1, 2)
+
     """
     polys = [numpoly.aspolynomial(poly) for poly in polys]
     common = 1
@@ -96,6 +98,7 @@ def align_indeterminants(*polys):
         [x y]
         >>> print(poly2.indeterminants)
         [x y]
+
     """
     polys = [numpoly.aspolynomial(poly) for poly in polys]
     common_indeterminates = sorted({
@@ -161,6 +164,7 @@ def align_exponents(*polys):
          [0 3]
          [1 1]
          [5 0]]
+
     """
     polys = [numpoly.aspolynomial(poly) for poly in polys]
     if not all(

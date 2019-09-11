@@ -34,6 +34,7 @@ def common_type(*arrays):
         >>> numpoly.common_type(
         ...     numpy.arange(3), 1j*numpoly.symbols("x"), 45).__name__
         'complex128'
+
     """
     arrays = [numpoly.aspolynomial(array) for array in arrays]
     arrays = [array[array.keys[0]] for array in arrays]

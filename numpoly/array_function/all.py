@@ -45,6 +45,7 @@ def all(a, axis=None, out=None, keepdims=False):
         False
         >>> numpoly.all([[True*x, False], [True, True]], axis=0)
         array([ True, False])
+
     """
     a = numpoly.aspolynomial(a)
     coefficients = numpy.any(a.coefficients, 0).astype(bool)

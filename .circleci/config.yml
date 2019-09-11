@@ -60,9 +60,13 @@ jobs:
                 paths:
                     - /home/circleci/.cache/pypoetry/virtualenvs
             - run:
-                name: "Run tests"
+                name: "Run pylint"
                 command: |
                     poetry run pylint --rcfile=.pylintrc -E numpoly
+            - run:
+                name: "Run pydocstyle"
+                command: |
+                    poetry run pydocstyle numpoly
 
 workflows:
     version: 2

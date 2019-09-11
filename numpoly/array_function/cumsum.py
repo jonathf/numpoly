@@ -47,6 +47,7 @@ def cumsum(a, axis=None, dtype=None, out=None):
         >>> numpoly.cumsum(poly, axis=0)
         polynomial([[1, x, 3],
                     [5, 5+x, 3+y]])
+
     """
     a = numpoly.polynomial(a)
     if out is None:

@@ -8,7 +8,7 @@ import numpoly
 
 def symbols(names="q", asarray=False, dtype="i8"):
     """
-    Simple constructor to create single variables symbols for construction.
+    Construct symbol variables.
 
     Most directly be providing a list of string names. But a set of shorthands
     also exists:
@@ -50,6 +50,7 @@ def symbols(names="q", asarray=False, dtype="i8"):
         [q3 q4 q5]
         >>> print(numpoly.symbols("za:f"))
         [za zb zc zd ze zf]
+
     """
     if not isinstance(names, str):
         names = list(names)
@@ -110,6 +111,7 @@ def isconstant(poly):
         False
         >>> numpoly.isconstant(numpoly.polynomial([1]))
         True
+
     """
     poly = numpoly.aspolynomial(poly)
     for exponent, coefficient in zip(poly.exponents, poly.coefficients):
@@ -143,6 +145,7 @@ def toarray(poly):
         Traceback (most recent call last):
             ...
         ValueError: only constant polynomials can be converted to array.
+
     """
     poly = numpoly.polynomial(poly)
     if not poly.isconstant():

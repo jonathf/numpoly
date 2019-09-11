@@ -16,7 +16,7 @@ from .construct import (
     polynomial_from_attributes,
     clean_attributes,
 )
-from .export import to_sympy
+from .sympy_ import to_sympy
 from .derivative import diff, gradient, hessian
 from .monomial import monomial
 

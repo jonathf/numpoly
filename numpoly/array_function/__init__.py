@@ -1,4 +1,6 @@
 """
+collection of numpy wrapper functions.
+
 The numpy library comes with a large array of functions for manipulation of
 numpy.ndarray objects. Many of these functions are supported in Numpoly as
 well.

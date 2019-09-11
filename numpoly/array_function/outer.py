@@ -37,6 +37,7 @@ def outer(a, b, out=None):
         polynomial([[0, x, 2*x, 3*x, 4*x],
                     [0, y, 2*y, 3*y, 4*y],
                     [0, z, 2*z, 3*z, 4*z]])
+
     """
     a, b = numpoly.align_exponents(a, b)
     a = a.flatten()[:, numpy.newaxis]

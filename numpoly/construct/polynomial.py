@@ -58,6 +58,7 @@ def polynomial(
         >>> x_, y_ = sympy.symbols("x, y")
         >>> print(numpoly.polynomial(3*x_*y_ - 4 + x_**5))
         x**5+3*x*y-4
+
     """
     if poly_like is None:
         poly = numpoly.ndpoly(

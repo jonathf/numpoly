@@ -46,6 +46,7 @@ def array_str(a, max_line_width=None, precision=None, suppress_small=None):
         ...     suppress_small=True,
         ... )
         '[0.0 0.0 2.0*x 3.0]'
+
     """
     a = numpoly.aspolynomial(a)
     a = to_string(a, precision=precision, suppress_small=suppress_small)

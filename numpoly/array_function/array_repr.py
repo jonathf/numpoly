@@ -41,6 +41,7 @@ def array_repr(arr, max_line_width=None, precision=None, suppress_small=None):
         ...     suppress_small=True,
         ... )
         'polynomial([0.0, 0.0, 2.0*x, 3.0])'
+
     """
     prefix = "polynomial("
     suffix = ")"
@@ -84,6 +85,7 @@ def to_string(poly, precision=None, suppress_small=None):
         [['1', 'x**3'], ['-1+y', '-3*x']]
         >>> type(string_array[0][0]) == str
         True
+
     """
     if poly.shape:
         return [

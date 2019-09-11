@@ -43,6 +43,7 @@ def equal(x1, x2, out=None, where=True, **kwargs):
         array([ True, False, False])
         >>> numpoly.equal(xyz, [y, y, z])
         array([False,  True,  True])
+
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
     if out is None:
