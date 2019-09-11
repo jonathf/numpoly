@@ -58,6 +58,6 @@ def cumsum(a, axis=None, dtype=None, out=None):
             indeterminants=a.indeterminants,
             dtype=dtype,
         )
-    for key in a._exponents:
+    for key in a.keys:
         numpy.cumsum(a[key], axis=axis, dtype=dtype, out=out[key])
     return out

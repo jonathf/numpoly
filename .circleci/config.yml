@@ -38,6 +38,31 @@ jobs:
         <<: *test-template
         docker:
             - image: circleci/python:2.7.16
+    linting:
+        <<: *test-template
+        steps:
+            - checkout
+            - run:
+                name: "Python version"
+                command: |
+                    python --version > python.version
+            - restore_cache:
+                keys:
+                    - dependencies-{{ checksum "python.version" }}-{{ checksum "poetry.lock"}}
+                    - dependencies-{{ checksum "python.version" }}
+            - run:
+                name: "Installation"
+                command: |
+                    poetry install
+                    poetry run pip install -U numpy  # allow python 3 only numpy
+            - save_cache:
+                key: dependencies-{{ checksum "python.version" }}-{{ checksum "poetry.lock"}}
+                paths:
+                    - /home/circleci/.cache/pypoetry/virtualenvs
+            - run:
+                name: "Run tests"
+                command: |
+                    poetry run pylint --rcfile=.pylintrc -E numpoly
 
 workflows:
     version: 2
@@ -46,3 +71,4 @@ workflows:
             - test-3.6
             - test-3.7
             - test-2.7
+            - linting

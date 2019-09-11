@@ -1,3 +1,4 @@
+"""Polynomial functionality."""
 import re
 import string
 
@@ -84,7 +85,7 @@ def symbols(names="q", asarray=False, dtype="i8"):
     coefficients = numpy.eye(len(names), dtype=dtype)
     if len(names) == 1 and not asarray:
         coefficients = coefficients[0]
-    return numpoly.polynomial_from_attributes(
+    return numpoly.ndpoly.from_attributes(
         exponents=exponents,
         coefficients=coefficients,
         indeterminants=names,

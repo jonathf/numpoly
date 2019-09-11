@@ -1,3 +1,4 @@
+"""Monomial construction."""
 from __future__ import division
 
 import numpy
@@ -85,7 +86,7 @@ def monomial(indeterminants, start, stop=None, ordering="G", cross_truncation=1.
         indeterminants=indeterminants,
     )
     for coeff, key in zip(
-            numpy.eye(len(indices), dtype=int), poly._exponents):
+            numpy.eye(len(indices), dtype=int), poly.keys):
         poly[key] = coeff
     return poly
 
@@ -133,7 +134,8 @@ def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
         [[0, 1], [1, 0], [0, 2], [2, 0], [0, 3], [3, 0]]
         >>> print(bindex(0, 1, 3).tolist())
         [[0, 0, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]]
-        >>> print(bindex([1, 1], 3, 2, cross_truncation=0).tolist())  # doctest: +NORMALIZE_WHITESPACE
+        >>> print(bindex(  # doctest: +NORMALIZE_WHITESPACE
+        ...     [1, 1], 3, 2, cross_truncation=0).tolist())
         [[1, 1], [1, 2], [2, 1], [1, 3], [2, 2],
             [3, 1], [2, 3], [3, 2], [3, 3]]
     """
@@ -165,7 +167,7 @@ def _bindex(start, stop, dimensions=1, cross_truncation=1.):
     range_ = numpy.arange(bound, dtype=int)
     indices = range_[:, numpy.newaxis]
 
-    for idx in range(dimensions-1):
+    for _ in range(dimensions-1):
 
         # Repeats the current set of indices.
         # e.g. [0,1,2] -> [0,1,2,0,1,2,...,0,1,2]

@@ -47,7 +47,13 @@ def array_repr(arr, max_line_width=None, precision=None, suppress_small=None):
     arr = numpoly.aspolynomial(arr)
     if not arr.size:
         return prefix + "[], dtype=%s" % arr.dtype.name + suffix
+
+    if precision is None:
+        precision = numpy.get_printoptions()["precision"]
+    if suppress_small is None:
+        suppress_small = numpy.get_printoptions()["suppress"]
     arr = to_string(arr, precision=precision, suppress_small=suppress_small)
+
     return prefix + numpy.array2string(
         numpy.array(arr),
         max_line_width=max_line_width,
@@ -90,7 +96,10 @@ def to_string(poly, precision=None, suppress_small=None):
     for exponents, coefficient in zip(
             poly.exponents.tolist(), poly.coefficients):
 
-        if not coefficient or (suppress_small and abs(coefficient) < 10**-precision):
+        if not coefficient or (
+                suppress_small and
+                abs(coefficient) < 10**-precision  # pylint: disable=invalid-unary-operand-type
+        ):
             continue
 
         if coefficient == 1 and any(exponents):
@@ -100,7 +109,7 @@ def to_string(poly, precision=None, suppress_small=None):
         else:
             out = str(coefficient)
 
-        for exponent, indeterminant in zip(exponents, poly._indeterminants):
+        for exponent, indeterminant in zip(exponents, poly.names):
             if exponent:
                 if out not in ("", "-"):
                     out += "*"
@@ -113,4 +122,4 @@ def to_string(poly, precision=None, suppress_small=None):
 
     if output:
         return "".join(output)
-    return str(numpy.zeros(1, dtype=poly._dtype).item())
+    return str(numpy.zeros(1, dtype=poly.dtype).item())

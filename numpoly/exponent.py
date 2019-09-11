@@ -36,9 +36,9 @@ def exponents_to_keys(exponents):
     array([ True,  True,  True])
     """
     exponents = numpy.asarray(exponents, dtype=int)
-    assert 0 < len(exponents.shape) < 3, "invalid exponent input"
     if len(exponents.shape) == 1:
         return exponents_to_keys(exponents.reshape(1, -1))[0]
+    assert len(exponents.shape) == 2, "invalid exponent input"
     keys = FORWARD_MAP(exponents).flatten()
     keys = numpy.array(keys.view("U%d" % exponents.shape[-1]))
     return keys

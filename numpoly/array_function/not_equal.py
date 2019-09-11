@@ -45,7 +45,7 @@ def not_equal(x1, x2, out=None, where=True, **kwargs):
                [ True, False]])
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
-    for key in x1._exponents:
+    for key in x1.keys:
         tmp = numpy.not_equal(x1[key], x2[key], where=where, **kwargs)
         if out is None:
             out = tmp

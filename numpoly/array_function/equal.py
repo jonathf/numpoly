@@ -1,4 +1,4 @@
-""""""
+"""Return (x1 == x2) element-wise."""
 import numpy
 import numpoly
 
@@ -6,7 +6,7 @@ from .implements import implements
 
 
 @implements(numpy.equal)
-def equal(x1, x2, out=None, where=None, **kwargs):
+def equal(x1, x2, out=None, where=True, **kwargs):
     """
     Return (x1 == x2) element-wise.
 
@@ -50,7 +50,8 @@ def equal(x1, x2, out=None, where=None, **kwargs):
     collection = x1.todict()
     for exponent, coefficient in x2.todict().items():
         if exponent in collection:
-            out &= collection.pop(exponent) == coefficient
+            out &= numpy.equal(
+                collection.pop(exponent), coefficient, where=where, **kwargs)
         else:
             out &= coefficient == 0
     for _, coefficient in collection.items():

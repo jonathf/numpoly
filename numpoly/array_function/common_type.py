@@ -1,3 +1,4 @@
+"""Return a scalar type which is common to the input arrays."""
 import numpy
 import numpoly
 
@@ -35,5 +36,5 @@ def common_type(*arrays):
         'complex128'
     """
     arrays = [numpoly.aspolynomial(array) for array in arrays]
-    arrays = [array[array._exponents[0]] for array in arrays]
+    arrays = [array[array.keys[0]] for array in arrays]
     return numpy.common_type(*arrays)

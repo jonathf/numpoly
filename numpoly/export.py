@@ -1,6 +1,5 @@
 """Polynomial string representation."""
 import numpy
-import numpoly
 
 
 def to_sympy(poly):
@@ -29,6 +28,6 @@ def to_sympy(poly):
     if poly.shape:
         return numpy.array([to_sympy(poly_) for poly_ in poly])
     from sympy import symbols
-    locals_ = dict(zip(poly._indeterminants, symbols(poly._indeterminants)))
-    polynomial = eval(str(poly), locals_, {})
+    locals_ = dict(zip(poly.names, symbols(poly.names)))
+    polynomial = eval(str(poly), locals_, {})  # pylint: disable=eval-used
     return polynomial

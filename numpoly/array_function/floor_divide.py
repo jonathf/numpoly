@@ -1,3 +1,4 @@
+"""Return the largest integer smaller or equal to the division of the inputs."""
 import numpy
 import numpoly
 
@@ -8,6 +9,7 @@ from .implements import implements
 def floor_divide(x1, x2, out=None, where=True, **kwargs):
     """
     Return the largest integer smaller or equal to the division of the inputs.
+
     It is equivalent to the Python ``//`` operator and pairs with the
     Python ``%`` (`remainder`), function so that ``a = a % b + b * (a // b)``
     up to roundoff.
@@ -60,8 +62,8 @@ def floor_divide(x1, x2, out=None, where=True, **kwargs):
             indeterminants=x1.indeterminants,
             dtype=numpy.common_type(x1, numpy.array(1.)),
         )
-    for key in x1._exponents:
+    for key in x1.keys:
         numpy.floor_divide(x1[key], x2, out=out[key], where=where, **kwargs)
     if no_output:
-        out = numpoly.clean_polynomial_attributes(out)
+        out = numpoly.clean_attributes(out)
     return out
