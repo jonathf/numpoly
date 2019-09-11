@@ -23,7 +23,7 @@ For example::
 Not everything is possible to support, and for the functions that are
 supported, not all arguments are supportable.
 """
-from .implements import ARRAY_FUNCTIONS
+from .common import ARRAY_FUNCTIONS
 
 from .absolute import absolute
 from .add import add
@@ -39,6 +39,7 @@ from .divide import divide
 from .equal import equal
 from .floor_divide import floor_divide
 from .inner import inner
+from .logical_and import logical_and
 from .logical_or import logical_or
 from .multiply import multiply
 from .negative import negative
@@ -46,5 +47,7 @@ from .not_equal import not_equal
 from .outer import outer
 from .positive import positive
 from .power import power
+from .rint import rint
+from .square import square
 from .subtract import subtract
 from .sum import sum

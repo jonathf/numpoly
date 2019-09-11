@@ -2,11 +2,11 @@
 import numpy
 import numpoly
 
-from .implements import implements
+from .common import implements
 
 
 @implements(numpy.any)
-def any(a, axis=None, out=None, keepdims=False):
+def any(a, axis=None, out=None, keepdims=False, **kwargs):
     """
     Test whether any array element along a given axis evaluates to True.
 

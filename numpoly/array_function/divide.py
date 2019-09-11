@@ -4,7 +4,7 @@ from __future__ import division
 import numpy
 import numpoly
 
-from .implements import implements
+from .common import implements
 
 
 @implements(numpy.divide, numpy.true_divide)

@@ -2,7 +2,7 @@
 import numpy
 import numpoly
 
-from .implements import implements
+from .common import implements, simple_dispatch
 
 
 @implements(numpy.abs, numpy.absolute)
@@ -49,15 +49,10 @@ def absolute(x, out=None, where=True, **kwargs):
         polynomial([x, x, 5.0*x])
 
     """
-    x = numpoly.aspolynomial(x)
-    if out is None:
-        dtype = numpy.empty((), dtype=x.dtype).real.dtype
-        out = numpoly.ndpoly(
-            exponents=x.exponents,
-            shape=x.shape,
-            indeterminants=x.indeterminants,
-            dtype=dtype,
-        )
-    for exponent in x.keys:
-        numpy.absolute(x[exponent], out=out[exponent], where=where, **kwargs)
-    return out
+    return simple_dispatch(
+        numpy_func=numpy.absolute,
+        inputs=(x,),
+        out=out,
+        where=where,
+        **kwargs
+    )

@@ -2,11 +2,11 @@
 import numpy
 import numpoly
 
-from .implements import implements
+from .common import implements, simple_dispatch
 
 
 @implements(numpy.all)
-def all(a, axis=None, out=None, keepdims=False):
+def all(a, axis=None, out=None, keepdims=False, **kwargs):
     """
     Test whether all array elements along a given axis evaluate to True.
 

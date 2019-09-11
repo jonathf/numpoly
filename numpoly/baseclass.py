@@ -10,6 +10,18 @@ from .exponent import exponents_to_keys, keys_to_exponents
 from . import construct, array_function, poly_function
 
 
+REDUCE_MAPPINGS = {
+    numpy.add: numpy.sum,
+    numpy.multiply: numpy.prod,
+    numpy.logical_and: numpy.all,
+    numpy.logical_or: numpy.any,
+}
+ACCUMULATE_MAPPINGS = {
+    numpy.add: numpy.cumsum,
+    numpy.multiply: numpy.cumprod,
+}
+
+
 class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     """
     Polynomial as numpy array.
@@ -110,6 +122,13 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
 
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
         """Dispatch method for operators."""
+        if method == "reduce":
+            ufunc = REDUCE_MAPPINGS[ufunc]
+        elif method == "accumulate":
+            ufunc = ACCUMULATE_MAPPINGS[ufunc]
+        else:
+            assert method == "__call__", (
+                "method %s not recognised" % method)
         assert ufunc in array_function.ARRAY_FUNCTIONS, (
             "function %s not supported by numpoly." % ufunc)
         return array_function.ARRAY_FUNCTIONS[ufunc](*inputs, **kwargs)
@@ -270,14 +289,6 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         """Show coefficient dtype instead of the structured array."""
         return self._dtype
 
-    def all(self, axis=None, out=None, keepdims=False):
-        """Wrap ndarray.all."""
-        return array_function.all(self, axis=axis, out=out, keepdims=keepdims)
-
-    def any(self, axis=None, out=None, keepdims=False):
-        """Wrap ndarray.any."""
-        return array_function.any(self, axis=axis, out=out, keepdims=keepdims)
-
     def astype(self, dtype, **kwargs):
         """Wrap ndarray.astype."""
         coefficients = [coefficient.astype(dtype, **kwargs)
@@ -285,12 +296,10 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         return construct.polynomial_from_attributes(
             self.exponents, coefficients, self.names)
 
-    def flatten(self):
-        """Wrap ndarray.flatten."""
-        coefficients = [coefficient.flatten()
-                        for coefficient in self.coefficients]
-        return construct.polynomial_from_attributes(
-            self.exponents, coefficients, self.names)
+    def round(self, decimals=0, out=None):
+        """Wrap ndarray.round."""
+        # Not sure why it is required. Likely a numpy bug.
+        return array_function.around(self, decimals=decimals, out=out)
 
     # ============================================================
     # Override dunder methods that isn't dealt with by dispatching
@@ -349,10 +358,6 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     def __ne__(self, other):
         """Not equal."""
         return array_function.not_equal(self, other)
-
-    def __pow__(self, other):
-        """Left power."""
-        return array_function.power(self, other)
 
     def __repr__(self):
         """Canonical string representation."""
