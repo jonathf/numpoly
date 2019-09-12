@@ -32,25 +32,25 @@ def logical_and(x1, x2, out=None, where=True, **kwargs):
             Keyword args passed to numpy.ufunc.
 
     Returns:
-        y (numpoly.ndpoly):
+        y (numpy.ndarray):
             Boolean result of the logical OR operation applied to the elements
             of `x1` and `x2`; the shape is determined by broadcasting. This is
             a scalar if both `x1` and `x2` are scalars.
 
     Examples:
-        >>> numpoly.logical_and(True, False)
-        polynomial(False)
-        >>> numpoly.logical_and([True, False], [False, False])
-        polynomial([False, False])
-        >>> x = numpy.arange(5)
-        >>> numpoly.logical_and(x>1, x<4)
-        polynomial([False, False, True, True, False])
+        >>> x, y = numpoly.symbols("x y")
+        >>> numpoly.logical_and(x, 0)
+        False
+        >>> numpoly.logical_and([x, False], [x, y])
+        array([ True, False])
+        >>> z = numpy.arange(5)
+        >>> numpoly.logical_and(z > 1, z < 4)
+        array([False, False,  True,  True, False])
 
     """
-    return simple_dispatch(
-        numpy_func=numpy.logical_and,
-        inputs=(x1, x2),
-        out=out,
-        where=where,
-        **kwargs
-    )
+    x1 = numpoly.aspolynomial(x1)
+    x2 = numpoly.aspolynomial(x2)
+    coefficients1 = numpy.any(x1.coefficients, 0)
+    coefficients2 = numpy.any(x2.coefficients, 0)
+    return numpy.logical_and(
+        coefficients1, coefficients2, out=out, where=where, **kwargs)

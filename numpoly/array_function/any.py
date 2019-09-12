@@ -51,5 +51,6 @@ def any(a, axis=None, out=None, keepdims=False, **kwargs):
     """
     a = numpoly.aspolynomial(a)
     coefficients = numpy.any(a.coefficients, 0).astype(bool)
-    out = numpy.any(coefficients, axis=axis, out=out, keepdims=keepdims)
+    out = numpy.any(
+        coefficients, axis=axis, out=out, keepdims=keepdims)
     return out

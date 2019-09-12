@@ -101,23 +101,29 @@ def align_indeterminants(*polys):
 
     """
     polys = [numpoly.aspolynomial(poly) for poly in polys]
-    common_indeterminates = sorted({
+    common_indeterminants = sorted({
         indeterminant
         for poly in polys
+        if not poly.isconstant()
         for indeterminant in poly.names
     })
+    if not common_indeterminants:
+        return polys
+
     for idx, poly in enumerate(polys):
         indices = numpy.array([
-            common_indeterminates.index(indeterminant)
+            common_indeterminants.index(indeterminant)
             for indeterminant in poly.names
+            if indeterminant in common_indeterminants
         ])
         exponents = numpy.zeros(
-            (len(poly.keys), len(common_indeterminates)), dtype=int)
-        exponents[:, indices] = poly.exponents
+            (len(poly.keys), len(common_indeterminants)), dtype=int)
+        if indices.size:
+            exponents[:, indices] = poly.exponents
         polys[idx] = poly.from_attributes(
             exponents=exponents,
             coefficients=poly.coefficients,
-            indeterminants=common_indeterminates,
+            indeterminants=common_indeterminants,
             clean=False,
         )
 

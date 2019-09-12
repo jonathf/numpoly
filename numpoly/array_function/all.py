@@ -2,7 +2,7 @@
 import numpy
 import numpoly
 
-from .common import implements, simple_dispatch
+from .common import implements
 
 
 @implements(numpy.all)
@@ -49,5 +49,6 @@ def all(a, axis=None, out=None, keepdims=False, **kwargs):
     """
     a = numpoly.aspolynomial(a)
     coefficients = numpy.any(a.coefficients, 0).astype(bool)
-    out = numpy.all(coefficients, axis=axis, out=out, keepdims=keepdims)
+    out = numpy.all(
+        coefficients, axis=axis, out=out, keepdims=keepdims)
     return out

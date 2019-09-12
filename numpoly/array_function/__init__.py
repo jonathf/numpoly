@@ -29,6 +29,7 @@ from .absolute import absolute
 from .add import add
 from .any import any
 from .all import all
+from .allclose import allclose
 from .around import around
 from .array_repr import array_repr
 from .array_str import array_str
@@ -39,8 +40,11 @@ from .divide import divide
 from .equal import equal
 from .floor_divide import floor_divide
 from .inner import inner
+from .isclose import isclose
+from .isfinite import isfinite
 from .logical_and import logical_and
 from .logical_or import logical_or
+from .mean import mean
 from .multiply import multiply
 from .negative import negative
 from .not_equal import not_equal
