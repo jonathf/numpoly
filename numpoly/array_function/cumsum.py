@@ -56,16 +56,3 @@ def cumsum(a, axis=None, dtype=None, out=None):
         axis=axis,
         dtype=dtype,
     )
-    a = numpoly.polynomial(a)
-    if out is None:
-        shape = (a.size,) if axis is None else a.shape
-        dtype = a.dtype if dtype is None else dtype
-        out = numpoly.ndpoly(
-            exponents=a.exponents,
-            shape=shape,
-            indeterminants=a.indeterminants,
-            dtype=dtype,
-        )
-    for key in a.keys:
-        numpy.cumsum(a[key], axis=axis, dtype=dtype, out=out[key])
-    return out
