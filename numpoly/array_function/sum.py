@@ -2,7 +2,7 @@
 import numpy
 import numpoly
 
-from .implements import implements
+from .common import implements, simple_dispatch
 
 
 @implements(numpy.sum)
@@ -49,39 +49,19 @@ def sum(a, axis=None, dtype=None, out=None, keepdims=False, **kwargs):
     Examples:
         >>> x, y, z = xyz = numpoly.symbols("x y z")
         >>> numpoly.sum(xyz)
-        polynomial(x+y+z)
+        polynomial(z+y+x)
         >>> numpoly.sum([[1, x], [y, z]])
         polynomial(1+z+y+x)
         >>> numpoly.sum([[1, x], [y, z]], axis=0)
         polynomial([1+y, z+x])
 
     """
-    a = numpoly.aspolynomial(a)
-    no_output = out is None
-    if no_output:
-        if axis is not None:
-            axes = [axis] if isinstance(axis, (int, numpy.generic)) else axis
-            axes = [(ax if ax >= 0 else len(a.shape)+ax) for ax in axes]
-            if keepdims:
-                shape = [(1 if idx in axes else dim)
-                         for idx, dim in enumerate(a.shape)]
-            else:
-                shape = [dim for idx, dim in enumerate(a.shape)
-                         if idx not in axes]
-        elif keepdims:
-            shape = (1,)*len(a.shape)
-        else:
-            shape = ()
-        out = numpoly.ndpoly(
-            exponents=a.exponents,
-            shape=shape,
-            indeterminants=a.indeterminants,
-            dtype=a.dtype,
-        )
-
-    for key in a.keys:
-        numpy.sum(a[key], axis=axis, dtype=dtype, out=out[key],
-                  keepdims=keepdims, **kwargs)
-    if no_output:
-        out = numpoly.clean_attributes(out)
-    return out
+    return simple_dispatch(
+        numpy_func=numpy.sum,
+        inputs=(a,),
+        out=out,
+        axis=axis,
+        dtype=dtype,
+        keepdims=keepdims,
+        **kwargs
+    )

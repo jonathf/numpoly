@@ -2,7 +2,7 @@
 import numpy
 import numpoly
 
-from .implements import implements
+from .common import implements
 
 
 @implements(numpy.array_repr)

@@ -2,7 +2,7 @@
 import numpy
 import numpoly
 
-from .implements import implements
+from .common import implements, simple_dispatch
 
 
 @implements(numpy.logical_or)
@@ -28,11 +28,10 @@ def logical_or(x1, x2, out=None, where=True, **kwargs):
             ``out=None``, locations within it where the condition is False will
             remain uninitialized.
         **kwargs
-            For other keyword-only arguments, see the
-            :ref:`ufunc docs <ufuncs.kwargs>`.
+            Keyword args passed to numpy.ufunc.
 
     Returns:
-        y : ndarray or bool
+        y (numpoly.ndpoly):
             Boolean result of the logical OR operation applied to the elements
             of `x1` and `x2`; the shape is determined by broadcasting.
             This is a scalar if both `x1` and `x2` are scalars.
@@ -47,17 +46,10 @@ def logical_or(x1, x2, out=None, where=True, **kwargs):
         polynomial([True, False, False, False, True])
 
     """
-    x1, x2 = numpoly.align_polynomials(x1, x2)
-    no_output = out is None
-    if no_output:
-        out = numpoly.ndpoly(
-            exponents=x1.exponents,
-            shape=x1.shape,
-            indeterminants=x1.indeterminants,
-            dtype=bool,
-        )
-    for key in x1.keys:
-        numpy.logical_or(x1[key], x2[key], out=out[key], where=where, **kwargs)
-    if no_output:
-        out = numpoly.clean_attributes(out)
-    return out
+    return simple_dispatch(
+        numpy_func=numpy.logical_or,
+        inputs=(x1, x2),
+        out=out,
+        where=where,
+        **kwargs
+    )

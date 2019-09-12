@@ -2,7 +2,7 @@
 import numpy
 import numpoly
 
-from .implements import implements
+from .common import implements, simple_dispatch
 
 
 @implements(numpy.around, numpy.round, numpy.round_)
@@ -40,14 +40,9 @@ def around(a, decimals=0, out=None):
         polynomial([0.0, -20.0])
 
     """
-    a = numpoly.aspolynomial(a)
-    if out is None:
-        out = numpoly.ndpoly(
-            exponents=a.exponents,
-            shape=a.shape,
-            indeterminants=a.indeterminants,
-            dtype=a.dtype,
-        )
-    for key in a.keys:
-        numpy.around(a[key], decimals=decimals, out=out[key])
-    return out
+    return simple_dispatch(
+        numpy_func=numpy.around,
+        inputs=(a,),
+        out=out,
+        decimals=decimals,
+    )

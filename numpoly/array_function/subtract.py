@@ -2,7 +2,7 @@
 import numpy
 import numpoly
 
-from .implements import implements
+from .common import implements, simple_dispatch
 
 
 @implements(numpy.subtract)
@@ -48,17 +48,10 @@ def subtract(x1, x2, out=None, where=True, **kwargs):
                     [1-x**6, y-x**7, y**2-x**8]])
 
     """
-    x1, x2 = numpoly.align_polynomials(x1, x2)
-    no_output = out is None
-    if no_output:
-        out = numpoly.ndpoly(
-            exponents=x1.exponents,
-            shape=x1.shape,
-            indeterminants=x1.indeterminants,
-            dtype=x1.dtype,
-        )
-    for key in x1.keys:
-        numpy.subtract(x1[key], x2[key], out=out[key], where=where, **kwargs)
-    if no_output:
-        out = numpoly.clean_attributes(out)
-    return out
+    return simple_dispatch(
+        numpy_func=numpy.subtract,
+        inputs=(x1, x2),
+        out=out,
+        where=where,
+        **kwargs
+    )

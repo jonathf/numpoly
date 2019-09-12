@@ -1,8 +1,7 @@
 """Numerical positive, element-wise."""
 import numpy
-import numpoly
 
-from .implements import implements
+from .common import implements, simple_dispatch
 
 
 @implements(numpy.positive)  # pylint: disable=no-member
@@ -40,15 +39,10 @@ def positive(x, out=None, where=True, **kwargs):
         polynomial([0, 0, -x, x])
 
     """
-    x = numpoly.aspolynomial(x)
-    if out is None:
-        out = numpoly.ndpoly(
-            exponents=x.exponents,
-            shape=x.shape,
-            indeterminants=x.indeterminants,
-            dtype=x.dtype,
-        )
-    for key in x.keys:
-        numpy.positive(  # pylint: disable=no-member
-            x[key], out=out[key], where=where, **kwargs)
-    return out
+    return simple_dispatch(
+        numpy_func=numpy.positive,  # pylint: disable=no-member
+        inputs=(x,),
+        out=out,
+        where=where,
+        **kwargs
+    )

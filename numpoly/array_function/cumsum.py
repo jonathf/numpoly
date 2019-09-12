@@ -2,7 +2,7 @@
 import numpy
 import numpoly
 
-from .implements import implements
+from .common import implements, simple_dispatch
 
 
 @implements(numpy.cumsum)
@@ -49,16 +49,10 @@ def cumsum(a, axis=None, dtype=None, out=None):
                     [5, 5+x, 3+y]])
 
     """
-    a = numpoly.polynomial(a)
-    if out is None:
-        shape = (a.size,) if axis is None else a.shape
-        dtype = a.dtype if dtype is None else dtype
-        out = numpoly.ndpoly(
-            exponents=a.exponents,
-            shape=shape,
-            indeterminants=a.indeterminants,
-            dtype=dtype,
-        )
-    for key in a.keys:
-        numpy.cumsum(a[key], axis=axis, dtype=dtype, out=out[key])
-    return out
+    return simple_dispatch(
+        numpy_func=numpy.cumsum,
+        inputs=(a,),
+        out=out,
+        axis=axis,
+        dtype=dtype,
+    )

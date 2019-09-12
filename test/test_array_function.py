@@ -30,24 +30,31 @@ def test_numpy_add():
 def test_numpy_any():
     poly = polynomial([[0, Y], [0, 0]])
     assert INTERFACE.any(poly)
+    assert poly.any()
     assert numpy.all(INTERFACE.any(poly, axis=0) == [False, True])
-    assert numpy.all(INTERFACE.any(poly, axis=-1, keepdims=True) ==
-                     [[True], [False]])
+    assert numpy.all(poly.any(axis=0) == [False, True])
+    assert numpy.all(INTERFACE.any(poly, axis=-1, keepdims=True) == [[True], [False]])
+    assert numpy.all(poly.any(axis=-1, keepdims=True) == [[True], [False]])
 
 
 def test_numpy_all():
     poly = polynomial([[0, Y], [X, 1]])
     assert not INTERFACE.all(poly)
+    assert not poly.all()
     assert numpy.all(INTERFACE.all(poly, axis=0) == [False, True])
-    assert numpy.all(INTERFACE.all(poly, axis=-1, keepdims=True) ==
-                     [[False], [True]])
+    assert numpy.all(poly.all(axis=0) == [False, True])
+    assert numpy.all(INTERFACE.all(poly, axis=-1, keepdims=True) == [[False], [True]])
+    assert numpy.all(poly.all(axis=-1, keepdims=True) == [[False], [True]])
 
 
 def test_numpy_around():
     poly = 123.45*X+Y
     assert INTERFACE.around(poly) == 123.*X+Y
+    assert poly.round() == 123.*X+Y
     assert INTERFACE.around(poly, decimals=1) == 123.4*X+Y
+    assert poly.round(decimals=1) == 123.4*X+Y
     assert INTERFACE.around(poly, decimals=-2) == 100.*X
+    assert poly.round(decimals=-2) == 100.*X
 
 
 def test_numpy_array_repr():
@@ -88,8 +95,12 @@ def test_numpy_concatenate():
 def test_numpy_cumsum():
     poly1 = polynomial([[0, Y], [X, 1]])
     assert numpy.all(INTERFACE.cumsum(poly1) == [0, Y, X+Y, 1+X+Y])
+    assert numpy.all(poly1.cumsum() == [0, Y, X+Y, 1+X+Y])
     assert numpy.all(INTERFACE.cumsum(poly1, axis=0) == [[0, Y], [X, Y+1]])
+    assert numpy.all(poly1.cumsum( axis=0) == [[0, Y], [X, Y+1]])
     assert numpy.all(INTERFACE.cumsum(poly1, axis=1) == [[0, Y], [X, X+1]])
+    assert numpy.all(poly1.cumsum(axis=1) == [[0, Y], [X, X+1]])
+
 
 def test_numpy_floor_divide():
     poly = polynomial([[0., 2.*Y], [X, 2.]])
@@ -101,6 +112,12 @@ def test_numpy_floor_divide():
 def test_numpy_inner():
     poly1, poly2 = polynomial([[0, Y], [X+1, 1]])
     assert INTERFACE.inner(poly1, poly2) == Y
+
+
+def test_numpy_logical_and():
+    assert numpy.all(numpy.logical_and(1, [0, X]) == [0, X])
+    assert numpy.all(numpy.logical_and(1, [1, X]) == [1, X])
+    assert numpy.all(numpy.logical_and([0, Y], [1, X]) == [0, X])
 
 
 def test_numpy_logical_or():
@@ -159,6 +176,16 @@ def test_numpy_power():
                      polynomial([[0, Y**2], [X*X-2*X+1, 2]]))
 
 
+def test_numpy_rint():
+    poly = numpoly.polynomial([-1.7*X, X-1.5])
+    assert numpy.all(INTERFACE.rint(poly) == [-2*X, X-2])
+
+
+def test_numpy_square():
+    assert INTERFACE.square(X+Y) == X**2+2*X*Y+Y**2
+    assert (1+X)**2 == 1+2*X+X**2
+
+
 def test_numpy_subtract():
     assert -X+3 == 3-X
     assert numpy.all(4 - polynomial([1, X, Y]) == polynomial([3, 4-X, 4-Y]))
@@ -170,6 +197,8 @@ def test_numpy_subtract():
 def test_numpy_sum():
     poly = polynomial([[1, 5*X], [X+3, -Y]])
     assert INTERFACE.sum(poly) == -Y+X*6+4
+    assert poly.sum() == -Y+X*6+4
     assert numpy.all(INTERFACE.sum(poly, axis=0) == polynomial([X+4, -Y+X*5]))
-    assert numpy.all(INTERFACE.sum(poly, axis=-1, keepdims=True) ==
+    assert numpy.all(poly.sum(axis=0) == polynomial([X+4, -Y+X*5]))
+    assert numpy.all(poly.sum(axis=-1, keepdims=True) ==
                      polynomial([[X*5+1], [X-Y+3]]))
