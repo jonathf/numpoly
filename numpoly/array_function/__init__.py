@@ -25,12 +25,12 @@ supported, not all arguments are supportable.
 """
 from .common import ARRAY_FUNCTIONS
 
-from .absolute import absolute
+from .absolute import absolute as abs, absolute
 from .add import add
 from .any import any
 from .all import all
 from .allclose import allclose
-from .around import around
+from .around import around as round, around
 from .array_repr import array_repr
 from .array_str import array_str
 from .common_type import common_type
@@ -45,12 +45,14 @@ from .isfinite import isfinite
 from .logical_and import logical_and
 from .logical_or import logical_or
 from .mean import mean
+from .moveaxis import moveaxis
 from .multiply import multiply
 from .negative import negative
 from .not_equal import not_equal
 from .outer import outer
 from .positive import positive
 from .power import power
+from .prod import prod
 from .rint import rint
 from .square import square
 from .subtract import subtract
