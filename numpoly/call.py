@@ -76,4 +76,6 @@ def call(poly, *args, **kwargs):
         shape = coefficient.shape+ones.shape
         out = out+numpoly.outer(coefficient, term).reshape(shape)
 
-    return numpoly.polynomial(out)
+    if out.isconstant():
+        out = out.toarray()
+    return out
