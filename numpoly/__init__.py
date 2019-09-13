@@ -8,6 +8,7 @@ from .align import (
     align_exponents,
     align_indeterminants,
     align_shape,
+    align_dtype,
 )
 from .call import call
 from .construct import (

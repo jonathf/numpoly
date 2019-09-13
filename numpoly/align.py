@@ -20,6 +20,7 @@ def align_polynomials(*polys):
     polys = align_shape(*polys)
     polys = align_indeterminants(*polys)
     polys = align_exponents(*polys)
+    polys = align_dtype(*polys)
     return polys
 
 
@@ -196,4 +197,38 @@ def align_exponents(*polys):
             indeterminants=poly.names,
             clean=False,
         )
+    return tuple(polys)
+
+
+def align_dtype(*polys):
+    """
+    Align polynomial by shape.
+
+    Args:
+        polys (numpoly.ndpoly):
+            Polynomial to make adjustment to.
+
+    Returns:
+        (Tuple[numpoly.ndpoly, ...]):
+            Same as ``polys``, but internal adjustments made to make them
+            compatible for further operations.
+
+    Examples:
+        >>> x = numpoly.symbols("x")
+        >>> x.dtype.name
+        'int64'
+        >>> poly, _ = numpoly.align_dtype(x, 4.5)
+        >>> poly.dtype.name
+        'float64'
+
+    """
+    polys = [numpoly.aspolynomial(poly) for poly in polys]
+    dtype = numpy.sum([numpy.array(True, dtype=poly.dtype) for poly in polys]).dtype
+    polys = [numpoly.ndpoly.from_attributes(
+        exponents=poly.exponents,
+        coefficients=poly.coefficients,
+        indeterminants=poly.indeterminants,
+        dtype=dtype,
+        clean=False,
+    ) for poly in polys]
     return tuple(polys)

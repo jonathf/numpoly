@@ -80,7 +80,10 @@ def polynomial(
         )
 
     elif isinstance(poly_like, numpoly.ndpoly):
-        poly = poly_like.copy()
+        if dtype and poly_like.dtype != dtype:
+            poly = poly_like.astype(dtype)
+        else:
+            poly = poly_like.copy()
 
     # assume polynomial converted to structured array
     elif isinstance(poly_like, numpy.ndarray) and poly_like.dtype.names:
