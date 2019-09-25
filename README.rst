@@ -1,7 +1,7 @@
 Numpoly
 =======
 
-|circleci| |codecov| |pypi|
+|circleci| |codecov| |pypi| |readthedocs|
 
 .. |circleci| image:: https://circleci.com/gh/jonathf/numpoly/tree/master.svg?style=shield
     :target: https://circleci.com/gh/jonathf/numpoly/tree/master
