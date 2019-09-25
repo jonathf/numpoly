@@ -91,6 +91,9 @@ html_theme_options = {
     "github_user": "jonathf",
     "github_repo": "numpoly",
     "github_banner": True,
+    "logo_name": True,
+    "logo_text_align": "center",
+    "description": "Numerical polynomial arrays",
  }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -196,4 +199,7 @@ epub_exclude_files = ['search.html']
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3', None),
+    'numpy': ('https://docs.scipy.org/doc/numpy/', None),
+}
