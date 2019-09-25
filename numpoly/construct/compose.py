@@ -10,7 +10,6 @@ def compose_polynomial_array(
         dtype=None,
 ):
     """Compose polynomial from array of arrays of polynomials."""
-
     arrays_ = numpy.array(arrays, dtype=object)
     shape = arrays_.shape
     if not arrays_.size:

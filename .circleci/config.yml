@@ -80,7 +80,9 @@ jobs:
                     poetry install
             - run:
                 name: "Run Sphinx build"
-                command: sphinx-build doc/ doc/.build -b html -n -v --color -T -W
+                command: |
+                    mkdir doc/.static
+                    poetry run sphinx-build doc/ doc/.build -b html -n -v --color -T -W
 
 workflows:
     version: 2
