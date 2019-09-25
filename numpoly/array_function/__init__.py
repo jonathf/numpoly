@@ -33,11 +33,13 @@ from .allclose import allclose
 from .around import around as round, around
 from .array_repr import array_repr
 from .array_str import array_str
+from .ceil import ceil
 from .common_type import common_type
 from .concatenate import concatenate
 from .cumsum import cumsum
 from .divide import divide
 from .equal import equal
+from .floor import floor
 from .floor_divide import floor_divide
 from .inner import inner
 from .isclose import isclose

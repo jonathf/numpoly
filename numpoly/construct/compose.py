@@ -10,12 +10,18 @@ def compose_polynomial_array(
         dtype=None,
 ):
     """Compose polynomial from array of arrays of polynomials."""
-    arrays = numpy.array(arrays, dtype=object)
-    shape = arrays.shape
-    if not arrays.size:
-        return numpoly.ndpoly(shape=(0,), dtype=dtype)
 
-    arrays = arrays.flatten()
+    arrays_ = numpy.array(arrays, dtype=object)
+    shape = arrays_.shape
+    if not arrays_.size:
+        return numpoly.ndpoly(shape=shape, dtype=dtype)
+    if len(arrays_.shape) > 1:
+        return numpoly.concatenate([
+            numpoly.aspolynomial(array, dtype)[numpy.newaxis]
+            for array in arrays
+        ], axis=0)
+
+    arrays = arrays_.flatten()
 
     indices = numpy.array([isinstance(array, numpoly.ndpoly)
                            for array in arrays])

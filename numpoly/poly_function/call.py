@@ -57,7 +57,8 @@ def call(poly, *args, **kwargs):
         return poly.copy()
 
     # Saturate kwargs with values not given:
-    for indeterminant in poly.indeterminants:
+    indeterminants = poly.indeterminants
+    for indeterminant in indeterminants:
         name = indeterminant.names[0]
         if name not in kwargs:
             kwargs[name] = indeterminant
@@ -77,5 +78,6 @@ def call(poly, *args, **kwargs):
         out = out+numpoly.outer(coefficient, term).reshape(shape)
 
     if out.isconstant():
-        out = out.toarray()
+        return out.toarray()
+    out, _ = numpoly.align_indeterminants(out, indeterminants)
     return out

@@ -4,7 +4,6 @@ from six import string_types
 
 import numpy
 
-from .call import call
 from .exponent import exponents_to_keys, keys_to_exponents
 
 from . import construct, array_function, poly_function
@@ -307,7 +306,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
 
     def __call__(self, *args, **kwargs):
         """Evaluate polynomial."""
-        return call(self, *args, **kwargs)
+        return poly_function.call(self, *args, **kwargs)
 
     def __eq__(self, other):
         """Left equality."""
