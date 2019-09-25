@@ -38,7 +38,7 @@ def simple_dispatch(
             `None`, a freshly-allocated array is returned. A tuple (possible
             only as a keyword argument) must have length equal to the number of
             outputs.
-        **kwargs
+        kwargs:
             Keyword args passed to `numpy_func`.
 
     Returns:

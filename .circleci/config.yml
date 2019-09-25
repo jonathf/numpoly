@@ -54,11 +54,6 @@ jobs:
                 name: "Installation"
                 command: |
                     poetry install
-                    poetry run pip install -U numpy  # allow python 3 only numpy
-            - save_cache:
-                key: dependencies-{{ checksum "python.version" }}-{{ checksum "poetry.lock"}}
-                paths:
-                    - /home/circleci/.cache/pypoetry/virtualenvs
             - run:
                 name: "Run pylint"
                 command: |
@@ -67,6 +62,27 @@ jobs:
                 name: "Run pydocstyle"
                 command: |
                     poetry run pydocstyle numpoly
+    sphinx:
+        <<: *test-template
+        steps:
+            - checkout
+            - run:
+                name: "Python version"
+                command: |
+                    python --version > python.version
+            - restore_cache:
+                keys:
+                    - dependencies-{{ checksum "python.version" }}-{{ checksum "poetry.lock"}}
+                    - dependencies-{{ checksum "python.version" }}
+            - run:
+                name: "Installation"
+                command: |
+                    poetry install
+            - run:
+                name: "Run Sphinx build"
+                command: |
+                    mkdir doc/.static
+                    poetry run sphinx-build doc/ doc/.build -b html -n -v --color -T -W
 
 workflows:
     version: 2
@@ -76,3 +92,4 @@ workflows:
             - test-3.7
             - test-2.7
             - linting
+            - sphinx

@@ -1,15 +1,17 @@
-"""Return the element-wise square of the input."""
+"""Return the floor of the input, element-wise."""
 import numpy
 import numpoly
 
-from .common import implements
-from .multiply import multiply
+from .common import implements, simple_dispatch
 
 
-@implements(numpy.square)
-def square(x, out=None, where=True, **kwargs):
-    """
-    Return the element-wise square of the input.
+@implements(numpy.floor)
+def floor(x, out=None, where=True, **kwargs):
+    r"""
+    Return the floor of the input, element-wise.
+
+    The floor of the scalar `x` is the largest integer `i`, such that
+    `i <= x`.  It is often denoted as :math:`\lfloor x \rfloor`.
 
     Args:
         x (numpoly.ndpoly):
@@ -20,7 +22,7 @@ def square(x, out=None, where=True, **kwargs):
             `None`, a freshly-allocated array is returned. A tuple (possible
             only as a keyword argument) must have length equal to the number of
             outputs.
-        where (Optional[numpy.ndarray]):
+        where (Union[bool, numpy.ndarray]):
             This condition is broadcast over the input. At locations where the
             condition is True, the `out` array will be set to the ufunc result.
             Elsewhere, the `out` array will retain its original value. Note
@@ -31,15 +33,20 @@ def square(x, out=None, where=True, **kwargs):
             Keyword args passed to numpy.ufunc.
 
     Returns:
-        out (numpoly.ndpoly):
-            Element-wise `x*x`, of the same shape and dtype as `x`.
-            This is a scalar if `x` is a scalar.
+        y (numpoly.ndpoly):
+            The floor of each element in `x`. This is a scalar if `x` is
+            a scalar.
 
     Examples:
-        >>> numpoly.square([-1j, 1])
-        polynomial([(-1-0j), (1+0j)])
-        >>> numpoly.square(numpoly.sum(numpoly.symbols("x y")))
-        polynomial(y**2+2*x*y+x**2)
+        >>> x = numpoly.symbols("x")
+        >>> numpoly.floor([-1.7*x, x-1.5, -0.2, 3.2+1.5*x, 1.7, 2.0])
+        polynomial([-2.0*x, -2.0+x, -1.0, 3.0+x, 1.0, 2.0])
 
     """
-    return multiply(x, x, out=out, where=where, **kwargs)
+    return simple_dispatch(
+        numpy_func=numpy.floor,
+        inputs=(x,),
+        out=out,
+        where=where,
+        **kwargs
+    )

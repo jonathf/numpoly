@@ -1,4 +1,4 @@
-"""Polynomial functionality."""
+"""Construct symbol variables."""
 import re
 import string
 
@@ -91,64 +91,3 @@ def symbols(names="q", asarray=False, dtype="i8"):
         coefficients=coefficients,
         indeterminants=names,
     )
-
-
-def isconstant(poly):
-    """
-    Check if a polynomial is constant or not.
-
-    Args:
-        poly (numpoly.ndpoly):
-            polynomial to check if is constant or not.
-
-    Returns:
-        (bool):
-            True if polynomial has no indeterminants.
-
-    Examples:
-        >>> x = numpoly.symbols("x")
-        >>> numpoly.isconstant(numpoly.polynomial([x]))
-        False
-        >>> numpoly.isconstant(numpoly.polynomial([1]))
-        True
-
-    """
-    poly = numpoly.aspolynomial(poly)
-    for exponent, coefficient in zip(poly.exponents, poly.coefficients):
-        if not numpy.any(exponent):
-            continue
-        if numpy.any(coefficient):
-            return False
-    return True
-
-
-def toarray(poly):
-    """
-    Cast polynomial to numpy.ndarray, if possible.
-
-    Args:
-        poly (numpoly.ndpoly):
-            polynomial to cast.
-
-    Returns:
-        (numpy.ndarray):
-            Numpy array.
-
-    Raises:
-        ValueError:
-            Only constant polynomials can be cast to numpy.ndarray.
-
-    Examples:
-        >>> numpoly.polynomial([1, 2]).toarray()
-        array([1, 2])
-        >>> numpoly.toarray(numpoly.symbols("x"))
-        Traceback (most recent call last):
-            ...
-        ValueError: only constant polynomials can be converted to array.
-
-    """
-    poly = numpoly.polynomial(poly)
-    if not poly.isconstant():
-        raise ValueError(
-            "only constant polynomials can be converted to array.")
-    return numpy.array(poly.coefficients[0])

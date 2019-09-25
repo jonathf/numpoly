@@ -1,15 +1,17 @@
-"""Return the element-wise square of the input."""
+"""Return the ceiling of the input, element-wise."""
 import numpy
 import numpoly
 
-from .common import implements
-from .multiply import multiply
+from .common import implements, simple_dispatch
 
 
-@implements(numpy.square)
-def square(x, out=None, where=True, **kwargs):
-    """
-    Return the element-wise square of the input.
+@implements(numpy.ceil)
+def ceil(x, out=None, where=True, **kwargs):
+    r"""
+    Return the ceiling of the input, element-wise.
+
+    The ceil of the scalar `x` is the smallest integer `i`, such that
+    `i >= x`.  It is often denoted as :math:`\lceil x \rceil`.
 
     Args:
         x (numpoly.ndpoly):
@@ -31,15 +33,20 @@ def square(x, out=None, where=True, **kwargs):
             Keyword args passed to numpy.ufunc.
 
     Returns:
-        out (numpoly.ndpoly):
-            Element-wise `x*x`, of the same shape and dtype as `x`.
-            This is a scalar if `x` is a scalar.
+        y (numpoly.ndpoly):
+            The ceiling of each element in `x`, with `float` dtype. This is
+            a scalar if `x` is a scalar.
 
     Examples:
-        >>> numpoly.square([-1j, 1])
-        polynomial([(-1-0j), (1+0j)])
-        >>> numpoly.square(numpoly.sum(numpoly.symbols("x y")))
-        polynomial(y**2+2*x*y+x**2)
+        >>> x = numpoly.symbols("x")
+        >>> numpoly.ceil([-1.7*x, x-1.5, -0.2, 3.2+1.5*x, 1.7, 2.0])
+        polynomial([-x, -1.0+x, 0.0, 4.0+2.0*x, 2.0, 2.0])
 
     """
-    return multiply(x, x, out=out, where=where, **kwargs)
+    return simple_dispatch(
+        numpy_func=numpy.ceil,
+        inputs=(x,),
+        out=out,
+        where=where,
+        **kwargs
+    )
