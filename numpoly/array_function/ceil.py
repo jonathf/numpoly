@@ -1,4 +1,4 @@
-
+"""Return the ceiling of the input, element-wise."""
 import numpy
 import numpoly
 
@@ -7,7 +7,7 @@ from .common import implements, simple_dispatch
 
 @implements(numpy.ceil)
 def ceil(x, out=None, where=True, **kwargs):
-    """
+    r"""
     Return the ceiling of the input, element-wise.
 
     The ceil of the scalar `x` is the smallest integer `i`, such that
@@ -29,7 +29,7 @@ def ceil(x, out=None, where=True, **kwargs):
             that if an uninitialized `out` array is created via the default
             ``out=None``, locations within it where the condition is False will
             remain uninitialized.
-        **kwargs
+        kwargs:
             Keyword args passed to numpy.ufunc.
 
     Returns:

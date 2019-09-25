@@ -21,11 +21,9 @@ Function name        Claimed by
 ===================  ==========================================================
 amax
 amin
-around
 average
 broadcast*
 cast
-ceil
 clip
 count_nonzero
 cov
@@ -42,7 +40,6 @@ ravel
 repeat
 resize
 split
-stack
 ===================  ==========================================================
 
 Save/Load support
@@ -50,12 +47,12 @@ Save/Load support
 
 Difficulty: easy
 
-Pickle should work out of the box. Preferably using the numpyu own ``np.save``
+Pickle should work out of the box. Preferably using the ``np.save``
 interface. But if not possible, using something like h5py.
 
 Along the way:
 * Add optional requirement h5py (if applicable)
-* Add test demontrating the feature
+* Add test demonstrating the feature
 
 True division and mod support
 -----------------------------
@@ -85,8 +82,8 @@ Element-in support (``x in y``)
 
 Difficulty: medium
 
-This is a bit underfined. What does it mean to have a polynomial as an element
-in another polynomial? Given a resonable definition, implement such that it
+This is a bit undefined. What does it mean to have a polynomial as an element
+in another polynomial? Given a reasonable definition, implement such that it
 works.
 
 Element-in support (``isin(x, y)``)
@@ -101,4 +98,4 @@ Inner product support
 
 Difficulty: medium-hard
 
-The definision of inner production of tensor products.
+The definition of inner production of tensor products.

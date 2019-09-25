@@ -19,7 +19,7 @@ def common_type(*arrays):
     returned dtype without loss of information.
 
     Args:
-        *arrays (numpoly.ndpoly):
+        arrays (numpoly.ndpoly):
             Input arrays.
 
     Return:

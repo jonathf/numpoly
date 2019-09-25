@@ -29,7 +29,7 @@ def floor(x, out=None, where=True, **kwargs):
             that if an uninitialized `out` array is created via the default
             ``out=None``, locations within it where the condition is False will
             remain uninitialized.
-        **kwargs
+        kwargs:
             Keyword args passed to numpy.ufunc.
 
     Returns:

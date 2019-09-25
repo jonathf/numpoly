@@ -1,28 +1,4 @@
-"""
-collection of numpy wrapper functions.
-
-The numpy library comes with a large array of functions for manipulation of
-numpy.ndarray objects. Many of these functions are supported in Numpoly as
-well.
-
-For numpy version >=1.17, the numpy library started to support dispatching
-functionality to subclasses. This means that the functions in numpoly with the
-same name as a numpy counterpart will work irrespectively if the function used
-was from numpy or numpoly.
-
-For example::
-
-    >>> poly = numpoly.symbols("x")**numpy.arange(4)
-    >>> print(poly)
-    [1 x x**2 x**3]
-    >>> print(numpoly.sum(poly, keepdims=True))
-    [1+x+x**2+x**3]
-    >>> print(numpy.sum(poly, keepdims=True)) # doctest: +SKIP
-    [1+x+x**2+x**3]
-
-Not everything is possible to support, and for the functions that are
-supported, not all arguments are supportable.
-"""
+"""Collection of numpy wrapper functions."""
 from .common import ARRAY_FUNCTIONS
 
 from .absolute import absolute as abs, absolute

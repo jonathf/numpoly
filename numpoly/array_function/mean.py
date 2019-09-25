@@ -35,7 +35,7 @@ def mean(a, axis=None, dtype=None, out=None, **kwargs):
             If this is set to True, the axes which are reduced are left in the
             result as dimensions with size one. With this option, the result
             will broadcast correctly against the input array.
-        **kwargs
+        kwargs:
             Keyword args passed to numpy.ufunc.
 
     Returns:
