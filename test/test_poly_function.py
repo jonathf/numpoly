@@ -53,3 +53,16 @@ def test_numpoly_polynomial():
     assert numpy.all(numpoly.polynomial([[1, 2], [3, 4]]) == [[1, 2], [3, 4]])
     assert numpy.all(numpoly.polynomial(
         numpy.array([[1, 2], [3, 4]])) == [[1, 2], [3, 4]])
+
+
+def test_numpoly_isconstant():
+    assert not numpoly.polynomial(X).isconstant()
+    assert numpoly.polynomial(1).isconstant()
+    assert not numpoly.polynomial([1, X]).isconstant()
+    assert numpoly.polynomial([1, 2]).isconstant()
+
+
+def test_numpoly_toarray():
+    assert isinstance(numpoly.toarray(numpoly.polynomial([1, 2, 3])), numpy.ndarray)
+    with raises(ValueError):
+        numpoly.toarray(X)

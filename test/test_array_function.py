@@ -78,6 +78,30 @@ def test_numpy_array_str(func_interface):
   [5 Y]]]"""
 
 
+def test_numpy_atleast_1d(func_interface):
+    polys = [X, [X], [[X]], [[[X]]]]
+    assert numpy.all(numpoly.atleast_1d(*polys) ==
+                     [[X], [X], [[X]], [[[X]]]])
+
+
+def test_numpy_atleast_2d(func_interface):
+    polys = [X, [X], [[X]], [[[X]]]]
+    assert numpy.all(numpoly.atleast_2d(*polys) ==
+                     [[[X]], [[X]], [[X]], [[[X]]]])
+
+
+def test_numpy_atleast_3d(func_interface):
+    polys = [X, [X], [[X]], [[[X]]]]
+    assert numpy.all(numpoly.atleast_3d(*polys) ==
+                     [[[[X]]], [[[X]]], [[[X]]], [[[X]]]])
+
+
+def test_numpy_ceil(func_interface):
+    poly = polynomial([-1.7*X, X-1.5, -0.2, 3.2+1.5*X, 1.7, 2.0])
+    assert numpy.all(func_interface.ceil(poly) ==
+                     [-X, -1.0+X, 0.0, 4.0+2.0*X, 2.0, 2.0])
+
+
 def test_numpy_common_type(func_interface):
     assert func_interface.common_type(numpy.array(2, dtype=numpy.float32)) == numpy.float32
     assert func_interface.common_type(X) == numpy.float64
@@ -113,6 +137,19 @@ def test_numpy_divide(func_interface):
     assert numpy.all(func_interface.divide(poly, [[1, 2], [2, 1]]) == [[0, 0.5*Y], [0.5*X, 1]])
 
 
+def test_numpy_dstack(func_interface):
+    poly1 = numpoly.polynomial([1, X, 2])
+    poly2 = numpoly.polynomial([Y, 3, 4])
+    assert numpy.all(func_interface.dstack([poly1, poly2]) ==
+                     [[[1, Y], [X, 3], [2, 4]]])
+
+
+def test_numpy_floor(func_interface):
+    poly = polynomial([-1.7*X, X-1.5, -0.2, 3.2+1.5*X, 1.7, 2.0])
+    assert numpy.all(func_interface.floor(poly) ==
+                     [-2.0*X, -2.0+X, -1.0, 3.0+X, 1.0, 2.0])
+
+
 def test_numpy_floor_divide(func_interface):
     poly = polynomial([[0., 2.*Y], [X, 2.]])
     assert numpy.all(poly // 2 == [[0, Y], [0, 1]])
@@ -121,6 +158,13 @@ def test_numpy_floor_divide(func_interface):
     assert numpy.all(func_interface.floor_divide(poly, [1, 2]) == [[0, Y], [X, 1]])
     assert numpy.all(poly // [[1, 2], [2, 1]] == [[0, Y], [0, 2]])
     assert numpy.all(func_interface.floor_divide(poly, [[1, 2], [2, 1]]) == [[0, Y], [0, 2]])
+
+
+def test_numpy_hstack(func_interface):
+    poly1 = numpoly.polynomial([1, X, 2])
+    poly2 = numpoly.polynomial([Y, 3, 4])
+    assert numpy.all(func_interface.hstack([poly1, poly2]) ==
+                     [1, X, 2, Y, 3, 4])
 
 
 def test_numpy_inner(func_interface):
@@ -275,3 +319,10 @@ def test_numpy_sum(interface):
     assert interface.sum(poly) == -Y+X*6+4
     assert numpy.all(interface.sum(poly, axis=0) == [X+4, -Y+X*5])
     assert numpy.all(interface.sum(poly, axis=-1, keepdims=True) == [[X*5+1], [X-Y+3]])
+
+
+def test_numpy_vstack(func_interface):
+    poly1 = numpoly.polynomial([1, X, 2])
+    poly2 = numpoly.polynomial([Y, 3, 4])
+    assert numpy.all(func_interface.vstack([poly1, poly2]) ==
+                     [[1, X, 2], [Y, 3, 4]])
