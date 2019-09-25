@@ -14,9 +14,7 @@ Welcome to NumPoly's documentation!
    array_function
 
 
-Indices and tables
-==================
+Index
+=====
 
 * :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

@@ -1,3 +1,17 @@
+Numpoly
+=======
+
+|circleci| |codecov| |pypi|
+
+.. |circleci| image:: https://circleci.com/gh/jonathf/numpoly/tree/master.svg?style=shield
+    :target: https://circleci.com/gh/jonathf/numpoly/tree/master
+.. |codecov| image:: https://codecov.io/gh/jonathf/numpoly/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/jonathf/numpoly
+.. |pypi| image:: https://badge.fury.io/py/numpoly.svg
+    :target: https://badge.fury.io/py/numpoly
+.. |readthedocs| image:: https://readthedocs.org/projects/numpoly/badge/?version=master
+    :target: http://numpoly.readthedocs.io/en/master/?badge=master
+
 Numpoly is a generic library for creating, manipulating polynomial arrays.
 
 Many numerical analysis, prominent in for example uncertainty quantification,
@@ -11,15 +25,6 @@ polynomials as array element. As such is fast and scales very well with the
 size of the coefficients. It is also compatible with most ``numpy`` functions,
 where that makes sense, making the interface fairly intuitive. Some of the
 interface is also inspired by the ``sympy`` interface.
-
-|circleci| |codecov| |pypi|
-
-.. |circleci| image:: https://circleci.com/gh/jonathf/numpoly/tree/master.svg?style=shield
-    :target: https://circleci.com/gh/jonathf/numpoly/tree/master
-.. |codecov| image:: https://codecov.io/gh/jonathf/numpoly/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/jonathf/numpoly
-.. |pypi| image:: https://badge.fury.io/py/numpoly.svg
-    :target: https://badge.fury.io/py/numpoly
 
 .. contents:: Table of Contents:
 
