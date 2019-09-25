@@ -1,3 +1,7 @@
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
 [tool.poetry]
 name = "numpoly"
 version = "0.0.13"
@@ -14,7 +18,6 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.5||2.7.16"
 numpy = "^1.16"
 
 [tool.poetry.dev-dependencies]
@@ -25,5 +28,5 @@ pytest-cov = "*"
 codecov = "*"
 coverage = "*"
 Sphinx = "*"
-sphinx_automodapi = "*"
 pydocstyle = "3.0.0"
+sphinx_automodapi = "*"
