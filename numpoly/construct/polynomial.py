@@ -15,20 +15,18 @@ def polynomial(
 
     Supports various casting options:
 
-    ``dict``
-        Keys are tuples that represent polynomial exponents, and values are
-        numpy arrays that represents polynomial coefficients.
-    ``numpoly.ndpoly``
-        Copy of the polynomial.
-    ``int``, ``float``, ``numpy.ndarray``
-        Constant term polynomial.
-    ``sympy.Poly``
-        Convert polynomial from ``sympy`` to ``numpoly``, if possible.
-    ``Iterable``
-        Multivariate array construction.
-    ``numpy structured array``
-        Assumes that the raw polynomial core. Used for developer
-        convenience.
+    ==================  =======================================================
+    ``dict``            Keys are tuples that represent polynomial exponents,
+                        and values are numpy arrays that represents polynomial
+                        coefficients.
+    ``numpoly.ndpoly``  Copy of the polynomial.
+    ``numpy.ndarray``   Constant term polynomial.
+    ``sympy.Poly``      Convert polynomial from ``sympy`` to ``numpoly``,
+                        if possible.
+    ``Iterable``        Multivariate array construction.
+    structured array    Assumes that the raw polynomial core. Used for
+                        developer convenience.
+    ==================  =======================================================
 
     Args:
         poly_like (Any):

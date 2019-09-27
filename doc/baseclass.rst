@@ -1,5 +1,5 @@
-``ndpoly`` Baseclass
-====================
+Baseclass
+=========
 
 The core element of the `numpoly` library is the `numpoly.ndpoly` class. The
 class is subclass of of the `numpy.ndarray` and the implementation follows the
@@ -12,12 +12,12 @@ represented as `numpy.ndarray`:
 
 .. math::
 
-    P(x_1, \dots, x_n) = \sum_{n=1}^N c_n \Prod_{d=1}^D x_d^{p_{nd}}
+    P(x_1, \dots, x_D) = \sum_{n=1}^N c_n \prod_{d=1}^D x_d^{p_{nd}}
 
 Where :math:`P` is polynomial vector, :math:`N` is the number of terms in the
 polynomial sum, :math:`c_n` is a (potentially) multi-dimensional polynomial
-coefficients, :math:`x_d` is the :math:`d`-th indeterminant, and `p_{nd}` is
-the exponent for the :math:`n`-th polynomial term and the :math:`d`-th
+coefficients, :math:`x_d` is the :math:`d`-th indeterminant, and :math:`p_{nd}`
+is the exponent for the :math:`n`-th polynomial term and the :math:`d`-th
 indeterminant.
 
 For example, for a simple polynomial with scalar coefficients:
@@ -33,7 +33,7 @@ For example, for a simple polynomial with scalar coefficients:
     >>> poly.exponents
     array([[0, 0],
            [0, 1],
-           [1, 0]])
+           [1, 0]], dtype=uint32)
     >>> poly.indeterminants
     polynomial([x, y])
 
@@ -56,8 +56,9 @@ in it's true form:
 
     >>> dtype = [(key, poly.dtype) for key in poly.keys]
     >>> array = numpy.ndarray(shape=poly.shape, dtype=dtype, buffer=poly.data)
-    >>> array
-    array((-1, 3, 4), dtype=[('00', '<i8'), ('01', '<i8'), ('10', '<i8')])
+    >>> array  # doctest: +NORMALIZE_WHITESPACE
+    array((-1, 3, 4),
+          dtype=[('00', '<i8'), ('01', '<i8'), ('10', '<i8')])
 
 Which, together with the indeterminant names, can be cast back to a polynomial:
 

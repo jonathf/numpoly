@@ -9,7 +9,21 @@ def compose_polynomial_array(
         arrays,
         dtype=None,
 ):
-    """Compose polynomial from array of arrays of polynomials."""
+    """
+    Compose polynomial from array of arrays of polynomials.
+
+    Backend for `numpoly.polynomial` when input is undetermined.
+
+    Args:
+        arrays (Any):
+            Input to be converted to a `numpoly.ndpoly` polynomial type.
+        dtype (Optional[numpy.dtype]):
+            Data type used for the polynomial coefficients.
+
+    Return:
+        (numpoly.ndpoly):
+            Polynomial based on input `arrays`.
+    """
     arrays_ = numpy.array(arrays, dtype=object)
     shape = arrays_.shape
     if not arrays_.size:

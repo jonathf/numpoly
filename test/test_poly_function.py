@@ -62,7 +62,7 @@ def test_numpoly_isconstant():
     assert numpoly.polynomial([1, 2]).isconstant()
 
 
-def test_numpoly_toarray():
-    assert isinstance(numpoly.toarray(numpoly.polynomial([1, 2, 3])), numpy.ndarray)
+def test_numpoly_tonumpy():
+    assert isinstance(numpoly.tonumpy(numpoly.polynomial([1, 2, 3])), numpy.ndarray)
     with raises(ValueError):
-        numpoly.toarray(X)
+        numpoly.tonumpy(X)

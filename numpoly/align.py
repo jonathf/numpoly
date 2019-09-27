@@ -7,6 +7,9 @@ def align_polynomials(*polys):
     """
     Align polynomial such that dimensionality, shape, etc. are compatible.
 
+    Alignment includes shape (for broadcasting), indeterminants, exponents and
+    dtype.
+
     Args:
         polys (numpoly.ndpoly):
             Polynomial to make adjustment to.
@@ -15,6 +18,22 @@ def align_polynomials(*polys):
         (Tuple[numpoly.ndpoly, ...]):
             Same as ``polys``, but internal adjustments made to make them
             compatible for further operations.
+
+    Examples:
+        >>> x, _ = xy = numpoly.symbols("x y")
+        >>> x
+        polynomial(x)
+        >>> x.coefficients
+        [1]
+        >>> x.indeterminants
+        polynomial([x])
+        >>> x, _ = numpoly.align_polynomials(x, xy.astype(float))
+        >>> x
+        polynomial([x, x])
+        >>> x.coefficients
+        [array([0., 0.]), array([1., 1.])]
+        >>> x.indeterminants
+        polynomial([x, y])
 
     """
     polys = align_shape(*polys)
