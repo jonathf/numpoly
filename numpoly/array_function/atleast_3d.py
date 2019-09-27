@@ -34,6 +34,6 @@ def atleast_3d(*arys):
     """
     if len(arys) == 1:
         poly = numpoly.aspolynomial(arys[0])
-        array = numpy.atleast_3d(poly.as_ndarray())
+        array = numpy.atleast_3d(poly.values)
         return numpoly.aspolynomial(array, indeterminants=poly.indeterminants)
     return [atleast_3d(ary) for ary in arys]

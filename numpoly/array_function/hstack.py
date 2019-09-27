@@ -43,6 +43,6 @@ def hstack(tup):
     """
     arrays = numpoly.align_exponents(*tup)
     arrays = numpoly.align_dtype(*arrays)
-    result = numpy.hstack([array.as_ndarray() for array in arrays])
+    result = numpy.hstack([array.values for array in arrays])
     return numpoly.aspolynomial(
         result, indeterminants=arrays[0].indeterminants)

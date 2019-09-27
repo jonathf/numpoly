@@ -44,5 +44,5 @@ def repeat(a, repeats, axis=0):
                     [x**2, x]])
 
     """
-    result = numpy.repeat(a.as_ndarray(), repeats=repeats, axis=axis)
+    result = numpy.repeat(a.values, repeats=repeats, axis=axis)
     return numpoly.aspolynomial(result, indeterminants=a.indeterminants)
