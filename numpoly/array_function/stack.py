@@ -39,6 +39,7 @@ def stack(arrays, axis=0, out=None):
         polynomial([[x, 1],
                     [y, 2],
                     [z, 3]])
+
     """
     arrays = numpoly.align_exponents(*arrays)
     arrays = numpoly.align_dtype(*arrays)

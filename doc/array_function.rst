@@ -2,8 +2,8 @@ Numpy Wrappers
 ==============
 
 The numpy library comes with a large array of functions for manipulation of
-:ref:`numpy.ndarray` objects. Many of these functions are supported `numpoly`
-as well.
+`numpy.ndarray` objects. Many of these functions are supported `numpoly` as
+well.
 
 For numpy version >=1.17, the numpy library started to support dispatching
 functionality to subclasses. This means that the functions in numpoly with the
@@ -69,6 +69,7 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.rint
 .. autofunction:: numpoly.array_function.round
 .. autofunction:: numpoly.array_function.square
+.. autofunction:: numpoly.array_function.stack
 .. autofunction:: numpoly.array_function.subtract
 .. autofunction:: numpoly.array_function.sum
 .. autofunction:: numpoly.array_function.vstack

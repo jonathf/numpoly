@@ -292,6 +292,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             True
             >>> numpoly.polynomial([1, x]).isconstant()
             False
+
         """
         return poly_function.isconstant(self)
 

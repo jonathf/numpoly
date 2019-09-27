@@ -8,11 +8,11 @@ polynomials.
 .. automodsumm:: numpoly.poly_function
    :functions-only:
 
-.. autofunction:: numpoly.poly_function.call.call
-.. autofunction:: numpoly.poly_function.derivative.diff
-.. autofunction:: numpoly.poly_function.derivative.gradient
-.. autofunction:: numpoly.poly_function.derivative.hessian
-.. autofunction:: numpoly.poly_function.isconstant.isconstant
-.. autofunction:: numpoly.poly_function.monomial.monomial
-.. autofunction:: numpoly.poly_function.symbols.symbols
-.. autofunction:: numpoly.poly_function.toarray.toarray
+.. autofunction:: numpoly.poly_function.call
+.. autofunction:: numpoly.poly_function.diff
+.. autofunction:: numpoly.poly_function.gradient
+.. autofunction:: numpoly.poly_function.hessian
+.. autofunction:: numpoly.poly_function.isconstant
+.. autofunction:: numpoly.poly_function.monomial
+.. autofunction:: numpoly.poly_function.symbols
+.. autofunction:: numpoly.poly_function.toarray
