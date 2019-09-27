@@ -46,7 +46,8 @@ def vstack(tup):
                     [z]])
 
     """
-    arrs = numpoly.atleast_2d(*tup)
-    if not isinstance(arrs, list):
-        arrs = [arrs]
-    return numpoly.concatenate(arrs, 0)
+    arrays = numpoly.align_exponents(*tup)
+    arrays = numpoly.align_dtype(*arrays)
+    result = numpy.vstack([array.as_ndarray() for array in arrays])
+    return numpoly.aspolynomial(
+        result, indeterminants=arrays[0].indeterminants)

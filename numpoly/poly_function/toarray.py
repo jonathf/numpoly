@@ -20,7 +20,7 @@ def toarray(poly):
             Only constant polynomials can be cast to numpy.ndarray.
 
     Examples:
-        >>> numpoly.polynomial([1, 2]).toarray()
+        >>> numpoly.toarray(numpoly.polynomial([1, 2]))
         array([1, 2])
         >>> numpoly.toarray(numpoly.symbols("x"))
         Traceback (most recent call last):

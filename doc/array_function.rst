@@ -2,8 +2,8 @@ Numpy Wrappers
 ==============
 
 The numpy library comes with a large array of functions for manipulation of
-`numpy.ndarray` objects. Many of these functions are supported `numpoly` as
-well.
+:ref:`numpy.ndarray` objects. Many of these functions are supported `numpoly`
+as well.
 
 For numpy version >=1.17, the numpy library started to support dispatching
 functionality to subclasses. This means that the functions in numpoly with the

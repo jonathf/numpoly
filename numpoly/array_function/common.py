@@ -1,11 +1,12 @@
 """Implementation wrapper."""
+import numpy
 import numpoly
 
 ARRAY_FUNCTIONS = {}
 
 
 def implements(*array_functions):
-    """Register an __array_function__ implementation for Polynomial objects."""
+    """Register an __array_function__ implementation."""
     def decorator(numpoly_function):
         """Register function."""
         for func in array_functions:

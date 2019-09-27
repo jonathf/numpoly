@@ -46,6 +46,7 @@ def equal(x1, x2, out=None, where=True, **kwargs):
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
+    # return numpy.equal(x1.as_ndarray(), x2.as_ndarray(), where=where, **kwargs)
     if out is None:
         out = numpy.ones(x1.shape, dtype=bool)
     collection = x1.todict()

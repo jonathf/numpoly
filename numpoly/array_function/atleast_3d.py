@@ -32,10 +32,8 @@ def atleast_3d(*arys):
                      [3]]])]
 
     """
-    arys = [numpoly.aspolynomial(ary) for ary in arys]
-    arys = [ary.reshape(1, 1, 1) if ary.ndim == 0 else ary for ary in arys]
-    arys = [ary[numpy.newaxis, :, numpy.newaxis] if ary.ndim == 1 else ary for ary in arys]
-    arys = [ary[:, :, numpy.newaxis] if ary.ndim == 2 else ary for ary in arys]
     if len(arys) == 1:
-        return arys[0]
-    return arys
+        poly = numpoly.aspolynomial(arys[0])
+        array = numpy.atleast_3d(poly.as_ndarray())
+        return numpoly.aspolynomial(array, indeterminants=poly.indeterminants)
+    return [atleast_3d(ary) for ary in arys]

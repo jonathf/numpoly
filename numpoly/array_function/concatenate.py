@@ -40,21 +40,9 @@ def concatenate(arrays, axis=0, out=None):
         polynomial([1, 2, 3, 4, x, y])
 
     """
-    arrays = numpoly.align_indeterminants(*arrays)
-    collections = [arg.todict() for arg in arrays]
-
-    output = {}
-    keys = {arg for collection in collections for arg in collection}
-    for key in keys:
-        values = [(collection[key] if key in collection
-                   else numpy.zeros(array.shape, dtype=bool))
-                  for collection, array in zip(collections, arrays)]
-        output[key] = numpy.concatenate(values, axis=axis, out=out)
-
-    exponents = sorted(output)
-    coefficients = [output[exponent] for exponent in exponents]
-    return numpoly.ndpoly.from_attributes(
-        exponents=exponents,
-        coefficients=coefficients,
-        indeterminants=arrays[0].indeterminants,
-    )
+    arrays = numpoly.align_exponents(*arrays)
+    arrays = numpoly.align_dtype(*arrays)
+    result = numpy.concatenate(
+        [array.as_ndarray() for array in arrays], axis=axis, out=out)
+    return numpoly.aspolynomial(
+        result, indeterminants=arrays[0].indeterminants)

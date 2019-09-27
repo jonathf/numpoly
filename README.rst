@@ -1,6 +1,3 @@
-Numpoly
-=======
-
 |circleci| |codecov| |pypi| |readthedocs|
 
 .. |circleci| image:: https://circleci.com/gh/jonathf/numpoly/tree/master.svg?style=shield

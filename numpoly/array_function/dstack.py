@@ -47,7 +47,8 @@ def dstack(tup):
                     [[3, z]]])
 
     """
-    arrs = numpoly.atleast_3d(*tup)
-    if not isinstance(arrs, list):
-        arrs = [arrs]
-    return numpoly.concatenate(arrs, 2)
+    arrays = numpoly.align_exponents(*tup)
+    arrays = numpoly.align_dtype(*arrays)
+    result = numpy.dstack([array.as_ndarray() for array in arrays])
+    return numpoly.aspolynomial(
+        result, indeterminants=arrays[0].indeterminants)

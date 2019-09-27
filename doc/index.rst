@@ -11,7 +11,9 @@ Welcome to NumPoly's documentation!
    :caption: Contents:
 
    introduction
+   baseclass
    array_function
+   poly_function
 
 
 Index
