@@ -80,6 +80,6 @@ def call(poly, *args, **kwargs):
         out = out+numpoly.outer(coefficient, term).reshape(shape)
 
     if out.isconstant():
-        return out.toarray()
+        return out.tonumpy()
     out, _ = numpoly.align_indeterminants(out, indeterminants)
     return out

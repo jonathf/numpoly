@@ -3,7 +3,7 @@ import numpy
 import numpoly
 
 
-def toarray(poly):
+def tonumpy(poly):
     """
     Cast polynomial to numpy.ndarray, if possible.
 
@@ -20,9 +20,9 @@ def toarray(poly):
             Only constant polynomials can be cast to numpy.ndarray.
 
     Examples:
-        >>> numpoly.toarray(numpoly.polynomial([1, 2]))
+        >>> numpoly.tonumpy(numpoly.polynomial([1, 2]))
         array([1, 2])
-        >>> numpoly.toarray(numpoly.symbols("x"))
+        >>> numpoly.tonumpy(numpoly.symbols("x"))
         Traceback (most recent call last):
             ...
         ValueError: only constant polynomials can be converted to array.

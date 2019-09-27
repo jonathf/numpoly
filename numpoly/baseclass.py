@@ -49,6 +49,8 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             independent variables found in the polynomial array.
         names (Tuple[str, ...]):
             Same as `indeterminants`, but only the names as string.
+        values (numpy.ndarray):
+            Expose the underlying structured array.
 
     Examples:
         >>> poly = ndpoly(
@@ -276,6 +278,15 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             indeterminants=self.names,
         )
 
+    @property
+    def values(self):
+        """Expose the underlying structured array."""
+        return numpy.ndarray(
+            shape=self.shape,
+            dtype=[(key, self.dtype) for key in self.keys],
+            buffer=self.data
+        )
+
     def isconstant(self):
         """
         Check if a polynomial is constant or not.
@@ -318,7 +329,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                 for exponent, coefficient in zip(
                     self.exponents, self.coefficients)}
 
-    def toarray(self):
+    def tonumpy(self):
         """
         Cast polynomial to numpy.ndarray, if possible.
 
@@ -331,23 +342,15 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                 Same as object, but cast to `numpy.ndarray`.
 
         Examples:
-            >>> numpoly.polynomial([1, 2]).toarray()
+            >>> numpoly.polynomial([1, 2]).tonumpy()
             array([1, 2])
-            >>> numpoly.symbols("x").toarray()
+            >>> numpoly.symbols("x").tonumpy()
             Traceback (most recent call last):
                 ...
             ValueError: only constant polynomials can be converted to array.
 
         """
-        return poly_function.toarray(self)
-
-    def as_ndarray(self):
-        """Expose the underlying structured array."""
-        return numpy.ndarray(
-            shape=self.shape,
-            dtype=[(key, self.dtype) for key in self.keys],
-            buffer=self.data
-        )
+        return poly_function.tonumpy(self)
 
     # =============================================
     # Override numpy properties to work with ndpoly

@@ -129,7 +129,7 @@ def test_numpy_cumsum(interface):
 
 def test_numpy_divide(func_interface):
     poly = polynomial([[0, Y], [X, 1]])
-    assert numpy.all(poly / 2 == [[0, 0.5*Y], [0.5*X, 0.5]])
+    assert numpy.all(poly / 2 == polynomial([[0, 0.5*Y], [0.5*X, 0.5]]))
     assert numpy.all(func_interface.divide(poly, 2) == [[0, 0.5*Y], [0.5*X, 0.5]])
     assert numpy.all(poly / [1, 2] == [[0, 0.5*Y], [X, 0.5]])
     assert numpy.all(func_interface.divide(poly, [1, 2]) == [[0, 0.5*Y], [X, 0.5]])
@@ -290,6 +290,17 @@ def test_numpy_prod(interface):
     poly = numpoly.polynomial([[1, X, X**2], [X+Y, Y, Y]])
     assert interface.prod(poly) == X**3*Y**3+X**4*Y**2
     assert numpy.all(interface.prod(poly, axis=0) == [Y+X, X*Y, X**2*Y])
+
+
+def test_numpy_repeat(func_interface):
+    poly = numpoly.polynomial([[1, X-1], [X**2, X]])
+    assert numpy.all(func_interface.repeat(poly, 2) ==
+                     [[1, -1+X], [1, -1+X], [X**2, X], [X**2, X]])
+    assert numpy.all(func_interface.repeat(poly, 3, axis=1) ==
+                     [[1, 1, 1, -1+X, -1+X, -1+X],
+                      [X**2, X**2, X**2, X, X, X]])
+    assert numpy.all(numpoly.repeat(poly, [1, 2], axis=0) ==
+                     [[1, -1+X], [X**2, X], [X**2, X]])
 
 
 def test_numpy_rint(func_interface):

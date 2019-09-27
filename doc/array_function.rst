@@ -66,6 +66,7 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.positive
 .. autofunction:: numpoly.array_function.power
 .. autofunction:: numpoly.array_function.prod
+.. autofunction:: numpoly.array_function.repeat
 .. autofunction:: numpoly.array_function.rint
 .. autofunction:: numpoly.array_function.round
 .. autofunction:: numpoly.array_function.square

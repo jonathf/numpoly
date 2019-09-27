@@ -1,4 +1,5 @@
 """Convert the input to an polynomial array."""
+import numpy
 import numpoly
 
 

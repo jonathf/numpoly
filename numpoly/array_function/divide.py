@@ -56,7 +56,7 @@ def divide(x1, x2, out=None, where=True, **kwargs):
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
-    x2 = x2.toarray()
+    x2 = x2.tonumpy()
     no_output = out is None
     if no_output:
         out = numpoly.ndpoly(
@@ -69,6 +69,7 @@ def divide(x1, x2, out=None, where=True, **kwargs):
         assert len(out) == 1, "only one output"
         out = out[0]
     for key in x1.keys:
+        out[key] = 0
         numpy.true_divide(x1[key], x2, out=out[key], where=where, **kwargs)
     if no_output:
         out = numpoly.clean_attributes(out)

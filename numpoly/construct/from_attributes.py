@@ -22,7 +22,7 @@ def polynomial_from_attributes(
         coefficients (Iterable[numpy.ndarray]):
             The polynomial coefficients. Must correspond to `exponents` by
             having the same length ``N``.
-        indeterminants (Union[str, Tuple[str, ...], numpoly.ndpoly]):
+        indeterminants (Union[Sequence[str], numpoly.ndpoly]):
             The indeterminants variables, either as string names or as
             simple polynomials. Must correspond to the exponents by having
             length ``D``.

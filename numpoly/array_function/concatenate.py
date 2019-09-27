@@ -43,6 +43,6 @@ def concatenate(arrays, axis=0, out=None):
     arrays = numpoly.align_exponents(*arrays)
     arrays = numpoly.align_dtype(*arrays)
     result = numpy.concatenate(
-        [array.as_ndarray() for array in arrays], axis=axis, out=out)
+        [array.values for array in arrays], axis=axis, out=out)
     return numpoly.aspolynomial(
         result, indeterminants=arrays[0].indeterminants)

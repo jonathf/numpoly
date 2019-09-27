@@ -15,4 +15,4 @@ polynomials.
 .. autofunction:: numpoly.poly_function.isconstant
 .. autofunction:: numpoly.poly_function.monomial
 .. autofunction:: numpoly.poly_function.symbols
-.. autofunction:: numpoly.poly_function.toarray
+.. autofunction:: numpoly.poly_function.tonumpy
