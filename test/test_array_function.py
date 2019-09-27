@@ -292,6 +292,17 @@ def test_numpy_prod(interface):
     assert numpy.all(interface.prod(poly, axis=0) == [Y+X, X*Y, X**2*Y])
 
 
+def test_numpy_repeat(func_interface):
+    poly = numpoly.polynomial([[1, X-1], [X**2, X]])
+    assert numpy.all(func_interface.repeat(poly, 2) ==
+                     [[1, -1+X], [1, -1+X], [X**2, X], [X**2, X]])
+    assert numpy.all(func_interface.repeat(poly, 3, axis=1) ==
+                     [[1, 1, 1, -1+X, -1+X, -1+X],
+                      [X**2, X**2, X**2, X, X, X]])
+    assert numpy.all(numpoly.repeat(poly, [1, 2], axis=0) ==
+                     [[1, -1+X], [X**2, X], [X**2, X]])
+
+
 def test_numpy_rint(func_interface):
     poly = numpoly.polynomial([-1.7*X, X-1.5])
     assert numpy.all(func_interface.rint(poly) == [-2*X, X-2])
