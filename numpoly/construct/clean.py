@@ -30,6 +30,7 @@ def clean_attributes(poly):
         polynomial([x])
         >>> x.exponents
         array([[1]], dtype=uint32)
+
     """
     return numpoly.ndpoly.from_attributes(
         exponents=poly.exponents,
@@ -60,6 +61,7 @@ def postprocess_attributes(exponents, coefficients, indeterminants):
     Returns:
         (numpoly.ndpoly):
             Polynomial array with attributes determined by the input.
+
     """
     coefficients = [numpy.asarray(coefficient) for coefficient in coefficients]
     pairs = [

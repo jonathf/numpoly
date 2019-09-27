@@ -129,7 +129,7 @@ def test_numpy_cumsum(interface):
 
 def test_numpy_divide(func_interface):
     poly = polynomial([[0, Y], [X, 1]])
-    assert numpy.all(poly / 2 == [[0, 0.5*Y], [0.5*X, 0.5]])
+    assert numpy.all(poly / 2 == polynomial([[0, 0.5*Y], [0.5*X, 0.5]]))
     assert numpy.all(func_interface.divide(poly, 2) == [[0, 0.5*Y], [0.5*X, 0.5]])
     assert numpy.all(poly / [1, 2] == [[0, 0.5*Y], [X, 0.5]])
     assert numpy.all(func_interface.divide(poly, [1, 2]) == [[0, 0.5*Y], [X, 0.5]])

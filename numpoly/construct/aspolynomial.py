@@ -52,19 +52,6 @@ def aspolynomial(
     if remain:
         return poly_like
 
-    # assume polynomial converted to structured array
-    if isinstance(poly_like, numpy.ndarray) and poly_like.dtype.names:
-        keys = numpy.asarray(poly_like.dtype.names, dtype="U")
-        exponents = keys.flatten().view(numpy.uint32)-48
-        exponents = exponents.reshape(len(keys), -1)
-        return numpoly.ndpoly(
-            exponents=exponents,
-            shape=poly_like.shape,
-            indeterminants=indeterminants,
-            dtype=dtype,
-            buffer=poly_like.data
-        )
-
     if indeterminants is None:
         return numpoly.polynomial(poly_like, dtype=dtype)
     return numpoly.polynomial(poly_like, indeterminants=indeterminants, dtype=dtype)
