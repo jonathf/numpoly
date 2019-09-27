@@ -38,6 +38,7 @@ from .power import power
 from .prod import prod
 from .rint import rint
 from .square import square
+from .stack import stack
 from .subtract import subtract
 from .sum import sum
 from .vstack import vstack

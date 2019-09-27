@@ -7,6 +7,8 @@ def call(poly, *args, **kwargs):
     """
     Evaluate polynomial by inserting new values in to the indeterminants.
 
+    Equaivalent to calling the polynomial or using the ``__call__`` method.
+
     Args:
         poly (numpoly.ndpoly):
             Polynomial to evaluate.

@@ -29,8 +29,8 @@ def atleast_1d(*arys):
         [polynomial([1]), polynomial([2, 3])]
 
     """
-    arys = [numpoly.aspolynomial(ary) for ary in arys]
-    arys = [ary if ary.ndim else ary.reshape(1) for ary in arys]
     if len(arys) == 1:
-        return arys[0]
-    return arys
+        poly = numpoly.aspolynomial(arys[0])
+        array = numpy.atleast_1d(poly.as_ndarray())
+        return numpoly.aspolynomial(array, indeterminants=poly.indeterminants)
+    return [atleast_1d(ary) for ary in arys]

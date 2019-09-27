@@ -4,9 +4,7 @@ from six import string_types
 
 import numpy
 
-from .exponent import exponents_to_keys, keys_to_exponents
-
-from . import construct, array_function, poly_function
+from . import align, construct, array_function, poly_function
 
 
 REDUCE_MAPPINGS = {
@@ -32,6 +30,25 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     else, etc.)
 
     Arrays should be constructed using `polynomial`, `symbols` etc.
+
+    Attributes:
+        coefficients (List[numpy.ndarray, ...]):
+            The polynomial coefficients. Together with exponents defines the
+            polynomial form.
+        exponents (numpy.ndarray):
+            The polynomial exponents. 2-dimensionsl where the first axis is the
+            same length as coefficients and the second is the length of the
+            indeterminants.
+        keys (List[str, ...]):
+            The raw names of the coefficients. One-to-one with `exponents`, but
+            as string as to be compatible with numpy structured array. Unlike
+            the exponents, that are useful for mathematical manipulation, the
+            keys are useful as coefficient lookup.
+        indeterminats (numpoly.ndpoly):
+            Secondary polynomial only consisting of an array of simple
+            independent variables found in the polynomial array.
+        names (Tuple[str, ...]):
+            Same as `indeterminants`, but only the names as string.
 
     Examples:
         >>> poly = ndpoly(
@@ -87,7 +104,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                 Extra arguments passed to `numpy.ndarray` constructor.
 
         """
-        exponents = numpy.array(exponents, dtype=int)
+        exponents = numpy.array(exponents, dtype=numpy.uint32)
 
         if isinstance(indeterminants, str):
             indeterminants = poly_function.symbols(indeterminants)
@@ -99,7 +116,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                 for idx in range(exponents.shape[1])
             )
 
-        keys = exponents_to_keys(exponents)
+        keys = (exponents+48).flatten().view("U%d" % exponents.shape[-1])
 
         dtype = int if dtype is None else dtype
         dtype_ = numpy.dtype([(key, dtype) for key in keys])
@@ -179,7 +196,8 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
              [4 0]]
 
         """
-        return keys_to_exponents(self.keys)
+        exponents = self.keys.flatten().view(numpy.uint32)-48
+        return exponents.reshape(len(self.keys), -1)
 
     @staticmethod
     def from_attributes(
@@ -210,6 +228,10 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             clean (bool):
                 Clean up attributes, removing redundant indeterminants and
                 exponents. Used to ensure alignment isn't broken.
+
+        Returns:
+            (numpoly.ndpoly):
+                Polynomials with attributes defined by input.
 
         Examples:
             >>> numpoly.ndpoly.from_attributes(
@@ -255,12 +277,33 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         )
 
     def isconstant(self):
-        """Check if a polynomial is constant or not."""
+        """
+        Check if a polynomial is constant or not.
+
+        Returns:
+            (bool):
+                True if all elements in array are constant.
+
+        Examples:
+            >>> x = numpoly.symbols("x")
+            >>> x.isconstant()
+            False
+            >>> numpoly.polynomial([1, 2]).isconstant()
+            True
+            >>> numpoly.polynomial([1, x]).isconstant()
+            False
+
+        """
         return poly_function.isconstant(self)
 
     def todict(self):
         """
         Cast to dict where keys are exponents and values are coefficients.
+
+        Returns:
+            (Dict[Tuple[int, ...], numpy.ndarray]):
+                Dictionary where keys are exponents and values are
+                coefficients.
 
         Examples:
             >>> x, y = numpoly.symbols("x y")
@@ -276,8 +319,35 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                     self.exponents, self.coefficients)}
 
     def toarray(self):
-        """Cast polynomial to numpy.ndarray, if possible."""
+        """
+        Cast polynomial to numpy.ndarray, if possible.
+
+        Raises:
+            ValueError:
+                When polynomial include indeterminats, casting to numpy.
+
+        Returns:
+            (numpy.ndarray):
+                Same as object, but cast to `numpy.ndarray`.
+
+        Examples:
+            >>> numpoly.polynomial([1, 2]).toarray()
+            array([1, 2])
+            >>> numpoly.symbols("x").toarray()
+            Traceback (most recent call last):
+                ...
+            ValueError: only constant polynomials can be converted to array.
+
+        """
         return poly_function.toarray(self)
+
+    def as_ndarray(self):
+        """Expose the underlying structured array."""
+        return numpy.ndarray(
+            shape=self.shape,
+            dtype=[(key, self.dtype) for key in self.keys],
+            buffer=self.data
+        )
 
     # =============================================
     # Override numpy properties to work with ndpoly

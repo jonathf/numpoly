@@ -302,6 +302,12 @@ def test_numpy_square(func_interface):
     assert (1+X)**2 == 1+2*X+X**2
 
 
+def test_numpy_stack(func_interface):
+    poly = polynomial([1, X, Y])
+    assert numpy.all(func_interface.stack([poly, poly], axis=0) == [[1, X, Y], [1, X, Y]])
+    assert numpy.all(func_interface.stack([poly, poly], axis=1) == [[1, 1], [X, X], [Y, Y]])
+
+
 def test_numpy_subtract(func_interface):
     assert -X+3 == 3-X
     assert numpy.all(4 - polynomial([1, X, Y]) == [3, 4-X, 4-Y])

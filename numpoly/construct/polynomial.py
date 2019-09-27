@@ -87,7 +87,11 @@ def polynomial(
 
     # assume polynomial converted to structured array
     elif isinstance(poly_like, numpy.ndarray) and poly_like.dtype.names:
-        exponents = numpoly.keys_to_exponents(poly_like.dtype.names)
+
+        keys = numpy.asarray(poly_like.dtype.names, dtype="U")
+        exponents = keys.flatten().view(numpy.uint32)-48
+        exponents = exponents.reshape(len(keys), -1)
+
         coefficients = [poly_like[key] for key in poly_like.dtype.names]
         poly = numpoly.ndpoly.from_attributes(
             exponents=exponents,

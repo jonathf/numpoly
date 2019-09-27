@@ -69,6 +69,7 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.rint
 .. autofunction:: numpoly.array_function.round
 .. autofunction:: numpoly.array_function.square
+.. autofunction:: numpoly.array_function.stack
 .. autofunction:: numpoly.array_function.subtract
 .. autofunction:: numpoly.array_function.sum
 .. autofunction:: numpoly.array_function.vstack

@@ -41,10 +41,8 @@ def hstack(tup):
                     [3, z]])
 
     """
-    arrs = numpoly.atleast_1d(*tup)
-    if not isinstance(arrs, list):
-        arrs = [arrs]
-    # As a special case, dimension 0 of 1-dimensional arrays is "horizontal"
-    if arrs and arrs[0].ndim == 1:
-        return numpoly.concatenate(arrs, 0)
-    return numpoly.concatenate(arrs, 1)
+    arrays = numpoly.align_exponents(*tup)
+    arrays = numpoly.align_dtype(*arrays)
+    result = numpy.hstack([array.as_ndarray() for array in arrays])
+    return numpoly.aspolynomial(
+        result, indeterminants=arrays[0].indeterminants)

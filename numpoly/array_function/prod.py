@@ -97,7 +97,8 @@ def _prod(a, axis):
             An array shaped as `a` but with the specified axis removed.
 
     """
-    assert len(a.shape) > axis
+    axis = axis+a.ndim if axis < 0 else axis
+    assert a.ndim > axis, (a, axis)
     indices = (slice(None),)*axis
     out = a[indices+(0,)]
     for idx in range(1, a.shape[axis]):

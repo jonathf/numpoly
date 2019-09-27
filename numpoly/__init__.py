@@ -1,7 +1,6 @@
 # pylint: disable=wildcard-import
 """Numpoly -- Multivariate polynomials as numpy elements."""
 from .baseclass import ndpoly
-from .exponent import exponents_to_keys, keys_to_exponents
 
 from .align import (
     align_polynomials,
