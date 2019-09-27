@@ -54,7 +54,7 @@ def floor_divide(x1, x2, out=None, where=True, **kwargs):
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
-    x2 = x2.toarray()
+    x2 = x2.tonumpy()
     no_output = out is None
     if no_output:
         out = numpoly.ndpoly(
