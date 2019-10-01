@@ -5,13 +5,11 @@ import numpy
 import numpoly
 
 
-def monomial(indeterminants, start, stop=None, ordering="G", cross_truncation=1.):
+def monomial(start, stop=None, ordering="G", cross_truncation=1., indeterminants=None):
     """
     Create an polynomial monomial expansion.
 
     Args:
-        indeterminants (numpoly.ndpoly, str, Tuple[str, ...])
-            The indeterminants used to create the monomials expansion.
         start (int, numpy.ndarray):
             The minimum polynomial to include. If int is provided, set as
             lowest total order. If array of int, set as lower order along each
@@ -39,17 +37,19 @@ def monomial(indeterminants, start, stop=None, ordering="G", cross_truncation=1.
         cross_truncation (float):
             Use hyperbolic cross truncation scheme to reduce the number of
             terms in expansion.
+        indeterminants (None, numpoly.ndpoly, str, Tuple[str, ...])
+            The indeterminants used to create the monomials expansion.
 
     Returns:
         (numpoly.ndpoly):
             Monomial expansion.
 
     Examples:
-        >>> print(numpoly.monomial("x", 4))
-        [1 x x**2 x**3 x**4]
-        >>> print(numpoly.monomial(("x", "y"), 4, 4, ordering="GR"))
+        >>> print(numpoly.monomial(4))
+        [1 q q**2 q**3 q**4]
+        >>> print(numpoly.monomial(4, 4, ordering="GR", indeterminants=("x", "y")))
         [x**4 x**3*y y**4 x**2*y**2 x*y**3]
-        >>> print(numpoly.monomial(("x", "y"), [1, 1], [2, 2]))
+        >>> print(numpoly.monomial([1, 1], [2, 2], indeterminants=("x", "y")))
         [x*y x*y**2 x**2*y x**2*y**2]
 
     """
@@ -58,7 +58,8 @@ def monomial(indeterminants, start, stop=None, ordering="G", cross_truncation=1.
 
     start = numpy.array(start, dtype=int)
     stop = numpy.array(stop, dtype=int)
-    dimensions = max(start.size, stop.size, len(indeterminants))
+    dimensions = 1 if indeterminants is None else len(indeterminants)
+    dimensions = max(start.size, stop.size, dimensions)
 
     indices = bindex(
         start=numpy.min(start),
