@@ -1,5 +1,6 @@
 """Polynomial base class."""
 from __future__ import division
+import re
 from six import string_types
 
 import numpy
@@ -17,6 +18,21 @@ ACCUMULATE_MAPPINGS = {
     numpy.add: numpy.cumsum,
     numpy.multiply: numpy.cumprod,
 }
+INDETERMINANT_DEFAULT = "q"
+"""Polynomial indeterminant defaults, if not defined."""
+
+INDETERMINANT_DEFAULT_INDEX = False
+"""
+Add a postfix index to single indeterminant name.
+
+If single indeterminant name, e.g. 'q' is provided, but the polynomial is
+multivariate, an extra postfix index is added to differentiate the names:
+'q0, q1, q2, ...'. If true, encorce this behavior for single variables as
+well such that 'q' always get converted to 'q0'.
+"""
+
+INDETERMINANT_REGEX = r"[\w_]+"
+"""Regular expression definint valid indeterminant names."""
 
 
 class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
@@ -80,7 +96,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             cls,
             exponents=((0,),),
             shape=(),
-            indeterminants="z",
+            indeterminants=None,
             dtype=None,
             **kwargs
     ):
@@ -94,12 +110,13 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                 the number of dimensions.
             shape (Tuple[int, ...]):
                 Shape of created array.
-            indeterminants (Union[str, Tuple[str], numpoly.ndpoly]):
+            indeterminants (Union[None, str, Tuple[str], numpoly.ndpoly]):
                 The name of the indeterminant variables in te polynomial. If
                 polynomial, inherent from it. Else, pass argument to
                 `numpoly.symbols` to create the indeterminants. If only one
                 name is provided, but more than one is required, indeterminant
-                will be extended with an integer index.
+                will be extended with an integer index. If omitted, use
+                ``INDETERMINANT_DEFAULT``.
             dtype:
                 Any object that can be interpreted as a numpy data type.
             kwargs:
@@ -108,15 +125,21 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         """
         exponents = numpy.array(exponents, dtype=numpy.uint32)
 
+        if indeterminants is None:
+            indeterminants = INDETERMINANT_DEFAULT
         if isinstance(indeterminants, str):
             indeterminants = poly_function.symbols(indeterminants)
         if isinstance(indeterminants, ndpoly):
             indeterminants = indeterminants.names
-        if len(indeterminants) == 1 and exponents.shape[1] > 1:
+        if len(indeterminants) == 1 and (INDETERMINANT_DEFAULT_INDEX or
+                                         exponents.shape[1] > 1):
             indeterminants = tuple(
                 "%s%d" % (str(indeterminants[0]), idx)
                 for idx in range(exponents.shape[1])
             )
+        for indeterminant in indeterminants:
+            assert re.search(INDETERMINANT_REGEX, indeterminant), (
+                "invalid polynomial name; expected format: '%s'" % INDETERMINANT_REGEX)
 
         keys = (exponents+48).flatten().view("U%d" % exponents.shape[-1])
 
