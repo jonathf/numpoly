@@ -28,9 +28,12 @@ def test_postprocess_attributes():
 def test_aspolynomial():
     poly = 2*X-Y+1
     assert poly == numpoly.aspolynomial(poly)
+    assert poly == numpoly.aspolynomial(poly, indeterminants=XY)
     assert poly == numpoly.aspolynomial(poly.todict(), indeterminants=XY)
+    assert poly == numpoly.aspolynomial(poly, indeterminants=("X", "Y"))
     assert poly == numpoly.aspolynomial(poly.todict(), indeterminants=("X", "Y"))
     assert poly != numpoly.aspolynomial(poly.todict(), indeterminants=("Y", "X"))
+    assert X == numpoly.aspolynomial(Y, indeterminants="X")
     assert poly != numpoly.aspolynomial(poly.todict(), indeterminants="X")
     assert isinstance(numpoly.aspolynomial([1, 2, 3]), numpoly.ndpoly)
     assert numpy.all(numpoly.aspolynomial([1, 2, 3]) == [1, 2, 3])

@@ -48,16 +48,8 @@ def equal(x1, x2, out=None, where=True, **kwargs):
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
-    # return numpy.equal(x1.values, x2.values, where=where, **kwargs)
     if out is None:
         out = numpy.ones(x1.shape, dtype=bool)
-    collection = x1.todict()
-    for exponent, coefficient in x2.todict().items():
-        if exponent in collection:
-            out &= numpy.equal(
-                collection.pop(exponent), coefficient, where=where, **kwargs)
-        else:
-            out &= coefficient == 0
-    for _, coefficient in collection.items():
-        out &= coefficient == 0
+    for coeff1, coeff2 in zip(x1.coefficients, x2.coefficients):
+        out &= numpy.equal(coeff1, coeff2, where=where, **kwargs)
     return out

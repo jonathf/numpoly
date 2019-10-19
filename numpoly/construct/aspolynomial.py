@@ -47,11 +47,8 @@ def aspolynomial(
                     "{}{}".format(indeterminants[0], idx)
                     for idx in range(len(poly_like.indeterminants))
                 ]
-            remain |= indeterminants == poly_like.names
+            remain &= indeterminants == poly_like.names
 
     if remain:
         return poly_like
-
-    if indeterminants is None:
-        return numpoly.polynomial(poly_like, dtype=dtype)
     return numpoly.polynomial(poly_like, indeterminants=indeterminants, dtype=dtype)
