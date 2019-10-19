@@ -1,4 +1,6 @@
 """Polynomials differentiation functions."""
+from six import string_types
+
 import numpy
 import numpoly
 
@@ -19,25 +21,25 @@ def diff(poly, *diffvars):
     Examples:
         >>> x, y = numpoly.symbols("x y")
         >>> poly = numpoly.polynomial([1, x, x*y**2+1])
-        >>> print(poly)
-        [1 x 1+x*y**2]
-        >>> print(numpoly.diff(poly, "x"))
-        [0 1 y**2]
-        >>> print(numpoly.diff(poly, 0, 1))
-        [0 0 2*y]
-        >>> print(numpoly.diff(poly, x, x))
-        [0 0 0]
+        >>> poly
+        polynomial([1, x, 1+x*y**2])
+        >>> numpoly.diff(poly, "x")
+        polynomial([0, 1, y**2])
+        >>> numpoly.diff(poly, 0, 1)
+        polynomial([0, 0, 2*y])
+        >>> numpoly.diff(poly, x, x)
+        polynomial([0, 0, 0])
 
     """
-    poly = poly_ref = numpoly.polynomial(poly)
+    poly = poly_ref = numpoly.aspolynomial(poly)
 
     for diffvar in diffvars:
-        if isinstance(diffvar, str):
+        if isinstance(diffvar, string_types):
             idx = poly.names.index(diffvar)
         elif isinstance(diffvar, int):
             idx = diffvar
         else:
-            diffvar = numpoly.polynomial(diffvar)
+            diffvar = numpoly.aspolynomial(diffvar)
             assert len(diffvar.names) == 1, "only one at the time"
             assert numpy.all(diffvar.exponents == 1), (
                 "derivative variable assumes singletons")
@@ -59,7 +61,7 @@ def diff(poly, *diffvars):
         poly = numpoly.ndpoly.from_attributes(
             exponents=exponents,
             coefficients=coefficients,
-            indeterminants=poly.names,
+            indeterminants=poly_ref.names,
         )
         poly, poly_ref = numpoly.align_polynomials(poly, poly_ref)
     return poly
@@ -81,19 +83,19 @@ def gradient(poly):
     Examples:
         >>> x, y = numpoly.symbols("x y")
         >>> poly = 5*x**5+4
-        >>> print(numpoly.gradient(poly))
-        [25*x**4]
+        >>> numpoly.gradient(poly)
+        polynomial([25*x**4])
         >>> poly = 4*x**3+2*y**2+3
-        >>> print(numpoly.gradient(poly))
-        [12*x**2 4*y]
+        >>> numpoly.gradient(poly)
+        polynomial([12*x**2, 4*y])
         >>> poly = numpoly.polynomial([1, x**3, x*y**2+1])
-        >>> print(numpoly.gradient(poly))
-        [[0 3*x**2 y**2]
-         [0 0 2*x*y]]
+        >>> numpoly.gradient(poly)
+        polynomial([[0, 3*x**2, y**2],
+                    [0, 0, 2*x*y]])
 
     """
     polys = [diff(poly, diffvar)[numpy.newaxis]
-             for diffvar in poly.indeterminants]
+             for diffvar in poly.names]
     return numpoly.concatenate(polys, axis=0)
 
 
@@ -115,19 +117,19 @@ def hessian(poly):
     Examples:
         >>> x, y = numpoly.symbols("x y")
         >>> poly = 5*x**5+4
-        >>> print(numpoly.hessian(poly))
-        [[100*x**3]]
+        >>> numpoly.hessian(poly)
+        polynomial([[100*x**3]])
         >>> poly = 4*x**3+2*y**2+3
-        >>> print(numpoly.hessian(poly))
-        [[24*x 0]
-         [0 4]]
+        >>> numpoly.hessian(poly)
+        polynomial([[24*x, 0],
+                    [0, 4]])
         >>> poly = numpoly.polynomial([1, x, x*y**2+1])
-        >>> print(numpoly.hessian(poly))
-        [[[0 0 0]
-          [0 0 2*y]]
+        >>> numpoly.hessian(poly)
+        polynomial([[[0, 0, 0],
+                     [0, 0, 2*y]],
         <BLANKLINE>
-         [[0 0 2*y]
-          [0 0 2*x]]]
+                    [[0, 0, 2*y],
+                     [0, 0, 2*x]]])
 
     """
     return gradient(gradient(poly))

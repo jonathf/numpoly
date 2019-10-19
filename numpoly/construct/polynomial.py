@@ -7,7 +7,7 @@ from .compose import compose_polynomial_array
 
 def polynomial(
         poly_like=None,
-        indeterminants="q",
+        indeterminants=None,
         dtype=None,
 ):
     """
@@ -79,6 +79,8 @@ def polynomial(
         )
 
     elif isinstance(poly_like, numpoly.ndpoly):
+        if indeterminants is None:
+            indeterminants = poly_like.names
         poly = numpoly.ndpoly.from_attributes(
             exponents=poly_like.exponents,
             coefficients=poly_like.coefficients,
