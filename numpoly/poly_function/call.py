@@ -27,7 +27,7 @@ def call(poly, *args, **kwargs):
         >>> poly = numpoly.polynomial([[x, x-1], [y, y+x]])
         >>> print(poly)
         [[x -1+x]
-         [y y+x]]
+         [y x+y]]
         >>> print(poly(1, 0))
         [[1 0]
          [0 1]]

@@ -33,9 +33,23 @@ def polynomial_from_attributes(
             Clean up attributes, removing redundant indeterminants and
             exponents.
 
-    Examples:
+    Returns:
         (numpoly.ndpoly):
             Polynomial array with attributes determined by the input.
+
+    Examples:
+        >>> numpoly.ndpoly.from_attributes(
+        ...     exponents=[(0,), (1,)],
+        ...     coefficients=[[1, 0], [0, 1]],
+        ...     indeterminants=("x",),
+        ... )
+        polynomial([1, x])
+        >>> numpoly.ndpoly.from_attributes(
+        ...     exponents=[(0, 0, 0), (1, 1, 2)],
+        ...     coefficients=[4, -1],
+        ...     indeterminants=("x", "y", "z"),
+        ... )
+        polynomial(4-x*y*z**2)
 
     """
     if clean:

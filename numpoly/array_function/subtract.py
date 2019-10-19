@@ -39,7 +39,7 @@ def subtract(x1, x2, out=None, where=True, **kwargs):
     Examples:
         >>> x, y = numpoly.symbols("x y")
         >>> numpoly.subtract(x, 4)
-        polynomial(-4+x)
+        polynomial(x-4)
         >>> poly1 = y**numpy.arange(3)
         >>> poly2 = x**numpy.arange(9).reshape((3, 3))
         >>> numpoly.subtract(poly1, poly2)

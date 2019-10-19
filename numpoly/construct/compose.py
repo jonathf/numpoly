@@ -39,7 +39,7 @@ def compose_polynomial_array(
     indices = numpy.array([isinstance(array, numpoly.ndpoly)
                            for array in arrays])
     arrays[indices] = numpoly.align_indeterminants(*arrays[indices])
-    indeterminants = arrays[indices][0] if numpy.any(indices) else "q"
+    indeterminants = arrays[indices][0] if numpy.any(indices) else None
     arrays = arrays.tolist()
 
     dtypes = []

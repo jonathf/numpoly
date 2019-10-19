@@ -41,9 +41,9 @@ def cumsum(a, axis=None, dtype=None, out=None):
         polynomial([[1, x, 3],
                     [4, 5, y]])
         >>> numpoly.cumsum(poly)
-        polynomial([1, 1+x, 4+x, 8+x, 13+x, 13+y+x])
+        polynomial([1, 1+x, 4+x, 8+x, 13+x, 13+x+y])
         >>> numpoly.cumsum(poly, dtype=float)
-        polynomial([1.0, 1.0+x, 4.0+x, 8.0+x, 13.0+x, 13.0+y+x])
+        polynomial([1.0, 1.0+x, 4.0+x, 8.0+x, 13.0+x, 13.0+x+y])
         >>> numpoly.cumsum(poly, axis=0)
         polynomial([[1, x, 3],
                     [5, 5+x, 3+y]])

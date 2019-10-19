@@ -47,11 +47,11 @@ def mean(a, axis=None, dtype=None, out=None, **kwargs):
         >>> x, y = numpoly.symbols("x y")
         >>> a = numpoly.polynomial([[1, 2*x], [3*y+x, 4]])
         >>> numpoly.mean(a)
-        polynomial(1.25+0.75*y+0.75*x)
+        polynomial(1.25+0.75*x+0.75*y)
         >>> numpoly.mean(a, axis=0)
-        polynomial([0.5+1.5*y+0.5*x, 2.0+x])
+        polynomial([0.5+0.5*x+1.5*y, 2.0+x])
         >>> numpoly.mean(a, axis=1)
-        polynomial([0.5+x, 2.0+1.5*y+0.5*x])
+        polynomial([0.5+x, 2.0+0.5*x+1.5*y])
 
     """
     return simple_dispatch(

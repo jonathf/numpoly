@@ -6,7 +6,7 @@ import numpy
 import numpoly
 
 
-def symbols(names="q", asarray=False, dtype="i8"):
+def symbols(names=None, asarray=False, dtype="i8"):
     """
     Construct symbol variables.
 
@@ -18,7 +18,7 @@ def symbols(names="q", asarray=False, dtype="i8"):
     * ``{letter}:{letter}`` can be used to define a alphabet range.
 
     Args:
-        names (str, Tuple[str, ...]):
+        names (None, str, Tuple[str, ...]):
             Indeterminants are determined by splitting the string on space. If
             iterable of strings, indeterminants defined directly.
         asarray (bool):
@@ -32,12 +32,12 @@ def symbols(names="q", asarray=False, dtype="i8"):
             Polynomial array with unit components in each dimension.
 
     Examples:
-        >>> print(numpoly.symbols("q"))
+        >>> print(numpoly.symbols())
         q
-        >>> print(numpoly.symbols("q,"))
-        [q]
-        >>> print(numpoly.symbols("q", asarray=True))
-        [q]
+        >>> print(numpoly.symbols("z,"))
+        [z]
+        >>> print(numpoly.symbols("z", asarray=True))
+        [z]
         >>> print(numpoly.symbols(["alpha", "beta"]))
         [alpha beta]
         >>> print(numpoly.symbols("x y z"))
@@ -52,6 +52,11 @@ def symbols(names="q", asarray=False, dtype="i8"):
         [za zb zc zd ze zf]
 
     """
+    if names is None:
+        coefficients = numpy.ones((1, 1) if asarray else 1, dtype=dtype)
+        return numpoly.ndpoly.from_attributes(
+            exponents=[(1,)], coefficients=coefficients)
+
     if not isinstance(names, str):
         names = list(names)
 

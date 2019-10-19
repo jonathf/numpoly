@@ -3,6 +3,10 @@ import numpy
 import numpoly
 
 
+class PolynomialConstructionError(ValueError):
+    """Error related to construction of polynomial."""
+
+
 def clean_attributes(poly):
     """
     Clean up polynomial attributes.
@@ -23,8 +27,8 @@ def clean_attributes(poly):
         >>> x.indeterminants
         polynomial([x, y])
         >>> x.exponents
-        array([[0, 1],
-               [1, 0]], dtype=uint32)
+        array([[1, 0],
+               [0, 1]], dtype=uint32)
         >>> x = numpoly.clean_attributes(x)
         >>> x.indeterminants
         polynomial([x])
@@ -41,7 +45,7 @@ def clean_attributes(poly):
     )
 
 
-def postprocess_attributes(exponents, coefficients, indeterminants):
+def postprocess_attributes(exponents, coefficients, indeterminants=None):
     """
     Clean up polynomial attributes.
 
@@ -53,26 +57,30 @@ def postprocess_attributes(exponents, coefficients, indeterminants):
         coefficients (Sequence[numpy.ndarray]):
             The polynomial coefficients. Must correspond to `exponents` by
             having the same length ``N``.
-        indeterminants (Union[Sequence[str], numpoly.ndpoly]):
+        indeterminants (Union[None, Sequence[str], numpoly.ndpoly]):
             The indeterminants variables, either as string names or as
             simple polynomials. Must correspond to the exponents by having
             length ``D``.
 
     Returns:
-        (numpoly.ndpoly):
-            Polynomial array with attributes determined by the input.
+        (numpoly.ndarray, List[numpy.ndarray], Optional[Tuple[str, ...]]):
+            Same as input, but post-processed.
 
     """
+    exponents = numpy.asarray(exponents)
     coefficients = [numpy.asarray(coefficient) for coefficient in coefficients]
-    pairs = [
+
+    _validate_input(exponents, coefficients)
+
+    pairs = list(zip(*[
         (exponent, coefficient)
         for exponent, coefficient in zip(exponents, coefficients)
-        if numpy.any(coefficient) or not any(exponent)
-    ]
+        if numpy.any(coefficient) or not numpy.any(exponent)
+    ]))
     if pairs:
-        exponents, coefficients = zip(*pairs)
+        exponents, coefficients = pairs
     else:
-        exponents = [(0,)*len(indeterminants)]
+        exponents = [(0,) if indeterminants is None else (0,)*len(indeterminants)]
         coefficients = numpy.zeros(
             (1,)+coefficients[0].shape, dtype=coefficients[0].dtype)
 
@@ -86,19 +94,37 @@ def postprocess_attributes(exponents, coefficients, indeterminants):
                               for idx in range(exponents.shape[1])]
         else:
             indeterminants = [indeterminants]
-    assert len(indeterminants) == exponents.shape[1], (indeterminants, exponents)
 
     indices = numpy.any(exponents != 0, 0)
-    assert exponents.shape[1] == len(indices), (exponents, indices)
     if not numpy.any(indices):
         indices[0] = True
-    exponents = exponents[:, indices]
-    assert exponents.size, (exponents, indices)
-    indeterminants = numpy.array(indeterminants)[indices].tolist()
 
-    assert len(exponents.shape) == 2, exponents
-    assert len(exponents) == len(coefficients)
-    assert len(numpy.unique(exponents, axis=0)) == exponents.shape[0], exponents
-    assert sorted(set(indeterminants)) == sorted(indeterminants)
+    if indeterminants is not None:
+        if len(indeterminants) != exponents.shape[1]:
+            raise PolynomialConstructionError(
+                "Indeterminants length incompatible exponent length; "
+                "len%s != %d" % (indeterminants, exponents.shape[1]))
+        indeterminants = numpy.array(indeterminants)[indices].tolist()
+        if sorted(set(indeterminants)) != sorted(indeterminants):
+            raise PolynomialConstructionError(
+                "Duplicate indeterminant names: %s" % indeterminants)
+
+    exponents = exponents[:, indices]
+
+    exponents_, count = numpy.unique(exponents, return_counts=True, axis=0)
+    if numpy.any(count > 1):
+        raise PolynomialConstructionError(
+            "Duplicate exponent keys found: %s" % exponents_[count > 1][0])
 
     return exponents, coefficients, indeterminants
+
+
+def _validate_input(exponents, coefficients):
+    """Make sure the shape of the input is valid."""
+    if exponents.ndim != 2:
+        raise PolynomialConstructionError(
+            "expected exponents.ndim == 2; found %d" % exponents.ndim)
+    if len(exponents) != len(coefficients):
+        raise PolynomialConstructionError(
+            "expected len(exponents) == len(coefficients); found %d != %d" % (
+                exponents.shape[1], len(coefficients)))

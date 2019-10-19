@@ -59,7 +59,8 @@ def isclose(a, b, rtol=1e-5, atol=1e-8, equal_nan=False):
         array([ True,  True])
         >>> numpoly.isclose([1e10*x, 1e-8], [1.00001e10*y, 1e-9])
         array([False,  True])
-        >>> numpoly.isclose([x, numpy.nan], [x, numpy.nan], equal_nan=True)
+        >>> numpoly.isclose([x, numpy.nan],
+        ...                 [x, numpy.nan], equal_nan=True)
         array([ True,  True])
 
     """
