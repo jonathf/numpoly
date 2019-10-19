@@ -23,11 +23,13 @@ def diff(poly, *diffvars):
         [1 x 1+x*y**2]
         >>> print(numpoly.diff(poly, "x"))
         [0 1 y**2]
-        >>> print(numpoly.diff(poly, x, y))
+        >>> print(numpoly.diff(poly, 0, 1))
         [0 0 2*y]
+        >>> print(numpoly.diff(poly, x, x))
+        [0 0 0]
 
     """
-    poly = numpoly.polynomial(poly)
+    poly = poly_ref = numpoly.polynomial(poly)
 
     for diffvar in diffvars:
         if isinstance(diffvar, str):
@@ -59,6 +61,7 @@ def diff(poly, *diffvars):
             coefficients=coefficients,
             indeterminants=poly.names,
         )
+        poly, poly_ref = numpoly.align_polynomials(poly, poly_ref)
     return poly
 
 
