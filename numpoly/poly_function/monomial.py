@@ -22,18 +22,18 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., indeterminants
         ordering (str):
             The monomial ordering where the letters ``G``, ``I`` and ``R`` can
             be used to set grade, inverse and reverse to the ordering. For
-            ``monomial(("x", "y"), start=0, stop=2, ordering=ordering)`` we
-            get:
+            ``indeterminants=("x", "y"))`` we get for various values for
+            ``ordering``:
 
-            ========  ==================
+            ========  =====================
             ordering  output
-            ========  ==================
-            ""        [1 y y^2 x xy x^2]
-            "G"       [1 y x y^2 xy x^2]
-            "I"       [x^2 xy x y^2 y 1]
-            "R"       [1 x x^2 y xy y^2]
-            "GIR"     [y^2 xy x^2 y x 1]
-            ========  ==================
+            ========  =====================
+            ""        [1 y y**2 x x*y x**2]
+            "G"       [1 y x y**2 x*y x**2]
+            "I"       [x**2 x*y x y**2 y 1]
+            "R"       [1 x x**2 y x*y y**2]
+            "GIR"     [y**2 x*y x**2 y x 1]
+            ========  =====================
         cross_truncation (float):
             Use hyperbolic cross truncation scheme to reduce the number of
             terms in expansion.
@@ -48,7 +48,7 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., indeterminants
         >>> print(numpoly.monomial(4))
         [1 q q**2 q**3 q**4]
         >>> print(numpoly.monomial(4, 4, ordering="GR", indeterminants=("x", "y")))
-        [x**4 x**3*y y**4 x**2*y**2 x*y**3]
+        [x**4 x**3*y x**2*y**2 x*y**3 y**4]
         >>> print(numpoly.monomial([1, 1], [2, 2], indeterminants=("x", "y")))
         [x*y x*y**2 x**2*y x**2*y**2]
 
@@ -151,7 +151,7 @@ def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
 
     indices = _bindex(start, stop, dimensions, cross_truncation)
     if "G" in ordering:
-        indices = indices[numpy.argsort(numpy.sum(indices, -1))]
+        indices = indices[numpy.lexsort([numpy.sum(indices, -1)])]
 
     if "I" in ordering:
         indices = indices[::-1]

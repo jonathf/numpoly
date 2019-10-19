@@ -32,4 +32,5 @@ def tonumpy(poly):
     if not poly.isconstant():
         raise ValueError(
             "only constant polynomials can be converted to array.")
-    return numpy.array(poly.coefficients[0])
+    idx = numpy.argwhere(numpy.all(poly.exponents == 0, -1)).item()
+    return numpy.array(poly.coefficients[idx])

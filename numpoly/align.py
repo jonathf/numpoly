@@ -31,7 +31,7 @@ def align_polynomials(*polys):
         >>> x
         polynomial([x, x])
         >>> x.coefficients
-        [array([0., 0.]), array([1., 1.])]
+        [array([1., 1.]), array([0., 0.])]
         >>> x.indeterminants
         polynomial([x, y])
 
@@ -181,14 +181,14 @@ def align_exponents(*polys):
         >>> print(poly2)
         [x**5 -1+y**3]
         >>> print(poly1.exponents)
-        [[0 0]
+        [[1 1]
+         [0 0]
          [0 3]
-         [1 1]
          [5 0]]
         >>> print(poly2.exponents)
-        [[0 0]
+        [[1 1]
+         [0 0]
          [0 3]
-         [1 1]
          [5 0]]
 
     """
@@ -199,8 +199,12 @@ def align_exponents(*polys):
     ):
         polys = list(align_indeterminants(*polys))
 
-    global_exponents = sorted({
-        tuple(exponent) for poly in polys for exponent in poly.exponents})
+    global_exponents = [tuple(exponent) for exponent in polys[0].exponents]
+    for poly in polys[1:]:
+        global_exponents.extend([tuple(exponent)
+                                 for exponent in poly.exponents
+                                 if tuple(exponent) not in global_exponents])
+
     for idx, poly in enumerate(polys):
         lookup = {
             tuple(exponent): coefficient

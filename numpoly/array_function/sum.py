@@ -49,11 +49,11 @@ def sum(a, axis=None, dtype=None, out=None, keepdims=False, **kwargs):
     Examples:
         >>> x, y, z = xyz = numpoly.symbols("x y z")
         >>> numpoly.sum(xyz)
-        polynomial(z+y+x)
+        polynomial(x+y+z)
         >>> numpoly.sum([[1, x], [y, z]])
-        polynomial(1+z+y+x)
+        polynomial(1+x+z+y)
         >>> numpoly.sum([[1, x], [y, z]], axis=0)
-        polynomial([1+y, z+x])
+        polynomial([1+y, x+z])
 
     """
     return simple_dispatch(

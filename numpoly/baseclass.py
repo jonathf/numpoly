@@ -45,7 +45,8 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     memory, whether it is an integer, a floating point number, or something
     else, etc.)
 
-    Arrays should be constructed using `polynomial`, `symbols` etc.
+    Arrays should be constructed using `symbols`, `monomials`, `polynomial`,
+    etc.
 
     Attributes:
         coefficients (List[numpy.ndarray, ...]):
@@ -303,7 +304,19 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
 
     @property
     def values(self):
-        """Expose the underlying structured array."""
+        """
+        Expose the underlying structured array.
+
+        Typically used for operator dispatching and not for use to conversion.
+        For that, see :func:`numpoly.tonumpy`.
+
+        Examples:
+            >>> numpoly.symbols("x").values
+            array((1,), dtype=[('1', '<i8')])
+            >>> numpoly.symbols("x y").values
+            array([(1, 0), (0, 1)], dtype=[('10', '<i8'), ('01', '<i8')])
+
+        """
         return numpy.ndarray(
             shape=self.shape,
             dtype=[(key, self.dtype) for key in self.keys],
@@ -343,9 +356,9 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             >>> x, y = numpoly.symbols("x y")
             >>> poly = 2*x**4-3*y**2+14
             >>> print(poly)
-            14-3*y**2+2*x**4
-            >>> print(poly.todict())
-            {(0, 0): 14, (0, 2): -3, (4, 0): 2}
+            14+2*x**4-3*y**2
+            >>> poly.todict() == {(0, 0): 14, (4, 0): 2, (0, 2): -3}
+            True
 
         """
         return {tuple(exponent): coefficient

@@ -58,7 +58,8 @@ def allclose(a, b, rtol=1e-5, atol=1e-8, equal_nan=False):
         True
         >>> numpoly.allclose([1e10*x, 1e-8], [1.00001e10*y, 1e-9])
         False
-        >>> numpoly.allclose([x, numpy.nan], [x, numpy.nan], equal_nan=True)
+        >>> numpoly.allclose([x, numpy.nan],
+        ...                  [x, numpy.nan], equal_nan=True)
         True
 
     """
