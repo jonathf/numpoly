@@ -27,13 +27,13 @@ For example, for a simple polynomial with scalar coefficients:
     >>> x, y = numpoly.symbols("x y")
     >>> poly = numpoly.polynomial(4*x+3*y-1)
     >>> poly
-    polynomial(-1+3*y+4*x)
+    polynomial(-1+4*x+3*y)
     >>> poly.coefficients
-    [-1, 3, 4]
+    [-1, 4, 3]
     >>> poly.exponents
     array([[0, 0],
-           [0, 1],
-           [1, 0]], dtype=uint32)
+           [1, 0],
+           [0, 1]], dtype=uint32)
     >>> poly.indeterminants
     polynomial([x, y])
 
@@ -44,7 +44,7 @@ These three properties can be used to reconstruct the polynomial:
     >>> terms = numpoly.prod(
     ...     poly.indeterminants**poly.exponents, -1)*poly.coefficients
     >>> terms
-    polynomial([-1, 3*y, 4*x])
+    polynomial([-1, 4*x, 3*y])
     >>> numpoly.sum(terms, 0)
     polynomial(-1+3*y+4*x)
 
@@ -57,14 +57,14 @@ in it's true form:
     >>> dtype = [(key, poly.dtype) for key in poly.keys]
     >>> array = numpy.ndarray(shape=poly.shape, dtype=dtype, buffer=poly.data)
     >>> array  # doctest: +NORMALIZE_WHITESPACE
-    array((-1, 3, 4),
-          dtype=[('00', '<i8'), ('01', '<i8'), ('10', '<i8')])
+    array((-1, 4, 3),
+          dtype=[('00', '<i8'), ('10', '<i8'), ('01', '<i8')])
 
 Which, together with the indeterminant names, can be cast back to a polynomial:
 
 .. code:: python
 
     >>> numpoly.aspolynomial(array, indeterminants=("x", "y"))
-    polynomial(-1+3*y+4*x)
+    polynomial(-1+4*x+3*y)
 
 .. autoclass:: numpoly.baseclass.ndpoly
