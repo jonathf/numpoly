@@ -2,8 +2,11 @@
 from pytest import raises
 import numpy
 
+import numpoly
 from numpoly.construct.clean import (
     postprocess_attributes, PolynomialConstructionError)
+
+X, Y = XY = numpoly.symbols("X Y")
 
 
 def test_postprocess_attributes():
@@ -20,3 +23,14 @@ def test_postprocess_attributes():
         postprocess_attributes([[1], [2]], [1, 2], ["x", "y", "z"])
     with raises(PolynomialConstructionError):  # duplicate indeterminant names
         postprocess_attributes([[1], [2]], [1, 2], ["x", "x"])
+
+
+def test_aspolynomial():
+    poly = 2*X-Y+1
+    assert poly == numpoly.aspolynomial(poly)
+    assert poly == numpoly.aspolynomial(poly.todict(), indeterminants=XY)
+    assert poly == numpoly.aspolynomial(poly.todict(), indeterminants=("X", "Y"))
+    assert poly != numpoly.aspolynomial(poly.todict(), indeterminants=("Y", "X"))
+    assert poly != numpoly.aspolynomial(poly.todict(), indeterminants="X")
+    assert isinstance(numpoly.aspolynomial([1, 2, 3]), numpoly.ndpoly)
+    assert numpy.all(numpoly.aspolynomial([1, 2, 3]) == [1, 2, 3])
