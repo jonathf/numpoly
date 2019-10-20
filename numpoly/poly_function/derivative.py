@@ -27,7 +27,7 @@ def diff(poly, *diffvars):
         polynomial([0, 1, y**2])
         >>> numpoly.diff(poly, 0, 1)
         polynomial([0, 0, 2*y])
-        >>> numpoly.diff(poly, x, x)
+        >>> numpoly.diff(poly, x, x, x)
         polynomial([0, 0, 0])
 
     """
@@ -51,12 +51,7 @@ def diff(poly, *diffvars):
             for exponent, coefficient in zip(exponents, poly.coefficients)
         ]
         exponents[:, idx] -= 1
-        if numpy.any(exponents < 0):
-            indices = exponents[:, idx] == -1
-            coefficients = [coefficient for coefficient, idx in zip(
-                coefficients, indices) if not idx]
-            exponents = numpy.delete(
-                exponents, numpy.argwhere(indices), axis=0)
+        assert not numpy.any(exponents < 0)
 
         poly = numpoly.ndpoly.from_attributes(
             exponents=exponents,
