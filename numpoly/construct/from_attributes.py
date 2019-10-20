@@ -50,6 +50,11 @@ def polynomial_from_attributes(
         ...     indeterminants=("x", "y", "z"),
         ... )
         polynomial(4-x*y*z**2)
+        >>> numpoly.ndpoly.from_attributes(
+        ...     exponents=[(0,)],
+        ...     coefficients=[0],
+        ... )
+        polynomial(0)
 
     """
     if clean:

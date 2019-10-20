@@ -22,7 +22,7 @@ def test_postprocess_attributes():
     with raises(PolynomialConstructionError):  # exponents len incompatible with indeterminants
         postprocess_attributes([[1], [2]], [1, 2], ["x", "y", "z"])
     with raises(PolynomialConstructionError):  # duplicate indeterminant names
-        postprocess_attributes([[1], [2]], [1, 2], ["x", "x"])
+        postprocess_attributes([[1, 1]], [1], ["x", "x"])
 
 
 def test_aspolynomial():

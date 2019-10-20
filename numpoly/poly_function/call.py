@@ -25,24 +25,27 @@ def call(poly, *args, **kwargs):
     Examples:
         >>> x, y = numpoly.symbols("x y")
         >>> poly = numpoly.polynomial([[x, x-1], [y, y+x]])
-        >>> print(poly)
-        [[x -1+x]
-         [y x+y]]
-        >>> print(poly(1, 0))
-        [[1 0]
-         [0 1]]
-        >>> print(poly(1, y=[0, 1, 2]))
-        [[[1 1 1]
-          [0 0 0]]
+        >>> poly()
+        polynomial([[x, -1+x],
+                    [y, x+y]])
+        >>> poly
+        polynomial([[x, -1+x],
+                    [y, x+y]])
+        >>> poly(1, 0)
+        array([[1, 0],
+               [0, 1]])
+        >>> poly(1, y=[0, 1, 2])
+        array([[[1, 1, 1],
+                [0, 0, 0]],
         <BLANKLINE>
-         [[0 1 2]
-          [1 2 3]]]
-        >>> print(poly(y))
-        [[y -1+y]
-         [y 2*y]]
-        >>> print(poly(y=x-1, x=2*y))
-        [[2*y -1+2*y]
-         [-1+x -1+2*y+x]]
+               [[0, 1, 2],
+                [1, 2, 3]]])
+        >>> poly(y)
+        polynomial([[y, -1+y],
+                    [y, 2*y]])
+        >>> poly(y=x-1, x=2*y)
+        polynomial([[2*y, -1+2*y],
+                    [-1+x, -1+2*y+x]])
 
     """
     # Make sure kwargs contains all args and nothing but indeterminants:

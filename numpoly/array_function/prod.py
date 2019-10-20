@@ -50,10 +50,13 @@ def prod(a, axis=None, dtype=None, out=None, keepdims=False, **kwargs):
         >>> poly = numpoly.polynomial([[[1, x, x**2], [x+y, y, y]]])
         >>> numpoly.prod(poly)
         polynomial(x**3*y**3+x**4*y**2)
+        >>> numpoly.prod(poly, keepdims=True)
+        polynomial([[[x**3*y**3+x**4*y**2]]])
         >>> numpoly.prod(poly, axis=1)
         polynomial([[y+x, x*y, x**2*y]])
-        >>> numpoly.prod(poly, axis=2)
-        polynomial([[x**3, y**3+x*y**2]])
+        >>> numpoly.prod(poly, axis=2, keepdims=True)
+        polynomial([[[x**3],
+                     [y**3+x*y**2]]])
         >>> numpoly.prod(poly, axis=[1, 2])
         polynomial([[[x**3*y**3+x**4*y**2]]])
 
