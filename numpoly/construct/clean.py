@@ -72,22 +72,15 @@ def postprocess_attributes(exponents, coefficients, indeterminants=None):
 
     _validate_input(exponents, coefficients)
 
-    pairs = list(zip(*[
+    exponents, coefficients = list(zip(*[
         (exponent, coefficient)
         for exponent, coefficient in zip(exponents, coefficients)
         if numpy.any(coefficient) or not numpy.any(exponent)
     ]))
-    if pairs:
-        exponents, coefficients = pairs
-    else:
-        exponents = [(0,) if indeterminants is None else (0,)*len(indeterminants)]
-        coefficients = numpy.zeros(
-            (1,)+coefficients[0].shape, dtype=coefficients[0].dtype)
-
     exponents = numpy.asarray(exponents, dtype=int)
+
     if isinstance(indeterminants, numpoly.ndpoly):
         indeterminants = indeterminants.names
-
     if isinstance(indeterminants, str):
         if exponents.shape[1] > 1:
             indeterminants = ["%s%d" % (indeterminants, idx)
@@ -127,4 +120,4 @@ def _validate_input(exponents, coefficients):
     if len(exponents) != len(coefficients):
         raise PolynomialConstructionError(
             "expected len(exponents) == len(coefficients); found %d != %d" % (
-                exponents.shape[1], len(coefficients)))
+                len(exponents), len(coefficients)))
