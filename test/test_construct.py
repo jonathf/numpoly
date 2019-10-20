@@ -31,6 +31,7 @@ def test_aspolynomial():
     assert poly == numpoly.aspolynomial(poly, indeterminants=XY)
     assert poly == numpoly.aspolynomial(poly.todict(), indeterminants=XY)
     assert poly == numpoly.aspolynomial(poly, indeterminants=("X", "Y"))
+    assert numpy.all(numpoly.symbols("Z:2") == numpoly.aspolynomial(XY, indeterminants="Z"))
     assert poly == numpoly.aspolynomial(poly.todict(), indeterminants=("X", "Y"))
     assert poly != numpoly.aspolynomial(poly.todict(), indeterminants=("Y", "X"))
     assert X == numpoly.aspolynomial(Y, indeterminants="X")
