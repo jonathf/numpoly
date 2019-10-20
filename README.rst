@@ -49,62 +49,51 @@ constructors:
 
 .. code-block:: python
 
-    >>> poly1 = numpoly.monomial(start=0, stop=3, indeterminants=("x", "y"))
-    >>> poly1
-    polynomial([1, y, x, y**2, x*y, x**2, y**3, x*y**2, x**2*y, x**3])
+   >>> numpoly.monomial(start=0, stop=3, indeterminants=("x", "y"))
+   polynomial([1, y, x, y**2, x*y, x**2, y**3, x*y**2, x**2*y, x**3])
 
 It is also possible to construct your own from symbols:
 
 .. code-block:: python
 
-    >>> x, y = numpoly.symbols("x y")
-    >>> poly2 = numpoly.polynomial([1, x**2-1, x*y, y**2-1])
-    >>> poly2
-    polynomial([1, -1+x**2, x*y, -1+y**2])
+   >>> x, y = numpoly.symbols("x y")
+   >>> numpoly.polynomial([1, x**2-1, x*y, y**2-1])
+   polynomial([1, -1+x**2, x*y, -1+y**2])
 
 Or in combination with other numpy objects:
 
 .. code-block:: python
 
-    >>> poly3 = x**numpy.arange(4)-y**numpy.arange(3, -1, -1)
-    >>> poly3
-    polynomial([1-y**3, x-y**2, x**2-y, -1+x**3])
+   >>> x**numpy.arange(4)-y**numpy.arange(3, -1, -1)
+   polynomial([1-y**3, x-y**2, x**2-y, -1+x**3])
 
 The polynomials can be evaluated as needed:
 
 .. code-block:: python
 
-    >>> poly1(1, 2)
-    array([1, 2, 1, 4, 2, 1, 8, 4, 2, 1])
-    >>> poly2(x=[1, 2])
-    polynomial([[1, 1],
-                [0, 3],
-                [y, 2*y],
-                [-1+y**2, -1+y**2]])
-    >>> poly1(x=0, y=2*x)
-    polynomial([1, 2*x, 0, 4*x**2, 0, 0, 8*x**3, 0, 0, 0])
+   >>> poly = 3*x+2*y+1
+   >>> poly(x=y, y=[1, 2, 3])
+   polynomial([3+3*y, 5+3*y, 7+3*y])
 
 The polynomials also support many numpy operations:
 
 .. code-block:: python
 
-    >>> numpy.reshape(poly2, (2, 2))
-    polynomial([[1, -1+x**2],
-                [x*y, -1+y**2]])
-    >>> poly1[::3].astype(float)
-    polynomial([1.0, y**2, y**3, x**3])
-    >>> numpy.sum(poly1.reshape(2, 5), 0)
-    polynomial([1+x**2, y+y**3, x+x*y**2, y**2+x**2*y, x*y+x**3])
+   >>> numpy.reshape(x**numpy.arange(4), (2, 2))
+   polynomial([[1, x],
+               [x**2, x**3]])
+   >>> numpy.sum(numpoly.monomial(12)[::3])
+   polynomial(1+q**3+q**6+q**9+q**12)
 
 There are also several polynomial specific operators:
 
 .. code-block:: python
 
-    >>> numpoly.diff(poly3, y)
-    polynomial([-3*y**2, -2*y, -1, 0])
-    >>> numpoly.gradient(poly3)
-    polynomial([[0, 1, 2*x, 3*x**2],
-                [-3*y**2, -2*y, -1, 0]])
+   >>> numpoly.diff([1, x, x**2], x)
+   polynomial([0, 1, 2*x])
+   >>> numpoly.gradient([x*y, x+y])
+   polynomial([[y, 1],
+               [x, 1]])
 
 
 Development

@@ -310,6 +310,12 @@ def test_numpy_reshape(interface):
                      [1, X, X**2, X+Y, Y, Y])
 
 
+def test_numpy_reshape(interface):
+    poly = numpoly.polynomial([[1, X, X**2], [X+Y, Y, Y]])
+    assert numpy.all(interface.reshape(poly, (3, 2)) ==
+                     [[1, X], [X**2, X+Y], [Y, Y]])
+
+
 def test_numpy_rint(func_interface):
     poly = numpoly.polynomial([-1.7*X, X-1.5])
     assert numpy.all(func_interface.rint(poly) == [-2*X, X-2])

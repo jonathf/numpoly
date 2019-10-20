@@ -89,6 +89,7 @@ def gradient(poly):
                     [0, 0, 2*x*y]])
 
     """
+    poly = numpoly.aspolynomial(poly)
     polys = [diff(poly, diffvar)[numpy.newaxis]
              for diffvar in poly.names]
     return numpoly.concatenate(polys, axis=0)
