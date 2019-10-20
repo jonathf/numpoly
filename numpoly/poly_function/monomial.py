@@ -118,8 +118,12 @@ def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
             Order list of indices.
 
     Examples:
+        >>> print(bindex(4).tolist())
+        [[0], [1], [2], [3], [4]]
         >>> print(bindex(2, 3, 2).tolist())
         [[0, 2], [1, 1], [2, 0], [0, 3], [1, 2], [2, 1], [3, 0]]
+        >>> print(bindex(2, 3, 2, ordering="I").tolist())
+        [[3, 0], [2, 1], [2, 0], [1, 2], [1, 1], [0, 3], [0, 2]]
         >>> print(bindex(2, [1, 3], 2, cross_truncation=0).tolist())
         [[0, 2], [1, 1], [0, 3], [1, 2], [1, 3]]
         >>> print(bindex([1, 2], [2, 3], 2, cross_truncation=0).tolist())
