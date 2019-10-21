@@ -2,7 +2,7 @@
 import numpy
 import numpoly
 
-from .common import implements, simple_dispatch
+from .common import implements
 
 
 @implements(numpy.equal)
