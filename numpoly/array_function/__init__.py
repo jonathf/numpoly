@@ -13,6 +13,7 @@ from .atleast_1d import atleast_1d
 from .atleast_2d import atleast_2d
 from .atleast_3d import atleast_3d
 from .ceil import ceil
+from .choose import choose
 from .common_type import common_type
 from .concatenate import concatenate
 from .cumsum import cumsum
