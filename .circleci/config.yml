@@ -1,6 +1,6 @@
 version-tags: &version-tags
     tags:
-        only: /v\d+\.\d+\.\d+/
+        only: /v\d+\.\d+\.\d+(-(alpha|beta|rc|dev|post)\d+)?/
 
 version: 2.1
 executors:
@@ -97,6 +97,14 @@ jobs:
         steps:
             - attach_workspace:
                 at: /home/circleci
+            - run:
+                name: "Verify tag version"
+                command: |
+                    PROJECT_TAG=$(cat pyproject.toml \
+                        | grep 'version\s*=' \
+                        | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+\(-[a-z0-9]\+\)\{0,1\}')
+                    echo "$CIRCLE_TAG == v$PROJECT_TAG"
+                    test "$CIRCLE_TAG" = "v$PROJECT_TAG"
             - run:
                 name: "Publish to PyPI"
                 command: |
