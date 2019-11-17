@@ -9,6 +9,7 @@ polynomials.
    :functions-only:
 
 .. autofunction:: numpoly.poly_function.call
+.. autofunction:: numpoly.poly_function.decompose
 .. autofunction:: numpoly.poly_function.diff
 .. autofunction:: numpoly.poly_function.gradient
 .. autofunction:: numpoly.poly_function.hessian
