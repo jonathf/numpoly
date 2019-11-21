@@ -29,9 +29,9 @@ def polynomial(
     ==================  =======================================================
 
     Args:
-        poly_like (Any):
+        poly_like (typing.Any):
             Input to be converted to a `numpoly.ndpoly` polynomial type.
-        indeterminants (str, Tuple[str, ...]):
+        indeterminants (str, typing.Tuple[str, ...]):
             Name of the indeterminant variables. If possible to infer from
             ``poly_like``, this argument will be ignored.
         dtype (type, numpy.dtype):

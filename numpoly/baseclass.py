@@ -308,7 +308,6 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         Expose the underlying structured array.
 
         Typically used for operator dispatching and not for use to conversion.
-        For that, see :func:`numpoly.tonumpy`.
 
         Examples:
             >>> numpoly.symbols("x").values
