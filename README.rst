@@ -1,3 +1,8 @@
+.. image:: doc/.static/numpoly_logo.svg
+   :height: 300 px
+   :width: 300 px
+   :align: center
+
 |circleci| |codecov| |pypi| |readthedocs|
 
 .. |circleci| image:: https://circleci.com/gh/jonathf/numpoly/tree/master.svg?style=shield

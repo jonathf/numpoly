@@ -89,7 +89,6 @@ jobs:
             - run:
                 name: "Run Sphinx build"
                 command: |
-                    mkdir doc/.static
                     source /home/circleci/venv/bin/activate
                     sphinx-build doc/ doc/.build -b html -n -v --color -T -W
     deploy:
