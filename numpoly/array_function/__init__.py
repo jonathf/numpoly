@@ -37,6 +37,7 @@ from .positive import positive
 from .power import power
 from .prod import prod
 from .repeat import repeat
+from .reshape import reshape
 from .rint import rint
 from .square import square
 from .stack import stack

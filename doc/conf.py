@@ -91,7 +91,8 @@ html_theme_options = {
     "github_user": "jonathf",
     "github_repo": "numpoly",
     "github_banner": True,
-    "logo_name": True,
+    "logo": "numpoly_logo.svg",
+    "logo_name": False,
     "logo_text_align": "center",
     "description": "Numerical polynomial arrays",
  }
