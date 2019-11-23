@@ -38,62 +38,62 @@ constructors:
 
 .. code-block:: python
 
-   >>> poly1 = numpoly.monomial(("x", "y"), start=0, stop=3)
-   >>> print(poly1)
-   [1 y x x*y x**2 y**2 y**3 x*y**2 x**2*y x**3]
+    >>> poly1 = numpoly.monomial(start=0, stop=3, indeterminants=("x", "y"))
+    >>> poly1
+    polynomial([1, y, x, y**2, x*y, x**2, y**3, x*y**2, x**2*y, x**3])
 
 It is also possible to construct your own from symbols:
 
 .. code-block:: python
 
-   >>> x, y = numpoly.symbols("x y")
-   >>> poly2 = numpoly.polynomial([1, x**2-1, x*y, y**2-1])
-   >>> print(poly2)
-   [1 -1+x**2 x*y -1+y**2]
+    >>> x, y = numpoly.symbols("x y")
+    >>> poly2 = numpoly.polynomial([1, x**2-1, x*y, y**2-1])
+    >>> poly2
+    polynomial([1, -1+x**2, x*y, -1+y**2])
 
 Or in combination with other numpy objects:
 
 .. code-block:: python
 
-   >>> poly3 = x**numpy.arange(4)-y**numpy.arange(3, -1, -1)
-   >>> print(poly3)
-   [1-y**3 -y**2+x -y+x**2 -1+x**3]
+    >>> poly3 = x**numpy.arange(4)-y**numpy.arange(3, -1, -1)
+    >>> poly3
+    polynomial([1-y**3, x-y**2, x**2-y, -1+x**3])
 
 The polynomials can be evaluated as needed:
 
 .. code-block:: python
 
-   >>> print(poly1(1, 2))
-   [1 2 1 2 1 4 8 4 2 1]
-   >>> print(poly2(x=[1, 2]))
-   [[1 1]
-    [0 3]
-    [y 2*y]
-    [-1+y**2 -1+y**2]]
-   >>> print(poly1(x=y, y=2*x))
-   [1 2*x y 2*x*y y**2 4*x**2 8*x**3 4*x**2*y 2*x*y**2 y**3]
+    >>> poly1(1, 2)
+    array([1, 2, 1, 4, 2, 1, 8, 4, 2, 1])
+    >>> poly2(x=[1, 2])
+    polynomial([[1, 1],
+                [0, 3],
+                [y, 2*y],
+                [-1+y**2, -1+y**2]])
+    >>> poly1(x=0, y=2*x)
+    polynomial([1, 2*x, 0, 4*x**2, 0, 0, 8*x**3, 0, 0, 0])
 
 The polynomials also support many numpy operations:
 
 .. code-block:: python
 
-   >>> print(numpy.reshape(poly2, (2, 2)))
-   [[1 -1+x**2]
-    [x*y -1+y**2]]
-   >>> print(poly1[::3].astype(float))
-   [1.0 x*y y**3 x**3]
-   >>> print(numpy.sum(poly1.reshape(2, 5), 0))
-   [1+y**2 y+y**3 x+x*y**2 x*y+x**2*y x**2+x**3]
+    >>> numpy.reshape(poly2, (2, 2))
+    polynomial([[1, -1+x**2],
+                [x*y, -1+y**2]])
+    >>> poly1[::3].astype(float)
+    polynomial([1.0, y**2, y**3, x**3])
+    >>> numpy.sum(poly1.reshape(2, 5), 0)
+    polynomial([1+x**2, y+y**3, x+x*y**2, y**2+x**2*y, x*y+x**3])
 
 There are also several polynomial specific operators:
 
 .. code-block:: python
 
-   >>> print(numpoly.diff(poly3, y))
-   [-3*y**2 -2*y -1 0]
-   >>> print(numpoly.gradient(poly3))
-   [[0 1 2*x 3*x**2]
-    [-3*y**2 -2*y -1 0]]
+    >>> numpoly.diff(poly3, y)
+    polynomial([-3*y**2, -2*y, -1, 0])
+    >>> numpoly.gradient(poly3)
+    polynomial([[0, 1, 2*x, 3*x**2],
+                [-3*y**2, -2*y, -1, 0]])
 
 
 Development

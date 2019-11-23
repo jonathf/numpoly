@@ -36,6 +36,7 @@ from .outer import outer
 from .positive import positive
 from .power import power
 from .prod import prod
+from .reshape import reshape
 from .repeat import repeat
 from .rint import rint
 from .square import square
