@@ -1,5 +1,5 @@
-Polynomial function
-===================
+Polynomial Functions
+====================
 
 In addition to provide functionality backwards compatible with `numpy`,
 `numpoly` also provides a collection of its own methods, specifically used for

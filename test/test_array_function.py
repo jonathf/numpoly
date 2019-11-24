@@ -351,6 +351,13 @@ def test_numpy_sum(interface):
     assert numpy.all(interface.sum(poly, axis=-1, keepdims=True) == [[X*5+1], [X-Y+3]])
 
 
+def test_numpy_tranpose(func_interface):
+    poly = numpoly.polynomial([[1, X-1], [X**2, X]])
+    assert numpy.all(func_interface.transpose(poly) ==
+                     [[1, X**2], [X-1, X]])
+    assert numpy.all(poly.T == [[1, X**2], [X-1, X]])
+
+
 def test_numpy_vstack(func_interface):
     poly1 = numpoly.polynomial([1, X, 2])
     poly2 = numpoly.polynomial([Y, 3, 4])

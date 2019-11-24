@@ -43,7 +43,7 @@ def power(x1, x2, **kwargs):
             if both `x1` and `x2` are scalars.
 
     """
-    x1 = x1.copy()
+    x1, x2 = numpoly.align_shape(x1, x2)
     x2 = numpy.asarray(x2, dtype=int)
 
     if not x2.shape:
