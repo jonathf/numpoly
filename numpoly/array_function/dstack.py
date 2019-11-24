@@ -50,5 +50,4 @@ def dstack(tup):
     arrays = numpoly.align_exponents(*tup)
     arrays = numpoly.align_dtype(*arrays)
     result = numpy.dstack([array.values for array in arrays])
-    return numpoly.aspolynomial(
-        result, indeterminants=arrays[0].indeterminants)
+    return numpoly.aspolynomial(result, names=arrays[0].indeterminants)

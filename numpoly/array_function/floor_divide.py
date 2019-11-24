@@ -60,7 +60,7 @@ def floor_divide(x1, x2, out=None, where=True, **kwargs):
         out = numpoly.ndpoly(
             exponents=x1.exponents,
             shape=x1.shape,
-            indeterminants=x1.indeterminants,
+            names=x1.indeterminants,
             dtype=numpy.common_type(x1, numpy.array(1.)),
         )
     for key in x1.keys:

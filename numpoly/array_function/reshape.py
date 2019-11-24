@@ -47,6 +47,6 @@ def reshape(a, newshape, order="C"):
                     [q**4, q**5]])
 
     """
-    a = numpoly.aspolynomial(a)
-    result = numpy.reshape(a.values, newshape=newshape, order=order)
-    return numpoly.aspolynomial(result, indeterminants=a.indeterminants)
+    poly = numpoly.aspolynomial(a)
+    array = numpy.reshape(poly.values, newshape=newshape, order=order)
+    return numpoly.aspolynomial(array, names=poly.indeterminants)

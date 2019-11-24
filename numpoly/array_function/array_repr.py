@@ -81,7 +81,7 @@ def to_string(poly, precision=None, suppress_small=None):
         >>> x, y = numpoly.symbols("x y")
         >>> poly = numpoly.polynomial([[1, x**3], [y-1, -3*x]])
         >>> string_array = to_string(poly)
-        >>> print(string_array)
+        >>> string_array
         [['1', 'x**3'], ['-1+y', '-3*x']]
         >>> type(string_array[0][0]) == str
         True

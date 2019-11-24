@@ -5,7 +5,7 @@ import numpy
 import numpoly
 
 
-def monomial(start, stop=None, ordering="G", cross_truncation=1., indeterminants=None):
+def monomial(start, stop=None, ordering="G", cross_truncation=1., names=None):
     """
     Create an polynomial monomial expansion.
 
@@ -22,7 +22,7 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., indeterminants
         ordering (str):
             The monomial ordering where the letters ``G``, ``I`` and ``R`` can
             be used to set grade, inverse and reverse to the ordering. For
-            ``indeterminants=("x", "y"))`` we get for various values for
+            ``names=("x", "y"))`` we get for various values for
             ``ordering``:
 
             ========  =====================
@@ -37,20 +37,20 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., indeterminants
         cross_truncation (float):
             Use hyperbolic cross truncation scheme to reduce the number of
             terms in expansion.
-        indeterminants (None, numpoly.ndpoly, str, Tuple[str, ...])
-            The indeterminants used to create the monomials expansion.
+        names (None, numpoly.ndpoly, str, Tuple[str, ...])
+            The indeterminants names used to create the monomials expansion.
 
     Returns:
         (numpoly.ndpoly):
             Monomial expansion.
 
     Examples:
-        >>> print(numpoly.monomial(4))
-        [1 q q**2 q**3 q**4]
-        >>> print(numpoly.monomial(4, 4, ordering="GR", indeterminants=("x", "y")))
-        [x**4 x**3*y x**2*y**2 x*y**3 y**4]
-        >>> print(numpoly.monomial([1, 1], [2, 2], indeterminants=("x", "y")))
-        [x*y x*y**2 x**2*y x**2*y**2]
+        >>> numpoly.monomial(4)
+        polynomial([1, q, q**2, q**3, q**4])
+        >>> numpoly.monomial(4, 4, ordering="GR", names=("x", "y"))
+        polynomial([x**4, x**3*y, x**2*y**2, x*y**3, y**4])
+        >>> numpoly.monomial([1, 1], [2, 2], names=("x", "y"))
+        polynomial([x*y, x*y**2, x**2*y, x**2*y**2])
 
     """
     if stop is None:
@@ -58,7 +58,7 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., indeterminants
 
     start = numpy.array(start, dtype=int)
     stop = numpy.array(stop, dtype=int)
-    dimensions = 1 if indeterminants is None else len(indeterminants)
+    dimensions = 1 if names is None else len(names)
     dimensions = max(start.size, stop.size, dimensions)
 
     indices = bindex(
@@ -85,7 +85,7 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., indeterminants
     poly = numpoly.ndpoly(
         exponents=indices,
         shape=(len(indices),),
-        indeterminants=indeterminants,
+        names=names,
     )
     for coeff, key in zip(
             numpy.eye(len(indices), dtype=int), poly.keys):
@@ -118,30 +118,30 @@ def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
             Order list of indices.
 
     Examples:
-        >>> print(bindex(4).tolist())
+        >>> bindex(4).tolist()
         [[0], [1], [2], [3], [4]]
-        >>> print(bindex(2, 3, 2).tolist())
+        >>> bindex(2, 3, 2).tolist()
         [[0, 2], [1, 1], [2, 0], [0, 3], [1, 2], [2, 1], [3, 0]]
-        >>> print(bindex(2, 3, 2, ordering="I").tolist())
+        >>> bindex(2, 3, 2, ordering="I").tolist()
         [[3, 0], [2, 1], [2, 0], [1, 2], [1, 1], [0, 3], [0, 2]]
-        >>> print(bindex(2, [1, 3], 2, cross_truncation=0).tolist())
+        >>> bindex(2, [1, 3], 2, cross_truncation=0).tolist()
         [[0, 2], [1, 1], [0, 3], [1, 2], [1, 3]]
-        >>> print(bindex([1, 2], [2, 3], 2, cross_truncation=0).tolist())
+        >>> bindex([1, 2], [2, 3], 2, cross_truncation=0).tolist()
         [[1, 2], [1, 3], [2, 2], [2, 3]]
-        >>> print(bindex(1, 3, 2, cross_truncation=0).tolist())  # doctest: +NORMALIZE_WHITESPACE
+        >>> bindex(1, 3, 2, cross_truncation=0).tolist()  # doctest: +NORMALIZE_WHITESPACE
         [[0, 1], [1, 0], [0, 2], [1, 1], [2, 0], [0, 3], [1, 2], [2, 1],
             [3, 0], [1, 3], [2, 2], [3, 1], [2, 3], [3, 2], [3, 3]]
-        >>> print(bindex(1, 3, 2, cross_truncation=1).tolist())  # doctest: +NORMALIZE_WHITESPACE
+        >>> bindex(1, 3, 2, cross_truncation=1).tolist()  # doctest: +NORMALIZE_WHITESPACE
         [[0, 1], [1, 0], [0, 2], [1, 1], [2, 0],
             [0, 3], [1, 2], [2, 1], [3, 0]]
-        >>> print(bindex(1, 3, 2, cross_truncation=1.5).tolist())
+        >>> bindex(1, 3, 2, cross_truncation=1.5).tolist()
         [[0, 1], [1, 0], [0, 2], [1, 1], [2, 0], [0, 3], [3, 0]]
-        >>> print(bindex(1, 3, 2, cross_truncation=2).tolist())
+        >>> bindex(1, 3, 2, cross_truncation=2).tolist()
         [[0, 1], [1, 0], [0, 2], [2, 0], [0, 3], [3, 0]]
-        >>> print(bindex(0, 1, 3).tolist())
+        >>> bindex(0, 1, 3).tolist()
         [[0, 0, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]]
-        >>> print(bindex(  # doctest: +NORMALIZE_WHITESPACE
-        ...     [1, 1], 3, 2, cross_truncation=0).tolist())
+        >>> bindex(  # doctest: +NORMALIZE_WHITESPACE
+        ...     [1, 1], 3, 2, cross_truncation=0).tolist()
         [[1, 1], [1, 2], [2, 1], [1, 3], [2, 2],
             [3, 1], [2, 3], [3, 2], [3, 3]]
 

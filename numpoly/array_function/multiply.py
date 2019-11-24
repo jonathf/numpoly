@@ -53,7 +53,7 @@ def multiply(x1, x2, out=None, where=True, **kwargs):
         out = numpoly.ndpoly(
             exponents=numpy.unique(exponents, axis=0),
             shape=x1.shape,
-            indeterminants=x1.indeterminants,
+            names=x1.indeterminants,
             dtype=x1.dtype,
         )
 

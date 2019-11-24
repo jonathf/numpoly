@@ -39,7 +39,7 @@ def compose_polynomial_array(
     indices = numpy.array([isinstance(array, numpoly.ndpoly)
                            for array in arrays])
     arrays[indices] = numpoly.align_indeterminants(*arrays[indices])
-    indeterminants = arrays[indices][0] if numpy.any(indices) else None
+    names = arrays[indices][0] if numpy.any(indices) else None
     arrays = arrays.tolist()
 
     dtypes = []
@@ -75,10 +75,10 @@ def compose_polynomial_array(
     coefficients = numpy.array([collection[key] for key in exponents])
     coefficients = coefficients.reshape(-1, *shape)
 
-    exponents, coefficients, indeterminants = postprocess_attributes(
-        exponents, coefficients, indeterminants)
+    exponents, coefficients, names = postprocess_attributes(
+        exponents, coefficients, names)
     return numpoly.ndpoly.from_attributes(
         exponents=exponents,
         coefficients=coefficients,
-        indeterminants=indeterminants,
+        names=names,
     )

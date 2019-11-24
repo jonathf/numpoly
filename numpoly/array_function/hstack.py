@@ -45,4 +45,4 @@ def hstack(tup):
     arrays = numpoly.align_dtype(*arrays)
     result = numpy.hstack([array.values for array in arrays])
     return numpoly.aspolynomial(
-        result, indeterminants=arrays[0].indeterminants)
+        result, names=arrays[0].indeterminants)

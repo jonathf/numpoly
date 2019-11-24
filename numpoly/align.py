@@ -83,7 +83,7 @@ def align_shape(*polys):
     polys = [poly.from_attributes(
         exponents=poly.exponents,
         coefficients=[coeff*common for coeff in poly.coefficients],
-        indeterminants=poly.indeterminants,
+        names=poly.indeterminants,
     ) for poly in polys]
     assert numpy.all(common.shape == poly.shape for poly in polys)
     return tuple(polys)
@@ -121,29 +121,29 @@ def align_indeterminants(*polys):
 
     """
     polys = [numpoly.aspolynomial(poly) for poly in polys]
-    common_indeterminants = sorted({
-        indeterminant
+    common_names = sorted({
+        name
         for poly in polys
         if not poly.isconstant()
-        for indeterminant in poly.names
+        for name in poly.names
     })
-    if not common_indeterminants:
+    if not common_names:
         return polys
 
     for idx, poly in enumerate(polys):
         indices = numpy.array([
-            common_indeterminants.index(indeterminant)
-            for indeterminant in poly.names
-            if indeterminant in common_indeterminants
+            common_names.index(name)
+            for name in poly.names
+            if name in common_names
         ])
         exponents = numpy.zeros(
-            (len(poly.keys), len(common_indeterminants)), dtype=int)
+            (len(poly.keys), len(common_names)), dtype=int)
         if indices.size:
             exponents[:, indices] = poly.exponents
         polys[idx] = poly.from_attributes(
             exponents=exponents,
             coefficients=poly.coefficients,
-            indeterminants=common_indeterminants,
+            names=common_names,
             clean=False,
         )
 
@@ -169,27 +169,27 @@ def align_exponents(*polys):
         >>> x, y = numpoly.symbols("x y")
         >>> poly1 = x*y
         >>> poly2 = numpoly.polynomial([x**5, y**3-1])
-        >>> print(poly1.exponents)
-        [[1 1]]
-        >>> print(poly2.exponents)
-        [[0 0]
-         [0 3]
-         [5 0]]
+        >>> poly1.exponents
+        array([[1, 1]], dtype=uint32)
+        >>> poly2.exponents
+        array([[0, 0],
+               [0, 3],
+               [5, 0]], dtype=uint32)
         >>> poly1, poly2 = numpoly.align_exponents(poly1, poly2)
-        >>> print(poly1)
-        x*y
-        >>> print(poly2)
-        [x**5 -1+y**3]
-        >>> print(poly1.exponents)
-        [[1 1]
-         [0 0]
-         [0 3]
-         [5 0]]
-        >>> print(poly2.exponents)
-        [[1 1]
-         [0 0]
-         [0 3]
-         [5 0]]
+        >>> poly1
+        polynomial(x*y)
+        >>> poly2
+        polynomial([x**5, -1+y**3])
+        >>> poly1.exponents
+        array([[1, 1],
+               [0, 0],
+               [0, 3],
+               [5, 0]], dtype=uint32)
+        >>> poly2.exponents
+        array([[1, 1],
+               [0, 0],
+               [0, 3],
+               [5, 0]], dtype=uint32)
 
     """
     polys = [numpoly.aspolynomial(poly) for poly in polys]
@@ -217,7 +217,7 @@ def align_exponents(*polys):
         polys[idx] = poly.from_attributes(
             exponents=global_exponents,
             coefficients=coefficients,
-            indeterminants=poly.names,
+            names=poly.names,
             clean=False,
         )
     return tuple(polys)
@@ -250,7 +250,7 @@ def align_dtype(*polys):
     polys = [numpoly.ndpoly.from_attributes(
         exponents=poly.exponents,
         coefficients=poly.coefficients,
-        indeterminants=poly.indeterminants,
+        names=poly.indeterminants,
         dtype=dtype,
         clean=False,
     ) for poly in polys]

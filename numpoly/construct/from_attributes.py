@@ -7,7 +7,7 @@ from . import clean as clean_
 def polynomial_from_attributes(
         exponents,
         coefficients,
-        indeterminants,
+        names,
         dtype=None,
         clean=True,
 ):
@@ -22,15 +22,15 @@ def polynomial_from_attributes(
         coefficients (Iterable[numpy.ndarray]):
             The polynomial coefficients. Must correspond to `exponents` by
             having the same length ``N``.
-        indeterminants (Union[Sequence[str], numpoly.ndpoly]):
-            The indeterminants variables, either as string names or as
+        names (Union[Sequence[str], numpoly.ndpoly]):
+            The indeterminant names, either as string names or as
             simple polynomials. Must correspond to the exponents by having
             length ``D``.
         dtype (Optional[numpy.dtype]):
             The data type of the polynomial. If omitted, extract from
             `coefficients`.
         clean (bool):
-            Clean up attributes, removing redundant indeterminants and
+            Clean up attributes, removing redundant indeterminant names and
             exponents.
 
     Returns:
@@ -41,13 +41,13 @@ def polynomial_from_attributes(
         >>> numpoly.ndpoly.from_attributes(
         ...     exponents=[(0,), (1,)],
         ...     coefficients=[[1, 0], [0, 1]],
-        ...     indeterminants=("x",),
+        ...     names=("x",),
         ... )
         polynomial([1, x])
         >>> numpoly.ndpoly.from_attributes(
         ...     exponents=[(0, 0, 0), (1, 1, 2)],
         ...     coefficients=[4, -1],
-        ...     indeterminants=("x", "y", "z"),
+        ...     names=("x", "y", "z"),
         ... )
         polynomial(4-x*y*z**2)
         >>> numpoly.ndpoly.from_attributes(
@@ -58,13 +58,13 @@ def polynomial_from_attributes(
 
     """
     if clean:
-        exponents, coefficients, indeterminants = clean_.postprocess_attributes(
-            exponents, coefficients, indeterminants)
+        exponents, coefficients, names = clean_.postprocess_attributes(
+            exponents, coefficients, names)
     dtype = coefficients[0].dtype if dtype is None else dtype
     poly = numpoly.ndpoly(
         exponents=exponents,
         shape=coefficients[0].shape,
-        indeterminants=indeterminants,
+        names=names,
         dtype=dtype,
     )
     for exponent, values in zip(poly.keys, coefficients):

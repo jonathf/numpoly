@@ -32,24 +32,24 @@ def symbols(names=None, asarray=False, dtype="i8"):
             Polynomial array with unit components in each dimension.
 
     Examples:
-        >>> print(numpoly.symbols())
-        q
-        >>> print(numpoly.symbols("z,"))
-        [z]
-        >>> print(numpoly.symbols("z", asarray=True))
-        [z]
-        >>> print(numpoly.symbols(["alpha", "beta"]))
-        [alpha beta]
-        >>> print(numpoly.symbols("x y z"))
-        [x y z]
-        >>> print(numpoly.symbols("a,b,c"))
-        [a b c]
-        >>> print(numpoly.symbols("q:7"))
-        [q0 q1 q2 q3 q4 q5 q6]
-        >>> print(numpoly.symbols("q3:6"))
-        [q3 q4 q5]
-        >>> print(numpoly.symbols("za:f"))
-        [za zb zc zd ze zf]
+        >>> numpoly.symbols()
+        polynomial(q)
+        >>> numpoly.symbols("z,")
+        polynomial([z])
+        >>> numpoly.symbols("z", asarray=True)
+        polynomial([z])
+        >>> numpoly.symbols(["alpha", "beta"])
+        polynomial([alpha, beta])
+        >>> numpoly.symbols("x y z")
+        polynomial([x, y, z])
+        >>> numpoly.symbols("a,b,c")
+        polynomial([a, b, c])
+        >>> numpoly.symbols("q:7")
+        polynomial([q0, q1, q2, q3, q4, q5, q6])
+        >>> numpoly.symbols("q3:6")
+        polynomial([q3, q4, q5])
+        >>> numpoly.symbols("za:f")
+        polynomial([za, zb, zc, zd, ze, zf])
 
     """
     if names is None:
@@ -94,5 +94,5 @@ def symbols(names=None, asarray=False, dtype="i8"):
     return numpoly.ndpoly.from_attributes(
         exponents=exponents,
         coefficients=coefficients,
-        indeterminants=names,
+        names=names,
     )

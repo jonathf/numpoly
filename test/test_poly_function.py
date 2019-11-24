@@ -18,19 +18,19 @@ def test_numpoly_call():
 
 
 def test_numpoly_ndpoly():
-    poly = numpoly.ndpoly(exponents=[(1,)], shape=(), indeterminants="X")
+    poly = numpoly.ndpoly(exponents=[(1,)], shape=(), names="X")
     poly["1"] = 1
     assert poly == X
-    poly = numpoly.ndpoly(exponents=[(1,)], shape=(), indeterminants=X)
+    poly = numpoly.ndpoly(exponents=[(1,)], shape=(), names=X)
     poly["1"] = 1
     assert poly == X
     poly = numpoly.ndpoly(
-        exponents=[(1, 0), (0, 1)], shape=(), indeterminants=("X" ,"Y"))
+        exponents=[(1, 0), (0, 1)], shape=(), names=("X" ,"Y"))
     poly["10"] = 2
     poly["01"] = 3
     assert poly == 2*X+3*Y
     poly = numpoly.ndpoly(
-        exponents=[(1, 0), (0, 1)], shape=(2,), indeterminants="Q")
+        exponents=[(1, 0), (0, 1)], shape=(2,), names="Q")
     poly["10"] = [1, 0]
     poly["01"] = [0, 1]
     assert numpy.all(poly == numpoly.symbols("Q0 Q1"))
@@ -39,11 +39,11 @@ def test_numpoly_ndpoly():
 def test_numpoly_polynomial():
     assert numpoly.polynomial() == 0
     assert numpoly.polynomial({(0,): 4}) == 4
-    assert numpoly.polynomial({(1,): 5}, indeterminants="X") == 5*X
+    assert numpoly.polynomial({(1,): 5}, names="X") == 5*X
     assert numpoly.polynomial(
-        {(0, 1): 2, (1, 0): 3}, indeterminants=("X", "Y")) == 3*X+2*Y
+        {(0, 1): 2, (1, 0): 3}, names=("X", "Y")) == 3*X+2*Y
     assert numpy.all(numpoly.polynomial(
-        {(0, 1): [0, 1], (1, 0): [1, 0]}, indeterminants="Q"
+        {(0, 1): [0, 1], (1, 0): [1, 0]}, names="Q"
     ) == numpoly.symbols("Q0 Q1"))
     assert numpoly.polynomial(X) == X
     assert numpoly.polynomial(numpy.array((3,), dtype=[("0", int)])) == 3
