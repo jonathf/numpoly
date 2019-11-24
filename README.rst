@@ -49,7 +49,7 @@ constructors:
 
 .. code-block:: python
 
-   >>> numpoly.monomial(start=0, stop=3, indeterminants=("x", "y"))
+   >>> numpoly.monomial(start=0, stop=3, names=("x", "y"))
    polynomial([1, y, x, y**2, x*y, x**2, y**3, x*y**2, x**2*y, x**3])
 
 It is also possible to construct your own from symbols:
