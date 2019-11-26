@@ -64,7 +64,7 @@ jobs:
                 name: "Run tests"
                 command: |
                     source /home/circleci/venv/bin/activate
-                    pytest --doctest-modules --cov=numpoly numpoly test doc/*.rst
+                    pytest --doctest-modules --cov=numpoly numpoly test doc/*.rst README.rst
                     codecov
     linting:
         executor: my-executor

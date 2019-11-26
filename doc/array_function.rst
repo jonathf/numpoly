@@ -43,6 +43,7 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.atleast_2d
 .. autofunction:: numpoly.array_function.atleast_3d
 .. autofunction:: numpoly.array_function.ceil
+.. autofunction:: numpoly.array_function.choose
 .. autofunction:: numpoly.array_function.common_type
 .. autofunction:: numpoly.array_function.concatenate
 .. autofunction:: numpoly.array_function.cumsum
