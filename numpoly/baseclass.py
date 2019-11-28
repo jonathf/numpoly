@@ -44,7 +44,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     memory, whether it is an integer, a floating point number, or something
     else, etc.)
 
-    Arrays should be constructed using `symbols`, `monomials`, `polynomial`,
+    Arrays should be constructed using `symbols`, `monomial`, `polynomial`,
     etc.
 
     Attributes:

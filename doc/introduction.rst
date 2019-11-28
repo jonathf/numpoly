@@ -38,7 +38,7 @@ constructors:
 
 .. code-block:: python
 
-    >>> poly1 = numpoly.monomial(start=0, stop=3, names=("x", "y"))
+    >>> poly1 = numpoly.monomial(start=0, stop=4, names=("x", "y"))
     >>> poly1
     polynomial([1, y, x, y**2, x*y, x**2, y**3, x*y**2, x**2*y, x**3])
 
@@ -120,7 +120,7 @@ Development
 -----------
 
 Development is done using `Poetry <https://poetry.eustace.io/>`_ manager.
-Inside the repository directory, install and create a virtual enviroment with:
+Inside the repository directory, install and create a virtual environment with:
 
 .. code-block:: bash
 

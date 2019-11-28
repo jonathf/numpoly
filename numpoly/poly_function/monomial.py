@@ -46,10 +46,10 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., names=None):
 
     Examples:
         >>> numpoly.monomial(4)
-        polynomial([1, q, q**2, q**3, q**4])
-        >>> numpoly.monomial(4, 4, ordering="GR", names=("x", "y"))
+        polynomial([1, q, q**2, q**3])
+        >>> numpoly.monomial(4, 5, ordering="GR", names=("x", "y"))
         polynomial([x**4, x**3*y, x**2*y**2, x*y**3, y**4])
-        >>> numpoly.monomial([1, 1], [2, 2], names=("x", "y"))
+        >>> numpoly.monomial([1, 1], [3, 3], names=("x", "y"))
         polynomial([x*y, x*y**2, x**2*y, x**2*y**2])
 
     """
@@ -76,10 +76,10 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., names=None):
         below = numpy.all(indices-start >= 0, -1)
 
     if stop.size == 1:
-        above = numpy.sum(indices, -1) <= stop.item()
+        above = numpy.sum(indices, -1) < stop.item()
     else:
         stop = numpy.ones(dimensions, dtype=int)*stop
-        above = numpy.all(stop-indices >= 0, -1)
+        above = numpy.all(stop-indices > 0, -1)
     indices = indices[above*below]
 
     poly = numpoly.ndpoly(
@@ -118,30 +118,30 @@ def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
             Order list of indices.
 
     Examples:
-        >>> bindex(4).tolist()
+        >>> bindex(5).tolist()
         [[0], [1], [2], [3], [4]]
-        >>> bindex(2, 3, 2).tolist()
+        >>> bindex(2, 4, 2).tolist()
         [[0, 2], [1, 1], [2, 0], [0, 3], [1, 2], [2, 1], [3, 0]]
-        >>> bindex(2, 3, 2, ordering="I").tolist()
+        >>> bindex(2, 4, 2, ordering="I").tolist()
         [[3, 0], [2, 1], [2, 0], [1, 2], [1, 1], [0, 3], [0, 2]]
-        >>> bindex(2, [1, 3], 2, cross_truncation=0).tolist()
+        >>> bindex(2, [2, 4], 2, cross_truncation=0).tolist()
         [[0, 2], [1, 1], [0, 3], [1, 2], [1, 3]]
-        >>> bindex([1, 2], [2, 3], 2, cross_truncation=0).tolist()
+        >>> bindex([1, 2], [3, 4], 2, cross_truncation=0).tolist()
         [[1, 2], [1, 3], [2, 2], [2, 3]]
-        >>> bindex(1, 3, 2, cross_truncation=0).tolist()  # doctest: +NORMALIZE_WHITESPACE
+        >>> bindex(1, 4, 2, cross_truncation=0).tolist()  # doctest: +NORMALIZE_WHITESPACE
         [[0, 1], [1, 0], [0, 2], [1, 1], [2, 0], [0, 3], [1, 2], [2, 1],
             [3, 0], [1, 3], [2, 2], [3, 1], [2, 3], [3, 2], [3, 3]]
-        >>> bindex(1, 3, 2, cross_truncation=1).tolist()  # doctest: +NORMALIZE_WHITESPACE
+        >>> bindex(1, 4, 2, cross_truncation=1).tolist()  # doctest: +NORMALIZE_WHITESPACE
         [[0, 1], [1, 0], [0, 2], [1, 1], [2, 0],
             [0, 3], [1, 2], [2, 1], [3, 0]]
-        >>> bindex(1, 3, 2, cross_truncation=1.5).tolist()
+        >>> bindex(1, 4, 2, cross_truncation=1.5).tolist()
         [[0, 1], [1, 0], [0, 2], [1, 1], [2, 0], [0, 3], [3, 0]]
-        >>> bindex(1, 3, 2, cross_truncation=2).tolist()
+        >>> bindex(1, 4, 2, cross_truncation=2).tolist()
         [[0, 1], [1, 0], [0, 2], [2, 0], [0, 3], [3, 0]]
-        >>> bindex(0, 1, 3).tolist()
+        >>> bindex(0, 2, 3).tolist()
         [[0, 0, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]]
         >>> bindex(  # doctest: +NORMALIZE_WHITESPACE
-        ...     [1, 1], 3, 2, cross_truncation=0).tolist()
+        ...     [1, 1], 4, 2, cross_truncation=0).tolist()
         [[1, 1], [1, 2], [2, 1], [1, 3], [2, 2],
             [3, 1], [2, 3], [3, 2], [3, 3]]
 
@@ -168,6 +168,7 @@ def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
 
 def _bindex(start, stop, dimensions=1, cross_truncation=1.):
     """Backend for the bindex function."""
+    stop -= 1
     # At the beginning the current list of indices just ranges over the
     # last dimension.
     bound = stop.max()+1
