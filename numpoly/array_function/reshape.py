@@ -41,12 +41,12 @@ def reshape(a, newshape, order="C"):
         >>> numpoly.reshape([1, 2, 3, 4], (2, 2))
         polynomial([[1, 2],
                     [3, 4]])
-        >>> numpoly.reshape(numpoly.monomial(5), (3, 2))
+        >>> numpoly.reshape(numpoly.monomial(6), (3, 2))
         polynomial([[1, q],
                     [q**2, q**3],
                     [q**4, q**5]])
 
     """
-    a = numpoly.aspolynomial(a)
-    result = numpy.reshape(a.values, newshape=newshape, order=order)
-    return numpoly.aspolynomial(result, indeterminants=a.indeterminants)
+    poly = numpoly.aspolynomial(a)
+    array = numpy.reshape(poly.values, newshape=newshape, order=order)
+    return numpoly.aspolynomial(array, names=poly.indeterminants)

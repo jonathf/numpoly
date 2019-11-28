@@ -44,5 +44,4 @@ def concatenate(arrays, axis=0, out=None):
     arrays = numpoly.align_dtype(*arrays)
     result = numpy.concatenate(
         [array.values for array in arrays], axis=axis, out=out)
-    return numpoly.aspolynomial(
-        result, indeterminants=arrays[0].indeterminants)
+    return numpoly.aspolynomial(result, names=arrays[0].indeterminants)

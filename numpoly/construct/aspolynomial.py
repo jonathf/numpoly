@@ -5,7 +5,7 @@ import numpoly
 
 def aspolynomial(
         poly_like=None,
-        indeterminants=None,
+        names=None,
         dtype=None,
 ):
     """
@@ -14,7 +14,7 @@ def aspolynomial(
     Args:
         poly_like (Any):
             Input to be converted to a `numpoly.ndpoly` polynomial type.
-        indeterminants (str, Tuple[str, ...]):
+        names (str, Tuple[str, ...]):
             Name of the indeterminant variables. If possible to infer from
             ``poly_like``, this argument will be ignored.
         dtype (type, numpy.dtype):
@@ -23,7 +23,8 @@ def aspolynomial(
     Returns:
         (numpoly.ndpoly):
             Array interpretation of `poly_like`. No copy is performed if the
-            input is already an ndpoly with matching indeterminants and dtype.
+            input is already an ndpoly with matching indeterminants names and
+            dtype.
 
     Examples:
         >>> x = numpoly.symbols("x")
@@ -37,18 +38,16 @@ def aspolynomial(
     if isinstance(poly_like, numpoly.ndpoly):
 
         remain = (dtype is None or dtype == poly_like.dtype)
-        if indeterminants is not None:
-            if isinstance(indeterminants, numpoly.ndpoly):
-                indeterminants = indeterminants.names
-            if isinstance(indeterminants, str):
-                indeterminants = [indeterminants]
-            if len(indeterminants) == 1 and len(poly_like.names) > 1:
-                indeterminants = [
-                    "{}{}".format(indeterminants[0], idx)
-                    for idx in range(len(poly_like.indeterminants))
-                ]
-            remain &= indeterminants == poly_like.names
+        if names is not None:
+            if isinstance(names, numpoly.ndpoly):
+                names = names.names
+            if isinstance(names, str):
+                names = [names]
+            if len(names) == 1 and len(poly_like.names) > 1:
+                names = ["{}{}".format(names[0], idx)
+                         for idx in range(len(poly_like.indeterminants))]
+            remain &= names == poly_like.names
 
     if remain:
         return poly_like
-    return numpoly.polynomial(poly_like, indeterminants=indeterminants, dtype=dtype)
+    return numpoly.polynomial(poly_like, names=names, dtype=dtype)

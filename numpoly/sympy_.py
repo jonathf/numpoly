@@ -19,9 +19,9 @@ def to_sympy(poly):
         >>> x, y = numpoly.symbols("x y")
         >>> poly = numpoly.polynomial([[1, x**3], [y-1, -3*x]])
         >>> sympy_poly = to_sympy(poly)
-        >>> print(sympy_poly)
-        [[1 x**3]
-         [y - 1 -3*x]]
+        >>> sympy_poly
+        array([[1, x**3],
+               [y - 1, -3*x]], dtype=object)
         >>> type(sympy_poly.item(-1))
         <class 'sympy.core.mul.Mul'>
 

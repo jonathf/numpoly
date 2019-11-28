@@ -56,7 +56,7 @@ def diff(poly, *diffvars):
         poly = numpoly.ndpoly.from_attributes(
             exponents=exponents,
             coefficients=coefficients,
-            indeterminants=poly_ref.names,
+            names=poly_ref.names,
         )
         poly, poly_ref = numpoly.align_polynomials(poly, poly_ref)
     return poly

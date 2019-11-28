@@ -57,7 +57,7 @@ def simple_dispatch(
             out = numpoly.ndpoly(
                 exponents=inputs[0].exponents,
                 shape=tmp.shape,
-                indeterminants=inputs[0].indeterminants,
+                names=inputs[0].indeterminants,
                 dtype=tmp.dtype,
             )
             out[key] = tmp

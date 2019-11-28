@@ -32,5 +32,5 @@ def atleast_2d(*arys):
     if len(arys) == 1:
         poly = numpoly.aspolynomial(arys[0])
         array = numpy.atleast_2d(poly.values)
-        return numpoly.aspolynomial(array, indeterminants=poly.indeterminants)
+        return numpoly.aspolynomial(array, names=poly.indeterminants)
     return [atleast_2d(ary) for ary in arys]

@@ -42,9 +42,17 @@ def power(x1, x2, **kwargs):
             The bases in `x1` raised to the exponents in `x2`. This is a scalar
             if both `x1` and `x2` are scalars.
 
+    Examples:
+        >>> x = numpoly.symbols("x")
+        >>> (x+1)**3
+        polynomial(1+3*x+3*x**2+x**3)
+        >>> poly = numpoly.symbols("x y")
+        >>> (poly+1)**[1, 2]
+        polynomial([1+x, 1+2*y+y**2])
+
     """
-    x1 = x1.copy()
-    x2 = numpy.asarray(x2, dtype=int)
+    x1 = numpoly.aspolynomial(x1)
+    x2 = numpoly.aspolynomial(x2).tonumpy().astype(int)
 
     if not x2.shape:
         out = numpoly.ndpoly.from_attributes(

@@ -7,7 +7,7 @@ from .compose import compose_polynomial_array
 
 def polynomial(
         poly_like=None,
-        indeterminants=None,
+        names=None,
         dtype=None,
 ):
     """
@@ -24,14 +24,15 @@ def polynomial(
     ``sympy.Poly``      Convert polynomial from ``sympy`` to ``numpoly``,
                         if possible.
     ``Iterable``        Multivariate array construction.
-    structured array    Assumes that the raw polynomial core. Used for
-                        developer convenience.
+    structured array    Assumes that the input are raw polynomial core and can
+                        be used to construct a polynomial without changing the
+                        data. Used for developer convenience.
     ==================  =======================================================
 
     Args:
         poly_like (typing.Any):
             Input to be converted to a `numpoly.ndpoly` polynomial type.
-        indeterminants (str, typing.Tuple[str, ...]):
+        names (str, typing.Tuple[str, ...]):
             Name of the indeterminant variables. If possible to infer from
             ``poly_like``, this argument will be ignored.
         dtype (type, numpy.dtype):
@@ -42,28 +43,28 @@ def polynomial(
             Polynomial based on input ``poly_like``.
 
     Examples:
-        >>> print(numpoly.polynomial({(1,): 1}))
-        q
+        >>> numpoly.polynomial({(1,): 1})
+        polynomial(q)
         >>> x, y = numpoly.symbols("x y")
-        >>> print(x**2 + x*y + 2)
-        x**2+x*y+2
-        >>> print(-3*x + x**2 + y)
-        -3*x+x**2+y
-        >>> print(numpoly.polynomial([x*y, x, y]))
-        [x*y x y]
-        >>> print(numpoly.polynomial([1, 2, 3]))
-        [1 2 3]
+        >>> x**2 + x*y + 2
+        polynomial(x**2+x*y+2)
+        >>> -3*x + x**2 + y
+        polynomial(-3*x+x**2+y)
+        >>> numpoly.polynomial([x*y, x, y])
+        polynomial([x*y, x, y])
+        >>> numpoly.polynomial([1, 2, 3])
+        polynomial([1, 2, 3])
         >>> import sympy
         >>> x_, y_ = sympy.symbols("x, y")
-        >>> print(numpoly.polynomial(3*x_*y_ - 4 + x_**5))
-        x**5+3*x*y-4
+        >>> numpoly.polynomial(3*x_*y_ - 4 + x_**5)
+        polynomial(x**5+3*x*y-4)
 
     """
     if poly_like is None:
         poly = numpoly.ndpoly(
             exponents=[(0,)],
             shape=(),
-            indeterminants=indeterminants,
+            names=names,
             dtype=dtype,
         )
         poly["0"] = 0
@@ -74,17 +75,17 @@ def polynomial(
         poly = numpoly.ndpoly.from_attributes(
             exponents=exponents,
             coefficients=coefficients,
-            indeterminants=indeterminants,
+            names=names,
             dtype=dtype,
         )
 
     elif isinstance(poly_like, numpoly.ndpoly):
-        if indeterminants is None:
-            indeterminants = poly_like.names
+        if names is None:
+            names = poly_like.names
         poly = numpoly.ndpoly.from_attributes(
             exponents=poly_like.exponents,
             coefficients=poly_like.coefficients,
-            indeterminants=indeterminants,
+            names=names,
             dtype=dtype,
         )
 
@@ -99,14 +100,14 @@ def polynomial(
         poly = numpoly.ndpoly.from_attributes(
             exponents=exponents,
             coefficients=coefficients,
-            indeterminants=indeterminants,
+            names=names,
         )
 
     elif isinstance(poly_like, (int, float, numpy.ndarray, numpy.generic)):
         poly = numpoly.ndpoly.from_attributes(
             exponents=[(0,)],
             coefficients=numpy.array([poly_like]),
-            indeterminants=indeterminants,
+            names=names,
             dtype=dtype,
         )
 
@@ -116,11 +117,11 @@ def polynomial(
         exponents = poly_like.monoms()
         coefficients = [int(coeff) if coeff.is_integer else float(coeff)
                         for coeff in poly_like.coeffs()]
-        indeterminants = [str(elem) for elem in poly_like.gens]
+        names = [str(elem) for elem in poly_like.gens]
         poly = numpoly.ndpoly.from_attributes(
             exponents=exponents,
             coefficients=coefficients,
-            indeterminants=indeterminants,
+            names=names,
         )
 
     else:

@@ -39,13 +39,13 @@ def clean_attributes(poly):
     return numpoly.ndpoly.from_attributes(
         exponents=poly.exponents,
         coefficients=poly.coefficients,
-        indeterminants=poly.names,
+        names=poly.names,
         dtype=poly.dtype,
         clean=True,
     )
 
 
-def postprocess_attributes(exponents, coefficients, indeterminants=None):
+def postprocess_attributes(exponents, coefficients, names=None):
     """
     Clean up polynomial attributes.
 
@@ -57,8 +57,8 @@ def postprocess_attributes(exponents, coefficients, indeterminants=None):
         coefficients (Sequence[numpy.ndarray]):
             The polynomial coefficients. Must correspond to `exponents` by
             having the same length ``N``.
-        indeterminants (Union[None, Sequence[str], numpoly.ndpoly]):
-            The indeterminants variables, either as string names or as
+        names (Union[None, Sequence[str], numpoly.ndpoly]):
+            The indeterminant names, either as string names or as
             simple polynomials. Must correspond to the exponents by having
             length ``D``.
 
@@ -79,28 +79,28 @@ def postprocess_attributes(exponents, coefficients, indeterminants=None):
     ]))
     exponents = numpy.asarray(exponents, dtype=int)
 
-    if isinstance(indeterminants, numpoly.ndpoly):
-        indeterminants = indeterminants.names
-    if isinstance(indeterminants, str):
+    if isinstance(names, numpoly.ndpoly):
+        names = names.names
+    if isinstance(names, str):
         if exponents.shape[1] > 1:
-            indeterminants = ["%s%d" % (indeterminants, idx)
-                              for idx in range(exponents.shape[1])]
+            names = ["%s%d" % (names, idx)
+                     for idx in range(exponents.shape[1])]
         else:
-            indeterminants = [indeterminants]
+            names = [names]
 
     indices = numpy.any(exponents != 0, 0)
     if not numpy.any(indices):
         indices[0] = True
 
-    if indeterminants is not None:
-        if len(indeterminants) != exponents.shape[1]:
+    if names is not None:
+        if len(names) != exponents.shape[1]:
             raise PolynomialConstructionError(
-                "Indeterminants length incompatible exponent length; "
-                "len%s != %d" % (indeterminants, exponents.shape[1]))
-        indeterminants = numpy.array(indeterminants)[indices].tolist()
-        if sorted(set(indeterminants)) != sorted(indeterminants):
+                "Name length incompatible exponent length; "
+                "len%s != %d" % (names, exponents.shape[1]))
+        names = numpy.array(names)[indices].tolist()
+        if sorted(set(names)) != sorted(names):
             raise PolynomialConstructionError(
-                "Duplicate indeterminant names: %s" % indeterminants)
+                "Duplicate indeterminant names: %s" % names)
 
     exponents = exponents[:, indices]
 
@@ -109,7 +109,7 @@ def postprocess_attributes(exponents, coefficients, indeterminants=None):
         raise PolynomialConstructionError(
             "Duplicate exponent keys found: %s" % exponents_[count > 1][0])
 
-    return exponents, coefficients, indeterminants
+    return exponents, coefficients, names
 
 
 def _validate_input(exponents, coefficients):

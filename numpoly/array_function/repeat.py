@@ -45,4 +45,4 @@ def repeat(a, repeats, axis=0):
 
     """
     result = numpy.repeat(a.values, repeats=repeats, axis=axis)
-    return numpoly.aspolynomial(result, indeterminants=a.indeterminants)
+    return numpoly.aspolynomial(result, names=a.indeterminants)

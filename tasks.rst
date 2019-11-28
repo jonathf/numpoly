@@ -30,12 +30,9 @@ cov
 cross
 cumprod
 diag
-dot
-isclose
 mean
 median
 nonzero
-product
 ravel
 repeat
 resize
@@ -67,8 +64,10 @@ a polynomial as well.
 Some exploration is needed to find out how feasible multi-variate support is.
 Not creating a for-loop over the numpy elements is preferable.
 
-Exponent implementation
------------------------
+``power`` implementation
+------------------------
+
+Difficulty: medium-hard
 
 Current implementation is a hack: repeat multiplying against itself ``n``
 times. For-loop over ``n``, if array.
@@ -76,6 +75,17 @@ times. For-loop over ``n``, if array.
 * Create a method that does not rely on repeated calling multiply, and instead
   allocates a single chunk of memory and fill inn results there.
 * Somehow avoid using element-by-element for-loop over exponents.
+
+``prod`` and ``cumprod`` implementation
+---------------------------------------
+
+Difficulty: hard
+
+Current implementation uses multiply repeatedly along axis. This can likely be
+done much more efficiently with dedicated code.
+
+Somewhat the same problem as ``power``, but a lot more book keeping.
+
 
 Element-in support (``x in y``)
 -------------------------------

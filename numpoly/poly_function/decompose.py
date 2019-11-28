@@ -35,7 +35,7 @@ def decompose(poly):
         numpoly.construct.polynomial_from_attributes(
             exponents=[expon],
             coefficients=[poly[key]],
-            indeterminants=poly.indeterminants,
+            names=poly.indeterminants,
             clean=False,
         )[numpy.newaxis] for key, expon in zip(poly.keys, poly.exponents)
     ])
