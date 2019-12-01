@@ -75,5 +75,6 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.stack
 .. autofunction:: numpoly.array_function.subtract
 .. autofunction:: numpoly.array_function.sum
+.. autofunction:: numpoly.array_function.tile
 .. autofunction:: numpoly.array_function.transpose
 .. autofunction:: numpoly.array_function.vstack
