@@ -44,5 +44,6 @@ from .square import square
 from .stack import stack
 from .subtract import subtract
 from .sum import sum
+from .tile import tile
 from .transpose import transpose
 from .vstack import vstack
