@@ -19,20 +19,20 @@ def test_numpoly_call():
 
 def test_numpoly_ndpoly():
     poly = numpoly.ndpoly(exponents=[(1,)], shape=(), names="X")
-    poly["1"] = 1
+    poly["<"] = 1
     assert poly == X
     poly = numpoly.ndpoly(exponents=[(1,)], shape=(), names=X)
-    poly["1"] = 1
+    poly["<"] = 1
     assert poly == X
     poly = numpoly.ndpoly(
         exponents=[(1, 0), (0, 1)], shape=(), names=("X" ,"Y"))
-    poly["10"] = 2
-    poly["01"] = 3
+    poly["<;"] = 2
+    poly[";<"] = 3
     assert poly == 2*X+3*Y
     poly = numpoly.ndpoly(
         exponents=[(1, 0), (0, 1)], shape=(2,), names="Q")
-    poly["10"] = [1, 0]
-    poly["01"] = [0, 1]
+    poly["<;"] = [1, 0]
+    poly[";<"] = [0, 1]
     assert numpy.all(poly == numpoly.symbols("Q0 Q1"))
 
 
@@ -46,7 +46,7 @@ def test_numpoly_polynomial():
         {(0, 1): [0, 1], (1, 0): [1, 0]}, names="Q"
     ) == numpoly.symbols("Q0 Q1"))
     assert numpoly.polynomial(X) == X
-    assert numpoly.polynomial(numpy.array((3,), dtype=[("0", int)])) == 3
+    assert numpoly.polynomial(numpy.array((3,), dtype=[(";", int)])) == 3
     assert numpoly.polynomial(5.5) == 5.5
     assert numpoly.polynomial(sympy.symbols("X")) == X
     assert numpy.all(numpoly.polynomial([1, 2, 3]) == [1, 2, 3])

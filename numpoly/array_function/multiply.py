@@ -60,7 +60,8 @@ def multiply(x1, x2, out=None, where=True, **kwargs):
     seen = set()
     for expon1, coeff1 in zip(x1.exponents, x1.coefficients):
         for expon2, coeff2 in zip(x2.exponents, x2.coefficients):
-            key = (expon1+expon2+48).flatten().view("U%d" % len(expon1)).item()
+            key = (expon1+expon2+x1.KEY_OFFSET).flatten()
+            key = key.view("U%d" % len(expon1)).item()
             if key in seen:
                 out[key] += numpy.multiply(
                     coeff1, coeff2, where=where, **kwargs)
