@@ -65,6 +65,14 @@ polynomial([[[1, 2],
              [5, Y]]])"""
 
 
+def test_numpy_array_split(func_interface):
+    test_numpy_split(func_interface)
+    poly = numpoly.polynomial([[1, X, X**2], [X+Y, Y, Y]])
+    part1, part2 = func_interface.array_split(poly, 2, axis=1)
+    assert numpy.all(part1 == [[[1, X], [X+Y, Y]]])
+    assert numpy.all(part2 == [[X**2], [Y]])
+
+
 def test_numpy_array_str(func_interface):
     assert str(4+6*X**2) == "4+6*X**2"
     assert func_interface.array_str(4+6*X**2) == "4+6*X**2"
@@ -137,6 +145,13 @@ def test_numpy_divide(func_interface):
     assert numpy.all(func_interface.divide(poly, [[1, 2], [2, 1]]) == [[0, 0.5*Y], [0.5*X, 1]])
 
 
+def test_numpy_dsplit(func_interface):
+    poly = numpoly.polynomial([[[1, X], [X+Y, Y]]])
+    part1, part2 = func_interface.dsplit(poly, 2)
+    assert numpy.all(part1 == [[[1], [X+Y]]])
+    assert numpy.all(part2 == [[[X], [Y]]])
+
+
 def test_numpy_dstack(func_interface):
     poly1 = numpoly.polynomial([1, X, 2])
     poly2 = numpoly.polynomial([Y, 3, 4])
@@ -158,6 +173,14 @@ def test_numpy_floor_divide(func_interface):
     assert numpy.all(func_interface.floor_divide(poly, [1, 2]) == [[0, Y], [X, 1]])
     assert numpy.all(poly // [[1, 2], [2, 1]] == [[0, Y], [0, 2]])
     assert numpy.all(func_interface.floor_divide(poly, [[1, 2], [2, 1]]) == [[0, Y], [0, 2]])
+
+
+def test_numpy_hsplit(func_interface):
+    poly = numpoly.polynomial([[1, X, X**2], [X+Y, Y, Y]])
+    part1, part2, part3 = func_interface.hsplit(poly, 3)
+    assert numpy.all(part1 == [[1], [X+Y]])
+    assert numpy.all(part2 == [[X], [Y]])
+    assert numpy.all(part3 == [[X**2], [Y]])
 
 
 def test_numpy_hstack(func_interface):
@@ -321,6 +344,17 @@ def test_numpy_rint(func_interface):
     assert numpy.all(func_interface.rint(poly) == [-2*X, X-2])
 
 
+def test_numpy_split(func_interface):
+    poly = numpoly.polynomial([[1, X, X**2], [X+Y, Y, Y]])
+    part1, part2 = func_interface.split(poly, 2, axis=0)
+    assert numpy.all(part1 == [1, X, X**2])
+    assert numpy.all(part2 == [X+Y, Y, Y])
+    part1, part2, part3 = func_interface.split(poly, 3, axis=1)
+    assert numpy.all(part1 == [[1], [X+Y]])
+    assert numpy.all(part2 == [[X], [Y]])
+    assert numpy.all(part3 == [[X**2], [Y]])
+
+
 def test_numpy_square(func_interface):
     assert func_interface.square(X+Y) == X**2+2*X*Y+Y**2
     assert (1+X)**2 == 1+2*X+X**2
@@ -356,6 +390,13 @@ def test_numpy_tranpose(func_interface):
     assert numpy.all(func_interface.transpose(poly) ==
                      [[1, X**2], [X-1, X]])
     assert numpy.all(poly.T == [[1, X**2], [X-1, X]])
+
+
+def test_numpy_vsplit(func_interface):
+    poly = numpoly.polynomial([[1, X, X**2], [X+Y, Y, Y]])
+    part1, part2 = func_interface.vsplit(poly, 2)
+    assert numpy.all(part1 == [1, X, X**2])
+    assert numpy.all(part2 == [X+Y, Y, Y])
 
 
 def test_numpy_vstack(func_interface):

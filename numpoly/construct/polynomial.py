@@ -93,7 +93,7 @@ def polynomial(
     elif isinstance(poly_like, numpy.ndarray) and poly_like.dtype.names:
 
         keys = numpy.asarray(poly_like.dtype.names, dtype="U")
-        exponents = keys.flatten().view(numpy.uint32)-48
+        exponents = keys.flatten().view(numpy.uint32)-numpoly.ndpoly.KEY_OFFSET
         exponents = exponents.reshape(len(keys), -1)
 
         coefficients = [poly_like[key] for key in poly_like.dtype.names]

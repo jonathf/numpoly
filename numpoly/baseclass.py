@@ -91,6 +91,12 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     _dtype = None
     keys = None
     names = None
+    KEY_OFFSET = 59
+    """
+    Numpy structured array names don't like characters reserved by Python The
+    largest index found with this property is 58: ':'. Above this, everything looks
+    like it works as expected.
+    """
 
     def __new__(
             cls,
@@ -141,7 +147,8 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                 "invalid polynomial name; "
                 "expected format: '%s'" % INDETERMINANT_DEFAULTS["filter_regex"])
 
-        keys = (exponents+48).flatten().view("U%d" % exponents.shape[-1])
+        keys = (exponents+cls.KEY_OFFSET).flatten()
+        keys = keys.view("U%d" % exponents.shape[-1])
 
         dtype = int if dtype is None else dtype
         dtype_ = numpy.dtype([(key, dtype) for key in keys])
@@ -221,7 +228,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                    [4, 0]], dtype=uint32)
 
         """
-        exponents = self.keys.flatten().view(numpy.uint32)-48
+        exponents = self.keys.flatten().view(numpy.uint32)-self.KEY_OFFSET
         return exponents.reshape(len(self.keys), -1)
 
     @staticmethod

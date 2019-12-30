@@ -38,6 +38,7 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.allclose
 .. autofunction:: numpoly.array_function.around
 .. autofunction:: numpoly.array_function.array_repr
+.. autofunction:: numpoly.array_function.array_split
 .. autofunction:: numpoly.array_function.array_str
 .. autofunction:: numpoly.array_function.atleast_1d
 .. autofunction:: numpoly.array_function.atleast_2d
@@ -48,10 +49,12 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.concatenate
 .. autofunction:: numpoly.array_function.cumsum
 .. autofunction:: numpoly.array_function.divide
+.. autofunction:: numpoly.array_function.dsplit
 .. autofunction:: numpoly.array_function.dstack
 .. autofunction:: numpoly.array_function.equal
 .. autofunction:: numpoly.array_function.floor
 .. autofunction:: numpoly.array_function.floor_divide
+.. autofunction:: numpoly.array_function.hsplit
 .. autofunction:: numpoly.array_function.hstack
 .. autofunction:: numpoly.array_function.inner
 .. autofunction:: numpoly.array_function.isclose
@@ -72,9 +75,11 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.rint
 .. autofunction:: numpoly.array_function.round
 .. autofunction:: numpoly.array_function.square
+.. autofunction:: numpoly.array_function.split
 .. autofunction:: numpoly.array_function.stack
 .. autofunction:: numpoly.array_function.subtract
 .. autofunction:: numpoly.array_function.sum
 .. autofunction:: numpoly.array_function.tile
 .. autofunction:: numpoly.array_function.transpose
+.. autofunction:: numpoly.array_function.vsplit
 .. autofunction:: numpoly.array_function.vstack
