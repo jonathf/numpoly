@@ -67,7 +67,7 @@ def polynomial(
             names=names,
             dtype=dtype,
         )
-        poly["0"] = 0
+        poly[";"] = 0
 
     elif isinstance(poly_like, dict):
         poly = numpoly.ndpoly(exponents=[(0,)], shape=())

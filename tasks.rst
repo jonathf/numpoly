@@ -34,9 +34,7 @@ mean
 median
 nonzero
 ravel
-repeat
 resize
-split
 ===================  ==========================================================
 
 Save/Load support

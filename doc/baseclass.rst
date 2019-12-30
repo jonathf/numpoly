@@ -58,7 +58,7 @@ in it's true form:
     >>> array = numpy.ndarray(
     ...     shape=poly.shape, dtype=dtype, buffer=poly.data)
     >>> array  # doctest: +NORMALIZE_WHITESPACE
-    array((-1, 4, 3), dtype=[('00', '<i8'), ('10', '<i8'), ('01', '<i8')])
+    array((-1, 4, 3), dtype=[(';;', '<i8'), ('<;', '<i8'), (';<', '<i8')])
 
 Which, together with the indeterminant names, can be cast back to a polynomial:
 

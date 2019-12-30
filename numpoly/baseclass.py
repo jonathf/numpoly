@@ -71,8 +71,8 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     Examples:
         >>> poly = ndpoly(
         ...     exponents=[(0, 1), (0, 0)], shape=(3,), names="x y")
-        >>> poly["00"] = 1, 2, 3
-        >>> poly["01"] = 4, 5, 6
+        >>> poly[";;"] = 1, 2, 3
+        >>> poly[";<"] = 4, 5, 6
         >>> numpy.array(poly.coefficients)
         array([[4, 5, 6],
                [1, 2, 3]])
@@ -317,9 +317,9 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
 
         Examples:
             >>> numpoly.symbols("x").values
-            array((1,), dtype=[('1', '<i8')])
+            array((1,), dtype=[('<', '<i8')])
             >>> numpoly.symbols("x y").values
-            array([(1, 0), (0, 1)], dtype=[('10', '<i8'), ('01', '<i8')])
+            array([(1, 0), (0, 1)], dtype=[('<;', '<i8'), (';<', '<i8')])
 
         """
         return numpy.ndarray(
@@ -446,7 +446,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             polynomial([1-4*x, x**2])
             >>> poly[:, 1]
             polynomial([x**2, x*y**2])
-            >>> poly["10"]
+            >>> poly["<;"]
             array([[-4,  0],
                    [ 0,  0]])
 

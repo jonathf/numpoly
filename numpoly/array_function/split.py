@@ -22,9 +22,9 @@ def split(ary, indices_or_sections, axis=0):
             entries indicate where along `axis` the array is split.  For
             example, ``[2, 3]`` would, for ``axis=0``, result in
 
-                - ary[:2]
-                - ary[2:3]
-                - ary[3:]
+            - ary[:2]
+            - ary[2:3]
+            - ary[3:]
 
             If an index exceeds the dimension of the array along `axis`, an
             empty sub-array is returned correspondingly.
@@ -41,14 +41,16 @@ def split(ary, indices_or_sections, axis=0):
             not result in equal division.
 
     See Also:
-        array_split : Split an array into multiple sub-arrays of equal or
-                      near-equal size.  Does not raise an exception if an equal
-                      division cannot be made.
-        hsplit : Split array into multiple sub-arrays horizontally
-                 (column-wise).
-        vsplit : Split array into multiple sub-arrays vertically (row wise).
-        dsplit : Split array into multiple sub-arrays along the 3rd axis
-                 (depth).
+        array_split:
+            Split an array into multiple sub-arrays of equal or near-equal
+            size. Does not raise an exception if an equal division cannot be
+            made.
+        hsplit:
+            Split array into multiple sub-arrays horizontally (column-wise).
+        vsplit:
+            Split array into multiple sub-arrays vertically (row wise).
+        dsplit:
+            Split array into multiple sub-arrays along the 3rd axis (depth).
 
     Examples:
         >>> poly = numpoly.monomial(16).reshape(4, 4)
