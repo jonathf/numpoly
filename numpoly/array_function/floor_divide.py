@@ -70,20 +70,21 @@ def floor_divide(x1, x2, out=None, where=True, **kwargs):
     return out
 
 
-def polynomial_division(x1, x2):
-    """
-    Examples:
-        >>> polynomial_division(numpoly.monomials(5, names="x"), numpoly.symbols("x"))
-    """
-    x1, x2 = numpoly.align_polynomials(x1, x2)
-    out = 0
-    for idx, name in enumerate(x1.names):
+# def polynomial_division(x1, x2):
+#     """
+#     Examples:
+#         >>> # polynomial_division(numpoly.monomial(5, names="x"), numpoly.symbols("x"))
+#     """
+#     x1, x2 = numpoly.align_polynomials(x1, x2)
+#     out = 0
+#     for idx, name in enumerate(x1.names):
+#         pass
 
 
-    exponents = x1.exponents.copy()
-    coefficients = x1.coefficients.copy()
-    orders1 = numpy.sum(x1.exponents, -1)
-    orders2 = numpy.sum(x2.exponents, -1)
+#     exponents = x1.exponents.copy()
+#     coefficients = x1.coefficients.copy()
+#     orders1 = numpy.sum(x1.exponents, -1)
+#     orders2 = numpy.sum(x2.exponents, -1)
 
-    while numpy.max(orders1) > numpy.max(orders2):
-        exponents
+#     while numpy.max(orders1) > numpy.max(orders2):
+#         exponents
