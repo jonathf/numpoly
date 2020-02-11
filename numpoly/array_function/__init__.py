@@ -13,6 +13,7 @@ from .array_str import array_str
 from .atleast_1d import atleast_1d
 from .atleast_2d import atleast_2d
 from .atleast_3d import atleast_3d
+from .broadcast_arrays import broadcast_arrays
 from .ceil import ceil
 from .choose import choose
 from .common_type import common_type
