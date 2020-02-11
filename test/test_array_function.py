@@ -88,20 +88,35 @@ def test_numpy_array_str(func_interface):
 
 def test_numpy_atleast_1d(func_interface):
     polys = [X, [X], [[X]], [[[X]]]]
-    assert numpy.all(numpoly.atleast_1d(*polys) ==
+    assert numpy.all(func_interface.atleast_1d(*polys) ==
                      [[X], [X], [[X]], [[[X]]]])
 
 
 def test_numpy_atleast_2d(func_interface):
     polys = [X, [X], [[X]], [[[X]]]]
-    assert numpy.all(numpoly.atleast_2d(*polys) ==
+    assert numpy.all(func_interface.atleast_2d(*polys) ==
                      [[[X]], [[X]], [[X]], [[[X]]]])
 
 
 def test_numpy_atleast_3d(func_interface):
     polys = [X, [X], [[X]], [[[X]]]]
-    assert numpy.all(numpoly.atleast_3d(*polys) ==
-                     [[[[X]]], [[[X]]], [[[X]]], [[[X]]]])
+    results = func_interface.atleast_3d(*polys)
+    assert isinstance(results, list)
+    assert len(results) == len(polys)
+    assert all(result.shape == (1, 1, 1) for result in results)
+    assert numpy.all(results == [[[[X]]], [[[X]]], [[[X]]], [[[X]]]])
+
+
+def test_numpy_broadcast_array(func_interface):
+    polys = [X, [[Y, 1]], [[X], [Y]], [[X, 1], [Y, 2]]]
+    results = func_interface.broadcast_arrays(*polys)
+    assert isinstance(results, list)
+    assert len(results) == len(polys)
+    assert all(result.shape == (2, 2) for result in results)
+    assert numpy.all(results[0] == [[X, X], [X, X]])
+    assert numpy.all(results[1] == [[Y, 1], [Y, 1]])
+    assert numpy.all(results[2] == [[X, X], [Y, Y]])
+    assert numpy.all(results[3] == [[X, 1], [Y, 2]])
 
 
 def test_numpy_ceil(func_interface):
