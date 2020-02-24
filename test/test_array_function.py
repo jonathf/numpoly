@@ -1,4 +1,5 @@
 """Testing functions used for numpy compatible."""
+from pytest import raises
 import numpy
 from numpoly import polynomial
 import numpoly
@@ -248,6 +249,17 @@ def test_numpy_logical_or(func_interface):
     assert numpy.all(func_interface.logical_or(0, poly1) == [False, True])
     assert numpy.all(0 or poly1 == [0, X])
     assert numpy.all(func_interface.logical_or(poly2, poly3) == [True, True])
+
+
+def test_numpy_matmul(func_interface):
+    poly1 = numpoly.polynomial([[0, X], [1, Y]])
+    poly2 = numpoly.polynomial([X, 2])
+    assert numpy.all(func_interface.matmul(poly1, poly2) == [[X**2, 2*X], [X+X*Y, 2+2*Y]])
+    assert func_interface.matmul(numpy.zeros((9, 5, 7, 4)), numpy.ones((9, 5, 4, 3))).shape == (9, 5, 7, 3)
+    with raises(ValueError):
+        func_interface.matmul(poly1, 4)
+    with raises(ValueError):
+        func_interface.matmul(3, poly2)
 
 
 def test_numpy_mean(interface):

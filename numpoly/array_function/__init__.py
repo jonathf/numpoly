@@ -32,6 +32,7 @@ from .isclose import isclose
 from .isfinite import isfinite
 from .logical_and import logical_and
 from .logical_or import logical_or
+from .matmul import matmul
 from .mean import mean
 from .moveaxis import moveaxis
 from .multiply import multiply
