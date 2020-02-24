@@ -62,6 +62,7 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.isfinite
 .. autofunction:: numpoly.array_function.logical_and
 .. autofunction:: numpoly.array_function.logical_or
+.. autofunction:: numpoly.array_function.matmul
 .. autofunction:: numpoly.array_function.mean
 .. autofunction:: numpoly.array_function.moveaxis
 .. autofunction:: numpoly.array_function.multiply
