@@ -113,7 +113,7 @@ To run tests, run:
 
 .. code-block:: bash
 
-   poentry run pytest numpoly test doc --doctest-modules
+   poetry run pytest numpoly test doc --doctest-modules
 
 Questions & Troubleshooting
 ---------------------------
