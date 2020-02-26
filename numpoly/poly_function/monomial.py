@@ -49,8 +49,10 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., names=None):
         polynomial([1, q, q**2, q**3])
         >>> numpoly.monomial(4, 5, ordering="GR", names=("x", "y"))
         polynomial([x**4, x**3*y, x**2*y**2, x*y**3, y**4])
-        >>> numpoly.monomial([1, 1], [3, 3], names=("x", "y"))
-        polynomial([x*y, x*y**2, x**2*y, x**2*y**2])
+        >>> numpoly.monomial(2, [2, 4])
+        polynomial([q1**2, q0*q1, q1**3, q0*q1**2, q0*q1**3])
+        >>> numpoly.monomial(2, 3, names=("x", "y"), cross_truncation=0)
+        polynomial([y**2, x*y, x**2, x*y**2, x**2*y, x**2*y**2])
 
     """
     if stop is None:
@@ -62,25 +64,12 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., names=None):
     dimensions = max(start.size, stop.size, dimensions)
 
     indices = bindex(
-        start=numpy.min(start),
-        stop=2*numpy.max(stop),
+        start=start,
+        stop=stop,
         dimensions=dimensions,
         ordering=ordering,
         cross_truncation=cross_truncation,
     )
-
-    if start.size == 1:
-        below = numpy.sum(indices, -1) >= start
-    else:
-        start = numpy.ones(dimensions, dtype=int)*start
-        below = numpy.all(indices-start >= 0, -1)
-
-    if stop.size == 1:
-        above = numpy.sum(indices, -1) < stop.item()
-    else:
-        stop = numpy.ones(dimensions, dtype=int)*stop
-        above = numpy.all(stop-indices > 0, -1)
-    indices = indices[above*below]
 
     poly = numpoly.ndpoly(
         exponents=indices,
