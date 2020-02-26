@@ -33,4 +33,6 @@ def tonumpy(poly):
         raise ValueError(
             "only constant polynomials can be converted to array.")
     idx = numpy.argwhere(numpy.all(poly.exponents == 0, -1)).item()
-    return numpy.array(poly.coefficients[idx])
+    if poly.size:
+        return numpy.array(poly.coefficients[idx])
+    return numpy.array([])

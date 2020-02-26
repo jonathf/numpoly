@@ -60,10 +60,15 @@ def polynomial_from_attributes(
     if clean:
         exponents, coefficients, names = clean_.postprocess_attributes(
             exponents, coefficients, names)
-    dtype = coefficients[0].dtype if dtype is None else dtype
+    if coefficients:
+        dtype = coefficients[0].dtype if dtype is None else dtype
+        shape = coefficients[0].shape
+    else:
+        dtype = dtype if dtype else int
+        shape = ()
     poly = numpoly.ndpoly(
         exponents=exponents,
-        shape=coefficients[0].shape,
+        shape=shape,
         names=names,
         dtype=dtype,
     )
