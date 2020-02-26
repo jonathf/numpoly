@@ -94,8 +94,8 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     KEY_OFFSET = 59
     """
     Numpy structured array names don't like characters reserved by Python The
-    largest index found with this property is 58: ':'. Above this, everything looks
-    like it works as expected.
+    largest index found with this property is 58: ':'. Above this, everything
+    looks like it works as expected.
     """
 
     def __new__(
@@ -119,10 +119,10 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             names (Union[None, str, Tuple[str], numpoly.ndpoly]):
                 The name of the indeterminant variables in te polynomial. If
                 polynomial, inherent from it. Else, pass argument to
-                `numpoly.symbols` to create the indeterminants names. If only one
-                name is provided, but more than one is required, indeterminant
-                will be extended with an integer index. If omitted, use
-                ``INDETERMINANT_DEFAULTS["base_name"]``.
+                `numpoly.symbols` to create the indeterminants names. If only
+                one name is provided, but more than one is required,
+                indeterminants will be extended with an integer index. If
+                omitted, use ``INDETERMINANT_DEFAULTS["base_name"]``.
             dtype:
                 Any object that can be interpreted as a numpy data type.
             kwargs:
@@ -147,8 +147,11 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                 "invalid polynomial name; "
                 "expected format: '%s'" % INDETERMINANT_DEFAULTS["filter_regex"])
 
-        keys = (exponents+cls.KEY_OFFSET).flatten()
-        keys = keys.view("U%d" % exponents.shape[-1])
+        if numpy.prod(exponents.shape):
+            keys = (exponents+cls.KEY_OFFSET).flatten()
+            keys = keys.view("U%d" % exponents.shape[-1])
+        else:
+            keys = numpy.zeros(0, dtype="U1")
 
         dtype = int if dtype is None else dtype
         dtype_ = numpy.dtype([(key, dtype) for key in keys])
@@ -207,6 +210,8 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                    [ 2,  0]])
 
         """
+        if not self.size:
+            return []
         out = numpy.empty((len(self.keys),) + self.shape, dtype=self._dtype)
         for idx, key in enumerate(self.keys):
             out[idx] = numpy.ndarray.__getitem__(self, key)
@@ -229,7 +234,15 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
 
         """
         exponents = self.keys.flatten().view(numpy.uint32)-self.KEY_OFFSET
-        return exponents.reshape(len(self.keys), -1)
+        if numpy.prod(exponents.shape):
+            exponents = exponents.reshape(len(self.keys), -1)
+        elif self.size == 1:
+            exponents = exponents.reshape(1, 1)
+        else:
+            exponents = numpy.zeros((1, 1), dtype=numpy.uint32)
+        assert len(exponents) > 0
+        assert len(exponents.shape) == 2
+        return exponents
 
     @staticmethod
     def from_attributes(
@@ -407,7 +420,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         coefficients = [coefficient.astype(dtype, **kwargs)
                         for coefficient in self.coefficients]
         return construct.polynomial_from_attributes(
-            self.exponents, coefficients, self.names)
+            self.exponents, coefficients, self.names, dtype=dtype)
 
     def round(self, decimals=0, out=None):
         """Wrap ndarray.round."""

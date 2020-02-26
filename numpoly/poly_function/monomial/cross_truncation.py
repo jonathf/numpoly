@@ -47,4 +47,6 @@ def cross_truncate(indices, bound, norm):
         out = numpy.max(indices/bound, axis=-1) <= 1
     else:
         out = numpy.sum((indices/bound)**norm, axis=-1)**(1./norm) <= 1
+    if not numpy.any(bound < 0):
+        out[numpy.all(indices == 0, axis=-1)] = True
     return out

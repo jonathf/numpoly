@@ -78,7 +78,8 @@ def align_shape(*polys):
     polys = [numpoly.aspolynomial(poly) for poly in polys]
     common = 1
     for poly in polys:
-        common = numpy.ones(poly.coefficients[0].shape, dtype=int)*common
+        if poly.size:
+            common = numpy.ones(poly.coefficients[0].shape, dtype=int)*common
 
     polys = [poly.from_attributes(
         exponents=poly.exponents,

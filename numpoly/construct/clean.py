@@ -71,6 +71,9 @@ def postprocess_attributes(exponents, coefficients, names=None):
     coefficients = [numpy.asarray(coefficient) for coefficient in coefficients]
 
     _validate_input(exponents, coefficients)
+    if not coefficients:
+        assert exponents.shape == (1, 1)
+        return exponents, coefficients, names
 
     exponents, coefficients = list(zip(*[
         (exponent, coefficient)
@@ -92,7 +95,7 @@ def postprocess_attributes(exponents, coefficients, names=None):
     if not numpy.any(indices):
         indices[0] = True
 
-    if names is not None:
+    if names:
         if len(names) != exponents.shape[1]:
             raise PolynomialConstructionError(
                 "Name length incompatible exponent length; "
@@ -117,7 +120,7 @@ def _validate_input(exponents, coefficients):
     if exponents.ndim != 2:
         raise PolynomialConstructionError(
             "expected exponents.ndim == 2; found %d" % exponents.ndim)
-    if len(exponents) != len(coefficients):
+    if coefficients and len(exponents) != len(coefficients):
         raise PolynomialConstructionError(
             "expected len(exponents) == len(coefficients); found %d != %d" % (
                 len(exponents), len(coefficients)))
