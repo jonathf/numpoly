@@ -3,11 +3,11 @@ import numpy
 
 
 def cross_truncate(indices, bound, norm):
-    """
+    r"""
     Truncate of indices using L_p norm.
 
     .. math:
-        L_p(x) = \sum_i |x_i/b_i|^p ^{1/p} < 1
+        L_p(x) = \sum_i |x_i/b_i|^p ^{1/p} \leq 1
 
     where :math:`b_i` are bounds that each :math:`x_i` should follow.
 
@@ -37,6 +37,7 @@ def cross_truncate(indices, bound, norm):
 
     """
     assert norm >= 0, "negative L_p norm not allowed"
+    bound = numpy.asfarray(bound)
     if numpy.any(bound < 0):
         out = numpy.zeros((len(indices),), dtype=bool)
     elif norm == 0:
@@ -45,5 +46,5 @@ def cross_truncate(indices, bound, norm):
     elif norm == numpy.inf:
         out = numpy.max(indices/bound, axis=-1) <= 1
     else:
-        out = numpy.sum((indices/bound)**norm, axis=-1)**(1/norm) <= 1
+        out = numpy.sum((indices/bound)**norm, axis=-1)**(1./norm) <= 1
     return out

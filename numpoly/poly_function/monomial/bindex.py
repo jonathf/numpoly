@@ -29,8 +29,8 @@ def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
             Order list of indices.
 
     Examples:
-        >>> bindex(5).tolist()
-        [[0], [1], [2], [3], [4]]
+        >>> bindex(4).tolist()
+        [[0], [1], [2], [3]]
         >>> bindex(2, dimensions=2).tolist()
         [[0, 0], [0, 1], [1, 0]]
         >>> bindex(start=2, stop=3, dimensions=2).tolist()
@@ -69,7 +69,7 @@ def _bindex(start, stop, dimensions=1):
     """Backend for the bindex function."""
     # At the beginning the current list of indices just ranges over the
     # last dimension.
-    bound = stop.max()+1
+    bound = stop.max()
     range_ = numpy.arange(bound, dtype=int)
     indices = range_[:, numpy.newaxis]
     start = start*numpy.ones(dimensions)

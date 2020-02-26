@@ -1,7 +1,9 @@
 """Testing functions used for numpoly only functionality."""
 from pytest import raises
+
 import numpy
 import numpoly
+from numpoly.poly_function.monomial.cross_truncation import cross_truncate
 import sympy
 
 X, Y = numpoly.symbols("X Y")
@@ -71,36 +73,36 @@ def test_numpoly_tonumpy():
 def test_numpoly_cross_truncate():
     indices = numpy.array(numpy.mgrid[:10, :10]).reshape(2, -1).T
 
-    assert not numpy.any(numpoly.cross_truncate(indices, -1, norm=0))
-    assert numpy.all(indices[numpoly.cross_truncate(indices, 0, norm=0)].T ==
+    assert not numpy.any(cross_truncate(indices, -1, norm=0))
+    assert numpy.all(indices[cross_truncate(indices, 0, norm=0)].T ==
                      [[0], [0]])
-    assert numpy.all(indices[numpoly.cross_truncate(indices, 1, norm=0)].T ==
+    assert numpy.all(indices[cross_truncate(indices, 1, norm=0)].T ==
                      [[0, 0, 1], [0, 1, 0]])
-    assert numpy.all(indices[numpoly.cross_truncate(indices, 2, norm=0)].T ==
+    assert numpy.all(indices[cross_truncate(indices, 2, norm=0)].T ==
                      [[0, 0, 0, 1, 2], [0, 1, 2, 0, 0]])
 
-    assert not numpy.any(numpoly.cross_truncate(indices, -1, norm=1))
-    assert numpy.all(indices[numpoly.cross_truncate(indices, 0, norm=1)].T ==
+    assert not numpy.any(cross_truncate(indices, -1, norm=1))
+    assert numpy.all(indices[cross_truncate(indices, 0, norm=1)].T ==
                      [[0], [0]])
-    assert numpy.all(indices[numpoly.cross_truncate(indices, 1, norm=1)].T ==
+    assert numpy.all(indices[cross_truncate(indices, 1, norm=1)].T ==
                      [[0, 0, 1], [0, 1, 0]])
-    assert numpy.all(indices[numpoly.cross_truncate(indices, 2, norm=1)].T ==
+    assert numpy.all(indices[cross_truncate(indices, 2, norm=1)].T ==
                      [[0, 0, 0, 1, 1, 2], [0, 1, 2, 0, 1, 0]])
 
-    assert not numpy.any(numpoly.cross_truncate(indices, -1, norm=100))
-    assert numpy.all(indices[numpoly.cross_truncate(indices, 0, norm=100)].T ==
+    assert not numpy.any(cross_truncate(indices, -1, norm=100))
+    assert numpy.all(indices[cross_truncate(indices, 0, norm=100)].T ==
                      [[0], [0]])
-    assert numpy.all(indices[numpoly.cross_truncate(indices, 1, norm=100)].T ==
+    assert numpy.all(indices[cross_truncate(indices, 1, norm=100)].T ==
                      [[0, 0, 1], [0, 1, 0]])
-    assert numpy.all(indices[numpoly.cross_truncate(indices, 2, norm=100)].T ==
+    assert numpy.all(indices[cross_truncate(indices, 2, norm=100)].T ==
                      [[0, 0, 0, 1, 1, 1, 2, 2], [0, 1, 2, 0, 1, 2, 0, 1]])
 
-    assert not numpy.any(numpoly.cross_truncate(indices, -1, norm=numpy.inf))
-    assert numpy.all(indices[numpoly.cross_truncate(indices, 0, norm=numpy.inf)].T ==
+    assert not numpy.any(cross_truncate(indices, -1, norm=numpy.inf))
+    assert numpy.all(indices[cross_truncate(indices, 0, norm=numpy.inf)].T ==
                      [[0], [0]])
-    assert numpy.all(indices[numpoly.cross_truncate(indices, 1, norm=numpy.inf)].T ==
+    assert numpy.all(indices[cross_truncate(indices, 1, norm=numpy.inf)].T ==
                      [[0, 0, 1, 1], [0, 1, 0, 1]])
-    assert numpy.all(indices[numpoly.cross_truncate(indices, 2, norm=numpy.inf)].T ==
+    assert numpy.all(indices[cross_truncate(indices, 2, norm=numpy.inf)].T ==
                      [[0, 0, 0, 1, 1, 1, 2, 2, 2], [0, 1, 2, 0, 1, 2, 0, 1, 2]])
 
 

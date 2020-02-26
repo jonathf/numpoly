@@ -8,6 +8,7 @@ polynomials.
 .. automodsumm:: numpoly.poly_function
    :functions-only:
 
+.. autofunction:: numpoly.poly_function.bindex
 .. autofunction:: numpoly.poly_function.call
 .. autofunction:: numpoly.poly_function.decompose
 .. autofunction:: numpoly.poly_function.diff
