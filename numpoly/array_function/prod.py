@@ -61,6 +61,7 @@ def prod(a, axis=None, dtype=None, out=None, keepdims=False, **kwargs):
         polynomial([[[x**3*y**3+x**4*y**2]]])
 
     """
+    a = numpoly.aspolynomial(a)
     assert out is None
     if keepdims:
         if axis is None:
