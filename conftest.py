@@ -1,5 +1,6 @@
 """Global configuration."""
 from packaging.version import parse
+import os
 import pytest
 import numpy
 
@@ -38,7 +39,11 @@ def interface(request):
 
 
 @pytest.fixture(autouse=True)
-def doctest_variables(doctest_namespace):
-    """Ensure certain variables are available during doctests."""
+def global_variables(doctest_namespace, monkeypatch):
+    """Ensure certain variables are available during tests."""
     doctest_namespace["numpy"] = numpy
     doctest_namespace["numpoly"] = numpoly
+
+    environ = os.environ.copy()
+    environ["NUMPOLY_DEBUG"] = True
+    monkeypatch.setattr("os.environ", environ)
