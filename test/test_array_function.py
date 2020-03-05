@@ -301,6 +301,10 @@ def test_numpy_negative(func_interface):
     assert func_interface.negative(X-Y-1) == 1-X+Y
     assert numpy.all(func_interface.negative(poly) == [[-X, Y], [4, -Y]])
 
+def test_numpy_nonzero(func_interface):
+    poly = polynomial([[3*X, 0, 0], [0, 4*Y, 0], [5*X+Y, 6*X, 0]])
+    assert numpy.all(poly[func_interface.nonzero(poly)] == [3*X, 4*Y, 5*X+Y, 6*X])
+
 
 def test_numpy_not_equal(func_interface):
     poly = polynomial([[0, 2+Y], [X, 2]])

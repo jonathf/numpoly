@@ -38,6 +38,7 @@ from .mean import mean
 from .moveaxis import moveaxis
 from .multiply import multiply
 from .negative import negative
+from .nonzero import nonzero
 from .not_equal import not_equal
 from .outer import outer
 from .positive import positive

@@ -18,7 +18,7 @@ def count_nonzero(x, axis=None, **kwargs):
             version of a.
 
     Returns:
-        count (Union[bool, numpoly.ndpoly]):
+        count (Union[bool, numpy.ndarray]):
             Number of non-zero values in the array along a given axis.
             Otherwise, the total number of non-zero values in the array is
             returned.
