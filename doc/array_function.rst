@@ -48,6 +48,7 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.choose
 .. autofunction:: numpoly.array_function.common_type
 .. autofunction:: numpoly.array_function.concatenate
+.. autofunction:: numpoly.array_function.count_nonzero
 .. autofunction:: numpoly.array_function.cumsum
 .. autofunction:: numpoly.array_function.divide
 .. autofunction:: numpoly.array_function.dsplit
