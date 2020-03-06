@@ -68,6 +68,7 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.moveaxis
 .. autofunction:: numpoly.array_function.multiply
 .. autofunction:: numpoly.array_function.negative
+.. autofunction:: numpoly.array_function.nonzero
 .. autofunction:: numpoly.array_function.not_equal
 .. autofunction:: numpoly.array_function.outer
 .. autofunction:: numpoly.array_function.positive
