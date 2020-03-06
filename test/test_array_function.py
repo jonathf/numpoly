@@ -143,6 +143,14 @@ def test_numpy_concatenate(func_interface):
     assert numpy.all(func_interface.concatenate([poly1, poly1], 1) ==
                      [[0, Y, 0, Y], [X, 1, X, 1]])
 
+def test_numpy_count_nonzero(func_interface):
+    poly1 = polynomial([[0, Y], [X, 1]])
+    poly2 = polynomial([[0, Y, X, 0, 0], [3, 0, 0, 2, 19]])
+    assert numpy.all(func_interface.count_nonzero(poly1) == 3)
+    assert numpy.all(func_interface.count_nonzero(poly1, axis=0) == [1, 2])
+    assert numpy.all(func_interface.count_nonzero(poly2, axis=0) == [1, 1, 1, 1, 1])
+    assert numpy.all(func_interface.count_nonzero(X) == 1)
+
 
 def test_numpy_cumsum(interface):
     poly1 = polynomial([[0, Y], [X, 1]])
@@ -292,6 +300,11 @@ def test_numpy_negative(func_interface):
     assert -(X-Y-1) == 1-X+Y
     assert func_interface.negative(X-Y-1) == 1-X+Y
     assert numpy.all(func_interface.negative(poly) == [[-X, Y], [4, -Y]])
+
+def test_numpy_nonzero(interface):
+    poly = polynomial([[3*X, 0, 0], [0, 4*Y, 0], [5*X+Y, 6*X, 0]])
+    assert numpy.all(poly[interface.nonzero(poly)] == [3*X, 4*Y, 5*X+Y, 6*X])
+    assert numpy.all(interface.nonzero(X) == ([0],))
 
 
 def test_numpy_not_equal(func_interface):
