@@ -22,8 +22,8 @@ def nonzero(x, **kwargs):
         >>> f = numpoly.polynomial([[3*x, 0, 0], [0, 4*y, 0], [5*x+y, 6*x, 0]])
         >>> f
         polynomial([[3*x, 0, 0],
-           [0, 4*y, 0],
-           [5*x+y, 6*x, 0]])
+                    [0, 4*y, 0],
+                    [5*x+y, 6*x, 0]])
         >>> numpoly.nonzero(f)
         (array([0, 1, 2, 2]), array([0, 1, 0, 1]))
         >>> f[numpoly.nonzero(f)]

@@ -27,11 +27,11 @@ def count_nonzero(x, axis=None, **kwargs):
         >>> x, y = numpoly.symbols("x y")
         >>> numpoly.count_nonzero([x])
         1
-        >>> np.count_nonzero([[0,x,x*x,0,0],[x+1,0,0,2*x,19*x]])
+        >>> numpoly.count_nonzero([[0,x,x*x,0,0],[x+1,0,0,2*x,19*x]])
         5
-        >>> np.count_nonzero([[0,x,7*x,0,0],[3*y,0,0,2,19*x+y]], axis=0)
+        >>> numpoly.count_nonzero([[0,x,7*x,0,0],[3*y,0,0,2,19*x+y]], axis=0)
         array([1, 1, 1, 1, 1])
-        >>> np.count_nonzero([[0,x,y,0,0],[x,0,0,2*x,19*y]], axis=1)
+        >>> numpoly.count_nonzero([[0,x,y,0,0],[x,0,0,2*x,19*y]], axis=1)
         array([2, 3])
     """
     a = numpoly.aspolynomial(x)
