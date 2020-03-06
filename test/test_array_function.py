@@ -304,6 +304,7 @@ def test_numpy_negative(func_interface):
 def test_numpy_nonzero(func_interface):
     poly = polynomial([[3*X, 0, 0], [0, 4*Y, 0], [5*X+Y, 6*X, 0]])
     assert numpy.all(poly[func_interface.nonzero(poly)] == [3*X, 4*Y, 5*X+Y, 6*X])
+    assert numpy.all(func_interface.nonzero(X) == ([0],))
 
 
 def test_numpy_not_equal(func_interface):
