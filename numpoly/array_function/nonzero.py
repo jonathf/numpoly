@@ -28,6 +28,7 @@ def nonzero(x, **kwargs):
         (array([0, 1, 2, 2]), array([0, 1, 0, 1]))
         >>> f[numpoly.nonzero(f)]
         polynomial([3*x, 4*y, 5*x+y, 6*x])
+
     """
     a = numpoly.aspolynomial(x)
 

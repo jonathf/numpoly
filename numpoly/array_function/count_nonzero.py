@@ -7,7 +7,7 @@ from .common import implements
 @implements(numpy.count_nonzero)
 def count_nonzero(x, axis=None, **kwargs):
     """
-    Counts the number of non-zero values in the array a.
+    Count the number of non-zero values in the array a.
 
     Args:
         x (numpoly.ndpoly):
@@ -33,6 +33,7 @@ def count_nonzero(x, axis=None, **kwargs):
         array([1, 1, 1, 1, 1])
         >>> numpoly.count_nonzero([[0,x,y,0,0],[x,0,0,2*x,19*y]], axis=1)
         array([2, 3])
+
     """
     a = numpoly.aspolynomial(x)
 
