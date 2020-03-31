@@ -45,7 +45,6 @@ jobs:
                     python3 -m venv /home/circleci/venv
                     source /home/circleci/venv/bin/activate
                     poetry install
-                    poetry run pip install -U numpy  # allow python 3 only numpy
             - save_cache:
                 key: deps-{{ checksum "poetry.lock"}}
                 paths:

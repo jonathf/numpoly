@@ -1,4 +1,5 @@
 """Clean up polynomial attributes."""
+from six import string_types
 import numpy
 import numpoly
 
@@ -84,7 +85,7 @@ def postprocess_attributes(exponents, coefficients, names=None):
 
     if isinstance(names, numpoly.ndpoly):
         names = names.names
-    if isinstance(names, str):
+    if isinstance(names, string_types):
         if exponents.shape[1] > 1:
             names = ["%s%d" % (names, idx)
                      for idx in range(exponents.shape[1])]

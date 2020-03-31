@@ -19,6 +19,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 numpy = "^1.16"
+six = "*"
 
 [tool.poetry.dev-dependencies]
 sympy = "*"
