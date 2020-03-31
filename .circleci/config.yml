@@ -18,7 +18,7 @@ jobs:
             - run:
                 name: "Installation"
                 command: |
-                    pip install --user . pytest
+                    pip install --user . sympy pytest
             - run:
                 name: "Run tests"
                 command: |
