@@ -18,11 +18,11 @@ jobs:
             - run:
                 name: "Installation"
                 command: |
-                    pip install . pytest
+                    pip install --user . pytest
             - run:
                 name: "Run tests"
                 command: |
-                    poetry run pytest --doctest-modules numpoly test
+                    ~/.local/bin/pytest --doctest-modules numpoly test
     build-cache:
         executor: my-executor
         steps:
