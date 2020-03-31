@@ -1,6 +1,7 @@
 """Construct symbol variables."""
 import re
 import string
+from six import string_types
 
 import numpy
 import numpoly
@@ -57,7 +58,7 @@ def symbols(names=None, asarray=False, dtype="i8"):
         return numpoly.ndpoly.from_attributes(
             exponents=[(1,)], coefficients=coefficients)
 
-    if not isinstance(names, str):
+    if not isinstance(names, string_types):
         names = list(names)
 
     else:

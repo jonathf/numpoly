@@ -365,18 +365,13 @@ def test_numpy_repeat(func_interface):
     assert numpy.all(numpoly.repeat(poly, [1, 2], axis=0) ==
                      [[1, -1+X], [X**2, X], [X**2, X]])
 
+
 def test_numpy_reshape(interface):
     poly = numpoly.polynomial([[1, X, X**2], [X+Y, Y, Y]])
     assert numpy.all(interface.reshape(poly, (3, 2)) ==
                      [[1, X], [X**2, X+Y], [Y, Y]])
     assert numpy.all(interface.reshape(poly, 6) ==
                      [1, X, X**2, X+Y, Y, Y])
-
-
-def test_numpy_reshape(interface):
-    poly = numpoly.polynomial([[1, X, X**2], [X+Y, Y, Y]])
-    assert numpy.all(interface.reshape(poly, (3, 2)) ==
-                     [[1, X], [X**2, X+Y], [Y, Y]])
 
 
 def test_numpy_rint(func_interface):

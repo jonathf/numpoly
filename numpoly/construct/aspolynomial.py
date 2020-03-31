@@ -1,4 +1,5 @@
 """Convert the input to an polynomial array."""
+from six import string_types
 import numpy
 import numpoly
 
@@ -41,7 +42,7 @@ def aspolynomial(
         if names is not None:
             if isinstance(names, numpoly.ndpoly):
                 names = names.names
-            if isinstance(names, str):
+            if isinstance(names, string_types):
                 names = [names]
             if len(names) == 1 and len(poly_like.names) > 1:
                 names = ["{}{}".format(names[0], idx)

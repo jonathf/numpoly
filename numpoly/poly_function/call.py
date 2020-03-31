@@ -1,4 +1,5 @@
 """Evaluate polynomial."""
+import logging
 import numpy
 import numpoly
 
@@ -48,6 +49,8 @@ def call(poly, *args, **kwargs):
                     [-1+x, -1+2*y+x]])
 
     """
+    logger = logging.getLogger(__name__)
+
     # Make sure kwargs contains all args and nothing but indeterminants:
     for arg, indeterminant in zip(args, poly.names):
         if indeterminant in kwargs:
@@ -72,6 +75,11 @@ def call(poly, *args, **kwargs):
     ones = numpy.ones((), dtype=int)
     for value in kwargs.values():
         ones = ones * numpy.ones(numpoly.polynomial(value).shape, dtype=int)
+    shape = poly.shape+ones.shape
+
+    logger.debug("poly shape: %s", poly.shape)
+    logger.debug("kwargs common shape: %s", ones.shape)
+    logger.debug("output shape: %s", shape)
 
     # main loop:
     out = 0
@@ -79,10 +87,15 @@ def call(poly, *args, **kwargs):
         term = ones
         for power, name in zip(exponent, poly.names):
             term = term*kwargs[name]**power
-        shape = coefficient.shape+ones.shape
-        out = out+numpoly.outer(coefficient, term).reshape(shape)
+        if isinstance(term, numpoly.ndpoly):
+            tmp = numpoly.outer(coefficient, term)
+        else:
+            tmp = numpy.outer(coefficient, term)
+        out = out+tmp.reshape(shape)
 
-    if out.isconstant():
-        return out.tonumpy()
-    out, _ = numpoly.align_indeterminants(out, indeterminants)
+    if isinstance(out, numpoly.ndpoly):
+        if out.isconstant():
+            return out.tonumpy()
+        out, _ = numpoly.align_indeterminants(out, indeterminants)
+        return out
     return out

@@ -25,11 +25,11 @@ INDETERMINANT_DEFAULTS = {
     # Add a postfix index to single indeterminant name.
     # If single indeterminant name, e.g. 'q' is provided, but the polynomial is
     # multivariate, an extra postfix index is added to differentiate the names:
-    # 'q0, q1, q2, ...'. If true, encorce this behavior for single variables as
+    # 'q0, q1, q2, ...'. If true, enforce this behavior for single variables as
     # well such that 'q' always get converted to 'q0'.
     "force_suffix": False,
 
-    # Regular expression definint valid indeterminant names.
+    # Regular expression defining valid indeterminant names.
     "filter_regex": r"[\w_]",
 }
 
@@ -52,7 +52,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             The polynomial coefficients. Together with exponents defines the
             polynomial form.
         exponents (numpy.ndarray):
-            The polynomial exponents. 2-dimensionsl where the first axis is the
+            The polynomial exponents. 2-dimensional where the first axis is the
             same length as coefficients and the second is the length of the
             indeterminant names.
         keys (List[str, ...]):
@@ -91,12 +91,11 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     _dtype = None
     keys = None
     names = None
+
+    # Numpy structured array names doesn't like characters reserved by Python.
+    # The largest index found with this property is 58: ':'.
+    # Above this, everything looks like it works as expected.
     KEY_OFFSET = 59
-    """
-    Numpy structured array names don't like characters reserved by Python The
-    largest index found with this property is 58: ':'. Above this, everything
-    looks like it works as expected.
-    """
 
     def __new__(
             cls,
@@ -133,19 +132,18 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
 
         if names is None:
             names = INDETERMINANT_DEFAULTS["base_name"]
-        if isinstance(names, str):
+        if isinstance(names, string_types):
             names = poly_function.symbols(names)
         if isinstance(names, ndpoly):
             names = names.names
         if len(names) == 1 and (INDETERMINANT_DEFAULTS["force_suffix"] or
                                 exponents.shape[1] > 1):
             names = tuple("%s%d" % (str(names[0]), idx)
-                          for idx in range(exponents.shape[1])
-            )
+                          for idx in range(exponents.shape[1]))
         for name in names:
             assert re.search(INDETERMINANT_DEFAULTS["filter_regex"], name), (
                 "invalid polynomial name; "
-                "expected format: '%s'" % INDETERMINANT_DEFAULTS["filter_regex"])
+                "expected format: %r" % INDETERMINANT_DEFAULTS["filter_regex"])
 
         if numpy.prod(exponents.shape):
             keys = (exponents+cls.KEY_OFFSET).flatten()

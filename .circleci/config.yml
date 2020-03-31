@@ -15,22 +15,14 @@ jobs:
             - image: circleci/python:2.7.16
         steps:
             - checkout
-            - restore_cache:
-                keys:
-                    - deps-py2-{{ checksum "poetry.lock"}}
-                    - deps-py2-
             - run:
                 name: "Installation"
                 command: |
-                    poetry install
-            - save_cache:
-                key: deps-py2-{{ checksum "poetry.lock"}}
-                paths:
-                    - /home/circleci/.cache/pypoetry/virtualenvs
+                    pip install --user . sympy pytest
             - run:
                 name: "Run tests"
                 command: |
-                    poetry run pytest --doctest-modules numpoly test
+                    ~/.local/bin/pytest --doctest-modules numpoly test
     build-cache:
         executor: my-executor
         steps:
@@ -44,8 +36,8 @@ jobs:
                 command: |
                     python3 -m venv /home/circleci/venv
                     source /home/circleci/venv/bin/activate
+                    pip install poetry==1.0.5
                     poetry install
-                    poetry run pip install -U numpy  # allow python 3 only numpy
             - save_cache:
                 key: deps-{{ checksum "poetry.lock"}}
                 paths:
