@@ -136,8 +136,8 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             names = poly_function.symbols(names)
         if isinstance(names, ndpoly):
             names = names.names
-        if len(names) == 1 and (INDETERMINANT_DEFAULTS["force_suffix"] or
-                                exponents.shape[1] > 1):
+        if (len(names) == 1 and not names[0][-1].isdigit() and
+                (INDETERMINANT_DEFAULTS["force_suffix"] or exponents.shape[1] > 1)):
             names = tuple("%s%d" % (str(names[0]), idx)
                           for idx in range(exponents.shape[1]))
         for name in names:
