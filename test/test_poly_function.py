@@ -135,3 +135,14 @@ def test_numpoly_monomial():
     assert not numpoly.monomial(0).size
     assert numpoly.monomial(1) == 1
     assert numpy.all(numpoly.monomial(2, names="X") == [1, X])
+
+
+def test_numpoly_symbols():
+    assert numpoly.symbols("q").names == ("q",)
+    assert numpoly.symbols("q:1").names == ("q0",)
+    assert numpoly.symbols("q1").names == ("q1",)
+    numpoly.baseclass.INDETERMINANT_DEFAULTS["force_suffix"] = True
+    assert numpoly.symbols("q").names == ("q0",)
+    assert numpoly.symbols("q:1").names == ("q0",)
+    assert numpoly.symbols("q1").names == ("q1",)
+    numpoly.baseclass.INDETERMINANT_DEFAULTS["force_suffix"] = False

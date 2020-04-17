@@ -88,6 +88,10 @@ def symbols(names=None, asarray=False, dtype="i8"):
                 for idy in range(start, end+1)
             ]
 
+        else:
+            names = [names]
+
+    assert isinstance(names, list)
     exponents = numpy.eye(len(names), dtype=int)
     coefficients = numpy.eye(len(names), dtype=dtype)
     if len(names) == 1 and not asarray:
