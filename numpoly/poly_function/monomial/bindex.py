@@ -66,6 +66,7 @@ def _bindex(start, stop, dimensions=1, cross_truncation=1.):
     # At the beginning the current list of indices just ranges over the
     # last dimension.
     bound = stop.max()
+    start = numpy.clip(start, a_min=0, a_max=None)
     dtype = numpy.uint8 if bound < 256 else numpy.uint16
     range_ = numpy.arange(bound, dtype=dtype)
     indices = range_[:, numpy.newaxis]
@@ -84,8 +85,14 @@ def _bindex(start, stop, dimensions=1, cross_truncation=1.):
         indices = numpy.column_stack((front, indices))
 
         # Truncate at each step to keep memory usage low
+        indices = indices[cross_truncate(indices, stop-1, cross_truncation[1])]
+
+    # Complete the truncation scheme
+    if dimensions == 1:
+        indices = indices[indices >= start]
+    else:
         lower = cross_truncate(indices, start-1, cross_truncation[0])
         upper = cross_truncate(indices, stop-1, cross_truncation[1])
         indices = indices[lower^upper]
 
-    return indices.reshape(-1, dimensions)
+    return numpy.array(indices, dtype=int).reshape(-1, dimensions)

@@ -135,6 +135,7 @@ def test_numpoly_monomial():
     assert not numpoly.monomial(0).size
     assert numpoly.monomial(1) == 1
     assert numpy.all(numpoly.monomial(2, names="X") == [1, X])
+    assert numpoly.monomial(1, 2, names="X") == X
 
 
 def test_numpoly_symbols():
