@@ -5,6 +5,7 @@ import numpoly
 X, Y = XY = numpoly.symbols("X Y")
 EMPTY = numpoly.polynomial([])
 
+
 def test_scalars():
     assert XY.shape == (2,)
     assert XY.size == 2
@@ -28,9 +29,9 @@ def test_scalars():
     assert X.indeterminants == X
 
     assert numpy.all(XY.values == numpy.array(
-        [(1, 0), (0, 1)], dtype=[("<;", "<i8",), (";<", "<i8",)]))
-    assert X.values == numpy.array((1,), dtype=[("<", "<i8",)])
-    assert EMPTY.values.dtype == numpy.dtype([(";", "<i8")])
+        [(1, 0), (0, 1)], dtype=[("<;", int), (";<", int)]))
+    assert X.values == numpy.array((1,), dtype=[("<", int)])
+    assert EMPTY.values.dtype == numpy.dtype([(";", int)])
     assert not EMPTY.values.size
 
     assert not X.isconstant()
