@@ -25,7 +25,7 @@ from .poly_function import *
 
 try:
     __version__ = pkg_resources.get_distribution("numpoly").version
-except pkg_resources.DistributionNotFound:
+except pkg_resources.DistributionNotFound:  # coverage: ignore
     __version__ = None
 
 

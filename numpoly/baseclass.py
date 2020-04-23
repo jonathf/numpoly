@@ -234,10 +234,6 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         exponents = self.keys.flatten().view(numpy.uint32)-self.KEY_OFFSET
         if numpy.prod(exponents.shape):
             exponents = exponents.reshape(len(self.keys), -1)
-        elif self.size == 1:
-            exponents = exponents.reshape(1, 1)
-        else:
-            exponents = numpy.zeros((1, 1), dtype=numpy.uint32)
         assert len(exponents) > 0
         assert len(exponents.shape) == 2
         return exponents

@@ -17,6 +17,8 @@ def test_numpoly_call():
         poly(1, 2, Y=3)
     with raises(TypeError):
         poly(not_an_arg=45)
+    poly = numpoly.polynomial([2, X-Y+1])
+    assert numpy.all(poly(X=Y) == [2, 1])
 
 
 def test_numpoly_ndpoly():
