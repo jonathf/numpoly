@@ -44,6 +44,24 @@ def test_numpy_allclose(func_interface):
     assert not func_interface.allclose(poly1, poly2)
 
 
+def test_numpy_apply_along_axis(func_interface):
+    np_array = numpy.arange(9).reshape(3, 3)
+    assert numpy.all(func_interface.apply_along_axis(numpy.sum, 0, np_array) == [9, 12, 15])
+    assert numpy.all(func_interface.apply_along_axis(numpy.sum, 1, np_array) == [3, 12, 21])
+    poly1 = numpoly.polynomial([[X, X, X], [Y, Y, Y], [1, 2, 3]])
+    assert numpy.all(func_interface.apply_along_axis(numpoly.sum, 0, poly1) == [X+Y+1, X+Y+2, X+Y+3])
+    assert numpy.all(func_interface.apply_along_axis(numpoly.sum, 1, poly1) == [3*X, 3*Y, 6])
+
+
+def test_numpy_apply_over_axes(func_interface):
+    np_array = numpy.arange(9).reshape(3, 3)
+    assert numpy.all(func_interface.apply_over_axes(numpy.sum, np_array, 0) == [9, 12, 15])
+    assert numpy.all(func_interface.apply_over_axes(numpy.sum, np_array, 1) == [[3], [12], [21]])
+    poly1 = numpoly.polynomial([[X, X, X], [Y, Y, Y], [1, 2, 3]])
+    assert numpy.all(func_interface.apply_over_axes(numpoly.sum, poly1, 0) == [X+Y+1, X+Y+2, X+Y+3])
+    assert numpy.all(func_interface.apply_over_axes(numpoly.sum, poly1, 1) == [[3*X], [3*Y], [6]])
+
+
 def test_numpy_around(interface):
     poly = 123.45*X+Y
     assert interface.round(poly) == 123.*X+Y
@@ -181,6 +199,15 @@ def test_numpy_dstack(func_interface):
     poly2 = numpoly.polynomial([Y, 3, 4])
     assert numpy.all(func_interface.dstack([poly1, poly2]) ==
                      [[[1, Y], [X, 3], [2, 4]]])
+
+
+def test_numpy_expand_dims(func_interface):
+    poly1 = numpoly.polynomial([[1, X], [Y, 2], [3, 4]])
+    assert func_interface.expand_dims(poly1, axis=0).shape == (1, 3, 2)
+    assert func_interface.expand_dims(poly1, axis=1).shape == (3, 1, 2)
+    assert func_interface.expand_dims(poly1, axis=2).shape == (3, 2, 1)
+    array = numpy.arange(12).reshape(2, 3, 2)
+    assert func_interface.expand_dims(array, axis=1).shape == (2, 1, 3, 2)
 
 
 def test_numpy_floor(func_interface):
