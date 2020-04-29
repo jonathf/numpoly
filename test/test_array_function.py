@@ -192,6 +192,15 @@ def test_numpy_dstack(func_interface):
                      [[[1, Y], [X, 3], [2, 4]]])
 
 
+def test_numpy_expand_dims(func_interface):
+    poly1 = numpoly.polynomial([[1, X], [Y, 2], [3, 4]])
+    assert func_interface.expand_dims(poly1, axis=0).shape == (1, 3, 2)
+    assert func_interface.expand_dims(poly1, axis=1).shape == (3, 1, 2)
+    assert func_interface.expand_dims(poly1, axis=2).shape == (3, 2, 1)
+    array = numpy.arange(12).reshape(2, 3, 2)
+    assert func_interface.expand_dims(array, axis=1).shape == (2, 1, 3, 2)
+
+
 def test_numpy_floor(func_interface):
     poly = polynomial([-1.7*X, X-1.5, -0.2, 3.2+1.5*X, 1.7, 2.0])
     assert numpy.all(func_interface.floor(poly) ==

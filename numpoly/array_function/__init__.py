@@ -25,6 +25,7 @@ from .divide import divide
 from .dsplit import dsplit
 from .dstack import dstack
 from .equal import equal
+from .expand_dims import expand_dims
 from .floor import floor
 from .floor_divide import floor_divide
 from .hstack import hstack
