@@ -59,3 +59,4 @@ from .tile import tile
 from .transpose import transpose
 from .vsplit import vsplit
 from .vstack import vstack
+from .where import where

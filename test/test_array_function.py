@@ -466,3 +466,12 @@ def test_numpy_vstack(func_interface):
     poly2 = numpoly.polynomial([Y, 3, 4])
     assert numpy.all(func_interface.vstack([poly1, poly2]) ==
                      [[1, X, 2], [Y, 3, 4]])
+
+
+def test_numpy_where(func_interface):
+    poly1 = numpoly.polynomial([0, 4, 0])
+    poly2 = numpoly.polynomial([Y, 0, X])
+    assert numpy.all(func_interface.where([0, 1, 0], poly1, poly2) == [Y, 4, X])
+    assert numpy.all(func_interface.where([1, 0, 1], poly1, poly2) == [0, 0, 0])
+    assert func_interface.where(poly1) == (1,)
+    assert numpy.all(func_interface.where(poly2)[0] == [0, 2])
