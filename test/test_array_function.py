@@ -53,6 +53,15 @@ def test_numpy_apply_along_axis(func_interface):
     assert numpy.all(func_interface.apply_along_axis(numpoly.sum, 1, poly1) == [3*X, 3*Y, 6])
 
 
+def test_numpy_apply_over_axes(func_interface):
+    np_array = numpy.arange(9).reshape(3, 3)
+    assert numpy.all(func_interface.apply_over_axes(numpy.sum, np_array, 0) == [9, 12, 15])
+    assert numpy.all(func_interface.apply_over_axes(numpy.sum, np_array, 1) == [[3], [12], [21]])
+    poly1 = numpoly.polynomial([[X, X, X], [Y, Y, Y], [1, 2, 3]])
+    assert numpy.all(func_interface.apply_over_axes(numpoly.sum, poly1, 0) == [X+Y+1, X+Y+2, X+Y+3])
+    assert numpy.all(func_interface.apply_over_axes(numpoly.sum, poly1, 1) == [[3*X], [3*Y], [6]])
+
+
 def test_numpy_around(interface):
     poly = 123.45*X+Y
     assert interface.round(poly) == 123.*X+Y

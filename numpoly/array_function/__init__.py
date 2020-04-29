@@ -7,6 +7,7 @@ from .any import any
 from .all import all
 from .allclose import allclose
 from .apply_along_axis import apply_along_axis
+from .apply_over_axes import apply_over_axes
 from .around import around as round, around
 from .array_repr import array_repr
 from .array_split import array_split
