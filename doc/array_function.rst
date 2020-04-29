@@ -37,6 +37,8 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.all
 .. autofunction:: numpoly.array_function.allclose
 .. autofunction:: numpoly.array_function.around
+.. autofunction:: numpoly.array_function.apply_along_axis
+.. autofunction:: numpoly.array_function.apply_over_axes
 .. autofunction:: numpoly.array_function.array_repr
 .. autofunction:: numpoly.array_function.array_split
 .. autofunction:: numpoly.array_function.array_str
@@ -54,6 +56,7 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.dsplit
 .. autofunction:: numpoly.array_function.dstack
 .. autofunction:: numpoly.array_function.equal
+.. autofunction:: numpoly.array_function.expand_dims
 .. autofunction:: numpoly.array_function.floor
 .. autofunction:: numpoly.array_function.floor_divide
 .. autofunction:: numpoly.array_function.hsplit

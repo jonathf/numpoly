@@ -62,12 +62,11 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
         polynomial([1.0+x, 3.0+2.0*y, 6.0])
 
     """
-    polynomials = []
+    collection = list()
 
     @wraps(func1d)
     def wrapper_func(array):
         """Wrap func1d function."""
-
         # Align indeterminants in case slicing changed them
         array = numpoly.polynomial(array, names=arr.indeterminants)
         array, _ = numpoly.align.align_indeterminants(array, arr.indeterminants)
@@ -80,8 +79,8 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
 
         # Return dummy index integer value that will be replaced with
         # polynomials afterwards.
-        ret_val = len(polynomials)*numpy.ones(out.shape, dtype=int)
-        polynomials.append(out)
+        ret_val = len(collection)*numpy.ones(out.shape, dtype=int)
+        collection.append(out)
         return ret_val
 
     # Initiate wrapper
@@ -89,7 +88,7 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
     out = numpy.apply_along_axis(wrapper_func, axis=axis, arr=arr.values)
 
     # align indeterminants and exponents
-    polynomials = numpoly.align.align_indeterminants(*polynomials)
+    polynomials = numpoly.align.align_indeterminants(*collection)
     polynomials = numpoly.align.align_exponents(*polynomials)
     dtype = numpoly.common_type(*polynomials)
 
