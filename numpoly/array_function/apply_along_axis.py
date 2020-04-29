@@ -1,0 +1,107 @@
+"""Apply a function to 1-D slices along the given axis."""
+from functools import wraps
+import numpy
+import numpoly
+
+from .common import implements
+
+
+@implements(numpy.apply_along_axis)
+def apply_along_axis(func1d, axis, arr, *args, **kwargs):
+    """
+    Apply a function to 1-D slices along the given axis.
+
+    Execute `func1d(a, *args)` where `func1d` operates on 1-D arrays and `a` is
+    a 1-D slice of `arr` along `axis`.
+
+    This is equivalent to (but faster than) the following use of `ndindex` and
+    `s_`, which sets each of ``ii``, ``jj``, and ``kk`` to a tuple of indices::
+
+        Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+        for ii in ndindex(Ni):
+            for kk in ndindex(Nk):
+                f = func1d(arr[ii + s_[:,] + kk])
+                Nj = f.shape
+                for jj in ndindex(Nj):
+                    out[ii + jj + kk] = f[jj]
+
+    Equivalently, eliminating the inner loop, this can be expressed as::
+
+        Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+        for ii in ndindex(Ni):
+            for kk in ndindex(Nk):
+                out[ii + s_[...,] + kk] = func1d(arr[ii + s_[:,] + kk])
+
+    Args:
+        func1d (Callable[[numpoly.ndpoly], Any]):
+            This function should accept 1-D arrays. It is applied to 1-D slices
+            of `arr` along the specified axis.
+        axis (int):
+            Axis along which `arr` is sliced.
+        arr (numpoly.ndpoly):
+            Input array.
+        args:
+            Additional arguments to `func1d`.
+        kwargs:
+            Additional named arguments to `func1d`.
+
+    Returns:
+        out (numpoly.ndpoly):
+            The output array. The shape of `out` is identical to the shape of
+            `arr`, except along the `axis` dimension. This axis is removed, and
+            replaced with new dimensions equal to the shape of the return value
+            of `func1d`. So if `func1d` returns a scalar `out` will have one
+            fewer dimensions than `arr`.
+
+    Examples:
+        >>> x, y = numpoly.symbols("x y")
+        >>> b = numpoly.polynomial([[1, 2, 3*x], [3, 6*y, 6], [2, 7, 9]])
+        >>> numpoly.apply_along_axis(numpoly.mean, 0, b)
+        polynomial([2.0, 3.0+2.0*y, 5.0+x])
+        >>> numpoly.apply_along_axis(numpoly.mean, 1, b)
+        polynomial([1.0+x, 3.0+2.0*y, 6.0])
+
+    """
+    polynomials = []
+
+    @wraps(func1d)
+    def wrapper_func(array):
+        """Wrap func1d function."""
+
+        # Align indeterminants in case slicing changed them
+        array = numpoly.polynomial(array, names=arr.indeterminants)
+        array, _ = numpoly.align.align_indeterminants(array, arr.indeterminants)
+
+        # Evaluate function
+        out = func1d(array, *args, **kwargs)
+
+        # Restore indeterminants in case func1d changed them.
+        out, _ = numpoly.align.align_indeterminants(out, arr.indeterminants)
+
+        # Return dummy index integer value that will be replaced with
+        # polynomials afterwards.
+        ret_val = len(polynomials)*numpy.ones(out.shape, dtype=int)
+        polynomials.append(out)
+        return ret_val
+
+    # Initiate wrapper
+    arr = numpoly.aspolynomial(arr)
+    out = numpy.apply_along_axis(wrapper_func, axis=axis, arr=arr.values)
+
+    # align indeterminants and exponents
+    polynomials = numpoly.align.align_indeterminants(*polynomials)
+    polynomials = numpoly.align.align_exponents(*polynomials)
+    dtype = numpoly.common_type(*polynomials)
+
+    # Store results into new array
+    ret_val = numpoly.ndpoly(
+        exponents=polynomials[0].exponents,
+        shape=out.shape,
+        names=polynomials[0].indeterminants,
+        dtype=dtype,
+    ).values
+    for idx, polynomial in enumerate(polynomials):
+        ret_val[out == idx] = polynomial.values
+
+    return numpoly.aspolynomial(
+        ret_val, dtype=dtype, names=polynomials[0].indeterminants)
