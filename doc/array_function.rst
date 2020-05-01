@@ -69,6 +69,7 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.matmul
 .. autofunction:: numpoly.array_function.mean
 .. autofunction:: numpoly.array_function.moveaxis
+.. autofunction:: numpoly.array_function.mod
 .. autofunction:: numpoly.array_function.multiply
 .. autofunction:: numpoly.array_function.negative
 .. autofunction:: numpoly.array_function.nonzero
@@ -77,6 +78,7 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.positive
 .. autofunction:: numpoly.array_function.power
 .. autofunction:: numpoly.array_function.prod
+.. autofunction:: numpoly.array_function.remainder
 .. autofunction:: numpoly.array_function.repeat
 .. autofunction:: numpoly.array_function.reshape
 .. autofunction:: numpoly.array_function.rint
@@ -90,3 +92,4 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.transpose
 .. autofunction:: numpoly.array_function.vsplit
 .. autofunction:: numpoly.array_function.vstack
+.. autofunction:: numpoly.array_function.zeros

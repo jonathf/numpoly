@@ -39,6 +39,7 @@ from .logical_or import logical_or
 from .matmul import matmul
 from .mean import mean
 from .moveaxis import moveaxis
+from .mod import mod
 from .multiply import multiply
 from .negative import negative
 from .nonzero import nonzero
@@ -47,6 +48,7 @@ from .outer import outer
 from .positive import positive
 from .power import power
 from .prod import prod
+from .remainder import remainder
 from .repeat import repeat
 from .reshape import reshape
 from .rint import rint
@@ -60,3 +62,4 @@ from .transpose import transpose
 from .vsplit import vsplit
 from .vstack import vstack
 from .where import where
+from .zeros import zeros

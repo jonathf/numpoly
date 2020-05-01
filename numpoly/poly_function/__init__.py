@@ -2,6 +2,7 @@
 from .call import call
 from .decompose import decompose
 from .derivative import diff, gradient, hessian
+from .poly_divide import poly_divide
 from .isconstant import isconstant
 from .monomial import monomial, bindex
 from .symbols import symbols

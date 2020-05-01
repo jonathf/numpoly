@@ -50,27 +50,8 @@ def divide(x1, x2, out=None, where=True, **kwargs):
         >>> numpoly.divide(xyz, [1, 2, 4])
         polynomial([x, 0.5*y, 0.25*z])
         >>> numpoly.divide([1, 2, 4], xyz)
-        Traceback (most recent call last):
-            ...
-        ValueError: only constant polynomials can be converted to array.
+        polynomial([0.0, 0.0, 0.0])
 
     """
-    x1, x2 = numpoly.align_polynomials(x1, x2)
-    x2 = x2.tonumpy()
-    no_output = out is None
-    if no_output:
-        out = numpoly.ndpoly(
-            exponents=x1.exponents,
-            shape=x1.shape,
-            names=x1.indeterminants,
-            dtype=numpy.common_type(x1, numpy.array(1.)),
-        )
-    elif not isinstance(out, numpy.ndarray):
-        assert len(out) == 1, "only one output"
-        out = out[0]
-    for key in x1.keys:
-        out[key] = 0
-        numpy.true_divide(x1[key], x2, out=out[key], where=where, **kwargs)
-    if no_output:
-        out = numpoly.clean_attributes(out)
-    return out
+    dividend, remainder = numpoly.poly_divide(x1, x2, out=out, where=where, **kwargs)
+    return dividend
