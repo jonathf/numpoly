@@ -32,6 +32,7 @@ def get_version(name):
         False
         >>> get_version("not_an_distribution") is None
         True
+
     """
     try:
         version = pkg_resources.get_distribution(name).version
