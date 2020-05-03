@@ -23,10 +23,21 @@ from .sympy_ import to_sympy
 from .array_function import *
 from .poly_function import *
 
-try:
-    __version__ = pkg_resources.get_distribution("numpoly").version
-except pkg_resources.DistributionNotFound:
-    __version__ = None
+def get_version(name):
+    """
+    Get distribution version number, if it exists.
+
+    Examples:
+        >>> get_version("numpy") is None
+        False
+        >>> get_version("not_an_distribution") is None
+        True
+    """
+    try:
+        version = pkg_resources.get_distribution(name).version
+    except pkg_resources.DistributionNotFound:
+        version = None
+    return version
 
 
 def configure_logging():
@@ -40,4 +51,6 @@ def configure_logging():
     logger = logging.getLogger(__name__)
     logger.addHandler(streamer)
 
+
+__version__ = get_version("numpoly")
 configure_logging()
