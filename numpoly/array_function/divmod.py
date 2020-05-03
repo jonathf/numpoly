@@ -1,11 +1,24 @@
-"""Perform polynomial division."""
+"""Return element-wise quotient and remainder simultaneously."""
 import numpy
 import numpoly
 
 
-def poly_divide(dividend, divisor, out=None, where=True, **kwargs):
+def divmod(dividend, divisor, out=None, where=True, **kwargs):
     """
-    Perform polynomial division.
+    Return element-wise quotient and remainder simultaneously.
+
+    ``numpoly.divmod(x, y)`` is equivalent to ``(x / y, x % y)``, but faster
+    because it avoids redundant work. It is used to implement the Python
+    built-in function ``divmod`` on Numpoly arrays.
+
+    Note that unlike numbers, this returns the polynomial division and
+    polynomial remainder. This means that this function is _not_ backwards
+    compatible with ``numpy.divmod`` for constants. For example::
+
+        >>> numpy.divmod(11, 2)
+        (5, 1)
+        >>> numpoly.divmod(11, 2)
+        (polynomial(5.5), polynomial(0.0))
 
     Args:
         dividend (numpoly.ndpoly):
@@ -30,14 +43,15 @@ def poly_divide(dividend, divisor, out=None, where=True, **kwargs):
 
     Returns:
         (Tuple[numpoly.ndpoly, numpoly.ndpoly]):
-            The quotient and the remainder after polynomial division have been
-            performed.
+            Element-wise quotient and remainder resulting from
+            floor division. This is a scalar if both `x1` and `x2`
+            are scalars.
 
     Examples:
         >>> x, y = numpoly.symbols("x y")
         >>> denominator = [x*y**2+2*x**3*y**2, -2+x*y**2]
         >>> numerator = -2+x*y**2
-        >>> floor, remainder = numpoly.poly_divide(denominator, numerator)
+        >>> floor, remainder = numpoly.divmod(denominator, numerator)
         >>> floor
         polynomial([1.0+2.0*x**2, 1.0])
         >>> remainder
@@ -50,9 +64,9 @@ def poly_divide(dividend, divisor, out=None, where=True, **kwargs):
     dividend, divisor = numpoly.align_polynomials(dividend, divisor)
 
     if not dividend.shape:
-        floor, remainder = poly_divide(
+        floor, remainder = divmod(
             dividend.flatten(), divisor.flatten(), out=out, where=where, **kwargs)
-        return floor.item(), remainder.item()
+        return floor[0], remainder[0]
 
     quotient = numpoly.zeros(dividend.shape)
     while True:
@@ -63,13 +77,16 @@ def poly_divide(dividend, divisor, out=None, where=True, **kwargs):
         idx1, idx2, include = candidates
 
         # construct candidate
-        candidate = dividend.coefficients[idx1]/numpy.where(include, divisor.coefficients[idx2], 1)
+        candidate = dividend.coefficients[idx1]/numpy.where(
+            include, divisor.coefficients[idx2], 1)
         exponent_diff = dividend.exponents[idx1]-divisor.exponents[idx2]
         candidate = candidate*numpoly.prod(divisor.indeterminants**exponent_diff, 0)
 
         # iterate division algorithm
-        quotient = numpoly.add(quotient, numpoly.where(include, candidate, 0), out=out, **kwargs)
-        dividend = numpoly.subtract(dividend, numpoly.where(include, divisor*candidate, 0), **kwargs)
+        quotient = numpoly.add(
+            quotient, numpoly.where(include, candidate, 0), **kwargs)
+        dividend = numpoly.subtract(
+            dividend, numpoly.where(include, divisor*candidate, 0), **kwargs)
         dividend, divisor = numpoly.align_polynomials(dividend, divisor)
 
     return quotient, dividend
@@ -121,7 +138,6 @@ def get_division_candidate(x1, x2):
             if not numpy.any(include):
                 continue
 
-            # Candidate pair found!
             return idx1, idx2, include
 
     # No valid candidate pair found; Assume we are done.

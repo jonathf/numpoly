@@ -2,26 +2,19 @@
 import numpy
 import numpoly
 
-from .common import implements
 
-
-@implements(numpy.remainder)
 def remainder(x1, x2, out=None, where=True, **kwargs):
     """
     Return element-wise remainder of division.
 
-    Computes the remainder complementary to the `floor_divide` function.  It is
-    equivalent to the Python modulus operator``x1 % x2`` and has the same sign
-    as the divisor `x2`. The MATLAB function equivalent to ``np.remainder`` is
-    ``mod``.
+    Note that unlike numbers, this returns the polynomial division and
+    polynomial remainder. This means that this function is _not_ backwards
+    compatible with ``numpy.remainder`` for constants. For example::
 
-    Note that this should not be confused with:
-
-    * Python 3.7's `math.remainder` and C's ``remainder``, which
-    computes the IEEE remainder, which are the complement to
-    ``round(x1 / x2)``.
-    * The MATLAB ``rem`` function and or the C ``%`` operator which is the
-    complement to ``int(x1 / x2)``.
+        >>> numpy.remainder(11, 2)
+        1
+        >>> numpoly.remainder(11, 2)
+        polynomial(0.0)
 
     Args:
         x1 (numpoly.ndpoly):
@@ -60,5 +53,5 @@ def remainder(x1, x2, out=None, where=True, **kwargs):
         polynomial([2.0+4.0*x**2, 0.0])
 
     """
-    dividend, remainder = numpoly.poly_divide(x1, x2, out=out, where=where, **kwargs)
+    dividend, remainder = numpoly.divmod(x1, x2, out=out, where=where, **kwargs)
     return remainder

@@ -53,6 +53,7 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.count_nonzero
 .. autofunction:: numpoly.array_function.cumsum
 .. autofunction:: numpoly.array_function.divide
+.. autofunction:: numpoly.array_function.divmod
 .. autofunction:: numpoly.array_function.dsplit
 .. autofunction:: numpoly.array_function.dstack
 .. autofunction:: numpoly.array_function.equal

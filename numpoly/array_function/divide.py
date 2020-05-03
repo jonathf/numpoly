@@ -13,15 +13,19 @@ def divide(x1, x2, out=None, where=True, **kwargs):
     Return a true division of the inputs, element-wise.
 
     Instead of the Python traditional 'floor division', this returns a true
-    division.  True division adjusts the output type to present the best
+    division. True division adjusts the output type to present the best
     answer, regardless of input types.
+
+    Note that if divisor is a polynomial, then the division could have a
+    remainder, as polynomial division is not exactly the same as numerical
+    division.
 
     Args:
         x1 (numpoly.ndpoly):
             Dividend array.
         x2 (numpoly.ndpoly):
             Divisor array. If ``x1.shape != x2.shape``, they must be
-            broadcastable to a commo n shape (which becomes the shape of the
+            broadcastable to a common shape (which becomes the shape of the
             output).
         out (Optional[numpy.ndarray]):
             A location into which the result is stored. If provided, it must
@@ -44,14 +48,13 @@ def divide(x1, x2, out=None, where=True, **kwargs):
             This is a scalar if both `x1` and `x2` are scalars.
 
     Examples:
-        >>> xyz = numpoly.symbols("x y z")
-        >>> numpoly.divide(xyz, 4)
-        polynomial([0.25*x, 0.25*y, 0.25*z])
-        >>> numpoly.divide(xyz, [1, 2, 4])
-        polynomial([x, 0.5*y, 0.25*z])
-        >>> numpoly.divide([1, 2, 4], xyz)
-        polynomial([0.0, 0.0, 0.0])
+        >>> x = numpoly.symbols("x")
+        >>> poly = numpoly.polynomial([14, x**2-3])
+        >>> numpoly.true_divide(poly, 4)
+        polynomial([3.5, -0.75+0.25*x**2])
+        >>> numpoly.true_divide(poly, x)
+        polynomial([0.0, x])
 
     """
-    dividend, remainder = numpoly.poly_divide(x1, x2, out=out, where=where, **kwargs)
+    dividend, remainder = numpoly.divmod(x1, x2, out=out, where=where, **kwargs)
     return dividend

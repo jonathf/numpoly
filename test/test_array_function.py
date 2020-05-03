@@ -1,4 +1,5 @@
 """Testing functions used for numpy compatible."""
+from __future__ import division
 from pytest import raises
 import numpy
 from numpoly import polynomial
@@ -177,14 +178,36 @@ def test_numpy_cumsum(interface):
     assert numpy.all(interface.cumsum(poly1, axis=1) == [[0, Y], [X, X+1]])
 
 
-def test_numpy_divide(func_interface):
-    poly = polynomial([[0, Y], [X, 1]])
-    assert numpy.all(poly / 2 == polynomial([[0, 0.5*Y], [0.5*X, 0.5]]))
-    assert numpy.all(func_interface.divide(poly, 2) == [[0, 0.5*Y], [0.5*X, 0.5]])
-    assert numpy.all(poly / [1, 2] == [[0, 0.5*Y], [X, 0.5]])
-    assert numpy.all(func_interface.divide(poly, [1, 2]) == [[0, 0.5*Y], [X, 0.5]])
-    assert numpy.all(poly / [[1, 2], [2, 1]] == [[0, 0.5*Y], [0.5*X, 1]])
-    assert numpy.all(func_interface.divide(poly, [[1, 2], [2, 1]]) == [[0, 0.5*Y], [0.5*X, 1]])
+def test_numpoly_divmod():
+    assert numpoly.divmod(X+3, X+2) == (1, 1)
+    assert numpoly.divmod(Y+3, X+2) == (0, Y+3)
+    assert numpoly.divmod(3, X+2) == (0, 3)
+    assert numpoly.divmod(X, X+2) == (1, -2)
+    assert numpoly.divmod(Y, X+2) == (0, Y)
+    assert numpoly.divmod(X*Y, X+2) == (Y, -2*Y)
+
+    assert numpoly.divmod(X+3, X) == (1, 3)
+    assert numpoly.divmod(Y+3, X) == (0, Y+3)
+    assert numpoly.divmod(3, X) == (0, 3)
+    assert numpoly.divmod(X, X) == (1, 0)
+    assert numpoly.divmod(Y, X) == (0, Y)
+    assert numpoly.divmod(X*Y, X) == (Y, 0)
+
+    assert numpoly.divmod(X+3, 2) == (0.5*X+1.5, 0)
+    assert numpoly.divmod(Y+3, 2) == (0.5*Y+1.5, 0)
+    assert numpoly.divmod(3, 2) == (1.5, 0)
+    assert numpoly.divmod(X, 2) == (0.5*X, 0)
+    assert numpoly.divmod(Y, 2) == (0.5*Y, 0)
+    assert numpoly.divmod(X*Y, 2) == (0.5*X*Y, 0)
+
+
+def test_numpy_true_divide(interface):
+    const = polynomial([1, 2])
+    poly1 = polynomial(X)
+    poly2 = polynomial([1, X])
+    poly3 = polynomial([[0, Y], [X, 1]])
+    assert numpy.all(interface.divide(poly1, const) == [X, 0.5*X])
+    assert numpy.all(interface.divide(const, poly1) == [0, 0])
 
 
 def test_numpy_dsplit(func_interface):
@@ -216,14 +239,13 @@ def test_numpy_floor(func_interface):
                      [-2.0*X, -2.0+X, -1.0, 3.0+X, 1.0, 2.0])
 
 
-def test_numpy_floor_divide(func_interface):
+def test_numpy_floor_divide(interface):
     poly = polynomial([[0., 2.*Y], [X, 2.]])
-    assert numpy.all(poly // 2 == [[0, Y], [0, 1]])
-    assert numpy.all(func_interface.floor_divide(poly, 2) == [[0, Y], [0, 1]])
-    assert numpy.all(poly // [1, 2] == [[0, Y], [X, 1]])
-    assert numpy.all(func_interface.floor_divide(poly, [1, 2]) == [[0, Y], [X, 1]])
-    assert numpy.all(poly // [[1, 2], [2, 1]] == [[0, Y], [0, 2]])
-    assert numpy.all(func_interface.floor_divide(poly, [[1, 2], [2, 1]]) == [[0, Y], [0, 2]])
+    assert numpy.all(interface.floor_divide(poly, 2) == [[0, Y], [0, 1]])
+    assert numpy.all(interface.floor_divide(poly, [1, 2]) == [[0, Y], [X, 1]])
+    assert numpy.all(interface.floor_divide(poly, [[1, 2], [2, 1]]) == [[0, Y], [0, 2]])
+    with raises(ValueError):
+        1 // poly
 
 
 def test_numpy_hsplit(func_interface):
@@ -380,6 +402,12 @@ def test_numpy_prod(interface):
     poly = numpoly.polynomial([[1, X, X**2], [X+Y, Y, Y]])
     assert interface.prod(poly) == X**3*Y**3+X**4*Y**2
     assert numpy.all(interface.prod(poly, axis=0) == [Y+X, X*Y, X**2*Y])
+
+
+def test_numpy_remainder(func_interface):
+    poly = numpoly.polynomial([[1, 2*X], [3*Y+X, 4]])
+    assert numpy.all(func_interface.mod(poly, 2) == [[0, 0], [0, 0]])
+    assert numpy.all(func_interface.mod(poly, X) == [[1, 0], [3*Y, 4]])
 
 
 def test_numpy_repeat(func_interface):

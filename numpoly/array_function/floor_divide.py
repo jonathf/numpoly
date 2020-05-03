@@ -16,9 +16,9 @@ def floor_divide(x1, x2, out=None, where=True, **kwargs):
 
     Args:
         x1 (numpoly.ndpoly):
-            Numerator.
+            Dividend.
         x2 (numpoly.ndpoly):
-            Denominator. If ``x1.shape != x2.shape``, they must be
+            Divisor. If ``x1.shape != x2.shape``, they must be
             broadcastable to a common shape (which becomes the shape of the
             output).
         out (Optional[numpy.ndarray]):
@@ -41,6 +41,10 @@ def floor_divide(x1, x2, out=None, where=True, **kwargs):
         (numpoly.ndpoly):
             This is a scalar if both `x1` and `x2` are scalars.
 
+    Raises:
+        ValueError:
+            When denominator is not a constant, floor-division is not possible.
+
     Examples:
         >>> numpoly.floor_divide([1, 3, 5], 2)
         polynomial([0, 1, 2])
@@ -50,8 +54,12 @@ def floor_divide(x1, x2, out=None, where=True, **kwargs):
         >>> numpoly.floor_divide(xyz, [1, 2, 4])
         polynomial([x, y, z])
         >>> numpoly.floor_divide([1, 2, 4], xyz)
-        polynomial([0, 0, 0])
+        Traceback (most recent call last):
+            ...
+        ValueError: only constant polynomials can be converted to array.
 
     """
-    dividend, remainder = numpoly.poly_divide(x1, x2, out=out, where=where, **kwargs)
+    x2 = numpoly.aspolynomial(x2)
+    dividend, remainder = numpoly.divmod(
+        x1, x2.tonumpy(), out=out, where=where, **kwargs)
     return dividend.astype(int)
