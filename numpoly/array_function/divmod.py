@@ -11,14 +11,12 @@ def divmod(dividend, divisor, out=None, where=True, **kwargs):
     because it avoids redundant work. It is used to implement the Python
     built-in function ``divmod`` on Numpoly arrays.
 
-    Note that unlike numbers, this returns the polynomial division and
-    polynomial remainder. This means that this function is _not_ backwards
-    compatible with ``numpy.divmod`` for constants. For example::
-
-        >>> numpy.divmod(11, 2)
-        (5, 1)
-        >>> numpoly.divmod(11, 2)
-        (polynomial(5.5), polynomial(0.0))
+    Notes:
+        Unlike numbers, this returns the polynomial division and polynomial
+        remainder. This means that this function is _not_ backwards compatible
+        with ``numpy.divmod`` for constants. For example:
+        ``numpy.divmod(11, 2) == (5, 1)`` while
+        ``numpoly.divmod(11, 2) == (5.5, 0)``.
 
     Args:
         dividend (numpoly.ndpoly):

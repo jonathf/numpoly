@@ -404,10 +404,10 @@ def test_numpy_prod(interface):
     assert numpy.all(interface.prod(poly, axis=0) == [Y+X, X*Y, X**2*Y])
 
 
-def test_numpy_remainder(func_interface):
+def test_numpy_remainder():
     poly = numpoly.polynomial([[1, 2*X], [3*Y+X, 4]])
-    assert numpy.all(func_interface.mod(poly, 2) == [[0, 0], [0, 0]])
-    assert numpy.all(func_interface.mod(poly, X) == [[1, 0], [3*Y, 4]])
+    assert numpy.all(numpoly.remainder(poly, 2) == [[0, 0], [0, 0]])
+    assert numpy.all(numpoly.remainder(poly, X) == [[1, 0], [3*Y, 4]])
 
 
 def test_numpy_repeat(func_interface):
