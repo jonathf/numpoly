@@ -8,7 +8,7 @@ from .common import implements
 
 
 @implements(numpy.divide, numpy.true_divide)
-def divide(x1, x2, out=None, where=True, **kwargs):
+def true_divide(x1, x2, out=None, where=True, **kwargs):
     """
     Return a true division of the inputs, element-wise.
 

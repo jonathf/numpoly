@@ -91,6 +91,8 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.sum
 .. autofunction:: numpoly.array_function.tile
 .. autofunction:: numpoly.array_function.transpose
+.. autofunction:: numpoly.array_function.true_divide
 .. autofunction:: numpoly.array_function.vsplit
 .. autofunction:: numpoly.array_function.vstack
+.. autofunction:: numpoly.array_function.where
 .. autofunction:: numpoly.array_function.zeros

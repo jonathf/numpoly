@@ -7,13 +7,6 @@ def remainder(x1, x2, out=None, where=True, **kwargs):
     """
     Return element-wise remainder of division.
 
-    Notes:
-        Unlike numbers, this returns the polynomial division and polynomial
-        remainder. This means that this function is _not_ backwards compatible
-        with ``numpy.remainder`` for constants. For example:
-        ``numpy.remainder(11, 2) == 1`` while
-        ``numpoly.remainder(11, 2) == 0``.
-
     Args:
         x1 (numpoly.ndpoly):
             Dividend array.
@@ -34,7 +27,7 @@ def remainder(x1, x2, out=None, where=True, **kwargs):
             that if an uninitialized `out` array is created via the default
             ``out=None``, locations within it where the condition is False will
             remain uninitialized.
-        **kwargs
+        kwargs:
             Keyword args passed to numpy.ufunc.
 
     Returns:
@@ -42,6 +35,13 @@ def remainder(x1, x2, out=None, where=True, **kwargs):
             The element-wise remainder of the quotient
             ``floor_divide(x1, x2)``. This is a scalar if both `x1` and `x2`
             are scalars.
+
+    Notes:
+        Unlike numbers, this returns the polynomial division and polynomial
+        remainder. This means that this function is _not_ backwards compatible
+        with ``numpy.remainder`` for constants. For example:
+        ``numpy.remainder(11, 2) == 1`` while
+        ``numpoly.remainder(11, 2) == 0``.
 
     Examples:
         >>> x, y = numpoly.symbols("x y")

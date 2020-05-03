@@ -1,4 +1,5 @@
 """Return element-wise quotient and remainder simultaneously."""
+from __future__ import division
 import numpy
 import numpoly
 
