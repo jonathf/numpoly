@@ -179,13 +179,13 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             assert method == "__call__", (
                 "method %s not recognised" % method)
         assert ufunc in array_function.ARRAY_FUNCTIONS, (
-            "function %s not supported by numpoly." % ufunc)
+            "function '%s' not supported by numpoly." % ufunc.__name__)
         return array_function.ARRAY_FUNCTIONS[ufunc](*inputs, **kwargs)
 
     def __array_function__(self, func, types, args, kwargs):
         """Dispatch method for functions."""
         assert func in array_function.ARRAY_FUNCTIONS, (
-            "function %s not supported by numpoly." % func)
+            "function '%s' not supported by numpoly." % func.__name__)
         return array_function.ARRAY_FUNCTIONS[func](*args, **kwargs)
 
     # ======================================

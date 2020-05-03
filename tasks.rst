@@ -16,16 +16,15 @@ testing the feature.
 
 Sub-tasks can individually be claimed.
 
-===================  ==========================================================
-Function name        Claimed by
-===================  ==========================================================
+===================
+Function name
+===================
 amax
 amin
 average
 broadcast*
 cast
 clip
-count_nonzero
 cov
 cross
 cumprod
@@ -35,7 +34,7 @@ median
 nonzero
 ravel
 resize
-===================  ==========================================================
+===================
 
 Save/Load support
 -----------------

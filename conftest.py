@@ -1,6 +1,6 @@
 """Global configuration."""
-from packaging.version import parse
 import os
+from packaging.version import parse
 import pytest
 import numpy
 
@@ -12,6 +12,10 @@ class MethodDispatch(object):
         def dispatch_to_method(poly, *args, **kwargs):
             if hasattr(poly, name):
                 func = getattr(poly, name)
+            elif name in ("divide", "true_divide"):
+                func = poly.__truediv__
+            elif name == "floor_divide":
+                func = poly.__floordiv__
             else:
                 func = getattr(poly, "__%s__" % name)
             return func(*args, **kwargs)

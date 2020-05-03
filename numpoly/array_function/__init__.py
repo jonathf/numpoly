@@ -22,7 +22,8 @@ from .common_type import common_type
 from .concatenate import concatenate
 from .count_nonzero import count_nonzero
 from .cumsum import cumsum
-from .divide import divide
+from .true_divide import true_divide, true_divide as divide
+from .divmod import divmod
 from .dsplit import dsplit
 from .dstack import dstack
 from .equal import equal
@@ -47,6 +48,7 @@ from .outer import outer
 from .positive import positive
 from .power import power
 from .prod import prod
+from .remainder import remainder as mod, remainder
 from .repeat import repeat
 from .reshape import reshape
 from .rint import rint
@@ -59,3 +61,5 @@ from .tile import tile
 from .transpose import transpose
 from .vsplit import vsplit
 from .vstack import vstack
+from .where import where
+from .zeros import zeros
