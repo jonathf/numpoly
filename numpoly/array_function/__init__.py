@@ -1,6 +1,4 @@
 """Collection of numpy wrapper functions."""
-from .common import ARRAY_FUNCTIONS
-
 from .absolute import absolute as abs, absolute
 from .add import add
 from .any import any

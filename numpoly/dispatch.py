@@ -2,15 +2,39 @@
 import numpy
 import numpoly
 
-ARRAY_FUNCTIONS = {}
+FUNCTION_COLLECTION = {}
+UFUNC_COLLECTION = {}
 
 
-def implements(*array_functions):
-    """Register an __array_function__ implementation."""
+def implements_function(*array_functions):
+    """Register __array_function__."""
     def decorator(numpoly_function):
         """Register function."""
         for func in array_functions:
-            ARRAY_FUNCTIONS[func] = numpoly_function
+            assert func not in FUNCTION_COLLECTION, f"{func} already implemented"
+            FUNCTION_COLLECTION[func] = numpoly_function
+        return numpoly_function
+    return decorator
+
+
+def implements_ufunc(*array_methods):
+    """Register __array_ufunc__."""
+    def decorator(numpoly_function):
+        """Register function."""
+        for func in array_methods:
+            assert func not in UFUNC_COLLECTION, f"{func} already implemented"
+            UFUNC_COLLECTION[func] = numpoly_function
+        return numpoly_function
+    return decorator
+
+
+def implements(*array_functions):
+    """Register __array_function__ and __array_ufunc__."""
+    def decorator(numpoly_function):
+        """Register function."""
+        for func in array_functions:
+            FUNCTION_COLLECTION[func] = numpoly_function
+            UFUNC_COLLECTION[func] = numpoly_function
         return numpoly_function
 
     return decorator

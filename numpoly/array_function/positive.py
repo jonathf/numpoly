@@ -1,7 +1,7 @@
 """Numerical positive, element-wise."""
 import numpy
 
-from .common import implements, simple_dispatch
+from ..dispatch import implements, simple_dispatch
 
 
 @implements(numpy.positive)  # pylint: disable=no-member

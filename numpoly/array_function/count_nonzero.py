@@ -2,7 +2,7 @@
 import numpy
 import numpoly
 
-from .common import implements
+from ..dispatch import implements
 
 @implements(numpy.count_nonzero)
 def count_nonzero(x, axis=None, **kwargs):

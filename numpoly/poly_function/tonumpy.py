@@ -25,12 +25,13 @@ def tonumpy(poly):
         >>> numpoly.tonumpy(numpoly.symbols("x"))
         Traceback (most recent call last):
             ...
-        ValueError: only constant polynomials can be converted to array.
+        numpoly.baseclass.FeatureNotSupported: \
+only constant polynomials can be converted to array.
 
     """
     poly = numpoly.aspolynomial(poly)
     if not poly.isconstant():
-        raise ValueError(
+        raise numpoly.FeatureNotSupported(
             "only constant polynomials can be converted to array.")
     idx = numpy.argwhere(numpy.all(poly.exponents == 0, -1)).item()
     if poly.size:

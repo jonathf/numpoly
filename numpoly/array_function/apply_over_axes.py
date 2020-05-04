@@ -3,7 +3,7 @@ from functools import wraps
 import numpy
 import numpoly
 
-from .common import implements
+from ..dispatch import implements
 
 
 @implements(numpy.apply_over_axes)

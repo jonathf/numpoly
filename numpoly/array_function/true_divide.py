@@ -4,28 +4,29 @@ from __future__ import division
 import numpy
 import numpoly
 
-from .common import implements
+from ..dispatch import implements_ufunc
+
+DIVIDE_ERROR_MSG = """
+Divisor in division is a polynomial.
+Polynomial division differs from numerical division;
+Use ``numpoly.poly_divide`` to get polynomial division."""
 
 
-@implements(numpy.divide, numpy.true_divide)
+@implements_ufunc(numpy.true_divide)
 def true_divide(x1, x2, out=None, where=True, **kwargs):
     """
-    Return a true division of the inputs, element-wise.
+    Returns a true division of the inputs, element-wise.
 
     Instead of the Python traditional 'floor division', this returns a true
-    division. True division adjusts the output type to present the best
+    division.  True division adjusts the output type to present the best
     answer, regardless of input types.
-
-    Note that if divisor is a polynomial, then the division could have a
-    remainder, as polynomial division is not exactly the same as numerical
-    division.
 
     Args:
         x1 (numpoly.ndpoly):
             Dividend array.
         x2 (numpoly.ndpoly):
             Divisor array. If ``x1.shape != x2.shape``, they must be
-            broadcastable to a common shape (which becomes the shape of the
+            broadcastable to a..dispatch shape (which becomes the shape of the
             output).
         out (Optional[numpy.ndarray]):
             A location into which the result is stored. If provided, it must
@@ -47,14 +48,45 @@ def true_divide(x1, x2, out=None, where=True, **kwargs):
         (numpoly.ndpoly):
             This is a scalar if both `x1` and `x2` are scalars.
 
+    Raises:
+        numpoly.baseclass.FeatureNotSupported:
+            If `x2` contains indeterminants, numerical division is no longer
+            possible and an error is raised instead. For polynomial
+            division see ``numpoly.poly_divide``.
+
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> poly = numpoly.polynomial([14, x**2-3])
-        >>> numpoly.true_divide(poly, 4)
-        polynomial([3.5, -0.75+0.25*x**2])
-        >>> numpoly.true_divide(poly, x)
-        polynomial([0.0, x])
+        >>> xyz = numpoly.symbols("x y z")
+        >>> numpoly.true_divide(xyz, 4)
+        polynomial([0.25*x, 0.25*y, 0.25*z])
+        >>> numpoly.true_divide(xyz, [1, 2, 4])
+        polynomial([x, 0.5*y, 0.25*z])
+        >>> numpoly.true_divide([1, 2, 4], xyz)  # doctest: +IGNORE_EXCEPTION_DETAIL
+        Traceback (most recent call last):
+            ...
+        numpoly.baseclass.FeatureNotSupported:
+        Divisor in division is a polynomial.
+        Polynomial division differs from numerical division;
+        Use ``numpoly.poly_divide`` to get polynomial division.
 
     """
-    dividend, remainder = numpoly.divmod(x1, x2, out=out, where=where, **kwargs)
-    return dividend
+    x1, x2 = numpoly.align_polynomials(x1, x2)
+    if not x2.isconstant():
+        raise numpoly.FeatureNotSupported(DIVIDE_ERROR_MSG)
+    x2 = x2.tonumpy()
+    no_output = out is None
+    if no_output:
+        out = numpoly.ndpoly(
+            exponents=x1.exponents,
+            shape=x1.shape,
+            names=x1.indeterminants,
+            dtype=numpy.common_type(x1, numpy.array(1.)),
+        )
+    elif not isinstance(out, numpy.ndarray):
+        assert len(out) == 1, "only one output"
+        out = out[0]
+    for key in x1.keys:
+        out[key] = 0
+        numpy.true_divide(x1[key], x2, out=out[key], where=where, **kwargs)
+    if no_output:
+        out = numpoly.clean_attributes(out)
+    return out

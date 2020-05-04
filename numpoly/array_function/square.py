@@ -2,7 +2,7 @@
 import numpy
 import numpoly
 
-from .common import implements
+from ..dispatch import implements
 from .multiply import multiply
 
 
