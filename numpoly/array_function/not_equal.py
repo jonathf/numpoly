@@ -13,7 +13,7 @@ def not_equal(x1, x2, out=None, where=True, **kwargs):
     Args:
         x1, x2 (numpoly.ndpoly):
             Input arrays.  If ``x1.shape != x2.shape``, they must be
-            broadcastable to a..dispatch shape (which becomes the shape of the
+            broadcastable to a common shape (which becomes the shape of the
             output).
         out (Optional[numpy.ndarray]):
             A location into which the result is stored. If provided, it must

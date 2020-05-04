@@ -13,7 +13,7 @@ def logical_or(x1, x2, out=None, where=True, **kwargs):
     Args:
         x1, x2 (numpoly.ndpoly):
             Logical OR is applied to the elements of `x1` and `x2`. If
-            ``x1.shape != x2.shape``, they must be broadcastable to a..dispatch
+            ``x1.shape != x2.shape``, they must be broadcastable to a common
             shape (which becomes the shape of the output).
         out (Optional[numpy.ndarray]):
             A location into which the result is stored. If provided, it must have

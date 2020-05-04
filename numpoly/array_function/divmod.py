@@ -14,7 +14,7 @@ def divmod(x1, x2, out=None, where=True, **kwargs):
     """
     Return element-wise quotient and remainder simultaneously.
 
-    ``np.divmod(x, y)`` is equivalent to ``(x // y, x % y)``, but faster
+    ``numpoly.divmod(x, y)`` is equivalent to ``(x // y, x % y)``, but faster
     because it avoids redundant work. It is used to implement the Python
     built-in function ``divmod`` on arrays.
 
