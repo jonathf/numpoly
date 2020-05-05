@@ -1,6 +1,6 @@
 .. image:: doc/.static/numpoly_logo.svg
-   :height: 300 px
-   :width: 300 px
+   :height: 200 px
+   :width: 200 px
    :align: center
 
 |circleci| |codecov| |pypi| |readthedocs|
@@ -19,31 +19,7 @@ arrays of polynomials based on ``numpy.ndarray`` objects.
 
 .. contents:: Table of Contents:
 
-Feature Overview
-----------------
-
-* Intuitive interface for users experienced with ``numpy``, as the library
-  provides a high level of compatibility with the ``numpy.ndarray``, including
-  fancy indexing, broadcasting, ``numpy.dtype``, vectorized operations to name
-  a few.
-* Computationally fast evaluations of lots of functionality inherent from
-  ``numpy``.
-* Vectorized polynomial evaluation.
-* Support for arbitrary number of dimensions and name for the indeterminants.
-* Native support for lots of ``numpy.<name>`` functions using ``numpy``'s
-  compatibility layer (which also exists as ``numpoly.<name>``
-  equivalents).
-* Support for polynomial division through the operators ``/``, ``%`` and
-  ``divmod``.
-* Extra polynomial specific attributes exposed on the polynomial objects like
-  ``poly.exponents``, ``poly.coefficients``, ``poly.indeterminants`` etc.
-* Polynomial derivation through functions like ``numpoly.diff``,
-  ``numpoly.gradient``, ``numpoly.hessian`` etc.
-* Decompose polynomial sums into vector of addends using ``numpoly.decompose``.
-* Variable substitution through ``numpoly.call``.
-
-``numpoly`` is currently being used as the backend is the uncertainty
-quantification library `chaospy <https://github.com/jonathf/chaospy>`_.
+.. include:: doc/features.rst
 
 Installation
 ------------
