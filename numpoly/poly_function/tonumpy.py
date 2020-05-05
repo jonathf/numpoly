@@ -25,8 +25,7 @@ def tonumpy(poly):
         >>> numpoly.tonumpy(numpoly.symbols("x"))
         Traceback (most recent call last):
             ...
-        numpoly.baseclass.FeatureNotSupported: \
-only constant polynomials can be converted to array.
+        numpoly.baseclass.FeatureNotSupported: only constant polynomials can be converted to array.
 
     """
     poly = numpoly.aspolynomial(poly)

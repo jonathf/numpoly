@@ -399,8 +399,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             >>> numpoly.symbols("x").tonumpy()
             Traceback (most recent call last):
                 ...
-            numpoly.baseclass.FeatureNotSupported: \
-only constant polynomials can be converted to array.
+            numpoly.baseclass.FeatureNotSupported: only constant polynomials can be converted to array.
 
         """
         return poly_function.tonumpy(self)

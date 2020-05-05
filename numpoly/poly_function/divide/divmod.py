@@ -7,7 +7,7 @@ from ...dispatch import implements_function
 
 
 @implements_function(numpy.divmod)
-def poly_divmod(dividend, divisor, out=None, where=True, **kwargs):
+def poly_divmod(dividend, divisor, out=(None, None), where=True, **kwargs):
     """
     Return element-wise quotient and remainder simultaneously.
 
@@ -27,7 +27,7 @@ def poly_divmod(dividend, divisor, out=None, where=True, **kwargs):
             The array being divided.
         divisor (numpoly.ndpoly):
             Array that that will divide the dividend.
-        out (Optional[numpoly.ndpoly]):
+        out (Tuple[Optional[numpoly.ndpoly], Optional[numpoly.ndpoly]]):
             A location into which the result is stored. If provided, it must
             have a shape that the inputs broadcast to. If not provided or
             `None`, a freshly-allocated array is returned. A tuple (possible

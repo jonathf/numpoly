@@ -5,7 +5,7 @@ import numpoly
 from ..dispatch import implements, simple_dispatch
 
 
-@implements(numpy.around, numpy.round, numpy.round_)
+@implements(numpy.around, numpy.round)
 def around(a, decimals=0, out=None):
     """
     Evenly round to the given number of decimals.

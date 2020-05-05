@@ -1,4 +1,4 @@
-"""Return a true division of the inputs, element-wise."""
+"""Return true division of the inputs, element-wise."""
 from __future__ import division
 
 import numpy
@@ -15,7 +15,7 @@ Use ``numpoly.poly_divide`` to get polynomial division."""
 @implements_ufunc(numpy.true_divide)
 def true_divide(x1, x2, out=None, where=True, **kwargs):
     """
-    Returns a true division of the inputs, element-wise.
+    Return true division of the inputs, element-wise.
 
     Instead of the Python traditional 'floor division', this returns a true
     division.  True division adjusts the output type to present the best

@@ -1,4 +1,4 @@
-"""Return element-wise quotient and remainder simultaneously. """
+"""Return element-wise quotient and remainder simultaneously."""
 import numpy
 import numpoly
 
@@ -10,7 +10,7 @@ Use ``numpoly.poly_divmod`` to get polynomial division-remainder."""
 
 
 @implements_ufunc(numpy.divmod)
-def divmod(x1, x2, out=None, where=True, **kwargs):
+def divmod(x1, x2, out=(None, None), where=True, **kwargs):
     """
     Return element-wise quotient and remainder simultaneously.
 
@@ -25,7 +25,7 @@ def divmod(x1, x2, out=None, where=True, **kwargs):
             Divisor array. If ``x1.shape != x2.shape``, they must be
             broadcastable to a..dispatch shape (which becomes the shape of the
             output).
-        out (Optional[numpy.ndarray]):
+        out (Tuple[Optional[numpoly.ndpoly], Optional[numpoly.ndpoly]]):
             A location into which the result is stored. If provided, it must
             have a shape that the inputs broadcast to. If not provided or
             `None`, a freshly-allocated array is returned. A tuple (possible

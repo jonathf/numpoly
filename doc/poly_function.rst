@@ -16,5 +16,8 @@ polynomials.
 .. autofunction:: numpoly.poly_function.hessian
 .. autofunction:: numpoly.poly_function.isconstant
 .. autofunction:: numpoly.poly_function.monomial
+.. autofunction:: numpoly.poly_function.poly_divide
+.. autofunction:: numpoly.poly_function.poly_moddiv
+.. autofunction:: numpoly.poly_function.poly_remainder
 .. autofunction:: numpoly.poly_function.symbols
 .. autofunction:: numpoly.poly_function.tonumpy
