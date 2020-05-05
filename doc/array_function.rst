@@ -27,6 +27,13 @@ For earlier versions of numpy, the last line will not work.
 Not everything is possible to support, and for the functions that are
 supported, not all function are supportable.
 
+As a developer note, ``numpoly`` aims at being backwards compatible with
+``numpy``. This means that all functions below should as far as possible mirror
+the behavior their ``numpy`` counterparts, and for polynomial constant, they
+should be identical (except for the object type). Function that provides
+behavior not covered by ``numpy`` should be placed under
+:ref:`polynomial_functions`.
+
 .. automodsumm:: numpoly.array_function
    :functions-only:
 

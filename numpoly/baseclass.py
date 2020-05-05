@@ -92,9 +92,25 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     # =================================================
 
     __array_priority__ = 16
+
     _dtype = None
+    """
+    The underlying structure array's actual dtype.
+    Column names correspond to polynomial exponents.
+    The numerical values can be calculated using the formula:
+    ``poly._dtype.view(numpy.uint32)-poly.KEY_OFFSET``.
+    """
+
     keys = None
+    """
+    The column names in the underlying structured array dtype
+    ``ndpoly._dtype``.
+    """
+
     names = None
+    """
+    Positional list of indeterminant names.
+    """
 
     # Numpy structured array names doesn't like characters reserved by Python.
     # The largest index found with this property is 58: ':'.
@@ -120,12 +136,12 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             shape (Tuple[int, ...]):
                 Shape of created array.
             names (Union[None, str, Tuple[str], numpoly.ndpoly]):
-                The name of the indeterminant variables in te polynomial. If
+                The name of the indeterminant variables in the polynomial. If
                 polynomial, inherent from it. Else, pass argument to
                 `numpoly.symbols` to create the indeterminants names. If only
                 one name is provided, but more than one is required,
                 indeterminants will be extended with an integer index. If
-                omitted, use ``INDETERMINANT_DEFAULTS["base_name"]``.
+                omitted, use ``numpoly.INDETERMINANT_DEFAULTS["base_name"]``.
             dtype:
                 Any object that can be interpreted as a numpy data type.
             kwargs:
@@ -137,7 +153,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         if names is None:
             names = INDETERMINANT_DEFAULTS["base_name"]
         if isinstance(names, string_types):
-            names = poly_function.symbols(names)
+            names = construct.symbols(names)
         if isinstance(names, ndpoly):
             names = names.names
         if (len(names) == 1 and not names[0][-1].isdigit() and
@@ -426,7 +442,33 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     # ============================================================
 
     def __call__(self, *args, **kwargs):
-        """Evaluate polynomial."""
+        """
+        Evaluate polynomial by inserting new values in to the indeterminants.
+
+        Args:
+            args (int, float, numpy.ndarray, numpoly.ndpoly):
+                Argument to evaluate indeterminants. Ordered positional by
+                ``self.indeterminants``.
+            kwargs (int, float, numpy.ndarray, numpoly.ndpoly):
+                Same as ``args``, but positioned by name.
+
+        Returns:
+            (Union[numpy.ndarray, numpoly.ndpoly]):
+                Evaluated polynomial. If the resulting array does not contain
+                any indeterminants, an array is returned instead of a
+                polynomial.
+
+        Examples:
+            >>> x, y = numpoly.symbols("x y")
+            >>> poly = numpoly.polynomial([[x, x-1], [y, y+x]])
+            >>> poly(1, y=[0, 1, 2])
+            array([[[1, 1, 1],
+                    [0, 0, 0]],
+            <BLANKLINE>
+                   [[0, 1, 2],
+                    [1, 2, 3]]])
+
+        """
         return poly_function.call(self, *args, **kwargs)
 
     def __eq__(self, other):

@@ -19,7 +19,31 @@ arrays of polynomials based on ``numpy.ndarray`` objects.
 
 .. contents:: Table of Contents:
 
-.. include:: doc/features.rst
+Feature Overview
+----------------
+
+* Intuitive interface for users experienced with ``numpy``, as the library
+  provides a high level of compatibility with the ``numpy.ndarray``, including
+  fancy indexing, broadcasting, ``numpy.dtype``, vectorized operations to name
+  a few.
+* Computationally fast evaluations of lots of functionality inherent from
+  ``numpy``.
+* Vectorized polynomial evaluation.
+* Support for arbitrary number of dimensions and name for the indeterminants.
+* Native support for lots of ``numpy.<name>`` functions using ``numpy``'s
+  compatibility layer (which also exists as ``numpoly.<name>``
+  equivalents).
+* Support for polynomial division through the operators ``/``, ``%`` and
+  ``divmod``.
+* Extra polynomial specific attributes exposed on the polynomial objects like
+  ``poly.exponents``, ``poly.coefficients``, ``poly.indeterminants`` etc.
+* Polynomial derivation through functions like ``numpoly.diff``,
+  ``numpoly.gradient``, ``numpoly.hessian`` etc.
+* Decompose polynomial sums into vector of addends using ``numpoly.decompose``.
+* Variable substitution through ``numpoly.call``.
+
+``numpoly`` is currently being used as the backend is the uncertainty
+quantification library `chaospy <https://github.com/jonathf/chaospy>`_.
 
 Installation
 ------------
@@ -81,16 +105,6 @@ Or manipulated using various numpy functions:
    >>> numpy.sum(numpoly.monomial(13, names="z")[::3])
    polynomial(1+z**3+z**6+z**9+z**12)
 
-In addition there are also several operators specific to the polynomial:
-
-.. code-block:: python
-
-   >>> numpoly.diff([1, x, x**2], x)
-   polynomial([0, 1, 2*x])
-   >>> numpoly.gradient([x*y, x+y])
-   polynomial([[y, 1],
-               [x, 1]])
-
 Development
 -----------
 
@@ -101,7 +115,7 @@ Inside the repository directory, install and create a virtual environment with:
 
    poetry install
 
-To run tests, run:
+To run tests:
 
 .. code-block:: bash
 
@@ -115,5 +129,5 @@ Please feel free to `file an issue
 
 * report bugs.
 * asking questions related to usage.
-* requesting new feature.
+* requesting new features.
 * want to contribute with code.

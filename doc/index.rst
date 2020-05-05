@@ -14,7 +14,6 @@ Welcome to NumPoly's documentation!
    baseclass
    array_function
    poly_function
-   construct
 
 
 Index

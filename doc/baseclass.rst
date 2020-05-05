@@ -1,5 +1,5 @@
-Baseclass
-=========
+Polynomial Object
+=================
 
 The core element of the `numpoly` library is the `numpoly.ndpoly` class. The
 class is subclass of of the `numpy.ndarray` and the implementation follows the
@@ -49,16 +49,15 @@ These three properties can be used to reconstruct the polynomial:
     polynomial(-1+3*y+4*x)
 
 
-Though not for any practical reasons, but it is possible to view the polynomial
-in it's true form:
+Not for any practical reasons, but it is possible to view the polynomial in
+it's true form:
 
 .. code:: python
 
-    >>> dtype = [(key, poly.dtype) for key in poly.keys]
-    >>> array = numpy.ndarray(
-    ...     shape=poly.shape, dtype=dtype, buffer=poly.data)
+    >>> array = poly.values
     >>> array  # doctest: +NORMALIZE_WHITESPACE
-    array((-1, 4, 3), dtype=[(';;', '<i8'), ('<;', '<i8'), (';<', '<i8')])
+    array((-1, 4, 3),
+          dtype=[(';;', '<i8'), ('<;', '<i8'), (';<', '<i8')])
 
 Which, together with the indeterminant names, can be cast back to a polynomial:
 
@@ -67,4 +66,14 @@ Which, together with the indeterminant names, can be cast back to a polynomial:
     >>> numpoly.aspolynomial(array, names=("x", "y"))
     polynomial(-1+4*x+3*y)
 
+In other words, the true form here is a structured array. The column names
+are string representations corresponding to the polynomial exponents.
+The rest is just wrappers to make it behave as a polynomial.
+
+.. autofunction:: numpoly.polynomial
+.. autofunction:: numpoly.aspolynomial
+.. autofunction:: numpoly.monomial
+.. autofunction:: numpoly.symbols
+
 .. autoclass:: numpoly.baseclass.ndpoly
+    :members: coefficients, exponents, from_attributes, indeterminant, keys, names, values, __new__, __call__, _dtype, isconstant, todict, tonumpy
