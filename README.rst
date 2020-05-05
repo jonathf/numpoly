@@ -19,8 +19,8 @@ arrays of polynomials based on ``numpy.ndarray`` objects.
 
 .. contents:: Table of Contents:
 
-Features Overview
------------------
+Feature Overview
+----------------
 
 * Intuitive interface for users experienced with ``numpy``, as the library
   provides a high level of compatibility with the ``numpy.ndarray``, including
@@ -131,10 +131,13 @@ To run tests, run:
 
    poetry run pytest numpoly test doc --doctest-modules
 
-See `task file <./tasks.rst>`_ for examples of contribution needed.
-
-Questions & Troubleshooting
+Questions and Contributions
 ---------------------------
 
-For any problems and questions you might have related to ``numpoly``, please
-feel free to file an `issue <https://github.com/jonathf/numpoly/issues>`_.
+Please feel free to `file an issue
+<https://github.com/jonathf/numpoly/issues>`_ for:
+
+* report bugs.
+* asking questions related to usage.
+* requesting new feature.
+* want to contribute with code.
