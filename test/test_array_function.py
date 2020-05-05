@@ -236,7 +236,7 @@ def test_floor_divide(interface):
         names=("X", "Y"),
         dtype=float,
     )
-    numpoly.floor_divide(poly, 2, out=out)
+    numpoly.floor_divide(poly, 2, out=[out])
     assert numpy.all(out == [[0, Y], [0, 1]])
 
 
