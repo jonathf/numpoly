@@ -8,7 +8,7 @@ def call(poly, *args, **kwargs):
     """
     Evaluate polynomial by inserting new values in to the indeterminants.
 
-    Equaivalent to calling the polynomial or using the ``__call__`` method.
+    Equivalent to calling the polynomial or using the ``__call__`` method.
 
     Args:
         poly (numpoly.ndpoly):
@@ -20,8 +20,9 @@ def call(poly, *args, **kwargs):
             Same as ``args``, but positioned by name.
 
     Returns:
-        (numpoly.ndpoly):
-            Evaluated polynomial.
+        (Union[numpy.ndarray, numpoly.ndpoly]):
+            Evaluated polynomial. If the resulting array does not contain any
+            indeterminants, an array is returned instead of a polynomial.
 
     Examples:
         >>> x, y = numpoly.symbols("x y")

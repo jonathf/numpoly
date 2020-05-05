@@ -15,21 +15,31 @@
     :target: http://numpoly.readthedocs.io/en/master/?badge=master
 
 Numpoly is a generic library for creating, manipulating and evaluating
-arrays of polynomials.
+arrays of polynomials based on ``numpy.ndarray`` objects.
 
-The polynomial base class ``numpoly.ndpoly`` is a subclass of ``numpy.ndarray``
-implemented to represent polynomials as array element. This makes the library
-very fast with the respect of the size of the coefficients. It is also adds
-compatibility with ``numpy`` functions and methods, where that makes sense,
-making the interface more intuitive.
+Features include:
 
-Many numerical analysis, polynomial approximations as proxy predictors for real
-predictors to do analysis on. These models are often solutions to non-linear
-problems discretized with high mesh. As such, the corresponding polynomial
-approximation consist of high number of dimensions and large multi-dimensional
-polynomial coefficients. For these kind of problems ``numpoly`` is a good fit.
+* Intuitive interface for users experienced with ``numpy``, as the library
+  provides a high level of compatibility with the ``numpy.ndarray``, including
+  fancy indexing, broadcasting, ``numpy.dtype``, vectorized operations to name
+  a few.
+* Computationally fast evaluations of lots of functionality inherent from
+  ``numpy``.
+* Vectorized polynomial evaluation.
+* Support for arbitrary number of dimensions and name for the indeterminants.
+* Native support for lots of ``numpy.<name>`` functions using ``numpy``'s
+  compatibility layer (which also exists as ``numpoly.<name>``
+  equivalents).
+* Support for polynomial division through the operators ``/``, ``%`` and
+  ``divmod``.
+* Extra polynomial specific attributes exposed on the polynomial objects like
+  ``poly.exponents``, ``poly.coefficients``, ``poly.indeterminants`` etc.
+* Polynomial derivation through functions like ``numpoly.diff``,
+  ``numpoly.gradient``, ``numpoly.hessian`` etc.
+* Decompose polynomial sums into vector of addends using ``numpoly.decompose``.
+* Variable substitution through ``numpoly.call``.
 
-One example where ``numpoly`` is used as the backend is the uncertainty
+``numpoly`` is currently being used as the backend is the uncertainty
 quantification library `chaospy <https://github.com/jonathf/chaospy>`_.
 
 .. contents:: Table of Contents:
@@ -43,7 +53,12 @@ Installation should be straight forward:
 
     pip install numpoly
 
-And you should be ready to go.
+And you should be ready to go. That is it. You should now be able to import the
+library in your Python REPL:
+
+.. code-block:: python
+
+    >>> import numpoly
 
 Example usage
 -------------
