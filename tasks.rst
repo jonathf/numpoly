@@ -5,37 +5,6 @@ Some undone task that could be be useful to add. Any help is welcome.
 
 Please create a Github issue if you want to claim a task.
 
-Adding interfaces for numpy functionality
------------------------------------------
-
-Difficulty: easy-medium-hard
-
-Lots of numpy functions can use wrappers to get a more whole numpy-like
-experience. The task should include both a wrapper and a corresponding test,
-testing the feature.
-
-Sub-tasks can individually be claimed.
-
-===================
-Function name
-===================
-amax
-amin
-average
-broadcast*
-cast
-clip
-cov
-cross
-cumprod
-diag
-mean
-median
-nonzero
-ravel
-resize
-===================
-
 Save/Load support
 -----------------
 
@@ -47,19 +16,6 @@ interface. But if not possible, using something like h5py.
 Along the way:
 * Add optional requirement h5py (if applicable)
 * Add test demonstrating the feature
-
-True division and mod support
------------------------------
-
-Difficulty: medium-hard
-
-Currently division is only supported if the divisor is ndarray. However,
-polynomial division is a thing. And limiting the division to true-division
-``//`` and division mod ``%``, allows for the result to ensured to be
-a polynomial as well.
-
-Some exploration is needed to find out how feasible multi-variate support is.
-Not creating a for-loop over the numpy elements is preferable.
 
 ``power`` implementation
 ------------------------
@@ -105,4 +61,4 @@ Inner product support
 
 Difficulty: medium-hard
 
-The definition of inner production of tensor products.
+The definition of inner product of tensor products.

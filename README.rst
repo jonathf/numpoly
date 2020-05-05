@@ -17,7 +17,10 @@
 Numpoly is a generic library for creating, manipulating and evaluating
 arrays of polynomials based on ``numpy.ndarray`` objects.
 
-Features include:
+.. contents:: Table of Contents:
+
+Features Overview
+-----------------
 
 * Intuitive interface for users experienced with ``numpy``, as the library
   provides a high level of compatibility with the ``numpy.ndarray``, including
@@ -42,8 +45,6 @@ Features include:
 ``numpoly`` is currently being used as the backend is the uncertainty
 quantification library `chaospy <https://github.com/jonathf/chaospy>`_.
 
-.. contents:: Table of Contents:
-
 Installation
 ------------
 
@@ -60,7 +61,7 @@ library in your Python REPL:
 
     >>> import numpoly
 
-Example usage
+Example Usage
 -------------
 
 Constructing polynomial is typically done using one of the available
@@ -129,6 +130,8 @@ To run tests, run:
 .. code-block:: bash
 
    poetry run pytest numpoly test doc --doctest-modules
+
+See `task file <./tasks.rst>`_ for examples of contribution needed.
 
 Questions & Troubleshooting
 ---------------------------
