@@ -22,7 +22,7 @@ def implements_ufunc(*array_methods):
     def decorator(numpoly_function):
         """Register function."""
         for func in array_methods:
-            assert func not in UFUNC_COLLECTION, f"%s already implemented" % func
+            assert func not in UFUNC_COLLECTION, "%s already implemented" % func
             UFUNC_COLLECTION[func] = numpoly_function
         return numpoly_function
     return decorator
@@ -35,7 +35,7 @@ def implements(*array_functions):
         for func in array_functions:
             assert func not in FUNCTION_COLLECTION, "%s already implemented" % func
             FUNCTION_COLLECTION[func] = numpoly_function
-            assert func not in UFUNC_COLLECTION, f"%s already implemented" % func
+            assert func not in UFUNC_COLLECTION, "%s already implemented" % func
             UFUNC_COLLECTION[func] = numpoly_function
         return numpoly_function
 

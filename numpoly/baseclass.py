@@ -516,9 +516,9 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         return poly_function.poly_remainder(value, self)
 
     def __divmod__(self, value):
-        """Return divmod(self, value)"""
+        """Return divmod(self, value)."""
         return poly_function.poly_divmod(self, value)
 
     def __rdivmod__(self, value):
-        """Return divmod(value, self)"""
+        """Return divmod(value, self)."""
         return poly_function.poly_divmod(value, self)
