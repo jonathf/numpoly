@@ -230,6 +230,15 @@ def test_floor_divide(interface):
     with raises(numpoly.FeatureNotSupported):
         poly.__rfloordiv__(poly)
 
+    out = numpoly.ndpoly(
+        exponents=poly.exponents,
+        shape=(2, 2),
+        names=("X", "Y"),
+        dtype=float,
+    )
+    numpoly.floor_divide(poly, 2, out=out)
+    assert numpy.all(out == [[0, Y], [0, 1]])
+
 
 def test_hsplit(func_interface):
     poly = numpoly.polynomial([[1, X, X**2], [X+Y, Y, Y]])

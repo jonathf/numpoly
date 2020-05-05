@@ -82,7 +82,7 @@ def test_poly_divmod():
 
     assert divmod(X+3, 2) == (0.5*X+1.5, 0)
     assert divmod(Y+3, 2) == (0.5*Y+1.5, 0)
-    assert divmod(numpoly.polynomial(3), 2) == (1.5, 0)
+    assert divmod(3, numpoly.polynomial(2)) == (1.5, 0)
     assert divmod(X, 2) == (0.5*X, 0)
     assert divmod(Y, 2) == (0.5*Y, 0)
     assert divmod(X*Y, 2) == (0.5*X*Y, 0)
