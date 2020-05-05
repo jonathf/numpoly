@@ -60,13 +60,6 @@ def true_divide(x1, x2, out=None, where=True, **kwargs):
         polynomial([0.25*x, 0.25*y, 0.25*z])
         >>> numpoly.true_divide(xyz, [1, 2, 4])
         polynomial([x, 0.5*y, 0.25*z])
-        >>> numpoly.true_divide([1, 2, 4], xyz)  # doctest: +IGNORE_EXCEPTION_DETAIL
-        Traceback (most recent call last):
-            ...
-        numpoly.baseclass.FeatureNotSupported:
-        Divisor in division is a polynomial.
-        Polynomial division differs from numerical division;
-        Use ``numpoly.poly_divide`` to get polynomial division.
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)

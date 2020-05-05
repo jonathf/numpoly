@@ -16,16 +16,12 @@ def tonumpy(poly):
             Numpy array.
 
     Raises:
-        ValueError:
+        numpoly.baseclass.FeatureNotSupported:
             Only constant polynomials can be cast to numpy.ndarray.
 
     Examples:
         >>> numpoly.tonumpy(numpoly.polynomial([1, 2]))
         array([1, 2])
-        >>> numpoly.tonumpy(numpoly.symbols("x"))
-        Traceback (most recent call last):
-            ...
-        numpoly.baseclass.FeatureNotSupported: only constant polynomials can be converted to array.
 
     """
     poly = numpoly.aspolynomial(poly)

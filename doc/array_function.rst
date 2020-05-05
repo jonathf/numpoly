@@ -84,6 +84,7 @@ supported, not all function are supportable.
 .. autofunction:: numpoly.array_function.reshape
 .. autofunction:: numpoly.array_function.rint
 .. autofunction:: numpoly.array_function.round
+.. autofunction:: numpoly.array_function.round_
 .. autofunction:: numpoly.array_function.square
 .. autofunction:: numpoly.array_function.split
 .. autofunction:: numpoly.array_function.stack

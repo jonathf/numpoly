@@ -54,12 +54,6 @@ def divmod(x1, x2, out=(None, None), where=True, **kwargs):
     Examples:
         >>> numpoly.divmod([1, 22, 444], 4)
         (polynomial([0, 5, 111]), polynomial([1, 2, 0]))
-        >>> numpoly.divmod([1, 22, 444], numpoly.symbols("x"))  # doctest: +IGNORE_EXCEPTION_DETAIL
-        Traceback (most recent call last):
-            ...
-        numpoly.baseclass.FeatureNotSupported:
-        Division-remainder involving polynomial division differs from numerical division;
-        Use ``numpoly.poly_divmod`` to get polynomial division-remainder.
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)

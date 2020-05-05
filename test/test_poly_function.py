@@ -105,7 +105,7 @@ def test_isconstant():
 
 def test_tonumpy():
     assert isinstance(numpoly.tonumpy(numpoly.polynomial([1, 2, 3])), numpy.ndarray)
-    with raises(ValueError):
+    with raises(numpoly.FeatureNotSupported):
         numpoly.tonumpy(X)
 
 

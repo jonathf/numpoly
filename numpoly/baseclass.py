@@ -390,16 +390,12 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                 Same as object, but cast to `numpy.ndarray`.
 
         Raises:
-            FeatureNotSupported:
+            numpoly.baseclass.FeatureNotSupported:
                 When polynomial include indeterminats, casting to numpy.
 
         Examples:
             >>> numpoly.polynomial([1, 2]).tonumpy()
             array([1, 2])
-            >>> numpoly.symbols("x").tonumpy()
-            Traceback (most recent call last):
-                ...
-            numpoly.baseclass.FeatureNotSupported: only constant polynomials can be converted to array.
 
         """
         return poly_function.tonumpy(self)

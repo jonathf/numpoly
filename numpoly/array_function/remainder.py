@@ -46,13 +46,6 @@ def remainder(x1, x2, out=None, where=True, **kwargs):
     Examples:
         >>> numpoly.remainder([14, 7], 5)
         polynomial([4, 2])
-        >>> x = numpoly.symbols("x")
-        >>> numpoly.remainder(x, 5)  # doctest: +IGNORE_EXCEPTION_DETAIL
-        Traceback (most recent call last):
-            ...
-        numpoly.baseclass.FeatureNotSupported:
-        Remainder involving polynomial division differs from numerical division;
-        Use ``numpoly.poly_remainder`` to get polynomial remainder.
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
