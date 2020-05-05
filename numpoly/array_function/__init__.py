@@ -1,6 +1,4 @@
 """Collection of numpy wrapper functions."""
-from .common import ARRAY_FUNCTIONS
-
 from .absolute import absolute as abs, absolute
 from .add import add
 from .any import any
@@ -8,7 +6,7 @@ from .all import all
 from .allclose import allclose
 from .apply_along_axis import apply_along_axis
 from .apply_over_axes import apply_over_axes
-from .around import around as round, around
+from .around import around, around as round, around as round_
 from .array_repr import array_repr
 from .array_split import array_split
 from .array_str import array_str

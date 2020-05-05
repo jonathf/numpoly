@@ -2,7 +2,12 @@
 import numpy
 import numpoly
 
-from .common import implements
+from ..dispatch import implements
+
+DIVIDE_ERROR_MSG = """
+Divisor in division is a polynomial.
+Polynomial division differs from numerical division;
+Use ``numpoly.poly_divide`` to get polynomial division."""
 
 
 @implements(numpy.floor_divide)
@@ -43,23 +48,41 @@ def floor_divide(x1, x2, out=None, where=True, **kwargs):
 
     Raises:
         ValueError:
-            When denominator is not a constant, floor-division is not possible.
+            If `x2` contains indeterminants, numerical division is no longer
+            possible and an error is raised instead. For polynomial
+            division see ``numpoly.poly_divide``.
 
     Examples:
         >>> numpoly.floor_divide([1, 3, 5], 2)
         polynomial([0, 1, 2])
         >>> xyz = [1, 2, 4]*numpoly.symbols("x y z")
         >>> numpoly.floor_divide(xyz, 2.)
-        polynomial([0, y, 2*z])
+        polynomial([0.0, y, 2.0*z])
         >>> numpoly.floor_divide(xyz, [1, 2, 4])
         polynomial([x, y, z])
-        >>> numpoly.floor_divide([1, 2, 4], xyz)
-        Traceback (most recent call last):
-            ...
-        ValueError: only constant polynomials can be converted to array.
 
     """
-    x2 = numpoly.aspolynomial(x2)
-    dividend, remainder = numpoly.divmod(
-        x1, x2.tonumpy(), out=out, where=where, **kwargs)
-    return dividend.astype(int)
+    x1, x2 = numpoly.align_polynomials(x1, x2)
+    if not x2.isconstant():
+        raise numpoly.FeatureNotSupported(DIVIDE_ERROR_MSG)
+    x2 = x2.tonumpy()
+    dtype=numpy.common_type(x1, x2)
+    if x1.dtype == x2.dtype == "int64":
+        dtype = "int64"
+    no_output = out is None
+    if no_output:
+        out = numpoly.ndpoly(
+            exponents=x1.exponents,
+            shape=x1.shape,
+            names=x1.indeterminants,
+            dtype=dtype,
+        )
+    elif not isinstance(out, numpy.ndarray):
+        assert len(out) == 1, "only one output"
+        out = out[0]
+    for key in x1.keys:
+        out[key] = 0
+        numpy.floor_divide(x1[key], x2, out=out[key], where=where, **kwargs)
+    if no_output:
+        out = numpoly.clean_attributes(out)
+    return out

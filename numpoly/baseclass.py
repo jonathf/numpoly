@@ -5,7 +5,7 @@ from six import string_types
 
 import numpy
 
-from . import align, construct, array_function, poly_function
+from . import align, construct, dispatch, array_function, poly_function
 
 
 REDUCE_MAPPINGS = {
@@ -32,6 +32,10 @@ INDETERMINANT_DEFAULTS = {
     # Regular expression defining valid indeterminant names.
     "filter_regex": r"[\w_]",
 }
+
+
+class FeatureNotSupported(ValueError):
+    """Error for features in numpy not supported in Numpoly."""
 
 
 class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
@@ -175,18 +179,18 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             ufunc = REDUCE_MAPPINGS[ufunc]
         elif method == "accumulate":
             ufunc = ACCUMULATE_MAPPINGS[ufunc]
-        else:
-            assert method == "__call__", (
-                "method %s not recognised" % method)
-        assert ufunc in array_function.ARRAY_FUNCTIONS, (
-            "function '%s' not supported by numpoly." % ufunc.__name__)
-        return array_function.ARRAY_FUNCTIONS[ufunc](*inputs, **kwargs)
+        elif method != "__call__":
+            raise FeatureNotSupported("Method '%s' not supported." % method)
+        if ufunc not in dispatch.UFUNC_COLLECTION:
+            raise FeatureNotSupported("ufunc '%s' not supported." % ufunc)
+        return dispatch.UFUNC_COLLECTION[ufunc](*inputs, **kwargs)
 
     def __array_function__(self, func, types, args, kwargs):
         """Dispatch method for functions."""
-        assert func in array_function.ARRAY_FUNCTIONS, (
-            "function '%s' not supported by numpoly." % func.__name__)
-        return array_function.ARRAY_FUNCTIONS[func](*args, **kwargs)
+        if func not in dispatch.FUNCTION_COLLECTION:
+            raise FeatureNotSupported(
+                "function '%s' not supported by numpoly." % func.__name__)
+        return dispatch.FUNCTION_COLLECTION[func](*args, **kwargs)
 
     # ======================================
     # Properties specific for ndpoly objects
@@ -381,21 +385,17 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         """
         Cast polynomial to numpy.ndarray, if possible.
 
-        Raises:
-            ValueError:
-                When polynomial include indeterminats, casting to numpy.
-
         Returns:
             (numpy.ndarray):
                 Same as object, but cast to `numpy.ndarray`.
 
+        Raises:
+            numpoly.baseclass.FeatureNotSupported:
+                When polynomial include indeterminats, casting to numpy.
+
         Examples:
             >>> numpoly.polynomial([1, 2]).tonumpy()
             array([1, 2])
-            >>> numpoly.symbols("x").tonumpy()
-            Traceback (most recent call last):
-                ...
-            ValueError: only constant polynomials can be converted to array.
 
         """
         return poly_function.tonumpy(self)
@@ -486,3 +486,35 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     def __str__(self):
         """Pretty string representation."""
         return array_function.array_str(self)
+
+    def __truediv__(self, value):
+        """Return self/value."""
+        return poly_function.poly_divide(self, value)
+
+    def __rtruediv__(self, value):
+        """Return value/self."""
+        return poly_function.poly_divide(value, self)
+
+    def __div__(self, value):
+        """Return self/value."""
+        return poly_function.poly_divide(self, value)
+
+    def __rdiv__(self, value):
+        """Return value/self."""
+        return poly_function.poly_divide(value, self)
+
+    def __mod__(self, value):
+        """Return self%value."""
+        return poly_function.poly_remainder(self, value)
+
+    def __rmod__(self, value):
+        """Return value%self."""
+        return poly_function.poly_remainder(value, self)
+
+    def __divmod__(self, value):
+        """Return divmod(self, value)."""
+        return poly_function.poly_divmod(self, value)
+
+    def __rdivmod__(self, value):
+        """Return divmod(value, self)."""
+        return poly_function.poly_divmod(value, self)

@@ -1,36 +1,37 @@
 """Return element-wise quotient and remainder simultaneously."""
-from __future__ import division
 import numpy
 import numpoly
 
+from ..dispatch import implements_ufunc
 
-def divmod(dividend, divisor, out=None, where=True, **kwargs):
+DIVMOD_ERROR_MSG = """
+Division-remainder involving polynomial division differs from numerical division;
+Use ``numpoly.poly_divmod`` to get polynomial division-remainder."""
+
+
+@implements_ufunc(numpy.divmod)
+def divmod(x1, x2, out=(None, None), where=True, **kwargs):
     """
     Return element-wise quotient and remainder simultaneously.
 
-    ``numpoly.divmod(x, y)`` is equivalent to ``(x / y, x % y)``, but faster
+    ``numpoly.divmod(x, y)`` is equivalent to ``(x // y, x % y)``, but faster
     because it avoids redundant work. It is used to implement the Python
-    built-in function ``divmod`` on Numpoly arrays.
-
-    Notes:
-        Unlike numbers, this returns the polynomial division and polynomial
-        remainder. This means that this function is _not_ backwards compatible
-        with ``numpy.divmod`` for constants. For example:
-        ``numpy.divmod(11, 2) == (5, 1)`` while
-        ``numpoly.divmod(11, 2) == (5.5, 0)``.
+    built-in function ``divmod`` on arrays.
 
     Args:
-        dividend (numpoly.ndpoly):
-            The array being divided.
-        divisor (numpoly.ndpoly):
-            Array that that will divide the dividend.
-        out (Optional[numpoly.ndpoly]):
+        x1 (numpoly.ndpoly):
+            Dividend array.
+        x2 (numpoly.ndpoly):
+            Divisor array. If ``x1.shape != x2.shape``, they must be
+            broadcastable to a..dispatch shape (which becomes the shape of the
+            output).
+        out (Tuple[Optional[numpoly.ndpoly], Optional[numpoly.ndpoly]]):
             A location into which the result is stored. If provided, it must
             have a shape that the inputs broadcast to. If not provided or
             `None`, a freshly-allocated array is returned. A tuple (possible
             only as a keyword argument) must have length equal to the number of
             outputs.
-        where (bool, numpy.ndarray):
+        where (Optional[numpy.ndarray]):
             This condition is broadcast over the input. At locations where the
             condition is True, the `out` array will be set to the ufunc result.
             Elsewhere, the `out` array will retain its original value. Note
@@ -42,102 +43,22 @@ def divmod(dividend, divisor, out=None, where=True, **kwargs):
 
     Returns:
         (Tuple[numpoly.ndpoly, numpoly.ndpoly]):
-            Element-wise quotient and remainder resulting from
-            floor division. This is a scalar if both `x1` and `x2`
-            are scalars.
+            Element-wise quotient and remainder resulting from floor division.
+
+    Raises:
+        numpoly.baseclass.FeatureNotSupported:
+            If either `x1` or `x2` contains indeterminants, numerical division
+            is no longer possible and an error is raised instead. For
+            polynomial division-remainder see ``numpoly.poly_divmod``.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> denominator = [x*y**2+2*x**3*y**2, -2+x*y**2]
-        >>> numerator = -2+x*y**2
-        >>> floor, remainder = numpoly.divmod(denominator, numerator)
-        >>> floor
-        polynomial([1.0+2.0*x**2, 1.0])
-        >>> remainder
-        polynomial([2.0+4.0*x**2, 0.0])
-        >>> floor*numerator+remainder
-        polynomial([x*y**2+2.0*x**3*y**2, -2.0+x*y**2])
+        >>> numpoly.divmod([1, 22, 444], 4)
+        (polynomial([0, 5, 111]), polynomial([1, 2, 0]))
 
     """
-    assert where is True, "changing 'where' is not supported."
-    dividend, divisor = numpoly.align_polynomials(dividend, divisor)
-
-    if not dividend.shape:
-        floor, remainder = divmod(
-            dividend.flatten(), divisor.flatten(), out=out, where=where, **kwargs)
-        return floor[0], remainder[0]
-
-    quotient = numpoly.zeros(dividend.shape)
-    while True:
-
-        candidates = get_division_candidate(dividend, divisor)
-        if candidates is None:
-            break
-        idx1, idx2, include = candidates
-
-        # construct candidate
-        candidate = dividend.coefficients[idx1]/numpy.where(
-            include, divisor.coefficients[idx2], 1)
-        exponent_diff = dividend.exponents[idx1]-divisor.exponents[idx2]
-        candidate = candidate*numpoly.prod(divisor.indeterminants**exponent_diff, 0)
-
-        # iterate division algorithm
-        quotient = numpoly.add(
-            quotient, numpoly.where(include, candidate, 0), **kwargs)
-        dividend = numpoly.subtract(
-            dividend, numpoly.where(include, divisor*candidate, 0), **kwargs)
-        dividend, divisor = numpoly.align_polynomials(dividend, divisor)
-
-    return quotient, dividend
-
-
-def get_division_candidate(x1, x2):
-    """
-    Find the next exponent candidate pair in the iterative subtraction process.
-
-    Args:
-        x1 (numpoly.ndpoly):
-            The array being divided.
-        x2 (numpoly.ndpoly):
-            Array that that will divide the dividend.
-
-    Returns:
-        (Optional[Tuple[int, int, numpy.ndarray]):
-            Indices to the exponent candidate in respectively `x1` and `x2`
-            that should be used in the divide process, and an boolean array to
-            indicate for which coefficients these candidates are valid.
-
-    """
-    # Look for exponent candidates among divisors
-    for idx2 in reversed(numpy.lexsort(x2.exponents.T)):
-        exponent2 = x2.exponents[idx2]
-
-        # Include coefficients where idx2 is non-zero and any potential
-        # candidates that is a better fit has coefficient zero. Exponent needs
-        # to be the biggest one around.
-        include2 = numpy.ones(x2.shape, dtype=bool)
-        for idx, exponent in enumerate(x2.exponents):
-            if numpy.all(exponent2 <= exponent):
-                include2 &= (x2.coefficients[idx] == 0) ^ (idx == idx2)
-        if not numpy.any(include2):
-            continue
-
-        # Look for exponent candidates among dividend
-        for idx1 in reversed(numpy.lexsort(x1.exponents.T)):
-            exponent1 = x1.exponents[idx1]
-
-            # Skip situations where numerator has larger exponent than the
-            # denominator.
-            if numpy.any(exponent1 < exponent2):
-                continue
-
-            # Skip if all relevant coefficients of interest are zero.
-            include1 = x1.coefficients[idx1] != 0
-            include = include1 & include2
-            if not numpy.any(include):
-                continue
-
-            return idx1, idx2, include
-
-    # No valid candidate pair found; Assume we are done.
-    return None
+    x1, x2 = numpoly.align_polynomials(x1, x2)
+    if not x1.isconstant() or not x2.isconstant():
+        raise numpoly.FeatureNotSupported(DIVMOD_ERROR_MSG)
+    quotient, remainder = numpy.divmod(
+        x1.tonumpy(), x2.tonumpy(), out=out, where=where, **kwargs)
+    return numpoly.polynomial(quotient), numpoly.polynomial(remainder)

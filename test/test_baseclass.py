@@ -1,5 +1,6 @@
 """Test ndpoly baseclass functionality."""
 import numpy
+from pytest import raises
 import numpoly
 
 X, Y = XY = numpoly.symbols("X Y")
@@ -7,6 +8,7 @@ EMPTY = numpoly.polynomial([])
 
 
 def test_scalars():
+    """Test scalar objects to catch edgecases."""
     assert XY.shape == (2,)
     assert XY.size == 2
     assert X.shape == ()
@@ -46,3 +48,19 @@ def test_scalars():
     assert X.astype(float).dtype == float
     assert EMPTY.dtype == int
     assert EMPTY.astype(float).dtype == float
+
+
+def test_dispatch_array_ufunc():
+    """Test dispatch for ufuncs."""
+    assert numpoly.sum(XY) == XY.__array_ufunc__(numpy.sum, "__call__", XY)
+    with raises(numpoly.FeatureNotSupported):
+        XY.__array_ufunc__(numpy.sum, "not_a_method", XY)
+    with raises(numpoly.FeatureNotSupported):
+        XY.__array_ufunc__(object, "__call__", XY)
+
+
+def test_dispatch_array_function():
+    """Test dispatch for functions."""
+    assert numpoly.sum(XY) == XY.__array_function__(numpy.sum, (int,), (XY,), {})
+    with raises(numpoly.FeatureNotSupported):
+        XY.__array_function__(object, (int,), (XY,), {})

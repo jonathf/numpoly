@@ -1,18 +1,15 @@
-"""Return element-wise remainder of division."""
+"""Return element-wise remainder of polynomial division."""
 import numpy
 import numpoly
 
-from ..dispatch import implements_ufunc
-
-REMAINDER_ERROR_MSG = """
-Remainder involving polynomial division differs from numerical division;
-Use ``numpoly.poly_remainder`` to get polynomial remainder."""
+from ...dispatch import implements_function
+from .divmod import poly_divmod
 
 
-@implements_ufunc(numpy.remainder)
-def remainder(x1, x2, out=None, where=True, **kwargs):
+@implements_function(numpy.remainder)
+def poly_remainder(x1, x2, out=None, where=True, **kwargs):
     """
-    Return element-wise remainder of numerical division.
+    Return element-wise remainder of polynomial division.
 
     Args:
         x1 (numpoly.ndpoly):
@@ -43,13 +40,20 @@ def remainder(x1, x2, out=None, where=True, **kwargs):
             ``floor_divide(x1, x2)``. This is a scalar if both `x1` and `x2`
             are scalars.
 
+    Notes:
+        Unlike numbers, this returns the polynomial division and polynomial
+        remainder. This means that this function is _not_ backwards compatible
+        with ``numpy.remainder`` for constants. For example:
+        ``numpoly.remainder(11, 2) == 1`` while
+        ``numpoly.poly_remainder(11, 2) == 0``.
+
     Examples:
-        >>> numpoly.remainder([14, 7], 5)
-        polynomial([4, 2])
+        >>> x, y = numpoly.symbols("x y")
+        >>> denominator = [x*y**2+2*x**3*y**2, -2+x*y**2]
+        >>> numerator = -2+x*y**2
+        >>> numpoly.poly_remainder(denominator, numerator)
+        polynomial([2.0+4.0*x**2, 0.0])
 
     """
-    x1, x2 = numpoly.align_polynomials(x1, x2)
-    if not x1.isconstant() or not x2.isconstant():
-        raise numpoly.FeatureNotSupported(REMAINDER_ERROR_MSG)
-    return numpoly.polynomial(numpy.remainder(
-        x1.tonumpy(), x2.tonumpy(), out=out, where=where, **kwargs))
+    dividend, remainder = poly_divmod(x1, x2, out=out, where=where, **kwargs)
+    return remainder

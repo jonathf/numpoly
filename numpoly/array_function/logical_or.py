@@ -2,7 +2,7 @@
 import numpy
 import numpoly
 
-from .common import implements, simple_dispatch
+from ..dispatch import implements, simple_dispatch
 
 
 @implements(numpy.logical_or)

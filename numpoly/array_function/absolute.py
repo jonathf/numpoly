@@ -2,10 +2,10 @@
 import numpy
 import numpoly
 
-from .common import implements, simple_dispatch
+from ..dispatch import implements, simple_dispatch
 
 
-@implements(numpy.abs, numpy.absolute)
+@implements(numpy.absolute)
 def absolute(x, out=None, where=True, **kwargs):
     r"""
     Calculate the absolute value element-wise.

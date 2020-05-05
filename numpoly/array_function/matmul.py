@@ -2,7 +2,7 @@
 import numpy
 import numpoly
 
-from .common import implements
+from ..dispatch import implements
 
 ERROR_MESSAGE = """\
 matmul: Input operand %d does not have enough dimensions \

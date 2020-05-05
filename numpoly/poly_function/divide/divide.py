@@ -1,18 +1,19 @@
-"""Return element-wise remainder of division."""
+"""Return a true division of the inputs, element-wise."""
 import numpy
 import numpoly
 
-from ..dispatch import implements_ufunc
-
-REMAINDER_ERROR_MSG = """
-Remainder involving polynomial division differs from numerical division;
-Use ``numpoly.poly_remainder`` to get polynomial remainder."""
+from ...dispatch import implements_function
+from .divmod import poly_divmod
 
 
-@implements_ufunc(numpy.remainder)
-def remainder(x1, x2, out=None, where=True, **kwargs):
+@implements_function(numpy.true_divide)
+def poly_divide(x1, x2, out=None, where=True, **kwargs):
     """
-    Return element-wise remainder of numerical division.
+    Return a polynomial division of the inputs, element-wise.
+
+    Note that if divisor is a polynomial, then the division could have a
+    remainder, as polynomial division is not exactly the same as numerical
+    division.
 
     Args:
         x1 (numpoly.ndpoly):
@@ -27,7 +28,7 @@ def remainder(x1, x2, out=None, where=True, **kwargs):
             `None`, a freshly-allocated array is returned. A tuple (possible
             only as a keyword argument) must have length equal to the number of
             outputs.
-        where (Union[bool, numpy.ndarray]):
+        where (Optional[numpy.ndarray]):
             This condition is broadcast over the input. At locations where the
             condition is True, the `out` array will be set to the ufunc result.
             Elsewhere, the `out` array will retain its original value. Note
@@ -39,17 +40,17 @@ def remainder(x1, x2, out=None, where=True, **kwargs):
 
     Returns:
         (numpoly.ndpoly):
-            The element-wise remainder of the quotient
-            ``floor_divide(x1, x2)``. This is a scalar if both `x1` and `x2`
-            are scalars.
+            This is a scalar if both `x1` and `x2` are scalars.
 
     Examples:
-        >>> numpoly.remainder([14, 7], 5)
-        polynomial([4, 2])
+        >>> x = numpoly.symbols("x")
+        >>> poly = numpoly.polynomial([14, x**2-3])
+        >>> numpoly.poly_divide(poly, 4)
+        polynomial([3.5, -0.75+0.25*x**2])
+        >>> numpoly.poly_divide(poly, x)
+        polynomial([0.0, x])
 
     """
-    x1, x2 = numpoly.align_polynomials(x1, x2)
-    if not x1.isconstant() or not x2.isconstant():
-        raise numpoly.FeatureNotSupported(REMAINDER_ERROR_MSG)
-    return numpoly.polynomial(numpy.remainder(
-        x1.tonumpy(), x2.tonumpy(), out=out, where=where, **kwargs))
+    dividend, remainder = poly_divmod(x1, x2, out=out, where=where, **kwargs)
+    return dividend
+
