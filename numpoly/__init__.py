@@ -16,6 +16,7 @@ from .align import (
 from .construct import (
     polynomial,
     aspolynomial,
+    bindex,
     clean_attributes,
     polynomial_from_attributes,
     monomial,
