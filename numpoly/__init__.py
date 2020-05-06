@@ -4,7 +4,7 @@ import logging
 import os
 import pkg_resources
 
-from .baseclass import ndpoly, FeatureNotSupported
+from .baseclass import ndpoly, FeatureNotSupported, INDETERMINANT_DEFAULTS
 
 from .align import (
     align_polynomials,
@@ -16,7 +16,11 @@ from .align import (
 from .construct import (
     polynomial,
     aspolynomial,
+    bindex,
     clean_attributes,
+    polynomial_from_attributes,
+    monomial,
+    symbols,
 )
 from .sympy_ import to_sympy
 

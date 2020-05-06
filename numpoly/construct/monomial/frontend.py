@@ -53,7 +53,8 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., names=None):
         polynomial([x**4, x**3*y, x**2*y**2, x*y**3, y**4])
         >>> numpoly.monomial(2, [3, 4])
         polynomial([q1**2, q0*q1, q0**2, q1**3])
-        >>> numpoly.monomial(0, 5, names=("x", "y"), cross_truncation=0.5)
+        >>> numpoly.monomial(0, 5, names=("x", "y"),
+        ...                  cross_truncation=0.5)
         polynomial([1, y, x, y**2, x*y, x**2, y**3, x**3, y**4, x**4])
 
     """

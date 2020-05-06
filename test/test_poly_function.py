@@ -4,7 +4,7 @@ from pytest import raises
 import sympy
 import numpy
 import numpoly
-from numpoly.poly_function.monomial.cross_truncation import cross_truncate
+from numpoly.construct.monomial.cross_truncation import cross_truncate
 
 X, Y = numpoly.symbols("X Y")
 

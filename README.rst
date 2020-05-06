@@ -1,6 +1,6 @@
 .. image:: doc/.static/numpoly_logo.svg
-   :height: 300 px
-   :width: 300 px
+   :height: 200 px
+   :width: 200 px
    :align: center
 
 |circleci| |codecov| |pypi| |readthedocs|
@@ -105,16 +105,6 @@ Or manipulated using various numpy functions:
    >>> numpy.sum(numpoly.monomial(13, names="z")[::3])
    polynomial(1+z**3+z**6+z**9+z**12)
 
-In addition there are also several operators specific to the polynomial:
-
-.. code-block:: python
-
-   >>> numpoly.diff([1, x, x**2], x)
-   polynomial([0, 1, 2*x])
-   >>> numpoly.gradient([x*y, x+y])
-   polynomial([[y, 1],
-               [x, 1]])
-
 Development
 -----------
 
@@ -125,11 +115,20 @@ Inside the repository directory, install and create a virtual environment with:
 
    poetry install
 
-To run tests, run:
+To run tests:
 
 .. code-block:: bash
 
    poetry run pytest numpoly test doc --doctest-modules
+
+To build documentation, run:
+
+.. code-block:: bash
+
+   cd doc/
+   make html
+
+The documentation will be generated into the folder ``doc/.build/html``.
 
 Questions and Contributions
 ---------------------------
@@ -137,7 +136,7 @@ Questions and Contributions
 Please feel free to `file an issue
 <https://github.com/jonathf/numpoly/issues>`_ for:
 
-* report bugs.
-* asking questions related to usage.
-* requesting new feature.
-* want to contribute with code.
+* bug reporting
+* asking questions related to usage
+* requesting new features
+* wanting to contribute with code
