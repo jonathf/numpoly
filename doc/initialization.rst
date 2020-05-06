@@ -1,5 +1,5 @@
-Polynomial Object
-=================
+Initialization
+==============
 
 The core element of the `numpoly` library is the `numpoly.ndpoly` class. The
 class is subclass of of the `numpy.ndarray` and the implementation follows the
@@ -12,12 +12,12 @@ represented as `numpy.ndarray`:
 
 .. math::
 
-    P(x_1, \dots, x_D) = \sum_{n=1}^N c_n \prod_{d=1}^D x_d^{p_{nd}}
+    poly(x_1, \dots, x_D) = \sum_{n=1}^N coef_n \prod_{d=1}^D inder_d^{expon_{nd}}
 
-Where :math:`P` is polynomial vector, :math:`N` is the number of terms in the
-polynomial sum, :math:`c_n` is a (potentially) multi-dimensional polynomial
-coefficients, :math:`x_d` is the :math:`d`-th indeterminant name, and
-:math:`p_{nd}` is the exponent for the :math:`n`-th polynomial term and the
+Where :math:`poly` is polynomial vector, :math:`N` is the number of terms in the
+polynomial sum, :math:`coef_n` is a (potentially) multi-dimensional polynomial
+coefficients, :math:`inder_d` is the :math:`d`-th indeterminant name, and
+:math:`expon_{nd}` is the exponent for the :math:`n`-th polynomial term and the
 :math:`d`-th indeterminant name.
 
 For example, for a simple polynomial with scalar coefficients:
@@ -48,9 +48,16 @@ These three properties can be used to reconstruct the polynomial:
     >>> numpoly.sum(terms, 0)
     polynomial(-1+3*y+4*x)
 
+Underlying Structured Array
+---------------------------
 
-Not for any practical reasons, but it is possible to view the polynomial in
-it's true form:
+Under the hood, each of the polynomials are numpy structured arrays. The column
+names are string representations corresponding to the polynomial exponents,
+and the values are the coefficients. The indeterminant names are stored
+separately. Numpoly is a wrapper on top of this.
+
+From a development point of view, it is possible to view the underlying
+structured array directly using the ``values`` attribute:
 
 .. code:: python
 
@@ -59,16 +66,16 @@ it's true form:
     array((-1, 4, 3),
           dtype=[(';;', '<i8'), ('<;', '<i8'), (';<', '<i8')])
 
-Which, together with the indeterminant names, can be cast back to a polynomial:
+Which, together with the indeterminant names, can be used to cast back the
+array back to a polynomial:
 
 .. code:: python
 
     >>> numpoly.aspolynomial(array, names=("x", "y"))
     polynomial(-1+4*x+3*y)
 
-In other words, the true form here is a structured array. The column names
-are string representations corresponding to the polynomial exponents.
-The rest is just wrappers to make it behave as a polynomial.
+Constructors
+------------
 
 .. autofunction:: numpoly.polynomial
 .. autofunction:: numpoly.aspolynomial
@@ -76,4 +83,4 @@ The rest is just wrappers to make it behave as a polynomial.
 .. autofunction:: numpoly.symbols
 
 .. autoclass:: numpoly.baseclass.ndpoly
-    :members: coefficients, exponents, from_attributes, indeterminant, keys, names, values, __new__, __call__, _dtype, isconstant, todict, tonumpy
+    :members: coefficients, exponents, from_attributes, indeterminants, keys, names, values, __new__, __call__, _dtype, isconstant, todict, tonumpy

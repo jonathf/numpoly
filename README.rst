@@ -121,13 +121,22 @@ To run tests:
 
    poetry run pytest numpoly test doc --doctest-modules
 
+To build documentation, run:
+
+.. code-block:: bash
+
+   cd doc/
+   make html
+
+The documentation will be generated into the folder ``doc/.build/html``.
+
 Questions and Contributions
 ---------------------------
 
 Please feel free to `file an issue
 <https://github.com/jonathf/numpoly/issues>`_ for:
 
-* report bugs.
-* asking questions related to usage.
-* requesting new features.
-* want to contribute with code.
+* bug reporting
+* asking questions related to usage
+* requesting new features
+* wanting to contribute with code

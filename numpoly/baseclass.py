@@ -48,8 +48,10 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     memory, whether it is an integer, a floating point number, or something
     else, etc.)
 
-    Arrays should be constructed using `symbols`, `monomial`, `polynomial`,
-    etc.
+    Though possible, it is not recommended to construct polynomials using
+    ``ndpoly`` for basic polynomial array construction. Instead the user should
+    be consider using construction functions like `symbols`, `monomial`,
+    `polynomial`, etc.
 
     Attributes:
         coefficients (List[numpy.ndarray, ...]):
@@ -64,7 +66,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             as string as to be compatible with numpy structured array. Unlike
             the exponents, that are useful for mathematical manipulation, the
             keys are useful as coefficient lookup.
-        indeterminats (numpoly.ndpoly):
+        indeterminants (numpoly.ndpoly):
             Secondary polynomial only consisting of an array of simple
             independent variables found in the polynomial array.
         names (Tuple[str, ...]):
