@@ -23,7 +23,7 @@ def divmod(x1, x2, out=(None, None), where=True, **kwargs):
             Dividend array.
         x2 (numpoly.ndpoly):
             Divisor array. If ``x1.shape != x2.shape``, they must be
-            broadcastable to a..dispatch shape (which becomes the shape of the
+            broadcastable to a common shape (which becomes the shape of the
             output).
         out (Tuple[Optional[numpoly.ndpoly], Optional[numpoly.ndpoly]]):
             A location into which the result is stored. If provided, it must

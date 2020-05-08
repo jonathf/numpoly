@@ -11,7 +11,7 @@ def power(x1, x2, **kwargs):
     First array elements raised to powers from second array, element-wise.
 
     Raise each base in `x1` to the positionally-corresponding power in
-    `x2`.  `x1` and `x2` must be broadcastable to the same shape. Note that an
+    `x2`. `x1` and `x2` must be broadcastable to the same shape. Note that an
     integer type raised to a negative integer power will raise a ValueError.
 
     Args:
@@ -19,7 +19,7 @@ def power(x1, x2, **kwargs):
             The bases.
         x2 (numpoly.ndpoly):
             The exponents. If ``x1.shape != x2.shape``, they must be
-            broadcastable to a..dispatch shape (which becomes the shape of the
+            broadcastable to a common shape (which becomes the shape of the
             output).
         out (Optional[numpy.ndarray]):
             A location into which the result is stored. If provided, it must

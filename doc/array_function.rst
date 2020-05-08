@@ -1,14 +1,15 @@
 Numpy Wrappers
 ==============
 
-The numpy library comes with a large array of functions for manipulation of
-`numpy.ndarray` objects. Many of these functions are supported `numpoly` as
+The numpy library comes with a large number of functions for manipulating
+``numpy.ndarray`` objects. Many of these functions are supported ``numpoly`` as
 well.
 
-For numpy version >=1.17, the numpy library started to support dispatching
-functionality to subclasses. This means that the functions in numpoly with the
-same name as a numpy counterpart will work irrespectively if the function used
-was from numpy or numpoly.
+For numpy version >=1.17, the ``numpy`` library introduced dispatching of its
+functions to subclasses. This means that functions in ``numpoly`` with the
+same name as a numpy counterpart, it will work the same irrespectively if the
+function used was from ``numpy`` or ``numpoly``, as the former will pass any
+job to the latter.
 
 For example:
 
@@ -25,15 +26,16 @@ For example:
 For earlier versions of numpy, the last line will not work.
 
 Not everything is possible to support, and even within the list of supported
-functions, functionality that can not cover all use cases. Appropriate error
-should be raised though when these edges are reached.
+functions, not all use cases can be covered. Bit if such an unsupported edge case
+is encountered, an ``numpoly.baseclass.FeatureNotSupported`` error should be
+raised, so it should be obvious when they happen.
 
 As a developer note, ``numpoly`` aims at being backwards compatible with
-``numpy``. This means that all functions below should as far as possible mirror
-the behavior their ``numpy`` counterparts, and for polynomial constant, they
-should be identical (except for the object type). Function that provides
-behavior not covered by ``numpy`` should be placed under
-:ref:`polynomial_functions`.
+``numpy`` as far as possible when it comes to the functions. This means that
+all functions below should as far as possible mirror the behavior their
+``numpy`` counterparts, and for polynomial constant, they should be identical
+(except for the object type). Function that provides behavior not covered by
+``numpy`` should be placed under :ref:`polynomial_functions`.
 
 Collection
 ----------

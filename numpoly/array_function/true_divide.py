@@ -12,7 +12,7 @@ Polynomial division differs from numerical division;
 Use ``numpoly.poly_divide`` to get polynomial division."""
 
 
-@implements_ufunc(numpy.true_divide)
+@implements_ufunc(numpy.divide)
 def true_divide(x1, x2, out=None, where=True, **kwargs):
     """
     Return true division of the inputs, element-wise.
