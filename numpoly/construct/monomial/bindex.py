@@ -35,8 +35,10 @@ def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
         [[0, 0], [0, 1], [1, 0]]
         >>> bindex(start=2, stop=3, dimensions=2).tolist()
         [[0, 2], [1, 1], [2, 0]]
-        >>> bindex(start=0, stop=2, dimensions=3).tolist()
-        [[0, 0, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]]
+        >>> bindex([1, 2, 3]).tolist()
+        [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 0, 2]]
+        >>> bindex([1, 2, 3], cross_truncation=numpy.inf).tolist()
+        [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 0, 2], [0, 1, 1], [0, 1, 2]]
 
     """
     if stop is None:
@@ -45,7 +47,6 @@ def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
     stop = numpy.array(stop, dtype=int).flatten()
     start, stop, _ = numpy.broadcast_arrays(start, stop, numpy.empty(dimensions))
     ordering = ordering.upper()
-    start[start < 0] = 0
 
     cross_truncation = cross_truncation*numpy.ones(2)
     indices = _bindex(start, stop, cross_truncation)
@@ -75,6 +76,10 @@ def _bindex(start, stop, cross_truncation=1.):
 
     for idx in range(dimensions-1):
 
+        # Truncate at each step to keep memory usage low
+        if idx:
+            indices = indices[cross_truncate(indices, bound-1, cross_truncation[1])]
+
         # Repeats the current set of indices.
         # e.g. [0,1,2] -> [0,1,2,0,1,2,...,0,1,2]
         indices = numpy.tile(indices, (bound, 1))
@@ -86,12 +91,9 @@ def _bindex(start, stop, cross_truncation=1.):
         # Puts them two together.
         indices = numpy.column_stack((front, indices))
 
-        # Truncate at each step to keep memory usage low
-        indices = indices[cross_truncate(indices, stop[:idx+2]-1, cross_truncation[1])]
-
     # Complete the truncation scheme
     if dimensions == 1:
-        indices = indices[indices >= start]
+        indices = indices[(indices >= start) & (indices < bound)]
     else:
         lower = cross_truncate(indices, start-1, cross_truncation[0])
         upper = cross_truncate(indices, stop-1, cross_truncation[1])
