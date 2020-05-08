@@ -43,11 +43,12 @@ def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
         start, stop = 0, start
     start = numpy.array(start, dtype=int).flatten()
     stop = numpy.array(stop, dtype=int).flatten()
+    start, stop, _ = numpy.broadcast_arrays(start, stop, numpy.empty(dimensions))
     ordering = ordering.upper()
     start[start < 0] = 0
 
     cross_truncation = cross_truncation*numpy.ones(2)
-    indices = _bindex(start, stop, dimensions, cross_truncation)
+    indices = _bindex(start, stop, cross_truncation)
 
     if "G" in ordering:
         indices = indices[numpy.lexsort([numpy.sum(indices, -1)])]
@@ -61,17 +62,18 @@ def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
     return indices
 
 
-def _bindex(start, stop, dimensions=1, cross_truncation=1.):
+def _bindex(start, stop, cross_truncation=1.):
     """Backend for the bindex function."""
     # At the beginning the current list of indices just ranges over the
     # last dimension.
     bound = stop.max()
+    dimensions = len(start)
     start = numpy.clip(start, a_min=0, a_max=None)
     dtype = numpy.uint8 if bound < 256 else numpy.uint16
     range_ = numpy.arange(bound, dtype=dtype)
     indices = range_[:, numpy.newaxis]
 
-    for _ in range(dimensions-1):
+    for idx in range(dimensions-1):
 
         # Repeats the current set of indices.
         # e.g. [0,1,2] -> [0,1,2,0,1,2,...,0,1,2]
@@ -85,7 +87,7 @@ def _bindex(start, stop, dimensions=1, cross_truncation=1.):
         indices = numpy.column_stack((front, indices))
 
         # Truncate at each step to keep memory usage low
-        indices = indices[cross_truncate(indices, stop-1, cross_truncation[1])]
+        indices = indices[cross_truncate(indices, stop[:idx+2]-1, cross_truncation[1])]
 
     # Complete the truncation scheme
     if dimensions == 1:
