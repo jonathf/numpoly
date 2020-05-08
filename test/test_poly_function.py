@@ -144,6 +144,20 @@ def test_cross_truncate():
     assert numpy.all(indices[cross_truncate(indices, 2, norm=numpy.inf)].T ==
                      [[0, 0, 0, 1, 1, 1, 2, 2, 2], [0, 1, 2, 0, 1, 2, 0, 1, 2]])
 
+    indices = numpy.array(numpy.mgrid[:10, :10, :10]).reshape(3, -1).T
+    assert not numpy.any(cross_truncate(indices, -1, 1))
+    assert numpy.all(indices[cross_truncate(indices, 0, 1)].T == [0, 0, 0])
+    assert numpy.all(indices[cross_truncate(indices, 1, 1)].T ==
+                     [[0, 0, 0, 1], [0, 0, 1, 0], [0, 1, 0, 0]])
+    assert numpy.all(indices[cross_truncate(indices, [0, 0, 1], 1)].T ==
+                     [[0, 0], [0, 0], [0, 1]])
+    assert numpy.all(indices[cross_truncate(indices, [1, 1, 2], 1)].T ==
+                     [[0, 0, 0, 0, 1], [0, 0, 0, 1, 0], [0, 1, 2, 0, 0]])
+    assert numpy.all(indices[cross_truncate(indices, [1, 2, 3], 1)].T ==
+                     [[0, 0, 0, 0, 0, 0, 0, 1],
+                      [0, 0, 0, 0, 1, 1, 2, 0],
+                      [0, 1, 2, 3, 0, 1, 0, 0]])
+
 
 def test_bindex():
     assert not numpoly.bindex(0).size
@@ -168,6 +182,8 @@ def test_bindex():
                      [[0, 2], [1, 1], [2, 0], [0, 3], [1, 2], [2, 1], [3, 0], [2, 2]])
     assert numpy.all(numpoly.bindex(start=0, stop=2, dimensions=3) ==
                      [[0, 0, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]])
+
+    assert numpy.all(numpoly.bindex(start=0, stop=[1, 1, 1]) == [0, 0, 0])
 
 
 def test_monomial():

@@ -31,22 +31,31 @@ def cross_truncate(indices, bound, norm):
         >>> indices[cross_truncate(indices, 2, norm=1)].T
         array([[0, 0, 0, 1, 1, 2],
                [0, 1, 2, 0, 1, 0]])
-        >>> indices[cross_truncate(indices, [1, 2], norm=numpy.inf)].T
-        array([[0, 0, 0, 1, 1, 1],
-               [0, 1, 2, 0, 1, 2]])
+        >>> indices[cross_truncate(indices, [0, 1], norm=1)].T
+        array([[0, 0],
+               [0, 1]])
 
     """
     assert norm >= 0, "negative L_p norm not allowed"
     bound = numpy.asfarray(bound).flatten()*numpy.ones(indices.shape[1])
+
     if numpy.any(bound < 0):
-        out = numpy.zeros((len(indices),), dtype=bool)
-    elif norm == 0:
+        return numpy.zeros((len(indices),), dtype=bool)
+
+    if numpy.any(bound == 0):
+        out = numpy.all(indices[:, bound == 0] == 0, axis=-1)
+        if numpy.any(bound):
+            out &= cross_truncate(indices[:, bound != 0], bound[bound != 0], norm=norm)
+        return out
+
+    if norm == 0:
         out = numpy.sum(indices > 0, axis=-1) <= 1
         out[numpy.any(indices > bound, axis=-1)] = False
     elif norm == numpy.inf:
         out = numpy.max(indices/bound, axis=-1) <= 1
     else:
         out = numpy.sum((indices/bound)**norm, axis=-1)**(1./norm) <= 1
-    if not numpy.any(bound < 0):
-        out[numpy.all(indices == 0, axis=-1)] = True
+
+    assert numpy.all(out[numpy.all(indices == 0, axis=-1)])
+
     return out
