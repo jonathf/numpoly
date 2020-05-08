@@ -31,13 +31,13 @@ def cross_truncate(indices, bound, norm):
         >>> indices[cross_truncate(indices, 2, norm=1)].T
         array([[0, 0, 0, 1, 1, 2],
                [0, 1, 2, 0, 1, 0]])
-        >>> indices[cross_truncate(indices, 2, norm=numpy.inf)].T
-        array([[0, 0, 0, 1, 1, 1, 2, 2, 2],
-               [0, 1, 2, 0, 1, 2, 0, 1, 2]])
+        >>> indices[cross_truncate(indices, [1, 2], norm=numpy.inf)].T
+        array([[0, 0, 0, 1, 1, 1],
+               [0, 1, 2, 0, 1, 2]])
 
     """
     assert norm >= 0, "negative L_p norm not allowed"
-    bound = numpy.asfarray(bound)
+    bound = numpy.asfarray(bound).flatten()*numpy.ones(indices.shape[1])
     if numpy.any(bound < 0):
         out = numpy.zeros((len(indices),), dtype=bool)
     elif norm == 0:
