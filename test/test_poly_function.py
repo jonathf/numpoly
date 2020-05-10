@@ -124,6 +124,33 @@ def test_poly_remainder():
     assert numpy.all(poly.__rmod__(numpy.array([1, 2])) == [[0, 2], [1, 0]])
 
 
+def test_sortable_proxy():
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 1],
+                               [X-1, X**2, 1, X],
+                               [Y**2, 1, Y, Y-1]])
+    assert numpy.all(numpoly.sortable_proxy(poly, ordering="") ==
+                     [[ 4, 14, 15, 18],
+                      [ 8,  9, 12,  5],
+                      [16, 19,  6, 17],
+                      [13,  7, 10, 11]])
+    assert numpy.all(numpoly.sortable_proxy(poly, ordering="G") ==
+                     [[ 4, 12, 13, 18],
+                      [ 8,  9, 16,  5],
+                      [14, 19,  6, 15],
+                      [17,  7, 10, 11]])
+    assert numpy.all(numpoly.sortable_proxy(poly, ordering="R") ==
+                     [[ 4,  8,  9, 12],
+                      [14, 15, 18,  5],
+                      [10, 13,  6, 11],
+                      [19,  7, 16, 17]])
+    assert numpy.all(numpoly.sortable_proxy(poly, ordering="I") ==
+                     [[16,  2, 12,  0],
+                      [ 8, 13,  6, 17],
+                      [14,  1, 18,  5],
+                      [ 7, 19, 10, 15]])
+
+
 def test_symbols():
     assert numpoly.symbols("q").names == ("q",)
     assert numpoly.symbols("q:1").names == ("q0",)
