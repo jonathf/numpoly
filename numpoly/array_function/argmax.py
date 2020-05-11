@@ -1,4 +1,4 @@
-"""Returns the indices of the maximum values along an axis."""
+"""Return the indices of the maximum values along an axis."""
 import numpy
 import numpoly
 
@@ -8,7 +8,7 @@ from ..dispatch import implements
 @implements(numpy.argmax)
 def argmax(a, axis=None, out=None, **kwargs):
     """
-    Returns the indices of the maximum values along an axis.
+    Return the indices of the maximum values along an axis.
 
     As polynomials are not inherently sortable, values are sorted using the
     highest `lexicographical` ordering. Between the values that have the same

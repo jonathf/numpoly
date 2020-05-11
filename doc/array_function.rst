@@ -49,6 +49,10 @@ Collection
 .. autofunction:: numpoly.array_function.any
 .. autofunction:: numpoly.array_function.all
 .. autofunction:: numpoly.array_function.allclose
+.. autofunction:: numpoly.array_function.amax
+.. autofunction:: numpoly.array_function.amin
+.. autofunction:: numpoly.array_function.argmin
+.. autofunction:: numpoly.array_function.argmax
 .. autofunction:: numpoly.array_function.around
 .. autofunction:: numpoly.array_function.apply_along_axis
 .. autofunction:: numpoly.array_function.apply_over_axes
@@ -82,6 +86,8 @@ Collection
 .. autofunction:: numpoly.array_function.logical_or
 .. autofunction:: numpoly.array_function.matmul
 .. autofunction:: numpoly.array_function.mean
+.. autofunction:: numpoly.array_function.max
+.. autofunction:: numpoly.array_function.min
 .. autofunction:: numpoly.array_function.moveaxis
 .. autofunction:: numpoly.array_function.mod
 .. autofunction:: numpoly.array_function.multiply
