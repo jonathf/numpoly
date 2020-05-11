@@ -59,4 +59,5 @@ def sortable_proxy(poly, ordering="G"):
         values = numpy.argsort(coefficients[idx][indices])
         proxy[indices] = numpy.argsort(values)+numpy.max(proxy)+1
 
+    proxy = numpy.argsort(numpy.argsort(proxy.ravel())).reshape(proxy.shape)
     return proxy

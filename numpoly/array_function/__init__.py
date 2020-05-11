@@ -1,12 +1,15 @@
 """Collection of numpy wrapper functions."""
 from .absolute import absolute as abs, absolute
 from .add import add
+from .amax import amax, amax as max
+from .amin import amin, amin as min
 from .any import any
 from .all import all
 from .allclose import allclose
 from .apply_along_axis import apply_along_axis
 from .apply_over_axes import apply_over_axes
 from .argmax import argmax
+from .argmin import argmin
 from .around import around, around as round, around as round_
 from .array_repr import array_repr
 from .array_split import array_split

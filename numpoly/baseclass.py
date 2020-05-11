@@ -13,6 +13,8 @@ REDUCE_MAPPINGS = {
     numpy.multiply: numpy.prod,
     numpy.logical_and: numpy.all,
     numpy.logical_or: numpy.any,
+    numpy.maximum: numpy.amax,
+    numpy.minimum: numpy.amin,
 }
 ACCUMULATE_MAPPINGS = {
     numpy.add: numpy.cumsum,
@@ -438,6 +440,14 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         """Wrap ndarray.round."""
         # Not sure why it is required. Likely a numpy bug.
         return array_function.around(self, decimals=decimals, out=out)
+
+    def max(self, out=None, **kwargs):
+        """Wrap ndarray.max."""
+        return array_function.max(self, out=out, **kwargs)
+
+    def min(self, out=None, **kwargs):
+        """Wrap ndarray.min."""
+        return array_function.min(self, out=out, **kwargs)
 
     # ============================================================
     # Override dunder methods that isn't dealt with by dispatching
