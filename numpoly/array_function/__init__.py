@@ -40,6 +40,8 @@ from .isfinite import isfinite
 from .logical_and import logical_and
 from .logical_or import logical_or
 from .matmul import matmul
+from .maximum import maximum
+from .minimum import minimum
 from .mean import mean
 from .moveaxis import moveaxis
 from .multiply import multiply

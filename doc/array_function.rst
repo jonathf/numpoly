@@ -87,7 +87,9 @@ Collection
 .. autofunction:: numpoly.array_function.matmul
 .. autofunction:: numpoly.array_function.mean
 .. autofunction:: numpoly.array_function.max
+.. autofunction:: numpoly.array_function.maximum
 .. autofunction:: numpoly.array_function.min
+.. autofunction:: numpoly.array_function.minimum
 .. autofunction:: numpoly.array_function.moveaxis
 .. autofunction:: numpoly.array_function.mod
 .. autofunction:: numpoly.array_function.multiply

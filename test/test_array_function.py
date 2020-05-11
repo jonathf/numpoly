@@ -374,6 +374,19 @@ def test_max(interface):
                      [[X**4, Y**2], [X**2, Y**2]])
 
 
+def test_maximum(func_interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert numpy.all(func_interface.maximum(poly, X) ==
+                     [[X, X, X, X**2], [Y, Y-1, Y**2, X],
+                      [X, X**2, X, X], [Y**2, X**4, Y, Y-1]])
+    assert numpy.all(func_interface.maximum(poly, Y) ==
+                     [[Y, Y, Y, X**2], [Y, Y, Y**2, Y],
+                      [Y, X**2, Y, Y], [Y**2, X**4, Y, Y]])
+
+
 def test_min(interface):
     poly = numpoly.polynomial([[1, X, X-1, X**2],
                                [Y, Y-1, Y**2, 2],
@@ -384,6 +397,19 @@ def test_min(interface):
     assert numpy.all(interface.min(poly, axis=1) == [1, 2, 3, Y])
     assert numpy.all(interface.min(poly.reshape(2, 2, 2, 2), axis=(0, 1)) ==
                      [[1, 3], [2, X]])
+
+
+def test_minimum(func_interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert numpy.all(func_interface.minimum(poly, X) ==
+                     [[1, X, X-1, X], [X, X, X, 2],
+                      [X-1, X, 3, X], [X, X, X, X]])
+    assert numpy.all(func_interface.minimum(poly, Y) ==
+                     [[1, X, X-1, Y], [Y, Y-1, Y, 2],
+                      [X-1, Y, 3, X], [Y, Y, Y, Y-1]])
 
 
 def test_moveaxis(func_interface):
