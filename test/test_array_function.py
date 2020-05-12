@@ -284,6 +284,40 @@ def test_floor_divide(interface):
     assert numpy.all(out == [[0, Y], [0, 1]])
 
 
+def test_greater(interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert numpy.all(interface.greater(poly, X) ==
+                     [[False, False, False, True],
+                      [True, True, True, False],
+                      [False, True, False, False],
+                      [True, True, True, True]])
+    assert numpy.all(interface.greater(poly, Y) ==
+                     [[False, False, False, True],
+                      [False, False, True, False],
+                      [False, True, False, False],
+                      [True, True, False, False]])
+
+
+def test_greater_equal(interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert numpy.all(interface.greater_equal(poly, X) ==
+                     [[False, True, False, True],
+                      [True, True, True, False],
+                      [False, True, False, True],
+                      [True, True, True, True]])
+    assert numpy.all(interface.greater_equal(poly, Y) ==
+                     [[False, False, False, True],
+                      [ True, False, True, False],
+                      [False, True, False, False],
+                      [True, True, True, False]])
+
+
 def test_hsplit(func_interface):
     poly = numpoly.polynomial([[1, X, X**2], [X+Y, Y, Y]])
     part1, part2, part3 = func_interface.hsplit(poly, 3)
@@ -297,6 +331,40 @@ def test_hstack(func_interface):
     poly2 = numpoly.polynomial([Y, 3, 4])
     assert numpy.all(func_interface.hstack([poly1, poly2]) ==
                      [1, X, 2, Y, 3, 4])
+
+
+def test_less(interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert numpy.all(interface.less(poly, X) ==
+                     [[True, False, True, False],
+                      [False, False, False, True],
+                      [True, False, True, False],
+                      [False, False, False, False]])
+    assert numpy.all(interface.less(poly, Y) ==
+                     [[True, True, True, False],
+                      [False, True, False, True],
+                      [True, False, True, True],
+                      [False, False, False, True]])
+
+
+def test_less_equal(interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert numpy.all(interface.less_equal(poly, X) ==
+                     [[True, True, True, False],
+                      [False, False, False, True],
+                      [True, False, True, True],
+                      [False, False, False, False]])
+    assert numpy.all(interface.less_equal(poly, Y) ==
+                     [[True, True, True, False],
+                      [True, True, False, True],
+                      [True, False, True, True],
+                      [False, False, True, True]])
 
 
 def test_inner(func_interface):

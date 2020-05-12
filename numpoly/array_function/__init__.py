@@ -32,8 +32,12 @@ from .equal import equal
 from .expand_dims import expand_dims
 from .floor import floor
 from .floor_divide import floor_divide
+from .greater import greater
+from .greater_equal import greater_equal
 from .hstack import hstack
 from .hsplit import hsplit
+from .less import less
+from .less_equal import less_equal
 from .inner import inner
 from .isclose import isclose
 from .isfinite import isfinite
