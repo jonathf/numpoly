@@ -45,6 +45,50 @@ def test_allclose(func_interface):
     assert not func_interface.allclose(poly1, poly2)
 
 
+def test_amax(func_interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert func_interface.amax(poly) == X**4
+    assert numpy.all(func_interface.amax(poly, axis=0) == [X**4, Y**2, X**2, Y**2])
+    assert numpy.all(func_interface.amax(poly, axis=1) == [X**2, X**2, Y**2, X**4])
+    assert numpy.all(func_interface.amax(poly.reshape(2, 2, 2, 2), axis=(0, 1)) ==
+                     [[X**4, Y**2], [X**2, Y**2]])
+
+
+def test_amin(func_interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert func_interface.amin(poly) == 1
+    assert numpy.all(func_interface.amin(poly, axis=0) == [1, 3, 2, X])
+    assert numpy.all(func_interface.amin(poly, axis=1) == [1, 2, 3, Y])
+    assert numpy.all(func_interface.amin(poly.reshape(2, 2, 2, 2), axis=(0, 1)) ==
+                     [[1, 3], [2, X]])
+
+
+def test_argmax(func_interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert func_interface.argmax(poly) == 13
+    assert numpy.all(func_interface.argmax(poly, axis=0) == [3, 3, 1, 0])
+    assert numpy.all(func_interface.argmax(poly, axis=1) == [3, 2, 1, 1])
+
+
+def test_argmin(func_interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert func_interface.argmin(poly) == 0
+    assert numpy.all(func_interface.argmin(poly, axis=0) == [0, 0, 2, 1])
+    assert numpy.all(func_interface.argmin(poly, axis=1) == [0, 3, 2, 2])
+
+
 def test_apply_along_axis(func_interface):
     np_array = numpy.arange(9).reshape(3, 3)
     assert numpy.all(func_interface.apply_along_axis(numpy.sum, 0, np_array) == [9, 12, 15])
@@ -240,6 +284,40 @@ def test_floor_divide(interface):
     assert numpy.all(out == [[0, Y], [0, 1]])
 
 
+def test_greater(interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert numpy.all(interface.greater(poly, X) ==
+                     [[False, False, False, True],
+                      [True, True, True, False],
+                      [False, True, False, False],
+                      [True, True, True, True]])
+    assert numpy.all(interface.greater(poly, Y) ==
+                     [[False, False, False, True],
+                      [False, False, True, False],
+                      [False, True, False, False],
+                      [True, True, False, False]])
+
+
+def test_greater_equal(interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert numpy.all(interface.greater_equal(poly, X) ==
+                     [[False, True, False, True],
+                      [True, True, True, False],
+                      [False, True, False, True],
+                      [True, True, True, True]])
+    assert numpy.all(interface.greater_equal(poly, Y) ==
+                     [[False, False, False, True],
+                      [ True, False, True, False],
+                      [False, True, False, False],
+                      [True, True, True, False]])
+
+
 def test_hsplit(func_interface):
     poly = numpoly.polynomial([[1, X, X**2], [X+Y, Y, Y]])
     part1, part2, part3 = func_interface.hsplit(poly, 3)
@@ -253,6 +331,40 @@ def test_hstack(func_interface):
     poly2 = numpoly.polynomial([Y, 3, 4])
     assert numpy.all(func_interface.hstack([poly1, poly2]) ==
                      [1, X, 2, Y, 3, 4])
+
+
+def test_less(interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert numpy.all(interface.less(poly, X) ==
+                     [[True, False, True, False],
+                      [False, False, False, True],
+                      [True, False, True, False],
+                      [False, False, False, False]])
+    assert numpy.all(interface.less(poly, Y) ==
+                     [[True, True, True, False],
+                      [False, True, False, True],
+                      [True, False, True, True],
+                      [False, False, False, True]])
+
+
+def test_less_equal(interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert numpy.all(interface.less_equal(poly, X) ==
+                     [[True, True, True, False],
+                      [False, False, False, True],
+                      [True, False, True, True],
+                      [False, False, False, False]])
+    assert numpy.all(interface.less_equal(poly, Y) ==
+                     [[True, True, True, False],
+                      [True, True, False, True],
+                      [True, False, True, True],
+                      [False, False, True, True]])
 
 
 def test_inner(func_interface):
@@ -316,6 +428,56 @@ def test_mean(interface):
     assert interface.mean(poly) == 1.25+0.75*Y+0.75*X
     assert numpy.all(interface.mean(poly, axis=0) == [0.5+1.5*Y+0.5*X, 2.0+X])
     assert numpy.all(interface.mean(poly, axis=1) == [0.5+X, 2.0+1.5*Y+0.5*X])
+
+
+def test_max(interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert interface.max(poly) == X**4
+    assert numpy.all(interface.max(poly, axis=0) == [X**4, Y**2, X**2, Y**2])
+    assert numpy.all(interface.max(poly, axis=1) == [X**2, X**2, Y**2, X**4])
+    assert numpy.all(interface.max(poly.reshape(2, 2, 2, 2), axis=(0, 1)) ==
+                     [[X**4, Y**2], [X**2, Y**2]])
+
+
+def test_maximum(func_interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert numpy.all(func_interface.maximum(poly, X) ==
+                     [[X, X, X, X**2], [Y, Y-1, Y**2, X],
+                      [X, X**2, X, X], [Y**2, X**4, Y, Y-1]])
+    assert numpy.all(func_interface.maximum(poly, Y) ==
+                     [[Y, Y, Y, X**2], [Y, Y, Y**2, Y],
+                      [Y, X**2, Y, Y], [Y**2, X**4, Y, Y]])
+
+
+def test_min(interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert interface.min(poly) == 1
+    assert numpy.all(interface.min(poly, axis=0) == [1, 3, 2, X])
+    assert numpy.all(interface.min(poly, axis=1) == [1, 2, 3, Y])
+    assert numpy.all(interface.min(poly.reshape(2, 2, 2, 2), axis=(0, 1)) ==
+                     [[1, 3], [2, X]])
+
+
+def test_minimum(func_interface):
+    poly = numpoly.polynomial([[1, X, X-1, X**2],
+                               [Y, Y-1, Y**2, 2],
+                               [X-1, X**2, 3, X],
+                               [Y**2, X**4, Y, Y-1]])
+    assert numpy.all(func_interface.minimum(poly, X) ==
+                     [[1, X, X-1, X], [X, X, X, 2],
+                      [X-1, X, 3, X], [X, X, X, X]])
+    assert numpy.all(func_interface.minimum(poly, Y) ==
+                     [[1, X, X-1, Y], [Y, Y-1, Y, 2],
+                      [X-1, Y, 3, X], [Y, Y, Y, Y-1]])
 
 
 def test_moveaxis(func_interface):

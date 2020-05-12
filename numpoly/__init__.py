@@ -16,7 +16,6 @@ from .align import (
 from .construct import (
     polynomial,
     aspolynomial,
-    bindex,
     clean_attributes,
     polynomial_from_attributes,
     monomial,
@@ -26,6 +25,11 @@ from .sympy_ import to_sympy
 
 from .array_function import *
 from .poly_function import *
+from .utils import (
+    bindex,
+    bsort,
+    cross_truncate,
+)
 
 def get_version(name):
     """

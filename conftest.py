@@ -7,15 +7,24 @@ import numpy
 import numpoly
 
 
+COLLECTION = {
+    "divide": "__truediv__",
+    "true_divide": "__truediv__",
+    "floor_divide": "__floordiv__",
+    "greater": "__gt__",
+    "greater_equal": "__ge__",
+    "less": "__lt__",
+    "less_equal": "__le__",
+}
+
+
 class MethodDispatch(object):
     def __getattr__(self, name):
         def dispatch_to_method(poly, *args, **kwargs):
             if hasattr(poly, name):
                 func = getattr(poly, name)
-            elif name in ("divide", "true_divide"):
-                func = poly.__truediv__
-            elif name == "floor_divide":
-                func = poly.__floordiv__
+            elif name in COLLECTION:
+                func = getattr(poly, COLLECTION[name])
             else:
                 func = getattr(poly, "__%s__" % name)
             return func(*args, **kwargs)

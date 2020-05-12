@@ -1,11 +1,15 @@
 """Collection of numpy wrapper functions."""
 from .absolute import absolute as abs, absolute
 from .add import add
+from .amax import amax, amax as max
+from .amin import amin, amin as min
 from .any import any
 from .all import all
 from .allclose import allclose
 from .apply_along_axis import apply_along_axis
 from .apply_over_axes import apply_over_axes
+from .argmax import argmax
+from .argmin import argmin
 from .around import around, around as round, around as round_
 from .array_repr import array_repr
 from .array_split import array_split
@@ -28,14 +32,20 @@ from .equal import equal
 from .expand_dims import expand_dims
 from .floor import floor
 from .floor_divide import floor_divide
+from .greater import greater
+from .greater_equal import greater_equal
 from .hstack import hstack
 from .hsplit import hsplit
+from .less import less
+from .less_equal import less_equal
 from .inner import inner
 from .isclose import isclose
 from .isfinite import isfinite
 from .logical_and import logical_and
 from .logical_or import logical_or
 from .matmul import matmul
+from .maximum import maximum
+from .minimum import minimum
 from .mean import mean
 from .moveaxis import moveaxis
 from .multiply import multiply

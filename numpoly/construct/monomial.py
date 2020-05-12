@@ -4,8 +4,6 @@ from __future__ import division
 import numpy
 import numpoly
 
-from .bindex import bindex
-
 
 def monomial(start, stop=None, ordering="G", cross_truncation=1., names=None):
     """
@@ -66,7 +64,7 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., names=None):
     dimensions = 1 if names is None else len(names)
     dimensions = max(start.size, stop.size, dimensions)
 
-    indices = bindex(
+    indices = numpoly.bindex(
         start=start,
         stop=stop,
         dimensions=dimensions,
