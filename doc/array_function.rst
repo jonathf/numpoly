@@ -77,11 +77,15 @@ Collection
 .. autofunction:: numpoly.array_function.expand_dims
 .. autofunction:: numpoly.array_function.floor
 .. autofunction:: numpoly.array_function.floor_divide
+.. autofunction:: numpoly.array_function.greater
+.. autofunction:: numpoly.array_function.greater_equal
 .. autofunction:: numpoly.array_function.hsplit
 .. autofunction:: numpoly.array_function.hstack
 .. autofunction:: numpoly.array_function.inner
 .. autofunction:: numpoly.array_function.isclose
 .. autofunction:: numpoly.array_function.isfinite
+.. autofunction:: numpoly.array_function.less
+.. autofunction:: numpoly.array_function.less_equal
 .. autofunction:: numpoly.array_function.logical_and
 .. autofunction:: numpoly.array_function.logical_or
 .. autofunction:: numpoly.array_function.matmul
