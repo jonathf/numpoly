@@ -12,12 +12,12 @@ represented as `numpy.ndarray`:
 
 .. math::
 
-    poly(x_1, \dots, x_D) = \sum_{n=1}^N coef_n \prod_{d=1}^D inder_d^{expon_{nd}}
+    \Phi(x_1, \dots, x_D) = \sum_{n=1}^N c_n x_1^{k_{1n}} \cdots x_D^{k_{Dn}}
 
-Where :math:`poly` is polynomial vector, :math:`N` is the number of terms in the
-polynomial sum, :math:`coef_n` is a (potentially) multi-dimensional polynomial
-coefficients, :math:`inder_d` is the :math:`d`-th indeterminant name, and
-:math:`expon_{nd}` is the exponent for the :math:`n`-th polynomial term and the
+Where :math:`\Phi` is polynomial vector, :math:`N` is the number of terms in the
+polynomial sum, :math:`c_n` is a (potentially) multi-dimensional polynomial
+coefficients, :math:`x_d` is the :math:`d`-th indeterminant name, and
+:math:`k_{nd}` is the exponent for the :math:`n`-th polynomial term and the
 :math:`d`-th indeterminant name.
 
 For example, for a simple polynomial with scalar coefficients:

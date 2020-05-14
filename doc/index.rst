@@ -21,5 +21,7 @@ polynomial coefficients. For these kind of problems ``numpoly`` is a good fit.
    :caption: Contents:
 
    initialization
+   division
+   comparison
+   derivative
    array_function
-   poly_function

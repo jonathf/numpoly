@@ -35,7 +35,7 @@ As a developer note, ``numpoly`` aims at being backwards compatible with
 all functions below should as far as possible mirror the behavior their
 ``numpy`` counterparts, and for polynomial constant, they should be identical
 (except for the object type). Function that provides behavior not covered by
-``numpy`` should be placed under :ref:`polynomial_functions`.
+``numpy`` should be placed elsewhere.
 
 Collection
 ----------

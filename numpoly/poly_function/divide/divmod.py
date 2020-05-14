@@ -53,7 +53,8 @@ def poly_divmod(dividend, divisor, out=(None, None), where=True, **kwargs):
         >>> x, y = numpoly.symbols("x y")
         >>> denominator = [x*y**2+2*x**3*y**2, -2+x*y**2]
         >>> numerator = -2+x*y**2
-        >>> floor, remainder = numpoly.poly_divmod(denominator, numerator)
+        >>> floor, remainder = numpoly.poly_divmod(
+        ...     denominator, numerator)
         >>> floor
         polynomial([1.0+2.0*x**2, 1.0])
         >>> remainder
