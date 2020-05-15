@@ -5,7 +5,7 @@ from six import string_types
 
 import numpy
 
-from . import align, construct, dispatch, array_function, poly_function
+from . import construct, dispatch, array_function, poly_function
 
 
 REDUCE_MAPPINGS = {
@@ -441,13 +441,15 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         # Not sure why it is required. Likely a numpy bug.
         return array_function.around(self, decimals=decimals, out=out)
 
-    def max(self, out=None, **kwargs):
+    def max(self, axis=None, out=None, keepdims=False, **kwargs):
         """Wrap ndarray.max."""
-        return array_function.max(self, out=out, **kwargs)
+        return array_function.max(self, axis=axis, out=out,
+                                  keepdims=keepdims, **kwargs)
 
-    def min(self, out=None, **kwargs):
+    def min(self, axis=None, out=None, keepdims=False, **kwargs):
         """Wrap ndarray.min."""
-        return array_function.min(self, out=out, **kwargs)
+        return array_function.min(self, axis=axis, out=out,
+                                  keepdims=keepdims, **kwargs)
 
     # ============================================================
     # Override dunder methods that isn't dealt with by dispatching
