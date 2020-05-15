@@ -52,7 +52,7 @@ For example:
     >>> remainder
     polynomial(y+1.0)
     >>> dividend == quotient*divisor+remainder
-    True
+    array(True)
 
 In ``numpy``, the "syntactic sugar" operators:
 
