@@ -5,7 +5,8 @@ import numpy
 import numpoly
 
 
-def monomial(start, stop=None, ordering="G", cross_truncation=1., names=None):
+def monomial(start, stop=None, cross_truncation=1.,
+             names=None, graded=False, reverse=False):
     """
     Create an polynomial monomial expansion.
 
@@ -19,26 +20,19 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., names=None):
             ``stop <- start; start <- 0`` If int is provided, set as largest
             total order. If array of int, set as largest order along each
             indeterminant.
-        ordering (str):
-            The monomial ordering where the letters ``G``, ``I`` and ``R`` can
-            be used to set grade, inverse and reverse to the ordering. For
-            ``names=("x", "y"))`` we get for various values for
-            ``ordering``:
-
-            ========  =====================
-            ordering  output
-            ========  =====================
-            ""        [1 y y**2 x x*y x**2]
-            "G"       [1 y x y**2 x*y x**2]
-            "I"       [x**2 x*y x y**2 y 1]
-            "R"       [1 x x**2 y x*y y**2]
-            "GIR"     [y**2 x*y x**2 y x 1]
-            ========  =====================
         cross_truncation (float):
             Use hyperbolic cross truncation scheme to reduce the number of
             terms in expansion.
         names (None, numpoly.ndpoly, str, Tuple[str, ...])
             The indeterminants names used to create the monomials expansion.
+        graded (bool):
+            Graded sorting, meaning the indices are always sorted by the index
+            sum. E.g. ``x**2*y**2*z**2`` has an exponent sum of 6, and will
+            therefore be consider larger than both ``x**3*y*z``, ``x*y**2*z and
+            ``x*y*z**2``, which all have exponent sum of 5.
+        reverse (bool):
+            Reverse lexicographical sorting meaning that ``x*y**3`` is
+            considered bigger than ``x**3*y``, instead of the opposite.
 
     Returns:
         (numpoly.ndpoly):
@@ -47,12 +41,13 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., names=None):
     Examples:
         >>> numpoly.monomial(4)
         polynomial([1, q, q**2, q**3])
-        >>> numpoly.monomial(4, 5, ordering="GR", names=("x", "y"))
-        polynomial([x**4, x**3*y, x**2*y**2, x*y**3, y**4])
-        >>> numpoly.monomial(2, [3, 4])
-        polynomial([q1**2, q0*q1, q0**2, q1**3])
+        >>> numpoly.monomial(4, 5, names=("x", "y"),
+        ...                  graded=True, reverse=True)
+        polynomial([y**4, x*y**3, x**2*y**2, x**3*y, x**4])
+        >>> numpoly.monomial(2, [3, 4], graded=True)
+        polynomial([q0**2, q0*q1, q1**2, q1**3])
         >>> numpoly.monomial(0, 5, names=("x", "y"),
-        ...                  cross_truncation=0.5)
+        ...                  cross_truncation=0.5, graded=True, reverse=True)
         polynomial([1, y, x, y**2, x*y, x**2, y**3, x**3, y**4, x**4])
 
     """
@@ -64,11 +59,12 @@ def monomial(start, stop=None, ordering="G", cross_truncation=1., names=None):
     dimensions = 1 if names is None else len(names)
     dimensions = max(start.size, stop.size, dimensions)
 
-    indices = numpoly.bindex(
+    indices = numpoly.glexindex(
         start=start,
         stop=stop,
         dimensions=dimensions,
-        ordering=ordering,
+        graded=graded,
+        reverse=reverse,
         cross_truncation=cross_truncation,
     )
 

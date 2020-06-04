@@ -62,7 +62,11 @@ def less(x1, x2, out=None, **kwargs):
         out = numpy.less(coefficients1[0], coefficients2[0], **kwargs)
     if not out.shape:
         return numpy.array(less(x1.ravel(), x2.ravel(), out=out.ravel()).item())
-    for idx in numpoly.bsort(x1.exponents.T, ordering="GR"):
+
+    options = numpoly.get_options()
+    for idx in numpoly.glexsort(x1.exponents.T, graded=options["sort_graded"],
+                                reverse=options["sort_reverse"]):
+
         indices = (coefficients1[idx] != 0) | (coefficients2[idx] != 0)
         indices &= coefficients1[idx] != coefficients2[idx]
         out[indices] = numpy.less(

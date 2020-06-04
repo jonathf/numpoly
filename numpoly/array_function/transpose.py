@@ -24,12 +24,12 @@ def transpose(a, axes=None):
     Examples:
         >>> poly = numpoly.monomial(3, names=("x", "y")).reshape(2, 3)
         >>> poly
-        polynomial([[1, y, x],
-                    [y**2, x*y, x**2]])
+        polynomial([[1, x, x**2],
+                    [y, x*y, y**2]])
         >>> numpoly.transpose(poly)
-        polynomial([[1, y**2],
-                    [y, x*y],
-                    [x, x**2]])
+        polynomial([[1, y],
+                    [x, x*y],
+                    [x**2, y**2]])
 
     """
     a = numpoly.aspolynomial(a)

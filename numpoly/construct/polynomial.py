@@ -47,9 +47,9 @@ def polynomial(
         polynomial(q)
         >>> x, y = numpoly.symbols("x y")
         >>> x**2 + x*y + 2
-        polynomial(x**2+x*y+2)
+        polynomial(x*y+x**2+2)
         >>> -3*x + x**2 + y
-        polynomial(-3*x+x**2+y)
+        polynomial(x**2+y-3*x)
         >>> numpoly.polynomial([x*y, x, y])
         polynomial([x*y, x, y])
         >>> numpoly.polynomial([1, 2, 3])

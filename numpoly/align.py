@@ -68,7 +68,7 @@ def align_shape(*polys):
         >>> print(poly1)
         [[4*x 4*x]]
         >>> print(poly2)
-        [[1+2*x -y+3*x]]
+        [[2*x+1 -y+3*x]]
         >>> print(poly1.shape)
         (1, 2)
         >>> print(poly2.shape)
@@ -112,7 +112,7 @@ def align_indeterminants(*polys):
         [x y]
         >>> poly1, poly2 = numpoly.align_indeterminants(poly1, poly2)
         >>> print(poly1)
-        1+2*x
+        2*x+1
         >>> print(poly2)
         -y+3*x
         >>> print(poly1.indeterminants)
@@ -180,7 +180,7 @@ def align_exponents(*polys):
         >>> poly1
         polynomial(x*y)
         >>> poly2
-        polynomial([x**5, -1+y**3])
+        polynomial([x**5, y**3-1])
         >>> poly1.exponents
         array([[1, 1],
                [0, 0],

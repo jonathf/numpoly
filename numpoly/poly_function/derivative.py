@@ -22,7 +22,7 @@ def diff(poly, *diffvars):
         >>> x, y = numpoly.symbols("x y")
         >>> poly = numpoly.polynomial([1, x, x*y**2+1])
         >>> poly
-        polynomial([1, x, 1+x*y**2])
+        polynomial([1, x, x*y**2+1])
         >>> numpoly.diff(poly, "x")
         polynomial([0, 1, y**2])
         >>> numpoly.diff(poly, 0, 1)

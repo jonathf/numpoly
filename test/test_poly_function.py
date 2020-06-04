@@ -6,6 +6,10 @@ import numpy
 import numpoly
 
 X, Y = numpoly.symbols("X Y")
+POLY1 = numpoly.polynomial([[1, X, X-1, X**2],
+                            [Y, Y-1, Y**2, 1],
+                            [X-1, X**2, 1, X],
+                            [Y**2, 1, Y, Y-1]])
 
 
 def test_call():
@@ -125,38 +129,59 @@ def test_poly_remainder():
 
 
 def test_sortable_proxy():
-    poly = numpoly.polynomial([[1, X, X-1, X**2],
-                               [Y, Y-1, Y**2, 1],
-                               [X-1, X**2, 1, X],
-                               [Y**2, 1, Y, Y-1]])
-    assert numpy.all(numpoly.sortable_proxy(poly, ordering="") ==
-                     [[ 0, 10, 11, 14],
-                      [ 4,  5,  8,  1],
-                      [12, 15,  2, 13],
-                      [ 9,  3,  6,  7]])
-    assert numpy.all(numpoly.sortable_proxy(poly, ordering="G") ==
-                     [[ 0,  8,  9, 14],
-                      [ 4,  5, 12,  1],
-                      [10, 15,  2, 11],
-                      [13,  3,  6,  7]])
-    assert numpy.all(numpoly.sortable_proxy(poly, ordering="R") ==
+    assert numpy.all(numpoly.sortable_proxy(numpy.arange(4)) == [0, 1, 2, 3])
+    assert numpy.all(numpoly.sortable_proxy(-numpy.arange(4)) == [3, 2, 1, 0])
+
+    assert numpy.all(numpoly.sortable_proxy(numpy.arange(4)*X) == [0, 1, 2, 3])
+    assert numpy.all(numpoly.sortable_proxy(-numpy.arange(4)*X) == [0, 3, 2, 1])
+    assert numpy.all(numpoly.sortable_proxy(X**numpy.arange(4)) == [0, 1, 2, 3])
+    assert numpy.all(numpoly.sortable_proxy(-X**numpy.arange(4)) == [0, 1, 2, 3])
+    assert numpy.all(numpoly.sortable_proxy(X**4+X**numpy.arange(4)) == [0, 1, 2, 3])
+    assert numpy.all(numpoly.sortable_proxy(X**4-X**numpy.arange(4)) == [0, 1, 2, 3])
+
+    poly = numpoly.polynomial([1, X, Y, X**2, X*Y, Y**2])
+    assert numpy.all(poly[numpoly.sortable_proxy(
+        poly, graded=False, reverse=False)] == [1, X, X**2, Y, X*Y, Y**2])
+    assert numpy.all(poly[numpoly.sortable_proxy(
+        poly, graded=True, reverse=False)] == [1, X, Y, X**2, X*Y, Y**2])
+    assert numpy.all(poly[numpoly.sortable_proxy(
+        poly, graded=False, reverse=True)] == [1, Y, Y**2, X, X*Y, X**2])
+    assert numpy.all(poly[numpoly.sortable_proxy(
+        poly, graded=True, reverse=True)] == [1, Y, X, Y**2, X*Y, X**2])
+
+    assert numpy.all(numpoly.sortable_proxy(POLY1) ==
                      [[ 0,  4,  5,  8],
                       [10, 11, 14,  1],
                       [ 6,  9,  2,  7],
                       [15,  3, 12, 13]])
-    assert numpy.all(numpoly.sortable_proxy(poly, ordering="I") ==
-                     [[12,  2,  8,  0],
-                      [ 6,  9,  4, 13],
-                      [10,  1, 14,  3],
-                      [ 5, 15,  7, 11]])
+    assert numpy.all(numpoly.sortable_proxy(POLY1, graded=True) ==
+                     [[ 0,  4,  5, 12],
+                      [ 8,  9, 14,  1],
+                      [ 6, 13,  2,  7],
+                      [15,  3, 10, 11]])
+    assert numpy.all(numpoly.sortable_proxy(POLY1, reverse=True) ==
+                     [[ 0, 10, 11, 14],
+                      [ 4,  5,  8,  1],
+                      [12, 15,  2, 13],
+                      [ 9,  3,  6,  7]])
+
+
+def test_largest_exponent():
+    exponents = numpoly.largest_exponent(POLY1)
+    xs, ys = exponents[:, :, 0], exponents[:, :, 1]
+    assert numpy.all(xs == [[0, 1, 1, 2], [0, 0, 0, 0],
+                            [1, 2, 0, 1], [0, 0, 0, 0]])
+    assert numpy.all(ys == [[0, 0, 0, 0], [1, 1, 2, 0],
+                            [0, 0, 0, 0], [2, 0, 1, 1]])
 
 
 def test_symbols():
-    assert numpoly.symbols("q").names == ("q",)
-    assert numpoly.symbols("q:1").names == ("q0",)
-    assert numpoly.symbols("q1").names == ("q1",)
-    numpoly.baseclass.INDETERMINANT_DEFAULTS["force_suffix"] = True
-    assert numpoly.symbols("q").names == ("q0",)
-    assert numpoly.symbols("q:1").names == ("q0",)
-    assert numpoly.symbols("q1").names == ("q1",)
-    numpoly.baseclass.INDETERMINANT_DEFAULTS["force_suffix"] = False
+    with numpoly.global_options(force_number_suffix=False):
+        assert numpoly.symbols("q").names == ("q",)
+        assert numpoly.symbols("q:1").names == ("q0",)
+        assert numpoly.symbols("q1").names == ("q1",)
+
+    with numpoly.global_options(force_number_suffix=True):
+        assert numpoly.symbols("q").names == ("q0",)
+        assert numpoly.symbols("q:1").names == ("q0",)
+        assert numpoly.symbols("q1").names == ("q1",)

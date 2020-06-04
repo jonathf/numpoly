@@ -46,5 +46,7 @@ def argmax(a, axis=None, out=None, **kwargs):
         array([0, 1])
 
     """
-    proxy = numpoly.sortable_proxy(a, ordering="GR")
+    options = numpoly.get_options()
+    proxy = numpoly.sortable_proxy(
+        a, graded=options["sort_graded"], reverse=options["sort_reverse"])
     return numpy.argmax(proxy, axis=axis, out=out, **kwargs)

@@ -51,7 +51,7 @@ def interface(request):
     return request.param
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(scope="function", autouse=True)
 def global_variables(doctest_namespace, monkeypatch):
     """Ensure certain variables are available during tests."""
     doctest_namespace["numpy"] = numpy
@@ -60,3 +60,6 @@ def global_variables(doctest_namespace, monkeypatch):
     environ = os.environ.copy()
     environ["NUMPOLY_DEBUG"] = True
     monkeypatch.setattr("os.environ", environ)
+
+    with numpoly.global_options(**numpoly.get_options(defaults=True)):
+        yield

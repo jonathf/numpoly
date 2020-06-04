@@ -28,11 +28,11 @@ def call(poly, *args, **kwargs):
         >>> x, y = numpoly.symbols("x y")
         >>> poly = numpoly.polynomial([[x, x-1], [y, y+x]])
         >>> poly()
-        polynomial([[x, -1+x],
-                    [y, x+y]])
+        polynomial([[x, x-1],
+                    [y, y+x]])
         >>> poly
-        polynomial([[x, -1+x],
-                    [y, x+y]])
+        polynomial([[x, x-1],
+                    [y, y+x]])
         >>> poly(1, 0)
         array([[1, 0],
                [0, 1]])
@@ -43,11 +43,11 @@ def call(poly, *args, **kwargs):
                [[0, 1, 2],
                 [1, 2, 3]]])
         >>> poly(y)
-        polynomial([[y, -1+y],
+        polynomial([[y, y-1],
                     [y, 2*y]])
         >>> poly(y=x-1, x=2*y)
-        polynomial([[2*y, -1+2*y],
-                    [-1+x, -1+2*y+x]])
+        polynomial([[2*y, 2*y-1],
+                    [x-1, 2*y+x-1]])
 
     """
     logger = logging.getLogger(__name__)
@@ -96,7 +96,7 @@ def call(poly, *args, **kwargs):
 
     if isinstance(out, numpoly.ndpoly):
         if out.isconstant():
-            return out.tonumpy()
-        out, _ = numpoly.align_indeterminants(out, indeterminants)
-        return out
+            out = out.tonumpy()
+        else:
+            out, _ = numpoly.align_indeterminants(out, indeterminants)
     return out

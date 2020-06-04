@@ -40,7 +40,7 @@ def floor(x, out=None, where=True, **kwargs):
     Examples:
         >>> x = numpoly.symbols("x")
         >>> numpoly.floor([-1.7*x, x-1.5, -0.2, 3.2+1.5*x, 1.7, 2.0])
-        polynomial([-2.0*x, -2.0+x, -1.0, 3.0+x, 1.0, 2.0])
+        polynomial([-2.0*x, x-2.0, -1.0, x+3.0, 1.0, 2.0])
 
     """
     return simple_dispatch(

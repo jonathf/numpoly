@@ -23,11 +23,11 @@ def nonzero(x, **kwargs):
         >>> f
         polynomial([[3*x, 0, 0],
                     [0, 4*y, 0],
-                    [5*x+y, 6*x, 0]])
+                    [y+5*x, 6*x, 0]])
         >>> numpoly.nonzero(f)
         (array([0, 1, 2, 2]), array([0, 1, 0, 1]))
         >>> f[numpoly.nonzero(f)]
-        polynomial([3*x, 4*y, 5*x+y, 6*x])
+        polynomial([3*x, 4*y, y+5*x, 6*x])
 
     """
     a = numpoly.aspolynomial(x)
