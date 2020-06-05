@@ -18,7 +18,7 @@ def glexsort(keys, graded=False, reverse=False):
             consider larger than both ``(3, 1, 1)`` and ``(1, 1, 3)``.
         reverse (bool):
             Reverse lexicographical sorting meaning that ``(1, 3)`` is
-            considered bigger than ``(3, 1)``, instead of the opposite.
+            considered smaller than ``(3, 1)``, instead of the opposite.
 
     Returns:
         (numpy.ndarray):

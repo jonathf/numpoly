@@ -27,7 +27,7 @@ For example, for a simple polynomial with scalar coefficients:
     >>> x, y = numpoly.symbols("x y")
     >>> poly = numpoly.polynomial(4*x+3*y-1)
     >>> poly
-    polynomial(-1+4*x+3*y)
+    polynomial(3*y+4*x-1)
     >>> poly.coefficients
     [-1, 4, 3]
     >>> poly.exponents
@@ -46,7 +46,7 @@ These three properties can be used to reconstruct the polynomial:
     >>> terms
     polynomial([-1, 4*x, 3*y])
     >>> numpoly.sum(terms, 0)
-    polynomial(-1+3*y+4*x)
+    polynomial(3*y+4*x-1)
 
 Underlying Structured Array
 ---------------------------
@@ -72,7 +72,7 @@ array back to a polynomial:
 .. code:: python
 
     >>> numpoly.aspolynomial(array, names=("x", "y"))
-    polynomial(-1+4*x+3*y)
+    polynomial(3*y+4*x-1)
 
 Constructors
 ------------

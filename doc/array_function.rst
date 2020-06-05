@@ -19,9 +19,9 @@ For example:
     >>> print(poly)
     [1 x x**2 x**3]
     >>> print(numpoly.sum(poly, keepdims=True))
-    [1+x+x**2+x**3]
+    [x**3+x**2+x+1]
     >>> print(numpy.sum(poly, keepdims=True)) # doctest: +SKIP
-    [1+x+x**2+x**3]
+    [x**3+x**2+x+1]
 
 For earlier versions of numpy, the last line will not work.
 

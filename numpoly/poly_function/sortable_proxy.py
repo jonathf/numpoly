@@ -22,7 +22,7 @@ def sortable_proxy(poly, graded=False, reverse=False):
             and ``x*y*z**3``.
         reverse (bool):
             Reverses lexicographical sorting meaning that ``x*y**3`` is
-            considered bigger than ``x**3*y``, instead of the opposite.
+            considered smaller than ``x**3*y``, instead of the opposite.
 
     Returns:
         (numpy.ndarray):
