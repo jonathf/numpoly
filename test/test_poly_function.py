@@ -140,14 +140,15 @@ def test_sortable_proxy():
     assert numpy.all(numpoly.sortable_proxy(X**4-X**numpy.arange(4)) == [0, 1, 2, 3])
 
     poly = numpoly.polynomial([1, X, Y, X**2, X*Y, Y**2])
-    assert numpy.all(poly[numpoly.sortable_proxy(
-        poly, graded=False, reverse=False)] == [1, X, X**2, Y, X*Y, Y**2])
-    assert numpy.all(poly[numpoly.sortable_proxy(
-        poly, graded=True, reverse=False)] == [1, X, Y, X**2, X*Y, Y**2])
-    assert numpy.all(poly[numpoly.sortable_proxy(
-        poly, graded=False, reverse=True)] == [1, Y, Y**2, X, X*Y, X**2])
-    assert numpy.all(poly[numpoly.sortable_proxy(
-        poly, graded=True, reverse=True)] == [1, Y, X, Y**2, X*Y, X**2])
+
+    proxy = numpoly.sortable_proxy(poly, graded=False, reverse=False)
+    assert numpy.all(poly[numpy.argsort(proxy)] == [1, X, X**2, Y, X*Y, Y**2])
+    proxy = numpoly.sortable_proxy(poly, graded=True, reverse=False)
+    assert numpy.all(poly[numpy.argsort(proxy)] == [1, X, Y, X**2, X*Y, Y**2])
+    proxy = numpoly.sortable_proxy(poly, graded=True, reverse=True)
+    assert numpy.all(poly[numpy.argsort(proxy)] == [1, Y, X, Y**2, X*Y, X**2])
+    proxy = numpoly.sortable_proxy(poly, graded=False, reverse=True)
+    assert numpy.all(poly[numpy.argsort(proxy)] == [1, Y, Y**2, X, X*Y, X**2])
 
     assert numpy.all(numpoly.sortable_proxy(POLY1) ==
                      [[ 0,  4,  5,  8],

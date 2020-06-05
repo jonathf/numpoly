@@ -26,61 +26,135 @@ internally consistent and which is backwards compatible with the behavior of
 ``numpy.ndarray``. The ordering implemented in ``numpoly`` is defined as
 follows:
 
-* Constants compare as in ``numpy``:
+* Polynomials containing terms with the highest exponents are considered the
+  largest:
+
+  .. code:: python
+
+    >>> x = numpoly.symbols("x")
+    >>> x < x**2 < x**3
+    array(True)
+
+  If the largest polynomial in one polynomial is larger than in another,
+  leading coefficients are ignored:
+
+  .. code:: python
+
+    >>> 4*x < 3*x**2 < 2*x**3
+    array(True)
+
+  In the multivariate case, the polynomial order is determined by the sum of
+  the exponents across the indeterminants that are multiplied together:
+
+  .. code:: python
+
+    >>> x, y, z = numpoly.symbols("x y z")
+    >>> x**2*y**2 < x*y**5 < x**6*y
+    array(True)
+
+  This implies that given higher polynomial order, indeterminant names are
+  ignored:
+
+  .. code:: python
+
+    >>> x < z**2 < y**3
+    array(True)
+
+  The same goes for any polynomial terms which are not leading:
+
+  .. code:: python
+
+    >>> 4*x < x**2+3*x < x**3+2*x
+    array(True)
+
+
+* Polynomials of equal polynomial order are sorted reverse lexicographically:
+
+  .. code:: python
+
+    >>> x < y < z
+    array(True)
+
+  As with polynomial order, coefficients and lower order terms are ignored:
+
+  .. code:: python
+
+    >>> 4*x**3+4*x < 3*y**3+3*y < 2*z**3+2*z
+    array(True)
+
+  Composite polynomials of the same order are sorted by lexicographically by
+  the dominant indeterminant name:
+
+  .. code:: python
+
+    >>> x**3*y < x**2*y**2 < x*y**3
+    array(True)
+
+  If there are more than two, and the dominant order first addresses the first,
+  then the second, and so on:
+
+  .. code:: python
+
+    >>> x**2*y**2*z < x**2*y*z***2 < x*y**2*z**2
+    array(True)
+
+* Polynomials that have exactly the same leading polynomial, are compared by
+  the leading polynomial coefficient:
+
+  .. code:: python
+
+    >>> -4*x < -1*x < 2*x
+    array(True)
+
+  This notion implies that constant polynomial, the same way as ``numpy``
+  arrays:
 
   .. code:: python
 
     >>> numpoly.polynomial([2, 4, 6]) > 3
     array([False,  True,  True])
 
-* Indeterminants are sorted reversed lexicographically:
+  It is worth noting that all non-constant polynomials will be larger than the
+  constant 0, including negative ones. This gives break the following intuitive
+  behavior:
 
   .. code:: python
 
-    >>> x, y, z = numpoly.symbols("x y z")
-    >>> x < y < z
+    >>> -4*x < 0*x < 4*x
+    array(False)
+
+  Instead, the following holds true:
+
+  .. code:: python
+
+    >>> 0*x == 0
+    array(True)
+    >>> 0*x < -4*x
     array(True)
 
-* Simple polynomials with composite indeterminant and exponents are sorted
-  using graded reverse graded lexicographically:
+* Polynomials with the same leading polynomial and coefficient are compared on
+  the next largest leading polynomial:
 
   .. code:: python
 
-    >>> x**2 < x**3 < x**4
-    array(True)
-    >>> x**3 < x**2*y < x*y**2
+    >>> x**2+1 < x**2+2 < x**2+3
     array(True)
 
-* Simple polynomials with matching indeterminants and exponents are compared on
-  coefficients:
+  And if both the first two leading terms are the same, use the third and so
+  on:
 
   .. code:: python
 
-    >>> numpoly.polynomial([2*x, 4*x, 6*x]) > 3*x
-    array([False,  True,  True])
+    >>> x**2+x+1 < x**2+x+2 < x**2+x+3
+    array(True)
 
-* Polynomials with multiple terms will be foremost be compared by the
-  coefficients to the indeterminants with the largest exponents:
-
-  .. code:: python
-
-    >>> numpoly.polynomial([2*x+5, 4*x-1, 6*x+1]) > 3*x+10
-    array([False,  True,  True])
-
-* If the lead coefficients is the same, the polynomial is compared on the
-  second lead. If those match, go to the third and so on. E.g.
+  Unlike for the leading polynomial term, missing terms are considered present
+  as 0. E.g.:
 
   .. code:: python
 
-    >>> numpoly.polynomial([2*x**2, x**2-x, x**2+x+3]) > x**2+x+1
-    array([ True, False,  True])
-
-* Except the lead, missing coefficient are assumed to be zero:
-
-  .. code:: python
-
-    >>> numpoly.polynomial([x**2-x, x**2+x]) > x**2
-    array([False,  True])
+    >>> x**2-1 < x**2 < x**2+1
+    array(True)
 
 These rules together allow for a total comparison for all polynomials.
 
