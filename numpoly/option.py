@@ -33,6 +33,9 @@ def get_options(defaults=False):
         >>> options["default_varname"]
         'q'
 
+    See also:
+        `set_options`, `global_options`
+
     """
     if defaults:
         return GLOBAL_OPTIONS_DEFAULTS.copy()
@@ -63,6 +66,12 @@ def set_options(**kwargs):
         sort_reverse (bool):
             Reverse lexicographical sorting meaning that ``x*y**3`` is
             considered bigger than ``x**3*y``, instead of the opposite.
+        display_graded (bool):
+            When displaying polynomials as strings, sort polynomial sums in graded order.
+        display_reverse (bool):
+            When displaying polynomials as strings, sort polynomial sums in reversed lexicographical order.
+        display_inverse (bool):
+            If true, display polynomials from smallest to largest exponent.
 
     Examples:
         >>> numpoly.monomial([3, 3])
@@ -70,6 +79,9 @@ def set_options(**kwargs):
         >>> numpoly.set_options(default_varname="z")
         >>> numpoly.monomial([3, 3])
         polynomial([1, z0, z0**2, z1, z0*z1, z1**2])
+
+    See also:
+        `get_options`, `global_options`
 
     """
     for key in kwargs:
@@ -81,7 +93,17 @@ def set_options(**kwargs):
 @contextmanager
 def global_options(**kwargs):
     """
-    Global numpoly option context manager.
+    Temporarily set global numpoly options.
+
+    Args:
+        kwargs (Any):
+            Collection of values that deviate from the defaults.
+            See `numpoly.set_options` for details.
+
+    Yields:
+        (Dict[str, Any]):
+            Collection of values that affect the numpoly machinery.
+            See `numpoly.set_options` for details.
 
     Examples:
         >>> numpoly.get_options()["default_varname"]
@@ -91,6 +113,10 @@ def global_options(**kwargs):
         X
         >>> numpoly.get_options()["default_varname"]
         'q'
+
+    See also:
+        `get_options`, `set_options`
+
     """
     options = get_options()
     try:
