@@ -126,10 +126,10 @@ def to_string(poly, precision=None, suppress_small=None):
         for exponent, indeterminant in exps_and_names:
             if exponent:
                 if out not in ("", "-"):
-                    out += option["display_multiply"]
+                    out += options["display_multiply"]
                 out += indeterminant
             if exponent > 1:
-                out += option["display_exponent"]+str(exponent)
+                out += options["display_exponent"]+str(exponent)
         if output and float(coefficient) >= 0:
             out = "+"+out
         output.append(out)
