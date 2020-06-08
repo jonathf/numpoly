@@ -52,7 +52,7 @@ def poly_remainder(x1, x2, out=None, where=True, **kwargs):
         >>> denominator = [x*y**2+2*x**3*y**2, -2+x*y**2]
         >>> numerator = -2+x*y**2
         >>> numpoly.poly_remainder(denominator, numerator)
-        polynomial([2.0+4.0*x**2, 0.0])
+        polynomial([4.0*x**2+2.0, 0.0])
 
     """
     dividend, remainder = poly_divmod(x1, x2, out=out, where=where, **kwargs)

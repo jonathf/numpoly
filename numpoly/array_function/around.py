@@ -33,9 +33,9 @@ def around(a, decimals=0, out=None):
     Examples:
         >>> x = numpoly.symbols("x")
         >>> numpoly.around([0.37, 1.64*x-2.45])
-        polynomial([0.0, -2.0+2.0*x])
+        polynomial([0.0, 2.0*x-2.0])
         >>> numpoly.around([0.37, 1.64*x-23.45], decimals=1)
-        polynomial([0.4, -23.4+1.6*x])
+        polynomial([0.4, 1.6*x-23.4])
         >>> numpoly.around([0.37, 1.64*x-23.45], decimals=-1)
         polynomial([0.0, -20.0])
 

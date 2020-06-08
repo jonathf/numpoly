@@ -115,12 +115,12 @@ def test_around(interface):
 
 
 def test_array_repr(func_interface):
-    assert repr(4+6*X**2) == "polynomial(4+6*X**2)"
-    assert func_interface.array_repr(4+6*X**2) == "polynomial(4+6*X**2)"
+    assert repr(4+6*X**2) == "polynomial(6*X**2+4)"
+    assert func_interface.array_repr(4+6*X**2) == "polynomial(6*X**2+4)"
     assert (repr(polynomial([1., -5*X, 3-X**2])) ==
-            "polynomial([1.0, -5.0*X, 3.0-X**2])")
+            "polynomial([1.0, -5.0*X, -X**2+3.0])")
     assert (func_interface.array_repr(polynomial([1., -5*X, 3-X**2])) ==
-            "polynomial([1.0, -5.0*X, 3.0-X**2])")
+            "polynomial([1.0, -5.0*X, -X**2+3.0])")
     assert repr(polynomial([[[1, 2], [5, Y]]])) == """\
 polynomial([[[1, 2],
              [5, Y]]])"""
@@ -138,10 +138,10 @@ def test_array_split(func_interface):
 
 
 def test_array_str(func_interface):
-    assert str(4+6*X**2) == "4+6*X**2"
-    assert func_interface.array_str(4+6*X**2) == "4+6*X**2"
-    assert str(polynomial([1., -5*X, 3-X**2])) == "[1.0 -5.0*X 3.0-X**2]"
-    assert func_interface.array_str(polynomial([1., -5*X, 3-X**2])) == "[1.0 -5.0*X 3.0-X**2]"
+    assert str(4+6*X**2) == "6*X**2+4"
+    assert func_interface.array_str(4+6*X**2) == "6*X**2+4"
+    assert str(polynomial([1., -5*X, 3-X**2])) == "[1.0 -5.0*X -X**2+3.0]"
+    assert func_interface.array_str(polynomial([1., -5*X, 3-X**2])) == "[1.0 -5.0*X -X**2+3.0]"
     assert str(polynomial([[[1, 2], [5, Y]]])) == """\
 [[[1 2]
   [5 Y]]]"""

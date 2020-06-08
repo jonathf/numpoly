@@ -57,9 +57,9 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
         >>> x, y = numpoly.symbols("x y")
         >>> b = numpoly.polynomial([[1, 2, 3*x], [3, 6*y, 6], [2, 7, 9]])
         >>> numpoly.apply_along_axis(numpoly.mean, 0, b)
-        polynomial([2.0, 3.0+2.0*y, 5.0+x])
+        polynomial([2.0, 2.0*y+3.0, x+5.0])
         >>> numpoly.apply_along_axis(numpoly.mean, 1, b)
-        polynomial([1.0+x, 3.0+2.0*y, 6.0])
+        polynomial([x+1.0, 2.0*y+3.0, 6.0])
 
     """
     collection = list()

@@ -4,7 +4,7 @@ import logging
 import os
 import pkg_resources
 
-from .baseclass import ndpoly, FeatureNotSupported, INDETERMINANT_DEFAULTS
+from .baseclass import ndpoly, FeatureNotSupported
 
 from .align import (
     align_polynomials,
@@ -27,9 +27,12 @@ from .array_function import *
 from .poly_function import *
 from .utils import (
     bindex,
-    bsort,
     cross_truncate,
+    glexindex,
+    glexsort,
 )
+from .option import get_options, set_options, global_options
+
 
 def get_version(name):
     """

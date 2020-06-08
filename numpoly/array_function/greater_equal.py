@@ -40,19 +40,19 @@ def greater_equal(x1, x2, out=None, **kwargs):
     Examples:
         >>> x, y = numpoly.symbols("x y")
         >>> numpoly.greater_equal(3, 4)
-        array(False)
+        False
         >>> numpoly.greater_equal(4*x, 3*x)
-        array(True)
+        True
         >>> numpoly.greater_equal(x, y)
-        array(False)
+        False
         >>> numpoly.greater_equal(x**2, x)
-        array(True)
+        True
         >>> numpoly.greater_equal([1, x, x**2, x**3], y)
         array([False, False,  True,  True])
         >>> numpoly.greater_equal(x+1, x-1)
-        array(True)
+        True
         >>> numpoly.greater_equal(x, x)
-        array(True)
+        True
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
@@ -61,10 +61,17 @@ def greater_equal(x1, x2, out=None, **kwargs):
     if out is None:
         out = numpy.greater_equal(coefficients1[0], coefficients2[0], **kwargs)
     if not out.shape:
-        return numpy.array(greater_equal(x1.ravel(), x2.ravel(), out=out.ravel()).item())
-    for idx in numpoly.bsort(x1.exponents.T, ordering="GR"):
+        return bool(greater_equal(x1.ravel(), x2.ravel(), out=out.ravel()).item())
+
+    options = numpoly.get_options()
+    for idx in numpoly.glexsort(x1.exponents.T, graded=options["sort_graded"],
+                                reverse=options["sort_reverse"]):
+
         indices = (coefficients1[idx] != 0) | (coefficients2[idx] != 0)
         indices &= coefficients1[idx] != coefficients2[idx]
         out[indices] = numpy.greater_equal(
             coefficients1[idx][indices], coefficients2[idx][indices], **kwargs)
+
+    if not out.size:
+        out = bool(out)
     return out

@@ -40,12 +40,12 @@ def subtract(x1, x2, out=None, where=True, **kwargs):
         >>> x, y = numpoly.symbols("x y")
         >>> numpoly.subtract(x, 4)
         polynomial(x-4)
-        >>> poly1 = y**numpy.arange(3)
-        >>> poly2 = x**numpy.arange(9).reshape((3, 3))
+        >>> poly1 = x**numpy.arange(9).reshape((3, 3))
+        >>> poly2 = y**numpy.arange(3)
         >>> numpoly.subtract(poly1, poly2)
-        polynomial([[0, y-x, y**2-x**2],
-                    [1-x**3, y-x**4, y**2-x**5],
-                    [1-x**6, y-x**7, y**2-x**8]])
+        polynomial([[0, -y+x, -y**2+x**2],
+                    [x**3-1, x**4-y, x**5-y**2],
+                    [x**6-1, x**7-y, x**8-y**2]])
 
     """
     return simple_dispatch(

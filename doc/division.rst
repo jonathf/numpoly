@@ -41,7 +41,7 @@ not round values:
     >>> divisor = x-1
     >>> quotient = numpoly.poly_divide(dividend, divisor)
     >>> quotient
-    polynomial(1.0+x)
+    polynomial(x+1.0)
 
 However, like floor division, it can still have remainders.
 For example:
@@ -52,7 +52,7 @@ For example:
     >>> remainder
     polynomial(y+1.0)
     >>> dividend == quotient*divisor+remainder
-    array(True)
+    True
 
 In ``numpy``, the "syntactic sugar" operators:
 

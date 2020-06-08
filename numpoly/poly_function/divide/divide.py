@@ -46,7 +46,7 @@ def poly_divide(x1, x2, out=None, where=True, **kwargs):
         >>> x = numpoly.symbols("x")
         >>> poly = numpoly.polynomial([14, x**2-3])
         >>> numpoly.poly_divide(poly, 4)
-        polynomial([3.5, -0.75+0.25*x**2])
+        polynomial([3.5, 0.25*x**2-0.75])
         >>> numpoly.poly_divide(poly, x)
         polynomial([0.0, x])
 

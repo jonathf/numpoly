@@ -55,7 +55,9 @@ def amin(a, axis=None, out=None, **kwargs):
     """
     del out
     a = numpoly.aspolynomial(a)
-    proxy = numpoly.sortable_proxy(a, ordering="GR")
+    options = numpoly.get_options()
+    proxy = numpoly.sortable_proxy(
+        a, graded=options["sort_graded"], reverse=options["sort_reverse"])
     indices = numpy.amin(proxy, axis=axis, **kwargs)
     out = a[numpy.isin(proxy, indices)]
     out = out[numpy.argsort(indices.ravel())]

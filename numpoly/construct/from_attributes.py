@@ -49,7 +49,7 @@ def polynomial_from_attributes(
         ...     coefficients=[4, -1],
         ...     names=("x", "y", "z"),
         ... )
-        polynomial(4-x*y*z**2)
+        polynomial(-x*y*z**2+4)
         >>> numpoly.ndpoly.from_attributes(
         ...     exponents=[(0,)],
         ...     coefficients=[0],

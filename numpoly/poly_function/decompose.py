@@ -23,12 +23,12 @@ def decompose(poly):
         >>> x = numpoly.symbols()
         >>> poly = numpoly.polynomial([x**2-1, 2])
         >>> poly
-        polynomial([-1+q**2, 2])
+        polynomial([q**2-1, 2])
         >>> numpoly.decompose(poly)
         polynomial([[-1, 2],
                     [q**2, 0]])
         >>> numpoly.sum(numpoly.decompose(poly), 0)
-        polynomial([-1+q**2, 2])
+        polynomial([q**2-1, 2])
 
     """
     return numpoly.concatenate([

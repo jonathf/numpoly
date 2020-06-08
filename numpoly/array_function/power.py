@@ -45,10 +45,10 @@ def power(x1, x2, **kwargs):
     Examples:
         >>> x = numpoly.symbols("x")
         >>> (x+1)**3
-        polynomial(1+3*x+3*x**2+x**3)
+        polynomial(x**3+3*x**2+3*x+1)
         >>> poly = numpoly.symbols("x y")
         >>> (poly+1)**[1, 2]
-        polynomial([1+x, 1+2*y+y**2])
+        polynomial([x+1, y**2+2*y+1])
 
     """
     x1 = numpoly.aspolynomial(x1)

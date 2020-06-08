@@ -5,7 +5,7 @@ from six import string_types
 
 import numpy
 
-from . import construct, dispatch, array_function, poly_function
+from . import construct, dispatch, array_function, poly_function, option
 
 
 REDUCE_MAPPINGS = {
@@ -19,20 +19,6 @@ REDUCE_MAPPINGS = {
 ACCUMULATE_MAPPINGS = {
     numpy.add: numpy.cumsum,
     numpy.multiply: numpy.cumprod,
-}
-INDETERMINANT_DEFAULTS = {
-    # Polynomial indeterminant defaults, if not defined.
-    "base_name": "q",
-
-    # Add a postfix index to single indeterminant name.
-    # If single indeterminant name, e.g. 'q' is provided, but the polynomial is
-    # multivariate, an extra postfix index is added to differentiate the names:
-    # 'q0, q1, q2, ...'. If true, enforce this behavior for single variables as
-    # well such that 'q' always get converted to 'q0'.
-    "force_suffix": False,
-
-    # Regular expression defining valid indeterminant names.
-    "filter_regex": r"[\w_]",
 }
 
 
@@ -145,7 +131,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                 `numpoly.symbols` to create the indeterminants names. If only
                 one name is provided, but more than one is required,
                 indeterminants will be extended with an integer index. If
-                omitted, use ``numpoly.INDETERMINANT_DEFAULTS["base_name"]``.
+                omitted, use ``numpoly.get_options()["default_varname"]``.
             dtype:
                 Any object that can be interpreted as a numpy data type.
             kwargs:
@@ -155,19 +141,19 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         exponents = numpy.array(exponents, dtype=numpy.uint32)
 
         if names is None:
-            names = INDETERMINANT_DEFAULTS["base_name"]
+            names = option.get_options()["default_varname"]
         if isinstance(names, string_types):
             names = construct.symbols(names)
         if isinstance(names, ndpoly):
             names = names.names
         if (len(names) == 1 and not names[0][-1].isdigit() and
-                (INDETERMINANT_DEFAULTS["force_suffix"] or exponents.shape[1] > 1)):
+                (option.get_options()["force_number_suffix"] or exponents.shape[1] > 1)):
             names = tuple("%s%d" % (str(names[0]), idx)
                           for idx in range(exponents.shape[1]))
         for name in names:
-            assert re.search(INDETERMINANT_DEFAULTS["filter_regex"], name), (
+            assert re.search(option.get_options()["varname_filter"], name), (
                 "invalid polynomial name; "
-                "expected format: %r" % INDETERMINANT_DEFAULTS["filter_regex"])
+                "expected format: %r" % option.get_options()["varname_filter"])
 
         if numpy.prod(exponents.shape):
             keys = (exponents+cls.KEY_OFFSET).flatten()
@@ -225,7 +211,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             >>> x, y = numpoly.symbols("x y")
             >>> poly = numpoly.polynomial([2*x**4, -3*y**2+14])
             >>> poly
-            polynomial([2*x**4, 14-3*y**2])
+            polynomial([2*x**4, -3*y**2+14])
             >>> numpy.array(poly.coefficients)
             array([[ 0, 14],
                    [ 0, -3],
@@ -248,7 +234,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             >>> x, y = numpoly.symbols("x y")
             >>> poly = numpoly.polynomial([2*x**4, -3*y**2+14])
             >>> poly
-            polynomial([2*x**4, 14-3*y**2])
+            polynomial([2*x**4, -3*y**2+14])
             >>> poly.exponents
             array([[0, 0],
                    [0, 2],
@@ -305,10 +291,10 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             polynomial([q, 2*q, 3*q])
             >>> numpoly.ndpoly.from_attributes(
             ...     exponents=[[0], [1]], coefficients=[[0, 1], [1, 1]])
-            polynomial([q, 1+q])
+            polynomial([q, q+1])
             >>> numpoly.ndpoly.from_attributes(
             ...     exponents=[[0, 1], [1, 1]], coefficients=[[0, 1], [1, 1]])
-            polynomial([q0*q1, q1+q0*q1])
+            polynomial([q0*q1, q0*q1+q1])
 
         """
         return construct.polynomial_from_attributes(
@@ -328,7 +314,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             >>> x, y = numpoly.symbols("x y")
             >>> poly = numpoly.polynomial([2*x**4, -3*y**2+14])
             >>> poly
-            polynomial([2*x**4, 14-3*y**2])
+            polynomial([2*x**4, -3*y**2+14])
             >>> poly.indeterminants
             polynomial([x, y])
 
@@ -392,7 +378,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             >>> x, y = numpoly.symbols("x y")
             >>> poly = 2*x**4-3*y**2+14
             >>> poly
-            polynomial(14+2*x**4-3*y**2)
+            polynomial(2*x**4-3*y**2+14)
             >>> poly.todict() == {(0, 0): 14, (4, 0): 2, (0, 2): -3}
             True
 
@@ -503,10 +489,10 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             >>> x, y = numpoly.symbols("x y")
             >>> poly = numpoly.polynomial([[1-4*x, x**2], [y-3, x*y*y]])
             >>> poly
-            polynomial([[1-4*x, x**2],
-                        [-3+y, x*y**2]])
+            polynomial([[-4*x+1, x**2],
+                        [y-3, x*y**2]])
             >>> poly[0]
-            polynomial([1-4*x, x**2])
+            polynomial([-4*x+1, x**2])
             >>> poly[:, 1]
             polynomial([x**2, x*y**2])
             >>> poly["<;"]

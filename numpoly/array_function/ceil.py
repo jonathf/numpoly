@@ -40,7 +40,7 @@ def ceil(x, out=None, where=True, **kwargs):
     Examples:
         >>> x = numpoly.symbols("x")
         >>> numpoly.ceil([-1.7*x, x-1.5, -0.2, 3.2+1.5*x, 1.7, 2.0])
-        polynomial([-x, -1.0+x, 0.0, 4.0+2.0*x, 2.0, 2.0])
+        polynomial([-x, x-1.0, 0.0, 2.0*x+4.0, 2.0, 2.0])
 
     """
     return simple_dispatch(

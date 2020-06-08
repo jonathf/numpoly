@@ -82,7 +82,7 @@ def to_string(poly, precision=None, suppress_small=None):
         >>> poly = numpoly.polynomial([[1, x**3], [y-1, -3*x]])
         >>> string_array = to_string(poly)
         >>> string_array
-        [['1', 'x**3'], ['-1+y', '-3*x']]
+        [['1', 'x**3'], ['y-1', '-3*x']]
         >>> type(string_array[0][0]) == str
         True
 
@@ -94,9 +94,20 @@ def to_string(poly, precision=None, suppress_small=None):
             for poly_ in poly
         ]
 
+    exponents_ = poly.exponents.copy()
+    coefficients = poly.coefficients
+    options = numpoly.get_options()
     output = []
-    for exponents, coefficient in zip(
-            poly.exponents.tolist(), poly.coefficients):
+    indices = numpoly.glexsort(
+        exponents_.T,
+        graded=options["display_graded"],
+        reverse=options["display_reverse"],
+    )
+    if options["display_inverse"]:
+        indices = indices[::-1]
+    for idx in indices:
+        coefficient = coefficients[idx]
+        exponents = exponents_[idx]
 
         if not coefficient or (
                 suppress_small and
@@ -111,13 +122,14 @@ def to_string(poly, precision=None, suppress_small=None):
         else:
             out = str(coefficient)
 
-        for exponent, indeterminant in zip(exponents, poly.names):
+        exps_and_names = list(zip(exponents, poly.names))
+        for exponent, indeterminant in exps_and_names:
             if exponent:
                 if out not in ("", "-"):
-                    out += "*"
+                    out += options["display_multiply"]
                 out += indeterminant
             if exponent > 1:
-                out += "**"+str(exponent)
+                out += options["display_exponent"]+str(exponent)
         if output and float(coefficient) >= 0:
             out = "+"+out
         output.append(out)

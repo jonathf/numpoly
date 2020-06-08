@@ -39,12 +39,12 @@ def tile(A, reps):
         polynomial([x, x, x, x])
         >>> poly = numpoly.polynomial([[1, x-1], [x**2, x]])
         >>> numpoly.tile(poly, 2)
-        polynomial([[1, -1+x, 1, -1+x],
+        polynomial([[1, x-1, 1, x-1],
                     [x**2, x, x**2, x]])
         >>> numpoly.tile(poly, [2, 1])
-        polynomial([[1, -1+x],
+        polynomial([[1, x-1],
                     [x**2, x],
-                    [1, -1+x],
+                    [1, x-1],
                     [x**2, x]])
 
     """

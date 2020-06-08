@@ -56,11 +56,11 @@ def poly_divmod(dividend, divisor, out=(None, None), where=True, **kwargs):
         >>> floor, remainder = numpoly.poly_divmod(
         ...     denominator, numerator)
         >>> floor
-        polynomial([1.0+2.0*x**2, 1.0])
+        polynomial([2.0*x**2+1.0, 1.0])
         >>> remainder
-        polynomial([2.0+4.0*x**2, 0.0])
+        polynomial([4.0*x**2+2.0, 0.0])
         >>> floor*numerator+remainder
-        polynomial([x*y**2+2.0*x**3*y**2, -2.0+x*y**2])
+        polynomial([2.0*x**3*y**2+x*y**2, x*y**2-2.0])
 
     """
     assert where is True, "changing 'where' is not supported."
