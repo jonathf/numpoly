@@ -28,8 +28,8 @@ def monomial(start, stop=None, cross_truncation=1.,
         graded (bool):
             Graded sorting, meaning the indices are always sorted by the index
             sum. E.g. ``x**2*y**2*z**2`` has an exponent sum of 6, and will
-            therefore be consider larger than both ``x**3*y*z``, ``x*y**2*z and
-            ``x*y*z**2``, which all have exponent sum of 5.
+            therefore be consider larger than both ``x**3*y*z``, ``x*y**2*z``
+            and ``x*y*z**2``, which all have exponent sum of 5.
         reverse (bool):
             Reverse lexicographical sorting meaning that ``x*y**3`` is
             considered bigger than ``x**3*y``, instead of the opposite.

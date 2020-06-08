@@ -10,6 +10,8 @@ GLOBAL_OPTIONS_DEFAULTS = {
     "display_graded": True,
     "display_reverse": False,
     "display_inverse": True,
+    "display_exponent": "**",
+    "display_multiply": "*",
 }
 _NUMPOLY_OPTIONS = GLOBAL_OPTIONS_DEFAULTS.copy()
 
@@ -72,6 +74,11 @@ def set_options(**kwargs):
             When displaying polynomials as strings, sort polynomial sums in reversed lexicographical order.
         display_inverse (bool):
             If true, display polynomials from smallest to largest exponent.
+        display_exponent (str):
+            Exponent sign; Separate indeterminants and its power.
+        display_multiply (str):
+            Multiplication sign; Separates coefficients and
+            indeterminants, and indeterminants from each other.
 
     Examples:
         >>> numpoly.monomial([3, 3])
