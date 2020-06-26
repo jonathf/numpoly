@@ -46,19 +46,19 @@ def prod(a, axis=None, dtype=None, out=None, keepdims=False, **kwargs):
             Returns a reference to `out` if specified.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> poly = numpoly.polynomial([[[1, x, x**2], [x+y, y, y]]])
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly = numpoly.polynomial([[[1, q0, q0**2], [q0+q1, q1, q1]]])
         >>> numpoly.prod(poly)
-        polynomial(x**3*y**3+x**4*y**2)
+        polynomial(q0**3*q1**3+q0**4*q1**2)
         >>> numpoly.prod(poly, keepdims=True)
-        polynomial([[[x**3*y**3+x**4*y**2]]])
+        polynomial([[[q0**3*q1**3+q0**4*q1**2]]])
         >>> numpoly.prod(poly, axis=1)
-        polynomial([[y+x, x*y, x**2*y]])
+        polynomial([[q1+q0, q0*q1, q0**2*q1]])
         >>> numpoly.prod(poly, axis=2, keepdims=True)
-        polynomial([[[x**3],
-                     [y**3+x*y**2]]])
+        polynomial([[[q0**3],
+                     [q1**3+q0*q1**2]]])
         >>> numpoly.prod(poly, axis=[1, 2])
-        polynomial([[[x**3*y**3+x**4*y**2]]])
+        polynomial([[[q0**3*q1**3+q0**4*q1**2]]])
 
     """
     a = numpoly.aspolynomial(a)

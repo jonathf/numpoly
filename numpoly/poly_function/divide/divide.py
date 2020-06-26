@@ -43,12 +43,12 @@ def poly_divide(x1, x2, out=None, where=True, **kwargs):
             This is a scalar if both `x1` and `x2` are scalars.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> poly = numpoly.polynomial([14, x**2-3])
+        >>> q0 = numpoly.variable()
+        >>> poly = numpoly.polynomial([14, q0**2-3])
         >>> numpoly.poly_divide(poly, 4)
-        polynomial([3.5, 0.25*x**2-0.75])
-        >>> numpoly.poly_divide(poly, x)
-        polynomial([0.0, x])
+        polynomial([3.5, 0.25*q0**2-0.75])
+        >>> numpoly.poly_divide(poly, q0)
+        polynomial([0.0, q0])
 
     """
     dividend, remainder = poly_divmod(x1, x2, out=out, where=where, **kwargs)

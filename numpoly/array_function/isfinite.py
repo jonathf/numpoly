@@ -6,7 +6,7 @@ from ..dispatch import implements, simple_dispatch
 
 
 @implements(numpy.isfinite)
-def isfinite(x, out=None, where=True, **kwargs):
+def isfinite(q0, out=None, where=True, **kwargs):
     """
     Test element-wise for finiteness (not infinity or not Not a Number).
 
@@ -45,7 +45,7 @@ def isfinite(x, out=None, where=True, **kwargs):
         True
         >>> numpoly.isfinite(0)
         True
-        >>> numpoly.isfinite(numpy.nan*numpoly.symbols("x"))
+        >>> numpoly.isfinite(numpy.nan*numpoly.variable())
         False
         >>> numpoly.isfinite(numpy.inf)
         False
@@ -57,7 +57,7 @@ def isfinite(x, out=None, where=True, **kwargs):
     """
     out = simple_dispatch(
         numpy_func=numpy.isfinite,
-        inputs=(x,),
+        inputs=(q0,),
         out=out,
         where=where,
         **kwargs

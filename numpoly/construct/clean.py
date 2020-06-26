@@ -24,16 +24,16 @@ def clean_attributes(poly):
         Same as `poly`, but with attributes cleaned up.
 
     Examples:
-        >>> x, _ = numpoly.align_polynomials(*numpoly.symbols("x y"))
-        >>> x.indeterminants
-        polynomial([x, y])
-        >>> x.exponents
+        >>> q0, _ = numpoly.align_polynomials(*numpoly.variable(2))
+        >>> q0.indeterminants
+        polynomial([q0, q1])
+        >>> q0.exponents
         array([[1, 0],
                [0, 1]], dtype=uint32)
-        >>> x = numpoly.clean_attributes(x)
-        >>> x.indeterminants
-        polynomial([x])
-        >>> x.exponents
+        >>> q0 = numpoly.clean_attributes(q0)
+        >>> q0.indeterminants
+        polynomial([q0])
+        >>> q0.exponents
         array([[1]], dtype=uint32)
 
     """

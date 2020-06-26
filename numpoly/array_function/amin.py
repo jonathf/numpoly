@@ -42,15 +42,15 @@ def amin(a, axis=None, out=None, **kwargs):
             ``a.ndim-1``.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
+        >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.amin([13, 7])
         polynomial(7)
-        >>> numpoly.amin([1, x, x**2, y])
+        >>> numpoly.amin([1, q0, q0**2, q1])
         polynomial(1)
-        >>> numpoly.amin([x, y, x**2])
-        polynomial(x)
-        >>> numpoly.amin([[3*x**2, x**2], [2*x**2, 4*x**2]], axis=1)
-        polynomial([x**2, 2*x**2])
+        >>> numpoly.amin([q0, q1, q0**2])
+        polynomial(q0)
+        >>> numpoly.amin([[3*q0**2, q0**2], [2*q0**2, 4*q0**2]], axis=1)
+        polynomial([q0**2, 2*q0**2])
 
     """
     del out

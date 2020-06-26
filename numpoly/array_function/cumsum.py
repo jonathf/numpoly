@@ -35,18 +35,18 @@ def cumsum(a, axis=None, dtype=None, out=None):
             `axis` is not None or `a` is a 1-d array.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> poly = numpoly.polynomial([[1, x, 3], [4, 5, y]])
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly = numpoly.polynomial([[1, q0, 3], [4, 5, q1]])
         >>> poly
-        polynomial([[1, x, 3],
-                    [4, 5, y]])
+        polynomial([[1, q0, 3],
+                    [4, 5, q1]])
         >>> numpoly.cumsum(poly)
-        polynomial([1, x+1, x+4, x+8, x+13, y+x+13])
+        polynomial([1, q0+1, q0+4, q0+8, q0+13, q1+q0+13])
         >>> numpoly.cumsum(poly, dtype=float)
-        polynomial([1.0, x+1.0, x+4.0, x+8.0, x+13.0, y+x+13.0])
+        polynomial([1.0, q0+1.0, q0+4.0, q0+8.0, q0+13.0, q1+q0+13.0])
         >>> numpoly.cumsum(poly, axis=0)
-        polynomial([[1, x, 3],
-                    [5, x+5, y+3]])
+        polynomial([[1, q0, 3],
+                    [5, q0+5, q1+3]])
 
     """
     return simple_dispatch(

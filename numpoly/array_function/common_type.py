@@ -31,10 +31,10 @@ def common_type(*arrays):
         ...     numpy.array(2, dtype=numpy.float32)).__name__
         'float32'
         >>> numpoly.common_type(
-        ...     numpoly.symbols("x")).__name__
+        ...     numpoly.variable()).__name__
         'float64'
         >>> numpoly.common_type(
-        ...     numpy.arange(3), 1j*numpoly.symbols("x"), 45).__name__
+        ...     numpy.arange(3), 1j*numpoly.variable(), 45).__name__
         'complex128'
 
     """

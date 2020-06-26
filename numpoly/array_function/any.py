@@ -38,14 +38,14 @@ def any(a, axis=None, out=None, keepdims=False, **kwargs):
             in which case a reference to `out` is returned.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> numpoly.any(x)
+        >>> q0 = numpoly.variable()
+        >>> numpoly.any(q0)
         True
-        >>> numpoly.any(0*x)
+        >>> numpoly.any(0*q0)
         False
-        >>> numpoly.any([1, x, 0])
+        >>> numpoly.any([1, q0, 0])
         True
-        >>> numpoly.any([[True*x, False], [True, True]], axis=0)
+        >>> numpoly.any([[True*q0, False], [True, True]], axis=0)
         array([ True,  True])
 
     """

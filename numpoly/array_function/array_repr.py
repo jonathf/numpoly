@@ -30,17 +30,17 @@ def array_repr(arr, max_line_width=None, precision=None, suppress_small=None):
             The string representation of an array.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> numpoly.array_repr(numpoly.polynomial([1, x]))
-        'polynomial([1, x])'
+        >>> q0 = numpoly.variable()
+        >>> numpoly.array_repr(numpoly.polynomial([1, q0]))
+        'polynomial([1, q0])'
         >>> numpoly.array_repr(numpoly.polynomial([]))
         'polynomial([], dtype=int64)'
         >>> numpoly.array_repr(
-        ...     numpoly.polynomial([1e-6, 4e-7*x, 2*x, 3]),
+        ...     numpoly.polynomial([1e-6, 4e-7*q0, 2*q0, 3]),
         ...     precision=4,
         ...     suppress_small=True,
         ... )
-        'polynomial([0.0, 0.0, 2.0*x, 3.0])'
+        'polynomial([0.0, 0.0, 2.0*q0, 3.0])'
 
     """
     prefix = "polynomial("
@@ -78,11 +78,11 @@ def to_string(poly, precision=None, suppress_small=None):
             If scalar, a string, or if array, numpy.array with string values.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> poly = numpoly.polynomial([[1, x**3], [y-1, -3*x]])
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly = numpoly.polynomial([[1, q0**3], [q1-1, -3*q0]])
         >>> string_array = to_string(poly)
         >>> string_array
-        [['1', 'x**3'], ['y-1', '-3*x']]
+        [['1', 'q0**3'], ['q1-1', '-3*q0']]
         >>> type(string_array[0][0]) == str
         True
 

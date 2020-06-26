@@ -3,7 +3,7 @@ from numpoly import polynomial
 import numpoly
 
 
-X, Y = numpoly.symbols("X Y")
+X, Y = numpoly.variable(2)
 
 
 def test_align_polynomials():

@@ -26,10 +26,10 @@ def moveaxis(a, source, destination):
             Array with moved axes. This array is a view of the input array.
 
     Examples:
-        >>> x = numpy.arange(6).reshape(1, 2, 3)
-        >>> numpoly.moveaxis(x, 0, -1).shape
+        >>> poly = numpoly.monomial(6).reshape(1, 2, 3)
+        >>> numpoly.moveaxis(poly, 0, -1).shape
         (2, 3, 1)
-        >>> numpoly.moveaxis(x, [0, 2], [2, 0]).shape
+        >>> numpoly.moveaxis(poly, [0, 2], [2, 0]).shape
         (3, 2, 1)
 
     """

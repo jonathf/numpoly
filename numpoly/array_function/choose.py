@@ -79,18 +79,18 @@ def choose(a, choices, out=None, mode="raise"):
         container should be either a list or a tuple.
 
     Examples:
-        >>> choices = numpoly.outer(numpoly.monomial(3, names="x"),
-        ...                         numpoly.monomial(3, names="y"))
+        >>> choices = numpoly.outer(numpoly.monomial(3, names="q0"),
+        ...                         numpoly.monomial(3, names="q1"))
         >>> choices
-        polynomial([[1, y, y**2],
-                    [x, x*y, x*y**2],
-                    [x**2, x**2*y, x**2*y**2]])
+        polynomial([[1, q1, q1**2],
+                    [q0, q0*q1, q0*q1**2],
+                    [q0**2, q0**2*q1, q0**2*q1**2]])
         >>> numpoly.choose([1, 2, 0], choices)
-        polynomial([x, x**2*y, y**2])
+        polynomial([q0, q0**2*q1, q1**2])
         >>> numpoly.choose([1, 3, 0], choices, mode="clip")
-        polynomial([x, x**2*y, y**2])
+        polynomial([q0, q0**2*q1, q1**2])
         >>> numpoly.choose([1, 3, 0], choices, mode="wrap")
-        polynomial([x, y, y**2])
+        polynomial([q0, q1, q1**2])
 
     """
     choices = numpoly.aspolynomial(choices)

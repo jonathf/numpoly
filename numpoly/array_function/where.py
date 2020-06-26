@@ -30,13 +30,13 @@ def where(condition, *args):
             elements from `y` elsewhere.
 
     Examples:
-        >>> poly = numpoly.symbols("x")*numpy.arange(4)
+        >>> poly = numpoly.variable()*numpy.arange(4)
         >>> poly
-        polynomial([0, x, 2*x, 3*x])
+        polynomial([0, q0, 2*q0, 3*q0])
         >>> numpoly.where([1, 0, 1, 0], 7, 2*poly)
-        polynomial([7, 2*x, 7, 6*x])
+        polynomial([7, 2*q0, 7, 6*q0])
         >>> numpoly.where(poly, 2*poly, 4)
-        polynomial([4, 2*x, 4*x, 6*x])
+        polynomial([4, 2*q0, 4*q0, 6*q0])
         >>> numpoly.where(poly)
         (array([1, 2, 3]),)
 

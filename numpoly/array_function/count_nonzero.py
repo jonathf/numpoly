@@ -5,7 +5,7 @@ import numpoly
 from ..dispatch import implements
 
 @implements(numpy.count_nonzero)
-def count_nonzero(x, axis=None, **kwargs):
+def count_nonzero(q0, axis=None, **kwargs):
     """
     Count the number of non-zero values in the array a.
 
@@ -24,17 +24,19 @@ def count_nonzero(x, axis=None, **kwargs):
             returned.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> numpoly.count_nonzero([x])
+        >>> q0, q1 = numpoly.variable(2)
+        >>> numpoly.count_nonzero([q0])
         1
-        >>> numpoly.count_nonzero([[0,x,x*x,0,0],[x+1,0,0,2*x,19*x]])
+        >>> numpoly.count_nonzero([[0, q0, q0*q0, 0, 0],
+        ...                        [q0+1, 0, 0, 2*q0, 19*q0]])
         5
-        >>> numpoly.count_nonzero([[0,x,7*x,0,0],[3*y,0,0,2,19*x+y]], axis=0)
+        >>> numpoly.count_nonzero([[0, q0, 7*q0, 0, 0],
+        ...                        [3*q1, 0, 0, 2, 19*q0+q1]], axis=0)
         array([1, 1, 1, 1, 1])
-        >>> numpoly.count_nonzero([[0,x,y,0,0],[x,0,0,2*x,19*y]], axis=1)
+        >>> numpoly.count_nonzero([[0, q0, q1, 0, 0],
+        ...                        [q0, 0, 0, 2*q0, 19*q1]], axis=1)
         array([2, 3])
 
     """
-    a = numpoly.aspolynomial(x)
-
+    a = numpoly.aspolynomial(q0)
     return numpy.count_nonzero(numpy.any(a.coefficients, axis=0), axis=axis)

@@ -35,7 +35,7 @@ def matmul(x1, x2, out=None, **kwargs):
             the second-to-last dimension of `x2`.
 
     Examples:
-        >>> poly = numpoly.symbols("q:4").reshape(2, 2)
+        >>> poly = numpoly.variable(4).reshape(2, 2)
         >>> poly
         polynomial([[q0, q1],
                     [q2, q3]])

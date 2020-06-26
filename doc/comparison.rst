@@ -33,8 +33,8 @@ The default ordering implemented in ``numpoly`` is defined as follows:
 
   .. code:: python
 
-    >>> x = numpoly.symbols("x")
-    >>> x < x**2 < x**3
+    >>> q0 = numpoly.variable()
+    >>> q0 < q0**2 < q0**3
     True
 
   If the largest polynomial in one polynomial is larger than in another,
@@ -42,7 +42,7 @@ The default ordering implemented in ``numpoly`` is defined as follows:
 
   .. code:: python
 
-    >>> 4*x < 3*x**2 < 2*x**3
+    >>> 4*q0 < 3*q0**2 < 2*q0**3
     True
 
   In the multivariate case, the polynomial order is determined by the sum of
@@ -50,8 +50,8 @@ The default ordering implemented in ``numpoly`` is defined as follows:
 
   .. code:: python
 
-    >>> x, y, z = numpoly.symbols("x y z")
-    >>> x**2*y**2 < x*y**5 < x**6*y
+    >>> q0, q1 = numpoly.variable(2)
+    >>> q0**2*q1**2 < q0*q1**5 < q0**6*q1
     True
 
   This implies that given higher polynomial order, indeterminant names are
@@ -59,14 +59,15 @@ The default ordering implemented in ``numpoly`` is defined as follows:
 
   .. code:: python
 
-    >>> x < z**2 < y**3
+    >>> q0, q1, q2 = numpoly.variable(3)
+    >>> q0 < q2**2 < q1**3
     True
 
   The same goes for any polynomial terms which are not leading:
 
   .. code:: python
 
-    >>> 4*x < x**2+3*x < x**3+2*x
+    >>> 4*q0 < q0**2+3*q0 < q0**3+2*q0
     True
 
 
@@ -74,14 +75,14 @@ The default ordering implemented in ``numpoly`` is defined as follows:
 
   .. code:: python
 
-    >>> x < y < z
+    >>> q0 < q1 < q2
     True
 
   As with polynomial order, coefficients and lower order terms are ignored:
 
   .. code:: python
 
-    >>> 4*x**3+4*x < 3*y**3+3*y < 2*z**3+2*z
+    >>> 4*q0**3+4*q0 < 3*q1**3+3*q1 < 2*q2**3+2*q2
     True
 
   Composite polynomials of the same order are sorted by lexicographically by
@@ -89,7 +90,7 @@ The default ordering implemented in ``numpoly`` is defined as follows:
 
   .. code:: python
 
-    >>> x**3*y < x**2*y**2 < x*y**3
+    >>> q0**3*q1 < q0**2*q1**2 < q0*q1**3
     True
 
   If there are more than two, and the dominant order first addresses the first,
@@ -97,7 +98,7 @@ The default ordering implemented in ``numpoly`` is defined as follows:
 
   .. code:: python
 
-    >>> x**2*y**2*z < x**2*y*z**2 < x*y**2*z**2
+    >>> q0**2*q1**2*q2 < q0**2*q1*q2**2 < q0*q1**2*q2**2
     True
 
 * Polynomials that have exactly the same leading polynomial, are compared by
@@ -105,7 +106,7 @@ The default ordering implemented in ``numpoly`` is defined as follows:
 
   .. code:: python
 
-    >>> -4*x < -1*x < 2*x
+    >>> -4*q0 < -1*q0 < 2*q0
     True
 
   This notion implies that constant polynomial, the same way as ``numpy``
@@ -121,7 +122,7 @@ The default ordering implemented in ``numpoly`` is defined as follows:
 
   .. code:: python
 
-    >>> x**2+1 < x**2+2 < x**2+3
+    >>> q0**2+1 < q0**2+2 < q0**2+3
     True
 
   And if both the first two leading terms are the same, use the third and so
@@ -129,7 +130,7 @@ The default ordering implemented in ``numpoly`` is defined as follows:
 
   .. code:: python
 
-    >>> x**2+x+1 < x**2+x+2 < x**2+x+3
+    >>> q0**2+q0+1 < q0**2+q0+2 < q0**2+q0+3
     True
 
   Unlike for the leading polynomial term, missing terms are considered present
@@ -137,7 +138,7 @@ The default ordering implemented in ``numpoly`` is defined as follows:
 
   .. code:: python
 
-    >>> x**2-1 < x**2 < x**2+1
+    >>> q0**2-1 < q0**2 < q0**2+1
     True
 
 These rules together allow for a total comparison for all polynomials.
@@ -151,10 +152,10 @@ behavior. In particular:
 
 ``sort_graded``
   Impose that polynomials are sorted by grade, meaning the indices are always
-  sorted by the index sum. E.g. ``x**2*y**2*z**2`` has an exponent sum of 6,
-  and will therefore be consider larger than both ``x**3*y*z``, ``x*y**3*z``
-  and ``x*y*z**3``. Defaults to true.
+  sorted by the index sum. E.g. ``q0**2*q1**2*q2**2`` has an exponent sum of 6,
+  and will therefore be consider larger than both ``q0**3*q1*q2``,
+  ``q0*q1**3*q2`` and ``q0*q1*q2**3``. Defaults to true.
 ``sort_reverse``
   Impose that polynomials are sorted by reverses lexicographical sorting,
-  meaning that ``x*y**3`` is considered smaller than ``x**3*y``, instead of the
+  meaning that ``q0*q1**3`` is considered smaller than ``q0**3*q1``, instead of the
   opposite. Defaults to false.

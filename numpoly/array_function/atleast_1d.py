@@ -23,8 +23,8 @@ def atleast_1d(*arys):
             made only if necessary.
 
     Examples:
-        >>> numpoly.atleast_1d(numpoly.symbols("x"))
-        polynomial([x])
+        >>> numpoly.atleast_1d(numpoly.variable())
+        polynomial([q0])
         >>> numpoly.atleast_1d(1, [2, 3])
         [polynomial([1]), polynomial([2, 3])]
 

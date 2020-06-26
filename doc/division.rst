@@ -36,12 +36,12 @@ not round values:
 
 .. code:: python
 
-    >>> x, y = numpoly.symbols("x y")
-    >>> dividend = x**2+y
-    >>> divisor = x-1
+    >>> q0, q1 = numpoly.variable(2)
+    >>> dividend = q0**2+q1
+    >>> divisor = q0-1
     >>> quotient = numpoly.poly_divide(dividend, divisor)
     >>> quotient
-    polynomial(x+1.0)
+    polynomial(q0+1.0)
 
 However, like floor division, it can still have remainders.
 For example:
@@ -50,7 +50,7 @@ For example:
 
     >>> remainder = numpoly.poly_remainder(dividend, divisor)
     >>> remainder
-    polynomial(y+1.0)
+    polynomial(q1+1.0)
     >>> dividend == quotient*divisor+remainder
     True
 

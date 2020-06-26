@@ -3,8 +3,8 @@ from contextlib import contextmanager
 
 GLOBAL_OPTIONS_DEFAULTS = {
     "default_varname": "q",
-    "force_number_suffix": False,
-    "varname_filter": r"[\w_]",
+    "force_number_suffix": True,
+    "varname_filter": r"q\d+",
     "sort_graded": True,
     "sort_reverse": False,
     "display_graded": True,
@@ -83,7 +83,7 @@ def set_options(**kwargs):
     Examples:
         >>> numpoly.monomial([3, 3])
         polynomial([1, q0, q0**2, q1, q0*q1, q1**2])
-        >>> numpoly.set_options(default_varname="z")
+        >>> numpoly.set_options(default_varname="z", varname_filter=".+")
         >>> numpoly.monomial([3, 3])
         polynomial([1, z0, z0**2, z1, z0*z1, z1**2])
 

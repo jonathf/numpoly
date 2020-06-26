@@ -22,18 +22,18 @@ def array_split(ary, indices_or_sections, axis=0):
     Examples:
         >>> poly = numpoly.monomial(8).reshape(2, 4)
         >>> poly
-        polynomial([[1, q, q**2, q**3],
-                    [q**4, q**5, q**6, q**7]])
+        polynomial([[1, q0, q0**2, q0**3],
+                    [q0**4, q0**5, q0**6, q0**7]])
         >>> part1, part2, part3 = numpoly.array_split(poly, 3, axis=1)
         >>> part1
-        polynomial([[1, q],
-                    [q**4, q**5]])
+        polynomial([[1, q0],
+                    [q0**4, q0**5]])
         >>> part2
-        polynomial([[q**2],
-                    [q**6]])
+        polynomial([[q0**2],
+                    [q0**6]])
         >>> part3
-        polynomial([[q**3],
-                    [q**7]])
+        polynomial([[q0**3],
+                    [q0**7]])
 
     """
     ary = numpoly.aspolynomial(ary)

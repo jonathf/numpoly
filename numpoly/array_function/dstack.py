@@ -31,20 +31,20 @@ def dstack(tup):
             3-D.
 
     Examples:
-        >>> a = numpoly.symbols("x y z")
-        >>> b = numpoly.polynomial([1, 2, 3])
-        >>> numpoly.dstack([a, b])
-        polynomial([[[x, 1],
-                     [y, 2],
-                     [z, 3]]])
-        >>> c = numpoly.polynomial([[1], [2], [3]])
-        >>> d = a.reshape(3, 1)
-        >>> numpoly.dstack([c, d])
-        polynomial([[[1, x]],
+        >>> poly1 = numpoly.variable(3)
+        >>> const1 = numpoly.polynomial([1, 2, 3])
+        >>> numpoly.dstack([poly1, const1])
+        polynomial([[[q0, 1],
+                     [q1, 2],
+                     [q2, 3]]])
+        >>> const2 = numpoly.polynomial([[1], [2], [3]])
+        >>> poly2 = poly1.reshape(3, 1)
+        >>> numpoly.dstack([const2, poly2])
+        polynomial([[[1, q0]],
         <BLANKLINE>
-                    [[2, y]],
+                    [[2, q1]],
         <BLANKLINE>
-                    [[3, z]]])
+                    [[3, q2]]])
 
     """
     arrays = numpoly.align_exponents(*tup)

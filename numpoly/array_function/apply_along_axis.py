@@ -54,12 +54,12 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
             fewer dimensions than `arr`.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> b = numpoly.polynomial([[1, 2, 3*x], [3, 6*y, 6], [2, 7, 9]])
+        >>> q0, q1 = numpoly.variable(2)
+        >>> b = numpoly.polynomial([[1, 2, 3*q0], [3, 6*q1, 6], [2, 7, 9]])
         >>> numpoly.apply_along_axis(numpoly.mean, 0, b)
-        polynomial([2.0, 2.0*y+3.0, x+5.0])
+        polynomial([2.0, 2.0*q1+3.0, q0+5.0])
         >>> numpoly.apply_along_axis(numpoly.mean, 1, b)
-        polynomial([x+1.0, 2.0*y+3.0, 6.0])
+        polynomial([q0+1.0, 2.0*q1+3.0, 6.0])
 
     """
     collection = list()
@@ -68,7 +68,8 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
     def wrapper_func(array):
         """Wrap func1d function."""
         # Align indeterminants in case slicing changed them
-        array = numpoly.polynomial(array, names=arr.indeterminants)
+        array = numpoly.polynomial(
+            array, names=arr.indeterminants, allocation=arr.allocation)
         array, _ = numpoly.align.align_indeterminants(array, arr.indeterminants)
 
         # Evaluate function
@@ -102,5 +103,9 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
     for idx, polynomial in enumerate(polynomials):
         ret_val[out == idx] = polynomial.values
 
-    return numpoly.aspolynomial(
-        ret_val, dtype=dtype, names=polynomials[0].indeterminants)
+    return numpoly.polynomial(
+        ret_val,
+        dtype=dtype,
+        names=polynomials[0].indeterminants,
+        allocation=polynomials[0].allocation,
+    )

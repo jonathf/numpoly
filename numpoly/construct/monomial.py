@@ -6,7 +6,7 @@ import numpoly
 
 
 def monomial(start, stop=None, cross_truncation=1.,
-             names=None, graded=False, reverse=False):
+             names=None, graded=False, reverse=False, allocation=None):
     """
     Create an polynomial monomial expansion.
 
@@ -33,6 +33,9 @@ def monomial(start, stop=None, cross_truncation=1.,
         reverse (bool):
             Reverse lexicographical sorting meaning that ``x*y**3`` is
             considered bigger than ``x**3*y``, instead of the opposite.
+        allocation (Optional[int]):
+            The maximum number of polynomial exponents. If omitted, use
+            length of exponents for allocation.
 
     Returns:
         (numpoly.ndpoly):
@@ -40,15 +43,14 @@ def monomial(start, stop=None, cross_truncation=1.,
 
     Examples:
         >>> numpoly.monomial(4)
-        polynomial([1, q, q**2, q**3])
-        >>> numpoly.monomial(4, 5, names=("x", "y"),
-        ...                  graded=True, reverse=True)
-        polynomial([y**4, x*y**3, x**2*y**2, x**3*y, x**4])
+        polynomial([1, q0, q0**2, q0**3])
+        >>> numpoly.monomial([4, 4], 5, graded=True, reverse=True)
+        polynomial([q1**4, q0*q1**3, q0**2*q1**2, q0**3*q1, q0**4])
         >>> numpoly.monomial(2, [3, 4], graded=True)
         polynomial([q0**2, q0*q1, q1**2, q1**3])
-        >>> numpoly.monomial(0, 5, names=("x", "y"),
+        >>> numpoly.monomial(0, 4, names=("q2", "q4"),
         ...                  cross_truncation=0.5, graded=True, reverse=True)
-        polynomial([1, y, x, y**2, x*y, x**2, y**3, x**3, y**4, x**4])
+        polynomial([1, q4, q2, q4**2, q2**2, q4**3, q2**3])
 
     """
     if stop is None:
@@ -56,6 +58,8 @@ def monomial(start, stop=None, cross_truncation=1.,
 
     start = numpy.array(start, dtype=int)
     stop = numpy.array(stop, dtype=int)
+    if isinstance(names, str):
+        names = (names,)
     dimensions = 1 if names is None else len(names)
     dimensions = max(start.size, stop.size, dimensions)
 
@@ -67,13 +71,13 @@ def monomial(start, stop=None, cross_truncation=1.,
         reverse=reverse,
         cross_truncation=cross_truncation,
     )
-
     poly = numpoly.ndpoly(
         exponents=indices,
         shape=(len(indices),),
         names=names,
+        allocation=allocation,
     )
     for coeff, key in zip(
             numpy.eye(len(indices), dtype=int), poly.keys):
-        poly[key] = coeff
+        numpy.ndarray.__setitem__(poly, key, coeff)
     return poly

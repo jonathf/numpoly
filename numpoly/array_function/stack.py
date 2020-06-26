@@ -30,15 +30,15 @@ def stack(arrays, axis=0, out=None):
             The stacked array has one more dimension than the input arrays.
 
     Examples:
-        >>> a = numpoly.symbols("x y z")
-        >>> b = numpoly.polynomial([1, 2, 3])
-        >>> numpoly.stack([a, b])
-        polynomial([[x, y, z],
+        >>> poly = numpoly.variable(3)
+        >>> const = numpoly.polynomial([1, 2, 3])
+        >>> numpoly.stack([poly, const])
+        polynomial([[q0, q1, q2],
                     [1, 2, 3]])
-        >>> numpoly.stack([a, b], axis=-1)
-        polynomial([[x, 1],
-                    [y, 2],
-                    [z, 3]])
+        >>> numpoly.stack([poly, const], axis=-1)
+        polynomial([[q0, 1],
+                    [q1, 2],
+                    [q2, 3]])
 
     """
     arrays = numpoly.align_exponents(*arrays)

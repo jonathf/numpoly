@@ -37,12 +37,12 @@ def multiply(x1, x2, out=None, where=True, **kwargs):
             both `x1` and `x2` are scalars.
 
     Examples:
-        >>> x1 = numpy.arange(9.0).reshape((3, 3))
-        >>> xyz = numpoly.symbols("x y z")
-        >>> numpoly.multiply(x1, xyz)
-        polynomial([[0.0, y, 2.0*z],
-                    [3.0*x, 4.0*y, 5.0*z],
-                    [6.0*x, 7.0*y, 8.0*z]])
+        >>> poly = numpy.arange(9.0).reshape((3, 3))
+        >>> q0q1q2 = numpoly.variable(3)
+        >>> numpoly.multiply(poly, q0q1q2)
+        polynomial([[0.0, q1, 2.0*q2],
+                    [3.0*q0, 4.0*q1, 5.0*q2],
+                    [6.0*q0, 7.0*q1, 8.0*q2]])
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)

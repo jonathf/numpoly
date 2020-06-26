@@ -38,8 +38,11 @@ def square(x, out=None, where=True, **kwargs):
     Examples:
         >>> numpoly.square([-1j, 1])
         polynomial([(-1-0j), (1+0j)])
-        >>> numpoly.square(numpoly.sum(numpoly.symbols("x y")))
-        polynomial(y**2+2*x*y+x**2)
+        >>> poly = numpoly.sum(numpoly.variable(2))
+        >>> poly
+        polynomial(q1+q0)
+        >>> numpoly.square(poly)
+        polynomial(q1**2+2*q0*q1+q0**2)
 
     """
     return multiply(x, x, out=out, where=where, **kwargs)

@@ -55,11 +55,13 @@ def floor_divide(x1, x2, out=None, where=True, **kwargs):
     Examples:
         >>> numpoly.floor_divide([1, 3, 5], 2)
         polynomial([0, 1, 2])
-        >>> xyz = [1, 2, 4]*numpoly.symbols("x y z")
-        >>> numpoly.floor_divide(xyz, 2.)
-        polynomial([0.0, y, 2.0*z])
-        >>> numpoly.floor_divide(xyz, [1, 2, 4])
-        polynomial([x, y, z])
+        >>> poly = [1, 2, 4]*numpoly.variable(3)
+        >>> poly
+        polynomial([q0, 2*q1, 4*q2])
+        >>> numpoly.floor_divide(poly, 2.)
+        polynomial([0.0, q1, 2.0*q2])
+        >>> numpoly.floor_divide(poly, [1, 2, 4])
+        polynomial([q0, q1, q2])
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)

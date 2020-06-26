@@ -15,13 +15,13 @@ For example:
 
 .. code:: python
 
-    >>> poly = numpoly.symbols("x")**numpy.arange(4)
+    >>> poly = numpoly.variable()**numpy.arange(4)
     >>> print(poly)
-    [1 x x**2 x**3]
+    [1 q0 q0**2 q0**3]
     >>> print(numpoly.sum(poly, keepdims=True))
-    [x**3+x**2+x+1]
+    [q0**3+q0**2+q0+1]
     >>> print(numpy.sum(poly, keepdims=True)) # doctest: +SKIP
-    [x**3+x**2+x+1]
+    [q0**3+q0**2+q0+1]
 
 For earlier versions of numpy, the last line will not work.
 

@@ -87,6 +87,10 @@ def simple_dispatch(
                 dtype=tmp.dtype,
             )
             out[key] = tmp
+
+        elif no_output:
+            out[key] = numpy_func(*[poly[key] for poly in inputs], **kwargs)
+
         else:
             tmp = numpy_func(
                 *[poly[key] for poly in inputs], out=out[key], **kwargs)

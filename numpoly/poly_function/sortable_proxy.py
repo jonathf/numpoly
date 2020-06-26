@@ -17,12 +17,12 @@ def sortable_proxy(poly, graded=False, reverse=False):
             Polynomial to convert into something sortable.
         graded (bool):
             Graded sorting, meaning the indices are always sorted by the index
-            sum. E.g. ``x**2*y**2*z**2`` has an exponent sum of 6, and will
-            therefore be consider larger than both ``x**3*y*z``, ``x*y**3*z``
-            and ``x*y*z**3``.
+            sum. E.g. ``q0**2*q1**2*q2**2`` has an exponent sum of 6, and will
+            therefore be consider larger than both ``q0**3*q1*q2``,
+            ``q0*q1**3*q2`` and ``q0*q1*z**3``.
         reverse (bool):
-            Reverses lexicographical sorting meaning that ``x*y**3`` is
-            considered smaller than ``x**3*y``, instead of the opposite.
+            Reverses lexicographical sorting meaning that ``q0*q1**3`` is
+            considered bigger than ``q0**3*q1``, instead of the opposite.
 
     Returns:
         (numpy.ndarray):
@@ -30,8 +30,8 @@ def sortable_proxy(poly, graded=False, reverse=False):
             ``ordering``.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> poly = numpoly.polynomial([x**2, 2*x, 3*y, 4*x, 5])
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly = numpoly.polynomial([q0**2, 2*q0, 3*q1, 4*q0, 5])
         >>> numpoly.sortable_proxy(poly)
         array([3, 1, 4, 2, 0])
         >>> numpoly.sortable_proxy(poly, reverse=True)

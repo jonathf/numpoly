@@ -16,8 +16,8 @@ def isconstant(poly):
             True if polynomial has no indeterminants.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> numpoly.isconstant(numpoly.polynomial([x]))
+        >>> q0 = numpoly.variable()
+        >>> numpoly.isconstant(numpoly.polynomial([q0]))
         False
         >>> numpoly.isconstant(numpoly.polynomial([1]))
         True

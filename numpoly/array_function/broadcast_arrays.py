@@ -29,18 +29,18 @@ def broadcast_arrays(*args, **kwargs):
     Examples:
         >>> poly1 = numpoly.monomial(3).reshape(1, 3)
         >>> poly1
-        polynomial([[1, q, q**2]])
+        polynomial([[1, q0, q0**2]])
         >>> poly2 = numpoly.monomial(2).reshape(2, 1)
         >>> poly2
         polynomial([[1],
-                    [q]])
+                    [q0]])
         >>> result1, result2 = numpoly.broadcast_arrays(poly1, poly2)
         >>> result1
-        polynomial([[1, q, q**2],
-                    [1, q, q**2]])
+        polynomial([[1, q0, q0**2],
+                    [1, q0, q0**2]])
         >>> result2
         polynomial([[1, 1, 1],
-                    [q, q, q]])
+                    [q0, q0, q0]])
 
     """
     args = [numpoly.aspolynomial(arg) for arg in args]

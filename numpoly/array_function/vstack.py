@@ -30,20 +30,20 @@ def vstack(tup):
             2-D.
 
     Examples:
-        >>> a = numpoly.symbols("x y z")
-        >>> b = numpoly.polynomial([1, 2, 3])
-        >>> numpoly.vstack([a, b])
-        polynomial([[x, y, z],
+        >>> poly1 = numpoly.variable(3)
+        >>> const1 = numpoly.polynomial([1, 2, 3])
+        >>> numpoly.vstack([poly1, const1])
+        polynomial([[q0, q1, q2],
                     [1, 2, 3]])
-        >>> c = numpoly.polynomial([[1], [2], [3]])
-        >>> d = a.reshape(3, 1)
-        >>> numpoly.vstack([c, d])
+        >>> const2 = numpoly.polynomial([[1], [2], [3]])
+        >>> poly2 = poly1.reshape(3, 1)
+        >>> numpoly.vstack([const2, poly2])
         polynomial([[1],
                     [2],
                     [3],
-                    [x],
-                    [y],
-                    [z]])
+                    [q0],
+                    [q1],
+                    [q2]])
 
     """
     arrays = numpoly.align_exponents(*tup)

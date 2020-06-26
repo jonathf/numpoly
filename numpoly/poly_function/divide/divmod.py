@@ -50,17 +50,17 @@ def poly_divmod(dividend, divisor, out=(None, None), where=True, **kwargs):
             are scalars.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> denominator = [x*y**2+2*x**3*y**2, -2+x*y**2]
-        >>> numerator = -2+x*y**2
+        >>> q0, q1 = numpoly.variable(2)
+        >>> denominator = [q0*q1**2+2*q0**3*q1**2, -2+q0*q1**2]
+        >>> numerator = -2+q0*q1**2
         >>> floor, remainder = numpoly.poly_divmod(
         ...     denominator, numerator)
         >>> floor
-        polynomial([2.0*x**2+1.0, 1.0])
+        polynomial([2.0*q0**2+1.0, 1.0])
         >>> remainder
-        polynomial([4.0*x**2+2.0, 0.0])
+        polynomial([4.0*q0**2+2.0, 0.0])
         >>> floor*numerator+remainder
-        polynomial([2.0*x**3*y**2+x*y**2, x*y**2-2.0])
+        polynomial([2.0*q0**3*q1**2+q0*q1**2, q0*q1**2-2.0])
 
     """
     assert where is True, "changing 'where' is not supported."

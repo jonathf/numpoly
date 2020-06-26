@@ -27,17 +27,17 @@ def concatenate(arrays, axis=0, out=None):
             The concatenated array.
 
     Examples:
-        >>> a = numpy.array([[1, 2], [3, 4]])
-        >>> b = numpoly.symbols("x y").reshape(1, 2)
-        >>> numpoly.concatenate((a, b), axis=0)
+        >>> const = numpy.array([[1, 2], [3, 4]])
+        >>> poly = numpoly.variable(2).reshape(1, 2)
+        >>> numpoly.concatenate((const, poly), axis=0)
         polynomial([[1, 2],
                     [3, 4],
-                    [x, y]])
-        >>> numpoly.concatenate((a, b.T), axis=1)
-        polynomial([[1, 2, x],
-                    [3, 4, y]])
-        >>> numpoly.concatenate((a, b), axis=None)
-        polynomial([1, 2, 3, 4, x, y])
+                    [q0, q1]])
+        >>> numpoly.concatenate((const, poly.T), axis=1)
+        polynomial([[1, 2, q0],
+                    [3, 4, q1]])
+        >>> numpoly.concatenate((const, poly), axis=None)
+        polynomial([1, 2, 3, 4, q0, q1])
 
     """
     arrays = numpoly.align_exponents(*arrays)

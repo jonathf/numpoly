@@ -4,8 +4,9 @@ import re
 from six import string_types
 
 import numpy
+from numpy.lib import recfunctions
 
-from . import construct, dispatch, array_function, poly_function, option
+from . import align, construct, dispatch, array_function, poly_function, option
 
 
 REDUCE_MAPPINGS = {
@@ -38,7 +39,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
 
     Though possible, it is not recommended to construct polynomials using
     ``ndpoly`` for basic polynomial array construction. Instead the user should
-    be consider using construction functions like `symbols`, `monomial`,
+    be consider using construction functions like `variable`, `monomial`,
     `polynomial`, etc.
 
     Attributes:
@@ -61,19 +62,21 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             Same as `indeterminants`, but only the names as string.
         values (numpy.ndarray):
             Expose the underlying structured array.
+        allocation (int):
+            The number of polynomial coefficients allocated to the polynomial.
+            Has to be at least as large as to have space for all exponents.
 
     Examples:
-        >>> poly = ndpoly(
-        ...     exponents=[(0, 1), (0, 0)], shape=(3,), names="x y")
+        >>> poly = ndpoly(exponents=[(0, 1), (0, 0)], shape=(3,))
         >>> poly[";;"] = 1, 2, 3
         >>> poly[";<"] = 4, 5, 6
         >>> numpy.array(poly.coefficients)
         array([[4, 5, 6],
                [1, 2, 3]])
         >>> poly
-        polynomial([4*y+1, 5*y+2, 6*y+3])
+        polynomial([4*q1+1, 5*q1+2, 6*q1+3])
         >>> poly[0]
-        polynomial(4*y+1)
+        polynomial(4*q1+1)
 
     """
 
@@ -102,6 +105,11 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     Positional list of indeterminant names.
     """
 
+    allocation = None
+    """
+    The number of polynomial coefficients allocated to polynomial.
+    """
+
     # Numpy structured array names doesn't like characters reserved by Python.
     # The largest index found with this property is 58: ':'.
     # Above this, everything looks like it works as expected.
@@ -113,6 +121,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             shape=(),
             names=None,
             dtype=None,
+            allocation=None,
             **kwargs
     ):
         """
@@ -132,34 +141,44 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                 one name is provided, but more than one is required,
                 indeterminants will be extended with an integer index. If
                 omitted, use ``numpoly.get_options()["default_varname"]``.
-            dtype:
+            dtype (Optional[numpy.dtype]):
                 Any object that can be interpreted as a numpy data type.
+            allocation (Optional[int]):
+                The maximum number of polynomial exponents. If omitted, use
+                length of exponents for allocation.
             kwargs:
                 Extra arguments passed to `numpy.ndarray` constructor.
 
         """
         exponents = numpy.array(exponents, dtype=numpy.uint32)
 
+        if numpy.prod(exponents.shape):
+            keys = (exponents+cls.KEY_OFFSET).flatten()
+            keys = keys.view("U%d" % exponents.shape[-1])
+            keys = numpy.array(keys, dtype="U%d" % (exponents.shape[-1]))
+        else:
+            keys = numpy.zeros(0, dtype="U1")
+
+        if allocation is None:
+            allocation = 2*len(keys)
+        assert isinstance(allocation, int) and allocation >= len(keys), (
+            "Not enough memory allocated; increase 'allocation'")
+        if allocation > len(keys):
+            allocation_ = numpy.arange(allocation-len(keys), len(keys))
+            allocation_ = [str(s) for s in allocation_]
+            keys = numpy.concatenate([keys, allocation_])
+
         if names is None:
             names = option.get_options()["default_varname"]
-        if isinstance(names, string_types):
-            names = construct.symbols(names)
-        if isinstance(names, ndpoly):
+            names = construct.symbols("%s:%d" % (names, exponents.shape[-1])).names
+        elif isinstance(names, string_types):
+            names = construct.symbols(names).names
+        elif isinstance(names, ndpoly):
             names = names.names
-        if (len(names) == 1 and not names[0][-1].isdigit() and
-                (option.get_options()["force_number_suffix"] or exponents.shape[1] > 1)):
-            names = tuple("%s%d" % (str(names[0]), idx)
-                          for idx in range(exponents.shape[1]))
         for name in names:
             assert re.search(option.get_options()["varname_filter"], name), (
                 "invalid polynomial name; "
                 "expected format: %r" % option.get_options()["varname_filter"])
-
-        if numpy.prod(exponents.shape):
-            keys = (exponents+cls.KEY_OFFSET).flatten()
-            keys = keys.view("U%d" % exponents.shape[-1])
-        else:
-            keys = numpy.zeros(0, dtype="U1")
 
         dtype = int if dtype is None else dtype
         dtype_ = numpy.dtype([(key, dtype) for key in keys])
@@ -169,6 +188,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         obj._dtype = numpy.dtype(dtype)  # pylint: disable=protected-access
         obj.keys = keys
         obj.names = tuple(names)
+        obj.allocation = allocation
         return obj
 
     def __array_finalize__(self, obj):
@@ -177,6 +197,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             return
         self.keys = getattr(obj, "keys", None)
         self.names = getattr(obj, "names", None)
+        self.allocation = getattr(obj, "allocation", None)
         self._dtype = getattr(obj, "_dtype", None)
 
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
@@ -208,10 +229,10 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         Polynomial coefficients.
 
         Examples:
-            >>> x, y = numpoly.symbols("x y")
-            >>> poly = numpoly.polynomial([2*x**4, -3*y**2+14])
+            >>> q0, q1 = numpoly.variable(2)
+            >>> poly = numpoly.polynomial([2*q0**4, -3*q1**2+14])
             >>> poly
-            polynomial([2*x**4, -3*y**2+14])
+            polynomial([2*q0**4, -3*q1**2+14])
             >>> numpy.array(poly.coefficients)
             array([[ 0, 14],
                    [ 0, -3],
@@ -231,20 +252,21 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         Polynomial exponents.
 
         Examples:
-            >>> x, y = numpoly.symbols("x y")
-            >>> poly = numpoly.polynomial([2*x**4, -3*y**2+14])
+            >>> q0, q1 = numpoly.variable(2)
+            >>> poly = numpoly.polynomial([2*q0**4, -3*q1**2+14])
             >>> poly
-            polynomial([2*x**4, -3*y**2+14])
+            polynomial([2*q0**4, -3*q1**2+14])
             >>> poly.exponents
             array([[0, 0],
                    [0, 2],
                    [4, 0]], dtype=uint32)
 
         """
-        exponents = self.keys.flatten().view(numpy.uint32)-self.KEY_OFFSET
+        exponents = self.keys.astype("U%d" % len(self.names))
+        exponents = exponents.view(numpy.uint32)-self.KEY_OFFSET
         if numpy.prod(exponents.shape):
             exponents = exponents.reshape(len(self.keys), -1)
-        assert len(exponents) > 0
+        assert len(exponents) >= 0
         assert len(exponents.shape) == 2
         return exponents
 
@@ -252,8 +274,9 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     def from_attributes(
             exponents,
             coefficients,
-            names="q",
+            names=None,
             dtype=None,
+            allocation=None,
             clean=True,
     ):
         """
@@ -267,13 +290,17 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             coefficients (Iterable[numpy.ndarray]):
                 The polynomial coefficients. Must correspond to `exponents` by
                 having the same length ``N``.
-            names (Union[str, Tuple[str, ...], numpoly.ndpoly]):
+            names (Union[None, str, Tuple[str, ...], numpoly.ndpoly]):
                 The indeterminants names, either as string names or as
                 simple polynomials. Must correspond to the exponents by having
-                length ``D``.
+                length 1 or ``D``. If omitted, use
+                ``numpoly.get_options()["default_varname"]``.
             dtype (Optional[numpy.dtype]):
                 The data type of the polynomial. If omitted, extract from
                 `coefficients`.
+            allocation (Optional[int]):
+                The maximum number of polynomial exponents. If omitted, use
+                length of exponents for allocation.
             clean (bool):
                 Clean up attributes, removing redundant names and exponents.
                 Used to ensure alignment isn't broken.
@@ -288,10 +315,10 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             polynomial(4)
             >>> numpoly.ndpoly.from_attributes(
             ...     exponents=[[1]], coefficients=[[1, 2, 3]])
-            polynomial([q, 2*q, 3*q])
+            polynomial([q0, 2*q0, 3*q0])
             >>> numpoly.ndpoly.from_attributes(
             ...     exponents=[[0], [1]], coefficients=[[0, 1], [1, 1]])
-            polynomial([q, q+1])
+            polynomial([q0, q0+1])
             >>> numpoly.ndpoly.from_attributes(
             ...     exponents=[[0, 1], [1, 1]], coefficients=[[0, 1], [1, 1]])
             polynomial([q0*q1, q0*q1+q1])
@@ -302,6 +329,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             coefficients=coefficients,
             names=names,
             dtype=dtype,
+            allocation=allocation,
             clean=clean,
         )
 
@@ -311,12 +339,12 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         Polynomial indeterminants.
 
         Examples:
-            >>> x, y = numpoly.symbols("x y")
-            >>> poly = numpoly.polynomial([2*x**4, -3*y**2+14])
+            >>> q0, q1 = numpoly.variable(2)
+            >>> poly = numpoly.polynomial([2*q0**4, -3*q1**2+14])
             >>> poly
-            polynomial([2*x**4, -3*y**2+14])
+            polynomial([2*q0**4, -3*q1**2+14])
             >>> poly.indeterminants
-            polynomial([x, y])
+            polynomial([q0, q1])
 
         """
         return construct.polynomial_from_attributes(
@@ -333,9 +361,9 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         Typically used for operator dispatching and not for use to conversion.
 
         Examples:
-            >>> numpoly.symbols("x").values
+            >>> numpoly.variable(1).values
             array((1,), dtype=[('<', '<i8')])
-            >>> numpoly.symbols("x y").values
+            >>> numpoly.variable(2).values
             array([(1, 0), (0, 1)], dtype=[('<;', '<i8'), (';<', '<i8')])
 
         """
@@ -354,12 +382,12 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                 True if all elements in array are constant.
 
         Examples:
-            >>> x = numpoly.symbols("x")
-            >>> x.isconstant()
+            >>> q0 = numpoly.variable()
+            >>> q0.isconstant()
             False
             >>> numpoly.polynomial([1, 2]).isconstant()
             True
-            >>> numpoly.polynomial([1, x]).isconstant()
+            >>> numpoly.polynomial([1, q0]).isconstant()
             False
 
         """
@@ -375,10 +403,10 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                 coefficients.
 
         Examples:
-            >>> x, y = numpoly.symbols("x y")
-            >>> poly = 2*x**4-3*y**2+14
+            >>> q0, q1 = numpoly.variable(2)
+            >>> poly = 2*q0**4-3*q1**2+14
             >>> poly
-            polynomial(2*x**4-3*y**2+14)
+            polynomial(2*q0**4-3*q1**2+14)
             >>> poly.todict() == {(0, 0): 14, (4, 0): 2, (0, 2): -3}
             True
 
@@ -420,7 +448,12 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         coefficients = [coefficient.astype(dtype, **kwargs)
                         for coefficient in self.coefficients]
         return construct.polynomial_from_attributes(
-            self.exponents, coefficients, self.names, dtype=dtype)
+            exponents=self.exponents,
+            coefficients=coefficients,
+            names=self.names,
+            allocation=self.allocation,
+            dtype=dtype,
+        )
 
     def round(self, decimals=0, out=None):
         """Wrap ndarray.round."""
@@ -459,9 +492,9 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                 polynomial.
 
         Examples:
-            >>> x, y = numpoly.symbols("x y")
-            >>> poly = numpoly.polynomial([[x, x-1], [y, y+x]])
-            >>> poly(1, y=[0, 1, 2])
+            >>> q0, q1 = numpoly.variable(2)
+            >>> poly = numpoly.polynomial([[q0, q0-1], [q1, q1+q0]])
+            >>> poly(1, q1=[0, 1, 2])
             array([[[1, 1, 1],
                     [0, 0, 0]],
             <BLANKLINE>
@@ -486,15 +519,15 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
                 numpy.ndarray.
 
         Examples:
-            >>> x, y = numpoly.symbols("x y")
-            >>> poly = numpoly.polynomial([[1-4*x, x**2], [y-3, x*y*y]])
+            >>> q0, q1 = numpoly.variable(2)
+            >>> poly = numpoly.polynomial([[1-4*q0, q0**2], [q1-3, q0*q1*q1]])
             >>> poly
-            polynomial([[-4*x+1, x**2],
-                        [y-3, x*y**2]])
+            polynomial([[-4*q0+1, q0**2],
+                        [q1-3, q0*q1**2]])
             >>> poly[0]
-            polynomial([-4*x+1, x**2])
+            polynomial([-4*q0+1, q0**2])
             >>> poly[:, 1]
-            polynomial([x**2, x*y**2])
+            polynomial([q0**2, q0*q1**2])
             >>> poly["<;"]
             array([[-4,  0],
                    [ 0,  0]])
@@ -507,6 +540,25 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             coefficients=[coeff[index] for coeff in self.coefficients],
             names=self.names,
         )
+
+    # def __setitem__(self, index, other):
+    #     other = construct.aspolynomial(other)
+    #     difference =  set(other.names).difference(self.names)
+    #     assert not difference, (
+    #         "polynomial does not contain indeterminants: %s" % difference)
+    #     assert self.ndim >= other.ndim
+    #     other, _ = align.align_polynomials(other, self)
+    #     for key in other.keys:
+    #         if key not in self.keys:
+    #             for idx, key_ in enumerate(self.values.dtype.names):
+    #                 if key_.isdigit():
+    #                     break
+    #             else:
+    #                 fail
+    #             names = list(self.values.dtype.names)
+    #             names[idx] = key
+    #         self.values[key][index] = other.values[key][index]
+
 
     def __iter__(self):
         """Iterate polynomial array."""
