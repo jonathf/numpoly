@@ -42,7 +42,11 @@ def set_dimensions(poly, dimensions=None):
             if candidate not in names:
                 names.append(candidate)
             idx += 1
-        names = sorted(names)
+
+        indices = numpy.lexsort([names])
+        exponents = exponents[:, indices]
+        names = [names[idx] for idx in indices]
+
 
     elif diff < 0:
         indices = True ^ numpy.any(poly.exponents[:, dimensions:], -1)
