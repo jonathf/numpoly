@@ -33,22 +33,24 @@ def set_dimensions(poly, dimensions=None):
     if diff > 0:
         padding = numpy.zeros((len(poly.exponents), diff), dtype="uint32")
         exponents = numpy.hstack([poly.exponents, padding])
-        varname = numpoly.get_options()["default_varname"]
-        names = poly.names + tuple(
-            "%s%d" % (varname, idx)
-            for idx in range(len(poly.names), dimensions)
-        )
-        assert len(names) == len(set(names)), (
-            "set_dimensions requires regularity in naming convention.")
         coefficients = poly.coefficients
+        varname = numpoly.get_options()["default_varname"]
+        names = list(poly.names)
+        idx = 0
+        while len(names) < dimensions:
+            candidate = "%s%d" % (varname, idx)
+            if candidate not in names:
+                names.append(candidate)
+            idx += 1
+        names = sorted(names)
 
     elif diff < 0:
         indices = True ^ numpy.any(poly.exponents[:, dimensions:], -1)
         exponents = poly.exponents[:, :dimensions]
         exponents = exponents[indices, numpy.arange(dimensions)]
-        names = poly.names[:dimensions]
         coefficients = [
             coeff for coeff, idx in zip(poly.coefficients, indices) if idx]
+        names = poly.names[:dimensions]
 
     else:
         return poly
