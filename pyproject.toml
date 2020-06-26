@@ -4,20 +4,23 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "numpoly"
-version = "0.3.0"
-authors = ["Jonathan Feinberg <jonathf@gmail.com>"]
-repository = "https://github.com/jonathf/numpoly"
+version = "1.0.0"
 description = "Polynomials as a numpy datatype"
+license = "MIT"
+authors = ["Jonathan Feinberg"]
+repository = "https://github.com/jonathf/numpoly"
+documentation = "https://numpoly.readthedocs.io"
 readme = "README.rst"
 classifiers = [
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Science/Research",
         "Topic :: Scientific/Engineering :: Mathematics",
-        "License :: OSI Approved :: BSD License",
+        "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
 ]
 
 [tool.poetry.dependencies]
+python = "*"
 numpy = "^1.16"
 six = "*"
 

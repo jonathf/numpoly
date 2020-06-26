@@ -52,15 +52,15 @@ def isclose(a, b, rtol=1e-5, atol=1e-8, equal_nan=False):
         value for `atol` will result in `False` if either `a` or `b` is zero.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> numpoly.isclose([1e10*x, 1e-7], [1.00001e10*x, 1e-8])
+        >>> q0, q1 = numpoly.variable(2)
+        >>> numpoly.isclose([1e10*q0, 1e-7], [1.00001e10*q0, 1e-8])
         array([ True, False])
-        >>> numpoly.isclose([1e10*x, 1e-8], [1.00001e10*x, 1e-9])
+        >>> numpoly.isclose([1e10*q0, 1e-8], [1.00001e10*q0, 1e-9])
         array([ True,  True])
-        >>> numpoly.isclose([1e10*x, 1e-8], [1.00001e10*y, 1e-9])
+        >>> numpoly.isclose([1e10*q0, 1e-8], [1.00001e10*q1, 1e-9])
         array([False,  True])
-        >>> numpoly.isclose([x, numpy.nan],
-        ...                 [x, numpy.nan], equal_nan=True)
+        >>> numpoly.isclose([q0, numpy.nan],
+        ...                 [q0, numpy.nan], equal_nan=True)
         array([ True,  True])
 
     """

@@ -44,19 +44,19 @@ def maximum(x1, x2, out=None, **kwargs):
             both `x1` and `x2` are scalars.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
+        >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.maximum(3, 4)
         polynomial(4)
-        >>> numpoly.maximum(4*x, 3*x)
-        polynomial(4*x)
-        >>> numpoly.maximum(x, y)
-        polynomial(y)
-        >>> numpoly.maximum(x**2, x)
-        polynomial(x**2)
-        >>> numpoly.maximum([1, x, x**2, x**3], y)
-        polynomial([y, y, x**2, x**3])
-        >>> numpoly.maximum(x+1, x-1)
-        polynomial(x+1)
+        >>> numpoly.maximum(4*q0, 3*q0)
+        polynomial(4*q0)
+        >>> numpoly.maximum(q0, q1)
+        polynomial(q1)
+        >>> numpoly.maximum(q0**2, q0)
+        polynomial(q0**2)
+        >>> numpoly.maximum([1, q0, q0**2, q0**3], q1)
+        polynomial([q1, q1, q0**2, q0**3])
+        >>> numpoly.maximum(q0+1, q0-1)
+        polynomial(q0+1)
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)

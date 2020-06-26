@@ -36,14 +36,14 @@ def all(a, axis=None, out=None, keepdims=False, **kwargs):
             which case a reference to `out` is returned.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> numpoly.all(x)
+        >>> q0 = numpoly.variable()
+        >>> numpoly.all(q0)
         True
-        >>> numpoly.all(0*x)
+        >>> numpoly.all(0*q0)
         False
-        >>> numpoly.all([1, x, 0])
+        >>> numpoly.all([1, q0, 0])
         False
-        >>> numpoly.all([[True*x, False], [True, True]], axis=0)
+        >>> numpoly.all([[True*q0, False], [True, True]], axis=0)
         array([ True, False])
 
     """

@@ -17,27 +17,30 @@ def dsplit(ary, indices_or_sections):
     Examples:
         >>> poly = numpoly.monomial(8).reshape(2, 2, 2)
         >>> poly
-        polynomial([[[1, q],
-                     [q**2, q**3]],
+        polynomial([[[1, q0],
+                     [q0**2, q0**3]],
         <BLANKLINE>
-                    [[q**4, q**5],
-                     [q**6, q**7]]])
+                    [[q0**4, q0**5],
+                     [q0**6, q0**7]]])
         >>> part1, part2 = numpoly.dsplit(poly, 2)
         >>> part1
         polynomial([[[1],
-                     [q**2]],
+                     [q0**2]],
         <BLANKLINE>
-                    [[q**4],
-                     [q**6]]])
+                    [[q0**4],
+                     [q0**6]]])
         >>> part2
-        polynomial([[[q],
-                     [q**3]],
+        polynomial([[[q0],
+                     [q0**3]],
         <BLANKLINE>
-                    [[q**5],
-                     [q**7]]])
+                    [[q0**5],
+                     [q0**7]]])
 
     """
     ary = numpoly.aspolynomial(ary)
     results = numpy.dsplit(ary.values, indices_or_sections=indices_or_sections)
-    return [numpoly.aspolynomial(result, names=ary.indeterminants)
-            for result in results]
+    return [
+        numpoly.polynomial(
+            result, names=ary.indeterminants, allocation=ary.allocation)
+        for result in results
+    ]

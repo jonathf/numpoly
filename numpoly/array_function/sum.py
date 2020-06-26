@@ -47,13 +47,12 @@ def sum(a, axis=None, dtype=None, out=None, keepdims=False, **kwargs):
             returned.
 
     Examples:
-        >>> x, y, z = xyz = numpoly.symbols("x y z")
-        >>> numpoly.sum(xyz)
-        polynomial(z+y+x)
-        >>> numpoly.sum([[1, x], [y, z]])
-        polynomial(z+y+x+1)
-        >>> numpoly.sum([[1, x], [y, z]], axis=0)
-        polynomial([y+1, z+x])
+        >>> q0, q1, q2 = numpoly.variable(3)
+        >>> poly = numpoly.polynomial([[1, q0], [q1, q2]])
+        >>> numpoly.sum(poly)
+        polynomial(q2+q1+q0+1)
+        >>> numpoly.sum(poly, axis=0)
+        polynomial([q1+1, q2+q0])
 
     """
     return simple_dispatch(

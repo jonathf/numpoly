@@ -38,20 +38,20 @@ def less(x1, x2, out=None, **kwargs):
             if both `x1` and `x2` are scalars.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
+        >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.less(3, 4)
         True
-        >>> numpoly.less(4*x, 3*x)
+        >>> numpoly.less(4*q0, 3*q0)
         False
-        >>> numpoly.less(x, y)
+        >>> numpoly.less(q0, q1)
         True
-        >>> numpoly.less(x**2, x)
+        >>> numpoly.less(q0**2, q0)
         False
-        >>> numpoly.less([1, x, x**2, x**3], y)
+        >>> numpoly.less([1, q0, q0**2, q0**3], q1)
         array([ True,  True, False, False])
-        >>> numpoly.less(x+1, x-1)
+        >>> numpoly.less(q0+1, q0-1)
         False
-        >>> numpoly.less(x, x)
+        >>> numpoly.less(q0, q0)
         False
 
     """

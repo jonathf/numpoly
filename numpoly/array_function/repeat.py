@@ -26,22 +26,22 @@ def repeat(a, repeats, axis=0):
             given axis.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> numpoly.repeat(x, 4)
-        polynomial([x, x, x, x])
-        >>> poly = numpoly.polynomial([[1, x-1], [x**2, x]])
+        >>> q0 = numpoly.variable()
+        >>> numpoly.repeat(q0, 4)
+        polynomial([q0, q0, q0, q0])
+        >>> poly = numpoly.polynomial([[1, q0-1], [q0**2, q0]])
         >>> numpoly.repeat(poly, 2)
-        polynomial([[1, x-1],
-                    [1, x-1],
-                    [x**2, x],
-                    [x**2, x]])
+        polynomial([[1, q0-1],
+                    [1, q0-1],
+                    [q0**2, q0],
+                    [q0**2, q0]])
         >>> numpoly.repeat(poly, 3, axis=1)
-        polynomial([[1, 1, 1, x-1, x-1, x-1],
-                    [x**2, x**2, x**2, x, x, x]])
+        polynomial([[1, 1, 1, q0-1, q0-1, q0-1],
+                    [q0**2, q0**2, q0**2, q0, q0, q0]])
         >>> numpoly.repeat(poly, [1, 2], axis=0)
-        polynomial([[1, x-1],
-                    [x**2, x],
-                    [x**2, x]])
+        polynomial([[1, q0-1],
+                    [q0**2, q0],
+                    [q0**2, q0]])
 
     """
     a = numpoly.aspolynomial(a)

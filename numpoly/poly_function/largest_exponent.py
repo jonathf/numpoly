@@ -17,12 +17,12 @@ def largest_exponent(poly, graded=False, reverse=False):
             Polynomial to locate exponents on.
         graded (bool):
             Graded sorting, meaning the indices are always sorted by the index
-            sum. E.g. ``x**2*y**2*z**2`` has an exponent sum of 6, and will
-            therefore be consider larger than both ``x**3*y*z``, ``x*y**3*z``
-            and ``x*y*z**3``.
+            sum. E.g. ``q0**2*q1**2*q2**2`` has an exponent sum of 6, and will
+            therefore be consider larger than both ``q0**3*q1*q2``,
+            ``q0*q1**3*q2`` and ``q0*q1*z**3``.
         reverse (bool):
-            Reverses lexicographical sorting meaning that ``x*y**3`` is
-            considered bigger than ``x**3*y``, instead of the opposite.
+            Reverses lexicographical sorting meaning that ``q0*q1**3`` is
+            considered bigger than ``q0**3*q1``, instead of the opposite.
 
     Returns:
         (numpy.ndarray):
@@ -31,10 +31,10 @@ def largest_exponent(poly, graded=False, reverse=False):
             is used to indicate the exponent for the different indeterminants.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> numpoly.largest_exponent([1, x+1, x**2+x+1]).T
+        >>> q0, q1 = numpoly.variable(2)
+        >>> numpoly.largest_exponent([1, q0+1, q0**2+q0+1]).T
         array([[0, 1, 2]])
-        >>> numpoly.largest_exponent([1, x, y, x*y, x**3-1]).T
+        >>> numpoly.largest_exponent([1, q0, q1, q0*q1, q0**3-1]).T
         array([[0, 1, 0, 1, 3],
                [0, 0, 1, 1, 0]])
 

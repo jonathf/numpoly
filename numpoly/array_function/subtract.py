@@ -37,15 +37,15 @@ def subtract(x1, x2, out=None, where=True, **kwargs):
             both `x1` and `x2` are scalars.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> numpoly.subtract(x, 4)
-        polynomial(x-4)
-        >>> poly1 = x**numpy.arange(9).reshape((3, 3))
-        >>> poly2 = y**numpy.arange(3)
+        >>> q0, q1 = numpoly.variable(2)
+        >>> numpoly.subtract(q0, 4)
+        polynomial(q0-4)
+        >>> poly1 = q0**numpy.arange(9).reshape((3, 3))
+        >>> poly2 = q1**numpy.arange(3)
         >>> numpoly.subtract(poly1, poly2)
-        polynomial([[0, -y+x, -y**2+x**2],
-                    [x**3-1, x**4-y, x**5-y**2],
-                    [x**6-1, x**7-y, x**8-y**2]])
+        polynomial([[0, -q1+q0, -q1**2+q0**2],
+                    [q0**3-1, q0**4-q1, q0**5-q1**2],
+                    [q0**6-1, q0**7-q1, q0**8-q1**2]])
 
     """
     return simple_dispatch(

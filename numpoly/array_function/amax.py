@@ -43,15 +43,15 @@ def amax(a, axis=None, out=None, **kwargs):
             ``a.ndim-1``.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
+        >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.amax([13, 7])
         polynomial(13)
-        >>> numpoly.amax([1, x, x**2, y])
-        polynomial(x**2)
-        >>> numpoly.amax([1, x, y])
-        polynomial(y)
-        >>> numpoly.amax([[3*x**2, 5*x**2], [2*x**2, 4*x**2]], axis=0)
-        polynomial([3*x**2, 5*x**2])
+        >>> numpoly.amax([1, q0, q0**2, q1])
+        polynomial(q0**2)
+        >>> numpoly.amax([1, q0, q1])
+        polynomial(q1)
+        >>> numpoly.amax([[3*q0**2, 5*q0**2], [2*q0**2, 4*q0**2]], axis=0)
+        polynomial([3*q0**2, 5*q0**2])
 
     """
     del out

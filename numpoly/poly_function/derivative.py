@@ -19,15 +19,15 @@ def diff(poly, *diffvars):
         Same as ``poly`` but differentiated with respect to ``diffvars``.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> poly = numpoly.polynomial([1, x, x*y**2+1])
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly = numpoly.polynomial([1, q0, q0*q1**2+1])
         >>> poly
-        polynomial([1, x, x*y**2+1])
-        >>> numpoly.diff(poly, "x")
-        polynomial([0, 1, y**2])
+        polynomial([1, q0, q0*q1**2+1])
+        >>> numpoly.diff(poly, "q0")
+        polynomial([0, 1, q1**2])
         >>> numpoly.diff(poly, 0, 1)
-        polynomial([0, 0, 2*y])
-        >>> numpoly.diff(poly, x, x, x)
+        polynomial([0, 0, 2*q1])
+        >>> numpoly.diff(poly, q0, q0, q0)
         polynomial([0, 0, 0])
 
     """
@@ -76,17 +76,17 @@ def gradient(poly):
         variable in ``poly.indeterminants``, filled with gradient values.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> poly = 5*x**5+4
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly = 5*q0**5+4
         >>> numpoly.gradient(poly)
-        polynomial([25*x**4])
-        >>> poly = 4*x**3+2*y**2+3
+        polynomial([25*q0**4])
+        >>> poly = 4*q0**3+2*q1**2+3
         >>> numpoly.gradient(poly)
-        polynomial([12*x**2, 4*y])
-        >>> poly = numpoly.polynomial([1, x**3, x*y**2+1])
+        polynomial([12*q0**2, 4*q1])
+        >>> poly = numpoly.polynomial([1, q0**3, q0*q1**2+1])
         >>> numpoly.gradient(poly)
-        polynomial([[0, 3*x**2, y**2],
-                    [0, 0, 2*x*y]])
+        polynomial([[0, 3*q0**2, q1**2],
+                    [0, 0, 2*q0*q1]])
 
     """
     poly = numpoly.aspolynomial(poly)
@@ -111,21 +111,21 @@ def hessian(poly):
         variable in ``poly.indeterminants``, filled with Hessian values.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> poly = 5*x**5+4
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly = 5*q0**5+4
         >>> numpoly.hessian(poly)
-        polynomial([[100*x**3]])
-        >>> poly = 4*x**3+2*y**2+3
+        polynomial([[100*q0**3]])
+        >>> poly = 4*q0**3+2*q1**2+3
         >>> numpoly.hessian(poly)
-        polynomial([[24*x, 0],
+        polynomial([[24*q0, 0],
                     [0, 4]])
-        >>> poly = numpoly.polynomial([1, x, x*y**2+1])
+        >>> poly = numpoly.polynomial([1, q0, q0*q1**2+1])
         >>> numpoly.hessian(poly)
         polynomial([[[0, 0, 0],
-                     [0, 0, 2*y]],
+                     [0, 0, 2*q1]],
         <BLANKLINE>
-                    [[0, 0, 2*y],
-                     [0, 0, 2*x]]])
+                    [[0, 0, 2*q1],
+                     [0, 0, 2*q0]]])
 
     """
     return gradient(gradient(poly))

@@ -5,7 +5,7 @@ import numpy
 from numpoly import polynomial
 import numpoly
 
-X, Y = numpoly.symbols("X Y")
+X, Y = numpoly.variable(2)
 
 
 def test_absolute(interface):
@@ -115,18 +115,19 @@ def test_around(interface):
 
 
 def test_array_repr(func_interface):
-    assert repr(4+6*X**2) == "polynomial(6*X**2+4)"
-    assert func_interface.array_repr(4+6*X**2) == "polynomial(6*X**2+4)"
+    assert repr(polynomial([])).startswith("polynomial([], dtype=")
+    assert repr(4+6*X**2) == "polynomial(6*q0**2+4)"
+    assert func_interface.array_repr(4+6*X**2) == "polynomial(6*q0**2+4)"
     assert (repr(polynomial([1., -5*X, 3-X**2])) ==
-            "polynomial([1.0, -5.0*X, -X**2+3.0])")
+            "polynomial([1.0, -5.0*q0, -q0**2+3.0])")
     assert (func_interface.array_repr(polynomial([1., -5*X, 3-X**2])) ==
-            "polynomial([1.0, -5.0*X, -X**2+3.0])")
+            "polynomial([1.0, -5.0*q0, -q0**2+3.0])")
     assert repr(polynomial([[[1, 2], [5, Y]]])) == """\
 polynomial([[[1, 2],
-             [5, Y]]])"""
+             [5, q1]]])"""
     assert func_interface.array_repr(polynomial([[[1, 2], [5, Y]]])) == """\
 polynomial([[[1, 2],
-             [5, Y]]])"""
+             [5, q1]]])"""
 
 
 def test_array_split(func_interface):
@@ -138,16 +139,17 @@ def test_array_split(func_interface):
 
 
 def test_array_str(func_interface):
-    assert str(4+6*X**2) == "6*X**2+4"
-    assert func_interface.array_str(4+6*X**2) == "6*X**2+4"
-    assert str(polynomial([1., -5*X, 3-X**2])) == "[1.0 -5.0*X -X**2+3.0]"
-    assert func_interface.array_str(polynomial([1., -5*X, 3-X**2])) == "[1.0 -5.0*X -X**2+3.0]"
+    assert str(polynomial([])).startswith("[]")
+    assert str(4+6*X**2) == "6*q0**2+4"
+    assert func_interface.array_str(4+6*X**2) == "6*q0**2+4"
+    assert str(polynomial([1., -5*X, 3-X**2])) == "[1.0 -5.0*q0 -q0**2+3.0]"
+    assert func_interface.array_str(polynomial([1., -5*X, 3-X**2])) == "[1.0 -5.0*q0 -q0**2+3.0]"
     assert str(polynomial([[[1, 2], [5, Y]]])) == """\
 [[[1 2]
-  [5 Y]]]"""
+  [5 q1]]]"""
     assert func_interface.array_str(polynomial([[[1, 2], [5, Y]]])) == """\
 [[[1 2]
-  [5 Y]]]"""
+  [5 q1]]]"""
 
 
 def test_atleast_1d(func_interface):
@@ -277,7 +279,7 @@ def test_floor_divide(interface):
     out = numpoly.ndpoly(
         exponents=poly.exponents,
         shape=(2, 2),
-        names=("X", "Y"),
+        names=("q0", "q1"),
         dtype=float,
     )
     numpoly.floor_divide(poly, 2, out=[out])

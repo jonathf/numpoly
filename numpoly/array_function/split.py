@@ -55,20 +55,20 @@ def split(ary, indices_or_sections, axis=0):
     Examples:
         >>> poly = numpoly.monomial(16).reshape(4, 4)
         >>> poly
-        polynomial([[1, q, q**2, q**3],
-                    [q**4, q**5, q**6, q**7],
-                    [q**8, q**9, q**10, q**11],
-                    [q**12, q**13, q**14, q**15]])
+        polynomial([[1, q0, q0**2, q0**3],
+                    [q0**4, q0**5, q0**6, q0**7],
+                    [q0**8, q0**9, q0**10, q0**11],
+                    [q0**12, q0**13, q0**14, q0**15]])
         >>> part1, _ = numpoly.split(poly, 2, axis=0)
         >>> part1
-        polynomial([[1, q, q**2, q**3],
-                    [q**4, q**5, q**6, q**7]])
+        polynomial([[1, q0, q0**2, q0**3],
+                    [q0**4, q0**5, q0**6, q0**7]])
         >>> part1, _ = numpoly.split(poly, 2, axis=1)
         >>> part1
-        polynomial([[1, q],
-                    [q**4, q**5],
-                    [q**8, q**9],
-                    [q**12, q**13]])
+        polynomial([[1, q0],
+                    [q0**4, q0**5],
+                    [q0**8, q0**9],
+                    [q0**12, q0**13]])
 
     """
     ary = numpoly.aspolynomial(ary)

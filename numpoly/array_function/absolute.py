@@ -36,17 +36,17 @@ def absolute(x, out=None, where=True, **kwargs):
             :math:`\sqrt{a^2+b^2}`. This is a scalar if `x` is a scalar.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> poly = numpoly.polynomial([-1.2, 1.2, -2.3*x, 2.3*x])
+        >>> q0 = numpoly.variable()
+        >>> poly = numpoly.polynomial([-1.2, 1.2, -2.3*q0, 2.3*q0])
         >>> poly
-        polynomial([-1.2, 1.2, -2.3*x, 2.3*x])
+        polynomial([-1.2, 1.2, -2.3*q0, 2.3*q0])
         >>> numpoly.absolute(poly)
-        polynomial([1.2, 1.2, 2.3*x, 2.3*x])
-        >>> poly = numpoly.polynomial([x, 1j*x, (3+4j)*x])
+        polynomial([1.2, 1.2, 2.3*q0, 2.3*q0])
+        >>> poly = numpoly.polynomial([q0, 1j*q0, (3+4j)*q0])
         >>> poly
-        polynomial([x, 1j*x, (3+4j)*x])
+        polynomial([q0, 1j*q0, (3+4j)*q0])
         >>> numpoly.absolute(poly)
-        polynomial([x, x, 5.0*x])
+        polynomial([q0, q0, 5.0*q0])
 
     """
     return simple_dispatch(

@@ -38,20 +38,20 @@ def greater(x1, x2, out=None, **kwargs):
             if both `x1` and `x2` are scalars.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
+        >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.greater(3, 4)
         False
-        >>> numpoly.greater(4*x, 3*x)
+        >>> numpoly.greater(4*q0, 3*q0)
         True
-        >>> numpoly.greater(x, y)
+        >>> numpoly.greater(q0, q1)
         False
-        >>> numpoly.greater(x**2, x)
+        >>> numpoly.greater(q0**2, q0)
         True
-        >>> numpoly.greater([1, x, x**2, x**3], y)
+        >>> numpoly.greater([1, q0, q0**2, q0**3], q1)
         array([False, False,  True,  True])
-        >>> numpoly.greater(x+1, x-1)
+        >>> numpoly.greater(q0+1, q0-1)
         True
-        >>> numpoly.greater(x, x)
+        >>> numpoly.greater(q0, q0)
         False
 
     """

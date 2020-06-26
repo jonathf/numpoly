@@ -5,7 +5,7 @@ from ..dispatch import implements, simple_dispatch
 
 
 @implements(numpy.positive)  # pylint: disable=no-member
-def positive(x, out=None, where=True, **kwargs):
+def positive(q0, out=None, where=True, **kwargs):
     """
     Numerical positive, element-wise.
 
@@ -34,14 +34,14 @@ def positive(x, out=None, where=True, **kwargs):
             a scalar.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> numpoly.positive([-0, 0, -x, x])
-        polynomial([0, 0, -x, x])
+        >>> q0 = numpoly.variable()
+        >>> numpoly.positive([-0, 0, -q0, q0])
+        polynomial([0, 0, -q0, q0])
 
     """
     return simple_dispatch(
         numpy_func=numpy.positive,  # pylint: disable=no-member
-        inputs=(x,),
+        inputs=(q0,),
         out=out,
         where=where,
         **kwargs

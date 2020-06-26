@@ -34,18 +34,18 @@ def tile(A, reps):
             The tiled output array.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> numpoly.tile(x, 4)
-        polynomial([x, x, x, x])
-        >>> poly = numpoly.polynomial([[1, x-1], [x**2, x]])
+        >>> q0 = numpoly.variable()
+        >>> numpoly.tile(q0, 4)
+        polynomial([q0, q0, q0, q0])
+        >>> poly = numpoly.polynomial([[1, q0-1], [q0**2, q0]])
         >>> numpoly.tile(poly, 2)
-        polynomial([[1, x-1, 1, x-1],
-                    [x**2, x, x**2, x]])
+        polynomial([[1, q0-1, 1, q0-1],
+                    [q0**2, q0, q0**2, q0]])
         >>> numpoly.tile(poly, [2, 1])
-        polynomial([[1, x-1],
-                    [x**2, x],
-                    [1, x-1],
-                    [x**2, x]])
+        polynomial([[1, q0-1],
+                    [q0**2, q0],
+                    [1, q0-1],
+                    [q0**2, q0]])
 
     """
     A = numpoly.aspolynomial(A)

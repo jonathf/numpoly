@@ -7,7 +7,7 @@ import numpy
 import numpoly
 
 
-def symbols(names=None, asarray=False, dtype="i8"):
+def symbols(names=None, asarray=False, dtype="i8", allocation=None):
     """
     Construct symbol variables.
 
@@ -27,6 +27,9 @@ def symbols(names=None, asarray=False, dtype="i8"):
             variable.
         dtype (numpy.dtype):
             The data type of the polynomial coefficients.
+        allocation (Optional[int]):
+            The maximum number of polynomial exponents. If omitted, use
+            length of exponents for allocation.
 
     Returns:
         (numpoly.ndpoly):
@@ -34,29 +37,23 @@ def symbols(names=None, asarray=False, dtype="i8"):
 
     Examples:
         >>> numpoly.symbols()
-        polynomial(q)
-        >>> numpoly.symbols("z,")
-        polynomial([z])
-        >>> numpoly.symbols("z", asarray=True)
-        polynomial([z])
-        >>> numpoly.symbols(["alpha", "beta"])
-        polynomial([alpha, beta])
-        >>> numpoly.symbols("x y z")
-        polynomial([x, y, z])
-        >>> numpoly.symbols("a,b,c")
-        polynomial([a, b, c])
+        polynomial(q0)
+        >>> numpoly.symbols("q4")
+        polynomial(q4)
         >>> numpoly.symbols("q:7")
         polynomial([q0, q1, q2, q3, q4, q5, q6])
         >>> numpoly.symbols("q3:6")
         polynomial([q3, q4, q5])
-        >>> numpoly.symbols("za:f")
-        polynomial([za, zb, zc, zd, ze, zf])
 
     """
     if names is None:
         coefficients = numpy.ones((1, 1) if asarray else 1, dtype=dtype)
         return numpoly.ndpoly.from_attributes(
-            exponents=[(1,)], coefficients=coefficients)
+            exponents=[(1,)],
+            coefficients=coefficients,
+            dtype=dtype,
+            allocation=allocation,
+        )
 
     if not isinstance(names, string_types):
         names = list(names)
@@ -100,4 +97,5 @@ def symbols(names=None, asarray=False, dtype="i8"):
         exponents=exponents,
         coefficients=coefficients,
         names=names,
+        allocation=allocation,
     )

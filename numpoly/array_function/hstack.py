@@ -29,16 +29,16 @@ def hstack(tup):
             The array formed by stacking the given arrays.
 
     Examples:
-        >>> a = numpoly.symbols("x y z")
-        >>> b = numpoly.polynomial([1, 2, 3])
-        >>> numpoly.hstack([a, b])
-        polynomial([x, y, z, 1, 2, 3])
-        >>> c = numpoly.polynomial([[1], [2], [3]])
-        >>> d = a.reshape(3, 1)
-        >>> numpoly.hstack([c, d])
-        polynomial([[1, x],
-                    [2, y],
-                    [3, z]])
+        >>> poly1 = numpoly.variable(3)
+        >>> const1 = numpoly.polynomial([1, 2, 3])
+        >>> numpoly.hstack([poly1, const1])
+        polynomial([q0, q1, q2, 1, 2, 3])
+        >>> const2 = numpoly.polynomial([[1], [2], [3]])
+        >>> poly2 = poly1.reshape(3, 1)
+        >>> numpoly.hstack([const2, poly2])
+        polynomial([[1, q0],
+                    [2, q1],
+                    [3, q2]])
 
     """
     arrays = numpoly.align_exponents(*tup)

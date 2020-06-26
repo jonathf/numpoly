@@ -1,4 +1,5 @@
 """Construct polynomial from polynomial attributes."""
+import numpy
 import numpoly
 
 from . import clean as clean_
@@ -9,6 +10,7 @@ def polynomial_from_attributes(
         coefficients,
         names,
         dtype=None,
+        allocation=None,
         clean=True,
 ):
     """
@@ -29,6 +31,9 @@ def polynomial_from_attributes(
         dtype (Optional[numpy.dtype]):
             The data type of the polynomial. If omitted, extract from
             `coefficients`.
+        allocation (Optional[int]):
+            The maximum number of polynomial exponents. If omitted, use
+            length of exponents for allocation.
         clean (bool):
             Clean up attributes, removing redundant indeterminant names and
             exponents.
@@ -41,15 +46,15 @@ def polynomial_from_attributes(
         >>> numpoly.ndpoly.from_attributes(
         ...     exponents=[(0,), (1,)],
         ...     coefficients=[[1, 0], [0, 1]],
-        ...     names=("x",),
+        ...     names="q4",
         ... )
-        polynomial([1, x])
+        polynomial([1, q4])
         >>> numpoly.ndpoly.from_attributes(
         ...     exponents=[(0, 0, 0), (1, 1, 2)],
         ...     coefficients=[4, -1],
-        ...     names=("x", "y", "z"),
+        ...     names=("q2", "q4", "q10"),
         ... )
-        polynomial(-x*y*z**2+4)
+        polynomial(-q2*q4*q10**2+4)
         >>> numpoly.ndpoly.from_attributes(
         ...     exponents=[(0,)],
         ...     coefficients=[0],
@@ -71,7 +76,8 @@ def polynomial_from_attributes(
         shape=shape,
         names=names,
         dtype=dtype,
+        allocation=allocation,
     )
-    for exponent, values in zip(poly.keys, coefficients):
-        poly[exponent] = values
+    for key, values in zip(poly.keys, coefficients):
+        poly.values[key] = values
     return poly

@@ -37,10 +37,10 @@ def not_equal(x1, x2, out=None, where=True, **kwargs):
             of type bool, unless ``dtype=object`` is passed.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> numpoly.not_equal([x, x], [x, y])
+        >>> q0, q1 = numpoly.variable(2)
+        >>> numpoly.not_equal([q0, q0], [q0, q1])
         array([False,  True])
-        >>> numpoly.not_equal([x, x], [[x, y], [y, x]])
+        >>> numpoly.not_equal([q0, q0], [[q0, q1], [q1, q0]])
         array([[False,  True],
                [ True, False]])
 

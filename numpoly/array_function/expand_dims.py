@@ -23,12 +23,12 @@ def expand_dims(a, axis):
             View of `a` with the number of dimensions increased by one.
 
     Examples:
-        >>> poly = numpoly.symbols("x y")
+        >>> poly = numpoly.variable(2)
         >>> numpoly.expand_dims(poly, axis=0)
-        polynomial([[x, y]])
+        polynomial([[q0, q1]])
         >>> numpoly.expand_dims(poly, axis=1)
-        polynomial([[x],
-                    [y]])
+        polynomial([[q0],
+                    [q1]])
 
     """
     a = numpoly.aspolynomial(a)

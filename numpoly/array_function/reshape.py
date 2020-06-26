@@ -42,9 +42,9 @@ def reshape(a, newshape, order="C"):
         polynomial([[1, 2],
                     [3, 4]])
         >>> numpoly.reshape(numpoly.monomial(6), (3, 2))
-        polynomial([[1, q],
-                    [q**2, q**3],
-                    [q**4, q**5]])
+        polynomial([[1, q0],
+                    [q0**2, q0**3],
+                    [q0**4, q0**5]])
 
     """
     poly = numpoly.aspolynomial(a)

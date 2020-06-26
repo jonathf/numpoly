@@ -20,20 +20,20 @@ def align_polynomials(*polys):
             compatible for further operations.
 
     Examples:
-        >>> x, _ = xy = numpoly.symbols("x y")
-        >>> x
-        polynomial(x)
-        >>> x.coefficients
+        >>> q0, _ = q0q1 = numpoly.variable(2)
+        >>> q0
+        polynomial(q0)
+        >>> q0.coefficients
         [1]
-        >>> x.indeterminants
-        polynomial([x])
-        >>> x, _ = numpoly.align_polynomials(x, xy.astype(float))
-        >>> x
-        polynomial([x, x])
-        >>> x.coefficients
+        >>> q0.indeterminants
+        polynomial([q0])
+        >>> q0, _ = numpoly.align_polynomials(q0, q0q1.astype(float))
+        >>> q0
+        polynomial([q0, q0])
+        >>> q0.coefficients
         [array([1., 1.]), array([0., 0.])]
-        >>> x.indeterminants
-        polynomial([x, y])
+        >>> q0.indeterminants
+        polynomial([q0, q1])
 
     """
     polys = align_shape(*polys)
@@ -57,18 +57,18 @@ def align_shape(*polys):
             compatible for further operations.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> poly1 = 4*x
-        >>> poly2 = numpoly.polynomial([[2*x+1, 3*x-y]])
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly1 = 4*q0
+        >>> poly2 = numpoly.polynomial([[2*q0+1, 3*q0-q1]])
         >>> print(poly1.shape)
         ()
         >>> print(poly2.shape)
         (1, 2)
         >>> poly1, poly2 = numpoly.align_shape(poly1, poly2)
         >>> print(poly1)
-        [[4*x 4*x]]
+        [[4*q0 4*q0]]
         >>> print(poly2)
-        [[2*x+1 -y+3*x]]
+        [[2*q0+1 -q1+3*q0]]
         >>> print(poly1.shape)
         (1, 2)
         >>> print(poly2.shape)
@@ -104,21 +104,21 @@ def align_indeterminants(*polys):
             compatible for further operations.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> poly1, poly2 = numpoly.polynomial([2*x+1, 3*x-y])
-        >>> print(poly1.indeterminants)
-        [x]
-        >>> print(poly2.indeterminants)
-        [x y]
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly1, poly2 = numpoly.polynomial([2*q0+1, 3*q0-q1])
+        >>> poly1.indeterminants
+        polynomial([q0])
+        >>> poly2.indeterminants
+        polynomial([q0, q1])
         >>> poly1, poly2 = numpoly.align_indeterminants(poly1, poly2)
-        >>> print(poly1)
-        2*x+1
-        >>> print(poly2)
-        -y+3*x
-        >>> print(poly1.indeterminants)
-        [x y]
-        >>> print(poly2.indeterminants)
-        [x y]
+        >>> poly1
+        polynomial(2*q0+1)
+        >>> poly2
+        polynomial(-q1+3*q0)
+        >>> poly1.indeterminants
+        polynomial([q0, q1])
+        >>> poly2.indeterminants
+        polynomial([q0, q1])
 
     """
     polys = [numpoly.aspolynomial(poly) for poly in polys]
@@ -167,9 +167,9 @@ def align_exponents(*polys):
             compatible for further operations.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> poly1 = x*y
-        >>> poly2 = numpoly.polynomial([x**5, y**3-1])
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly1 = q0*q1
+        >>> poly2 = numpoly.polynomial([q0**5, q1**3-1])
         >>> poly1.exponents
         array([[1, 1]], dtype=uint32)
         >>> poly2.exponents
@@ -178,9 +178,9 @@ def align_exponents(*polys):
                [5, 0]], dtype=uint32)
         >>> poly1, poly2 = numpoly.align_exponents(poly1, poly2)
         >>> poly1
-        polynomial(x*y)
+        polynomial(q0*q1)
         >>> poly2
-        polynomial([x**5, y**3-1])
+        polynomial([q0**5, q1**3-1])
         >>> poly1.exponents
         array([[1, 1],
                [0, 0],
@@ -238,10 +238,10 @@ def align_dtype(*polys):
             compatible for further operations.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> x.dtype.name
+        >>> q0 = numpoly.variable()
+        >>> q0.dtype.name
         'int64'
-        >>> poly, _ = numpoly.align_dtype(x, 4.5)
+        >>> poly, _ = numpoly.align_dtype(q0, 4.5)
         >>> poly.dtype.name
         'float64'
 

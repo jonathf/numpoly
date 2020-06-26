@@ -48,11 +48,11 @@ def poly_remainder(x1, x2, out=None, where=True, **kwargs):
         ``numpoly.poly_remainder(11, 2) == 0``.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> denominator = [x*y**2+2*x**3*y**2, -2+x*y**2]
-        >>> numerator = -2+x*y**2
+        >>> q0, q1 = numpoly.variable(2)
+        >>> denominator = [q0*q1**2+2*q0**3*q1**2, -2+q0*q1**2]
+        >>> numerator = -2+q0*q1**2
         >>> numpoly.poly_remainder(denominator, numerator)
-        polynomial([4.0*x**2+2.0, 0.0])
+        polynomial([4.0*q0**2+2.0, 0.0])
 
     """
     dividend, remainder = poly_divmod(x1, x2, out=out, where=where, **kwargs)

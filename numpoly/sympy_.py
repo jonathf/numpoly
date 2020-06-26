@@ -16,12 +16,12 @@ def to_sympy(poly):
             expression object values.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> poly = numpoly.polynomial([[1, x**3], [y-1, -3*x]])
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly = numpoly.polynomial([[1, q0**3], [q1-1, -3*q0]])
         >>> sympy_poly = to_sympy(poly)
         >>> sympy_poly
-        array([[1, x**3],
-               [y - 1, -3*x]], dtype=object)
+        array([[1, q0**3],
+               [q1 - 1, -3*q0]], dtype=object)
         >>> type(sympy_poly.item(-1))
         <class 'sympy.core.mul.Mul'>
 

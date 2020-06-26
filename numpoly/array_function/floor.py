@@ -6,7 +6,7 @@ from ..dispatch import implements, simple_dispatch
 
 
 @implements(numpy.floor)
-def floor(x, out=None, where=True, **kwargs):
+def floor(q0, out=None, where=True, **kwargs):
     r"""
     Return the floor of the input, element-wise.
 
@@ -38,14 +38,14 @@ def floor(x, out=None, where=True, **kwargs):
             a scalar.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> numpoly.floor([-1.7*x, x-1.5, -0.2, 3.2+1.5*x, 1.7, 2.0])
-        polynomial([-2.0*x, x-2.0, -1.0, x+3.0, 1.0, 2.0])
+        >>> q0 = numpoly.variable()
+        >>> numpoly.floor([-1.7*q0, q0-1.5, -0.2, 3.2+1.5*q0, 1.7, 2.0])
+        polynomial([-2.0*q0, q0-2.0, -1.0, q0+3.0, 1.0, 2.0])
 
     """
     return simple_dispatch(
         numpy_func=numpy.floor,
-        inputs=(x,),
+        inputs=(q0,),
         out=out,
         where=where,
         **kwargs

@@ -35,14 +35,14 @@ def argmax(a, axis=None, out=None, **kwargs):
         indices corresponding to the first occurrence are returned.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
+        >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.argmax([13, 7])
         0
-        >>> numpoly.argmax([1, x, x**2, y])
+        >>> numpoly.argmax([1, q0, q0**2, q1])
         2
-        >>> numpoly.argmax([1, x, y])
+        >>> numpoly.argmax([1, q0, q1])
         2
-        >>> numpoly.argmax([[3*x**2, x**2], [2*x**2, 4*x**2]], axis=0)
+        >>> numpoly.argmax([[3*q0**2, q0**2], [2*q0**2, 4*q0**2]], axis=0)
         array([0, 1])
 
     """

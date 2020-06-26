@@ -25,29 +25,29 @@ def call(poly, *args, **kwargs):
             indeterminants, an array is returned instead of a polynomial.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> poly = numpoly.polynomial([[x, x-1], [y, y+x]])
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly = numpoly.polynomial([[q0, q0-1], [q1, q1+q0]])
         >>> poly()
-        polynomial([[x, x-1],
-                    [y, y+x]])
+        polynomial([[q0, q0-1],
+                    [q1, q1+q0]])
         >>> poly
-        polynomial([[x, x-1],
-                    [y, y+x]])
+        polynomial([[q0, q0-1],
+                    [q1, q1+q0]])
         >>> poly(1, 0)
         array([[1, 0],
                [0, 1]])
-        >>> poly(1, y=[0, 1, 2])
+        >>> poly(1, q1=[0, 1, 2])
         array([[[1, 1, 1],
                 [0, 0, 0]],
         <BLANKLINE>
                [[0, 1, 2],
                 [1, 2, 3]]])
-        >>> poly(y)
-        polynomial([[y, y-1],
-                    [y, 2*y]])
-        >>> poly(y=x-1, x=2*y)
-        polynomial([[2*y, 2*y-1],
-                    [x-1, 2*y+x-1]])
+        >>> poly(q1)
+        polynomial([[q1, q1-1],
+                    [q1, 2*q1]])
+        >>> poly(q1=q0-1, q0=2*q1)
+        polynomial([[2*q1, 2*q1-1],
+                    [q0-1, 2*q1+q0-1]])
 
     """
     logger = logging.getLogger(__name__)

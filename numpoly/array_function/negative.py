@@ -35,9 +35,9 @@ def negative(x, out=None, where=True, **kwargs):
             a scalar.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> numpoly.negative([-x, x])
-        polynomial([x, -x])
+        >>> q0 = numpoly.variable()
+        >>> numpoly.negative([-q0, q0])
+        polynomial([q0, -q0])
 
     """
     return simple_dispatch(

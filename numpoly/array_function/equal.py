@@ -38,12 +38,12 @@ def equal(x1, x2, out=None, where=True, **kwargs):
             if both `x1` and `x2` are scalars.
 
     Examples:
-        >>> x, y, z = xyz = numpoly.symbols("x y z")
-        >>> numpoly.equal(xyz, x)
+        >>> q0, q1, q2 = q0q1q2 = numpoly.variable(3)
+        >>> numpoly.equal(q0q1q2, q0)
         array([ True, False, False])
-        >>> numpoly.equal(xyz, [y, y, z])
+        >>> numpoly.equal(q0q1q2, [q1, q1, q2])
         array([False,  True,  True])
-        >>> numpoly.equal(x, y)
+        >>> numpoly.equal(q0, q1)
         False
 
     """

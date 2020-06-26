@@ -6,7 +6,7 @@ from ..dispatch import implements, simple_dispatch
 
 
 @implements(numpy.ceil)
-def ceil(x, out=None, where=True, **kwargs):
+def ceil(q0, out=None, where=True, **kwargs):
     r"""
     Return the ceiling of the input, element-wise.
 
@@ -38,14 +38,14 @@ def ceil(x, out=None, where=True, **kwargs):
             a scalar if `x` is a scalar.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> numpoly.ceil([-1.7*x, x-1.5, -0.2, 3.2+1.5*x, 1.7, 2.0])
-        polynomial([-x, x-1.0, 0.0, 2.0*x+4.0, 2.0, 2.0])
+        >>> q0 = numpoly.variable()
+        >>> numpoly.ceil([-1.7*q0, q0-1.5, -0.2, 3.2+1.5*q0, 1.7, 2.0])
+        polynomial([-q0, q0-1.0, 0.0, 2.0*q0+4.0, 2.0, 2.0])
 
     """
     return simple_dispatch(
         numpy_func=numpy.ceil,
-        inputs=(x,),
+        inputs=(q0,),
         out=out,
         where=where,
         **kwargs

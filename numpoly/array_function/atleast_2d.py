@@ -23,8 +23,8 @@ def atleast_2d(*arys):
             returned.
 
     Examples:
-        >>> numpoly.atleast_2d(numpoly.symbols("x"))
-        polynomial([[x]])
+        >>> numpoly.atleast_2d(numpoly.variable())
+        polynomial([[q0]])
         >>> numpoly.atleast_2d(1, [2, 3], [[4]])
         [polynomial([[1]]), polynomial([[2, 3]]), polynomial([[4]])]
 

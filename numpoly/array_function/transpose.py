@@ -22,14 +22,14 @@ def transpose(a, axes=None):
             `a` with its axes permuted.  A view is returned whenever possible.
 
     Examples:
-        >>> poly = numpoly.monomial(3, names=("x", "y")).reshape(2, 3)
+        >>> poly = numpoly.monomial([3, 3]).reshape(2, 3)
         >>> poly
-        polynomial([[1, x, x**2],
-                    [y, x*y, y**2]])
+        polynomial([[1, q0, q0**2],
+                    [q1, q0*q1, q1**2]])
         >>> numpoly.transpose(poly)
-        polynomial([[1, y],
-                    [x, x*y],
-                    [x**2, y**2]])
+        polynomial([[1, q1],
+                    [q0, q0*q1],
+                    [q0**2, q1**2]])
 
     """
     a = numpoly.aspolynomial(a)

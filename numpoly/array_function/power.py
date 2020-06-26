@@ -43,12 +43,12 @@ def power(x1, x2, **kwargs):
             if both `x1` and `x2` are scalars.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> (x+1)**3
-        polynomial(x**3+3*x**2+3*x+1)
-        >>> poly = numpoly.symbols("x y")
-        >>> (poly+1)**[1, 2]
-        polynomial([x+1, y**2+2*y+1])
+        >>> q0 = numpoly.variable()
+        >>> (q0+1)**3
+        polynomial(q0**3+3*q0**2+3*q0+1)
+        >>> q0q1 = numpoly.variable(2)
+        >>> (q0q1+1)**[1, 2]
+        polynomial([q0+1, q1**2+2*q1+1])
 
     """
     x1 = numpoly.aspolynomial(x1)

@@ -33,13 +33,15 @@ def outer(a, b, out=None):
             ``out[i, j] = a[i] * b[j]``
 
     Examples:
-        >>> numpoly.outer(numpoly.symbols("x y z"), numpy.arange(5))
-        polynomial([[0, x, 2*x, 3*x, 4*x],
-                    [0, y, 2*y, 3*y, 4*y],
-                    [0, z, 2*z, 3*z, 4*z]])
+        >>> poly = numpoly.variable(3)
+        >>> const = numpy.arange(5)
+        >>> numpoly.outer(poly, const)
+        polynomial([[0, q0, 2*q0, 3*q0, 4*q0],
+                    [0, q1, 2*q1, 3*q1, 4*q1],
+                    [0, q2, 2*q2, 3*q2, 4*q2]])
 
     """
     a, b = numpoly.align_exponents(a, b)
-    a = a.flatten()[:, numpy.newaxis]
-    b = b.flatten()[numpy.newaxis, :]
+    a = a.ravel()[:, numpy.newaxis]
+    b = b.ravel()[numpy.newaxis, :]
     return numpoly.multiply(a, b, out=out)

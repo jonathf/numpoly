@@ -35,17 +35,17 @@ def array_str(a, max_line_width=None, precision=None, suppress_small=None):
             The string representation of an array.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> numpoly.array_str(numpoly.polynomial([1, x]))
-        '[1 x]'
+        >>> q0 = numpoly.variable()
+        >>> numpoly.array_str(numpoly.polynomial([1, q0]))
+        '[1 q0]'
         >>> numpoly.array_str(numpoly.polynomial([]))
         '[]'
         >>> numpoly.array_str(
-        ...     numpoly.polynomial([1e-6, 4e-7*x, 2*x, 3]),
+        ...     numpoly.polynomial([1e-6, 4e-7*q0, 2*q0, 3]),
         ...     precision=4,
         ...     suppress_small=True,
         ... )
-        '[0.0 0.0 2.0*x 3.0]'
+        '[0.0 0.0 2.0*q0 3.0]'
 
     """
     a = numpoly.aspolynomial(a)

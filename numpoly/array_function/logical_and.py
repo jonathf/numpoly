@@ -38,13 +38,13 @@ def logical_and(x1, x2, out=None, where=True, **kwargs):
             a scalar if both `x1` and `x2` are scalars.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> numpoly.logical_and(x, 0)
+        >>> q0, q1 = numpoly.variable(2)
+        >>> numpoly.logical_and(q0, 0)
         False
-        >>> numpoly.logical_and([x, False], [x, y])
+        >>> numpoly.logical_and([q0, False], [q0, q1])
         array([ True, False])
-        >>> z = numpy.arange(5)
-        >>> numpoly.logical_and(z > 1, z < 4)
+        >>> const = numpy.arange(5)
+        >>> numpoly.logical_and(const > 1, const < 4)
         array([False, False,  True,  True, False])
 
     """

@@ -8,6 +8,7 @@ from .clean import postprocess_attributes
 def compose_polynomial_array(
         arrays,
         dtype=None,
+        allocation=None,
 ):
     """
     Compose polynomial from array of arrays of polynomials.
@@ -19,6 +20,9 @@ def compose_polynomial_array(
             Input to be converted to a `numpoly.ndpoly` polynomial type.
         dtype (Optional[numpy.dtype]):
             Data type used for the polynomial coefficients.
+        allocation (Optional[int]):
+            The maximum number of polynomial exponents. If omitted, use
+            length of exponents for allocation.
 
     Return:
         (numpoly.ndpoly):
@@ -81,4 +85,5 @@ def compose_polynomial_array(
         exponents=exponents,
         coefficients=coefficients,
         names=names,
+        allocation=allocation,
     )

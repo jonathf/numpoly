@@ -55,11 +55,11 @@ def true_divide(x1, x2, out=None, where=True, **kwargs):
             division see ``numpoly.poly_divide``.
 
     Examples:
-        >>> xyz = numpoly.symbols("x y z")
-        >>> numpoly.true_divide(xyz, 4)
-        polynomial([0.25*x, 0.25*y, 0.25*z])
-        >>> numpoly.true_divide(xyz, [1, 2, 4])
-        polynomial([x, 0.5*y, 0.25*z])
+        >>> q0q1q2 = numpoly.variable(3)
+        >>> numpoly.true_divide(q0q1q2, 4)
+        polynomial([0.25*q0, 0.25*q1, 0.25*q2])
+        >>> numpoly.true_divide(q0q1q2, [1, 2, 4])
+        polynomial([q0, 0.5*q1, 0.25*q2])
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)

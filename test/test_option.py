@@ -5,14 +5,14 @@ import numpoly
 POLYNOMIAL_CONFIGURATIONS = [
     dict(zip(["display_graded", "display_inverse", "display_reverse", "expected_output"], args)
          ) for args in [
-             (False, False, False, "1+x+x**2+y+x*y+y**2"),
-             (False, True, False, "y**2+x*y+y+x**2+x+1"),
-             (False, False, True, "1+y+y**2+x+x*y+x**2"),
-             (False, True, True, "x**2+x*y+x+y**2+y+1"),
-             (True, False, False, "1+x+y+x**2+x*y+y**2"),
-             (True, True, False, "y**2+x*y+x**2+y+x+1"),
-             (True, False, True, "1+y+x+y**2+x*y+x**2"),
-             (True, True, True, "x**2+x*y+y**2+x+y+1"),
+             (False, False, False, "1+q0+q0**2+q1+q0*q1+q1**2"),
+             (False, True, False, "q1**2+q0*q1+q1+q0**2+q0+1"),
+             (False, False, True, "1+q1+q1**2+q0+q0*q1+q0**2"),
+             (False, True, True, "q0**2+q0*q1+q0+q1**2+q1+1"),
+             (True, False, False, "1+q0+q1+q0**2+q0*q1+q1**2"),
+             (True, True, False, "q1**2+q0*q1+q0**2+q1+q0+1"),
+             (True, False, True, "1+q1+q0+q1**2+q0*q1+q0**2"),
+             (True, True, True, "q0**2+q0*q1+q1**2+q0+q1+1"),
 ]]
 
 
@@ -23,6 +23,6 @@ def display_config(request):
 
 def test_display_order(display_config):
     expected_output = display_config.pop("expected_output")
-    polynomial = numpy.sum(numpoly.monomial(3, names=("x", "y")))
+    polynomial = numpy.sum(numpoly.monomial(3, names=("q0", "q1")))
     with numpoly.global_options(**display_config):
         assert str(polynomial) == expected_output

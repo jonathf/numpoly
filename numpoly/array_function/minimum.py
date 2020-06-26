@@ -44,19 +44,19 @@ def minimum(x1, x2, out=None, **kwargs):
             both `x1` and `x2` are scalars.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
+        >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.minimum(3, 4)
         polynomial(3)
-        >>> numpoly.minimum(4*x, 3*x)
-        polynomial(3*x)
-        >>> numpoly.minimum(x, y)
-        polynomial(x)
-        >>> numpoly.minimum(x**2, x)
-        polynomial(x)
-        >>> numpoly.minimum([1, x, x**2, x**3], y)
-        polynomial([1, x, y, y])
-        >>> numpoly.minimum(x+1, x-1)
-        polynomial(x-1)
+        >>> numpoly.minimum(4*q0, 3*q0)
+        polynomial(3*q0)
+        >>> numpoly.minimum(q0, q1)
+        polynomial(q0)
+        >>> numpoly.minimum(q0**2, q0)
+        polynomial(q0)
+        >>> numpoly.minimum([1, q0, q0**2, q0**3], q1)
+        polynomial([1, q0, q1, q1])
+        >>> numpoly.minimum(q0+1, q0-1)
+        polynomial(q0-1)
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)

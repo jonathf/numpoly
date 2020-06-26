@@ -25,11 +25,14 @@ def atleast_3d(*arys):
             becomes a view of shape ``(M, N, 1)``.
 
     Examples:
-        >>> numpoly.atleast_3d(numpoly.symbols("x"))
-        polynomial([[[x]]])
-        >>> numpoly.atleast_3d(1, [2, 3])
-        [polynomial([[[1]]]), polynomial([[[2],
-                     [3]]])]
+        >>> numpoly.atleast_3d(numpoly.variable())
+        polynomial([[[q0]]])
+        >>> a, b = numpoly.atleast_3d(1, [2, 3])
+        >>> a
+        polynomial([[[1]]])
+        >>> b
+        polynomial([[[2],
+                     [3]]])
 
     """
     if len(arys) == 1:

@@ -20,6 +20,7 @@ from .construct import (
     polynomial_from_attributes,
     monomial,
     symbols,
+    variable,
 )
 from .sympy_ import to_sympy
 

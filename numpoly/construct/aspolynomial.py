@@ -1,5 +1,6 @@
 """Convert the input to an polynomial array."""
 from six import string_types
+
 import numpy
 import numpoly
 
@@ -28,10 +29,10 @@ def aspolynomial(
             dtype.
 
     Examples:
-        >>> x = numpoly.symbols("x")
-        >>> numpoly.polynomial(x) is x
+        >>> q0 = numpoly.variable()
+        >>> numpoly.polynomial(q0) is q0
         False
-        >>> numpoly.aspolynomial(x) is x
+        >>> numpoly.aspolynomial(q0) is q0
         True
 
     """

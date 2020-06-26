@@ -44,14 +44,14 @@ def mean(a, axis=None, dtype=None, out=None, **kwargs):
             otherwise a reference to the output array is returned.
 
     Examples:
-        >>> x, y = numpoly.symbols("x y")
-        >>> a = numpoly.polynomial([[1, 2*x], [3*y+x, 4]])
-        >>> numpoly.mean(a)
-        polynomial(0.75*y+0.75*x+1.25)
-        >>> numpoly.mean(a, axis=0)
-        polynomial([1.5*y+0.5*x+0.5, x+2.0])
-        >>> numpoly.mean(a, axis=1)
-        polynomial([x+0.5, 1.5*y+0.5*x+2.0])
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly = numpoly.polynomial([[1, 2*q0], [3*q1+q0, 4]])
+        >>> numpoly.mean(poly)
+        polynomial(0.75*q1+0.75*q0+1.25)
+        >>> numpoly.mean(poly, axis=0)
+        polynomial([1.5*q1+0.5*q0+0.5, q0+2.0])
+        >>> numpoly.mean(poly, axis=1)
+        polynomial([q0+0.5, 1.5*q1+0.5*q0+2.0])
 
     """
     return simple_dispatch(
