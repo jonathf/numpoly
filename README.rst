@@ -69,41 +69,41 @@ constructors:
 
 .. code-block:: python
 
-    >>> numpoly.monomial(start=0, stop=4, names=("x", "y"))
-    polynomial([1, x, x**2, x**3, y, x*y, x**2*y, y**2, x*y**2, y**3])
+    >>> numpoly.monomial(start=0, stop=3, names=2)
+    polynomial([1, q0, q0**2, q1, q0*q1, q1**2])
 
 It is also possible to construct your own from symbols:
 
 .. code-block:: python
 
-    >>> x, y = numpoly.symbols("x y")
-    >>> numpoly.polynomial([1, x**2-1, x*y, y**2-1])
-    polynomial([1, x**2-1, x*y, y**2-1])
+    >>> q0, q1 = numpoly.variable(2)
+    >>> numpoly.polynomial([1, q0**2-1, q0*q1, q1**2-1])
+    polynomial([1, q0**2-1, q0*q1, q1**2-1])
 
 Or in combination with numpy objects using various arithmetics:
 
 .. code-block:: python
 
-    >>> x**numpy.arange(4)-y**numpy.arange(3, -1, -1)
-    polynomial([-y**3+1, -y**2+x, x**2-y, x**3-1])
+    >>> q0**numpy.arange(4)-q1**numpy.arange(3, -1, -1)
+    polynomial([-q1**3+1, -q1**2+q0, q0**2-q1, q0**3-1])
 
 The constructed polynomials can be evaluated as needed:
 
 .. code-block:: python
 
-    >>> poly = 3*x+2*y+1
-    >>> poly(x=y, y=[1, 2, 3])
-    polynomial([3*y+3, 3*y+5, 3*y+7])
+    >>> poly = 3*q0+2*q1+1
+    >>> poly(q0=q1, q1=[1, 2, 3])
+    polynomial([3*q1+3, 3*q1+5, 3*q1+7])
 
 Or manipulated using various numpy functions:
 
 .. code-block:: python
 
-    >>> numpy.reshape(x**numpy.arange(4), (2, 2))
-    polynomial([[1, x],
-                [x**2, x**3]])
-    >>> numpy.sum(numpoly.monomial(13, names="z")[::3])
-    polynomial(z**12+z**9+z**6+z**3+1)
+    >>> numpy.reshape(q0**numpy.arange(4), (2, 2))
+    polynomial([[1, q0],
+                [q0**2, q0**3]])
+    >>> numpy.sum(numpoly.monomial(13)[::3])
+    polynomial(q0**12+q0**9+q0**6+q0**3+1)
 
 Development
 -----------

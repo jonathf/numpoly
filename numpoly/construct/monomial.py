@@ -23,16 +23,18 @@ def monomial(start, stop=None, cross_truncation=1.,
         cross_truncation (float):
             Use hyperbolic cross truncation scheme to reduce the number of
             terms in expansion.
-        names (None, numpoly.ndpoly, str, Tuple[str, ...])
+        names (None, numpoly.ndpoly, int, str, Tuple[str, ...])
             The indeterminants names used to create the monomials expansion.
+            If int provided, set the number of names to use.
         graded (bool):
             Graded sorting, meaning the indices are always sorted by the index
-            sum. E.g. ``x**2*y**2*z**2`` has an exponent sum of 6, and will
-            therefore be consider larger than both ``x**3*y*z``, ``x*y**2*z``
-            and ``x*y*z**2``, which all have exponent sum of 5.
+            sum. E.g. ``q0**2*q1**2*q2**2`` has an exponent sum of 6, and will
+            therefore be consider larger than both ``q0**3*q1*q2``,
+            ``q0*q1**2*q2`` and ``q0*q1*q2**2``, which all have exponent
+            sum of 5.
         reverse (bool):
-            Reverse lexicographical sorting meaning that ``x*y**3`` is
-            considered bigger than ``x**3*y``, instead of the opposite.
+            Reverse lexicographical sorting meaning that ``q0*q1**3`` is
+            considered bigger than ``q0**3*q1``, instead of the opposite.
         allocation (Optional[int]):
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
@@ -44,7 +46,7 @@ def monomial(start, stop=None, cross_truncation=1.,
     Examples:
         >>> numpoly.monomial(4)
         polynomial([1, q0, q0**2, q0**3])
-        >>> numpoly.monomial([4, 4], 5, graded=True, reverse=True)
+        >>> numpoly.monomial(4, 5, names=2, graded=True, reverse=True)
         polynomial([q1**4, q0*q1**3, q0**2*q1**2, q0**3*q1, q0**4])
         >>> numpoly.monomial(2, [3, 4], graded=True)
         polynomial([q0**2, q0*q1, q1**2, q1**3])
@@ -60,6 +62,8 @@ def monomial(start, stop=None, cross_truncation=1.,
     stop = numpy.array(stop, dtype=int)
     if isinstance(names, str):
         names = (names,)
+    elif isinstance(names, int):
+        names = numpoly.variable(names)
     dimensions = 1 if names is None else len(names)
     dimensions = max(start.size, stop.size, dimensions)
 
