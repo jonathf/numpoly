@@ -82,11 +82,4 @@ def test_symbols():
     assert numpoly.symbols("q0", asarray=True).shape == (1,)
 
     assert numpoly.symbols("q:1").names == ("q0",)
-    with numpoly.global_options(
-            varname_filter=r"q\d*", force_number_suffix=False):
-        assert numpoly.symbols("q").names == ("q",)
-        assert numpoly.symbols("q1").names == ("q1",)
-
-    with numpoly.global_options(force_number_suffix=True):
-        assert numpoly.symbols("q").names == ("q0",)
-        assert numpoly.symbols("q1").names == ("q1",)
+    assert numpoly.symbols("q1").names == ("q1",)

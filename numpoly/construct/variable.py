@@ -4,7 +4,7 @@ import numpoly
 
 def variable(dimensions=1, asarray=False, dtype="i8", allocation=None):
     """
-    Simple constructor to create single variables to create polynomials.
+    Construct variables that can be used to construct polynomials.
 
     Args:
         dimensions (int):
@@ -25,12 +25,15 @@ def variable(dimensions=1, asarray=False, dtype="i8", allocation=None):
     Examples:
         >>> numpoly.variable()
         polynomial(q0)
-        >>> numpoly.variable(3)
-        polynomial([q0, q1, q2])
+        >>> q0, q1, q2 = numpoly.variable(3)
+        >>> q1+1
+        polynomial(q1+1)
+        >>> numpoly.polynomial([q2**3, q1+q2, 1])
+        polynomial([q2**3, q2+q1, 1])
 
     """
     return numpoly.symbols(
-        names="q:%d" % dimensions,
+        names="%s:%d" % (numpoly.get_options()["default_varname"], dimensions),
         asarray=asarray,
         dtype=dtype,
         allocation=allocation,
