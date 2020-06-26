@@ -77,6 +77,7 @@ array back to a polynomial:
 Constructors
 ------------
 
+.. autofunction:: numpoly.variable
 .. autofunction:: numpoly.polynomial
 .. autofunction:: numpoly.aspolynomial
 .. autofunction:: numpoly.monomial
