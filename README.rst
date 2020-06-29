@@ -29,7 +29,7 @@ Feature Overview
 * Computationally fast evaluations of lots of functionality inherent from
   ``numpy``.
 * Vectorized polynomial evaluation.
-* Support for arbitrary number of dimensions and name for the indeterminants.
+* Support for arbitrary number of dimensions.
 * Native support for lots of ``numpy.<name>`` functions using ``numpy``'s
   compatibility layer (which also exists as ``numpoly.<name>``
   equivalents).

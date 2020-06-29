@@ -34,7 +34,8 @@ def largest_exponent(poly, graded=False, reverse=False):
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.largest_exponent([1, q0+1, q0**2+q0+1]).T
         array([[0, 1, 2]])
-        >>> numpoly.largest_exponent([1, q0, q1, q0*q1, q0**3-1]).T
+        >>> numpoly.largest_exponent(
+        ...     [1, q0, q1, q0*q1, q0**3-1]).T
         array([[0, 1, 0, 1, 3],
                [0, 0, 1, 1, 0]])
 

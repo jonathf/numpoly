@@ -1,7 +1,7 @@
-Derivatives
------------
+Differentiation
+---------------
 
-Collection of tools for doing differential analysis.
+Collection of tools for doing differential on a polynomial array.
 
 .. autofunction:: numpoly.poly_function.diff
 .. autofunction:: numpoly.poly_function.gradient

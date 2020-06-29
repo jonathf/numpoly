@@ -20,17 +20,17 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
         Ni, Nk = a.shape[:axis], a.shape[axis+1:]
         for ii in ndindex(Ni):
             for kk in ndindex(Nk):
-                f = func1d(arr[ii + s_[:,] + kk])
+                f = func1d(arr[ii+s_[:,]+kk])
                 Nj = f.shape
                 for jj in ndindex(Nj):
-                    out[ii + jj + kk] = f[jj]
+                    out[ii+jj+kk] = f[jj]
 
     Equivalently, eliminating the inner loop, this can be expressed as::
 
         Ni, Nk = a.shape[:axis], a.shape[axis+1:]
         for ii in ndindex(Ni):
             for kk in ndindex(Nk):
-                out[ii + s_[...,] + kk] = func1d(arr[ii + s_[:,] + kk])
+                out[ii+s_[...,]+kk] = func1d(arr[ii+s_[:,]+kk])
 
     Args:
         func1d (Callable[[numpoly.ndpoly], Any]):
@@ -55,7 +55,9 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
-        >>> b = numpoly.polynomial([[1, 2, 3*q0], [3, 6*q1, 6], [2, 7, 9]])
+        >>> b = numpoly.polynomial([[1, 2, 3*q0],
+        ...                         [3, 6*q1, 6],
+        ...                         [2, 7, 9]])
         >>> numpoly.apply_along_axis(numpoly.mean, 0, b)
         polynomial([2.0, 2.0*q1+3.0, q0+5.0])
         >>> numpoly.apply_along_axis(numpoly.mean, 1, b)

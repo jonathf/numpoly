@@ -34,11 +34,11 @@ def broadcast_arrays(*args, **kwargs):
         >>> poly2
         polynomial([[1],
                     [q0]])
-        >>> result1, result2 = numpoly.broadcast_arrays(poly1, poly2)
-        >>> result1
+        >>> res1, res2 = numpoly.broadcast_arrays(poly1, poly2)
+        >>> res1
         polynomial([[1, q0, q0**2],
                     [1, q0, q0**2]])
-        >>> result2
+        >>> res2
         polynomial([[1, 1, 1],
                     [q0, q0, q0]])
 

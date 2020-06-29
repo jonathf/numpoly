@@ -33,12 +33,15 @@ def apply_over_axes(func, a, axes):
             the shape of its output with respect to its input.
 
     Examples:
-        >>> polynomial = numpoly.variable(3)*numpy.arange(24).reshape(2, 4, 3)
-        >>> numpoly.apply_over_axes(numpoly.sum, polynomial, 1)
+        >>> polynomial = numpy.arange(24).reshape(2, 4, 3)
+        >>> polynomial = polynomial*numpoly.variable(3)
+        >>> numpoly.apply_over_axes(
+        ...     func=numpoly.sum, a=polynomial, axes=1)
         polynomial([[[18*q0, 22*q1, 26*q2]],
         <BLANKLINE>
                     [[66*q0, 70*q1, 74*q2]]])
-        >>> numpoly.apply_over_axes(numpoly.sum, polynomial, [0, 2])
+        >>> numpoly.apply_over_axes(
+        ...     func=numpoly.sum, a=polynomial, axes=[0, 2])
         polynomial([[[16*q2+14*q1+12*q0],
                      [22*q2+20*q1+18*q0],
                      [28*q2+26*q1+24*q0],

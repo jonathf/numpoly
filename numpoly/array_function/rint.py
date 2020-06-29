@@ -36,7 +36,8 @@ def rint(x, out=None, where=True, **kwargs):
 
     Examples:
         >>> q0 = numpoly.variable()
-        >>> numpoly.rint([-1.7*q0, q0-1.5, -0.2, 3.2+1.5*q0, 1.7, 2.0])
+        >>> numpoly.rint([-1.7*q0, q0-1.5, -0.2,
+        ...               3.2+1.5*q0, 1.7, 2.0])
         polynomial([-2.0*q0, q0-2.0, 0.0, 2.0*q0+3.0, 2.0, 2.0])
 
     """

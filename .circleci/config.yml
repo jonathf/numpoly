@@ -56,7 +56,7 @@ jobs:
                 name: "Run tests"
                 command: |
                     source /home/circleci/venv/bin/activate
-                    pytest --doctest-modules --cov=numpoly numpoly test doc/*.rst README.rst
+                    coverage run --source numpoly/ --module pytest --doctest-modules numpoly/ test/ docs/*.rst README.rst
                     codecov
     linting:
         executor: my-executor
@@ -82,7 +82,7 @@ jobs:
                 name: "Run Sphinx build"
                 command: |
                     source /home/circleci/venv/bin/activate
-                    sphinx-build doc/ doc/.build -b html -n -v --color -T -W --keep-going
+                    sphinx-build docs/ docs/.build -b html -n -v --color -T -W --keep-going
     deploy:
         executor: my-executor
         steps:

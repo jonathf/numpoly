@@ -25,8 +25,8 @@ def atleast_2d(*arys):
     Examples:
         >>> numpoly.atleast_2d(numpoly.variable())
         polynomial([[q0]])
-        >>> numpoly.atleast_2d(1, [2, 3], [[4]])
-        [polynomial([[1]]), polynomial([[2, 3]]), polynomial([[4]])]
+        >>> numpoly.atleast_2d(1, [2], [[3]])
+        [polynomial([[1]]), polynomial([[2]]), polynomial([[3]])]
 
     """
     if len(arys) == 1:

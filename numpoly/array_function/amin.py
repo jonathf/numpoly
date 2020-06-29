@@ -49,7 +49,8 @@ def amin(a, axis=None, out=None, **kwargs):
         polynomial(1)
         >>> numpoly.amin([q0, q1, q0**2])
         polynomial(q0)
-        >>> numpoly.amin([[3*q0**2, q0**2], [2*q0**2, 4*q0**2]], axis=1)
+        >>> numpoly.amin([[3*q0**2, q0**2],
+        ...               [2*q0**2, 4*q0**2]], axis=1)
         polynomial([q0**2, 2*q0**2])
 
     """

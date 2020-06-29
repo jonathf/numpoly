@@ -50,7 +50,8 @@ def amax(a, axis=None, out=None, **kwargs):
         polynomial(q0**2)
         >>> numpoly.amax([1, q0, q1])
         polynomial(q1)
-        >>> numpoly.amax([[3*q0**2, 5*q0**2], [2*q0**2, 4*q0**2]], axis=0)
+        >>> numpoly.amax([[3*q0**2, 5*q0**2],
+        ...               [2*q0**2, 4*q0**2]], axis=0)
         polynomial([3*q0**2, 5*q0**2])
 
     """

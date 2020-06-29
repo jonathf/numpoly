@@ -31,7 +31,8 @@ def sortable_proxy(poly, graded=False, reverse=False):
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
-        >>> poly = numpoly.polynomial([q0**2, 2*q0, 3*q1, 4*q0, 5])
+        >>> poly = numpoly.polynomial(
+        ...     [q0**2, 2*q0, 3*q1, 4*q0, 5])
         >>> numpoly.sortable_proxy(poly)
         array([3, 1, 4, 2, 0])
         >>> numpoly.sortable_proxy(poly, reverse=True)

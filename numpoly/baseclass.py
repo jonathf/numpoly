@@ -1,4 +1,31 @@
-"""Polynomial base class."""
+"""
+Polynomial base class.
+
+Under the hood, each of the polynomials are numpy structured arrays. The column
+names are string representations corresponding to the polynomial exponents, and
+the values are the coefficients. The indeterminant names are stored separately.
+Numpoly is a wrapper on top of this.
+
+From a development point of view, it is possible to view the underlying
+structured array directly using the ``values`` attribute:
+
+.. code:: python
+
+    >>> q0, q1 = numpoly.variable(2)
+    >>> poly = numpoly.polynomial(4*q0+3*q1-1)
+    >>> array = poly.values
+    >>> array  # doctest: +NORMALIZE_WHITESPACE
+    array((-1, 4, 3),
+          dtype=[(';;', '<i8'), ('<;', '<i8'), (';<', '<i8')])
+
+Which, together with the indeterminant names, can be used to cast back the
+array back to a polynomial:
+
+.. code:: python
+
+    >>> numpoly.aspolynomial(array, names=("q0", "q1"))
+    polynomial(3*q1+4*q0-1)
+"""
 from __future__ import division
 import re
 from six import string_types
@@ -67,9 +94,10 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             Has to be at least as large as to have space for all exponents.
 
     Examples:
-        >>> poly = ndpoly(exponents=[(0, 1), (0, 0)], shape=(3,))
-        >>> poly[";;"] = 1, 2, 3
-        >>> poly[";<"] = 4, 5, 6
+        >>> poly = ndpoly(
+        ...     exponents=[(0, 1), (0, 0)], shape=(3,))
+        >>> poly.values[";<"] = 4, 5, 6
+        >>> poly.values[";;"] = 1, 2, 3
         >>> numpy.array(poly.coefficients)
         array([[4, 5, 6],
                [1, 2, 3]])
@@ -493,7 +521,8 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
 
         Examples:
             >>> q0, q1 = numpoly.variable(2)
-            >>> poly = numpoly.polynomial([[q0, q0-1], [q1, q1+q0]])
+            >>> poly = numpoly.polynomial(
+            ...     [[q0, q0-1], [q1, q1+q0]])
             >>> poly(1, q1=[0, 1, 2])
             array([[[1, 1, 1],
                     [0, 0, 0]],

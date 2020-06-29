@@ -39,7 +39,8 @@ def ceil(q0, out=None, where=True, **kwargs):
 
     Examples:
         >>> q0 = numpoly.variable()
-        >>> numpoly.ceil([-1.7*q0, q0-1.5, -0.2, 3.2+1.5*q0, 1.7, 2.0])
+        >>> numpoly.ceil([-1.7*q0, q0-1.5, -0.2,
+        ...               3.2+1.5*q0, 1.7, 2.0])
         polynomial([-q0, q0-1.0, 0.0, 2.0*q0+4.0, 2.0, 2.0])
 
     """

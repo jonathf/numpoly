@@ -1,5 +1,5 @@
-Comparison
-==========
+Comparison Operators
+====================
 
 Because numbers have a natural total ordering, doing comparisons is mostly a
 trivial concept. The only difficulty is how complex numbers are handled for
@@ -7,11 +7,11 @@ unsymmetrical operators. While they are not supported in pure Python:
 
 .. code:: python
 
-    >>> try: 1+3j > 3+1j
-    ... except TypeError: print("nope")
-    nope
+    >>> from contextlib import suppress
+    >>> with suppress(TypeError):
+    ...     1+3j > 3+1j
 
-In ``numpy``, they are supported as only comparing the real part, while
+In ``numpy``, comparisons are supported, but limited to the real part,
 ignoring the imaginary part:
 
 .. code:: python
@@ -20,11 +20,11 @@ ignoring the imaginary part:
     ...  numpy.array([3+3j, 3+1j, 1+3j, 1+1j]))
     array([False, False,  True,  True])
 
-However, polynomials comparisons are a lot more complicated as there are no
-total ordering. However it is possible to impose a total order that is both
+Polynomials comparisons are a lot more complicated as there are no total
+ordering. However, it is possible to impose a total order that is both
 internally consistent and which is backwards compatible with the behavior of
-``numpy.ndarray``. But it requires som design choices, which might have other
-solutions.
+``numpy.ndarray``. It requires som design choices, which is opinionated, and
+might not always align with everyones taste.
 
 The default ordering implemented in ``numpoly`` is defined as follows:
 
@@ -37,8 +37,8 @@ The default ordering implemented in ``numpoly`` is defined as follows:
     >>> q0 < q0**2 < q0**3
     True
 
-  If the largest polynomial in one polynomial is larger than in another,
-  leading coefficients are ignored:
+  If the largest polynomial exponent in one polynomial is larger than in
+  another, leading coefficients are ignored:
 
   .. code:: python
 
@@ -54,7 +54,7 @@ The default ordering implemented in ``numpoly`` is defined as follows:
     >>> q0**2*q1**2 < q0*q1**5 < q0**6*q1
     True
 
-  This implies that given higher polynomial order, indeterminant names are
+  This implies that given a higher polynomial order, indeterminant names are
   ignored:
 
   .. code:: python
@@ -78,7 +78,8 @@ The default ordering implemented in ``numpoly`` is defined as follows:
     >>> q0 < q1 < q2
     True
 
-  As with polynomial order, coefficients and lower order terms are ignored:
+  As with polynomial order, coefficients and lower order terms are also
+  ignored:
 
   .. code:: python
 
@@ -93,15 +94,16 @@ The default ordering implemented in ``numpoly`` is defined as follows:
     >>> q0**3*q1 < q0**2*q1**2 < q0*q1**3
     True
 
-  If there are more than two, and the dominant order first addresses the first,
-  then the second, and so on:
+  If there are more than two indeterminants, the dominant order first
+  addresses the first name (sorted lexicographically), then the second, and so
+  on:
 
   .. code:: python
 
     >>> q0**2*q1**2*q2 < q0**2*q1*q2**2 < q0*q1**2*q2**2
     True
 
-* Polynomials that have exactly the same leading polynomial, are compared by
+* Polynomials that have the same leading polynomial exponents, are compared by
   the leading polynomial coefficient:
 
   .. code:: python
@@ -109,8 +111,8 @@ The default ordering implemented in ``numpoly`` is defined as follows:
     >>> -4*q0 < -1*q0 < 2*q0
     True
 
-  This notion implies that constant polynomial, the same way as ``numpy``
-  arrays:
+  This notion implies that constant polynomials behave in the same way as
+  ``numpy`` arrays:
 
   .. code:: python
 
