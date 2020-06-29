@@ -37,11 +37,11 @@ def absolute(x, out=None, where=True, **kwargs):
 
     Examples:
         >>> q0 = numpoly.variable()
-        >>> poly = numpoly.polynomial([-1.2, 1.2, -2.3*q0, 2.3*q0])
+        >>> poly = numpoly.polynomial([-1, 1, -2.3*q0, 2.3*q0])
         >>> poly
-        polynomial([-1.2, 1.2, -2.3*q0, 2.3*q0])
+        polynomial([-1.0, 1.0, -2.3*q0, 2.3*q0])
         >>> numpoly.absolute(poly)
-        polynomial([1.2, 1.2, 2.3*q0, 2.3*q0])
+        polynomial([1.0, 1.0, 2.3*q0, 2.3*q0])
         >>> poly = numpoly.polynomial([q0, 1j*q0, (3+4j)*q0])
         >>> poly
         polynomial([q0, 1j*q0, (3+4j)*q0])

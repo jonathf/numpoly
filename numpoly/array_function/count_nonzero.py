@@ -27,15 +27,15 @@ def count_nonzero(q0, axis=None, **kwargs):
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.count_nonzero([q0])
         1
-        >>> numpoly.count_nonzero([[0, q0, q0*q0, 0, 0],
-        ...                        [q0+1, 0, 0, 2*q0, 19*q0]])
-        5
-        >>> numpoly.count_nonzero([[0, q0, 7*q0, 0, 0],
-        ...                        [3*q1, 0, 0, 2, 19*q0+q1]], axis=0)
-        array([1, 1, 1, 1, 1])
-        >>> numpoly.count_nonzero([[0, q0, q1, 0, 0],
-        ...                        [q0, 0, 0, 2*q0, 19*q1]], axis=1)
-        array([2, 3])
+        >>> numpoly.count_nonzero([[0, q0*q0, 0, 0],
+        ...                        [q0+1, 0, 2*q0, 7*q0]])
+        4
+        >>> numpoly.count_nonzero([[0, q0+q1, 0, 0],
+        ...                        [3*q1, 0, 2, 7*q0]], axis=0)
+        array([1, 1, 1, 1])
+        >>> numpoly.count_nonzero([[0, q1, 0, 0],
+        ...                        [q0, 0, 2*q0, 6*q1]], axis=1)
+        array([1, 3])
 
     """
     a = numpoly.aspolynomial(q0)

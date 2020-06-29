@@ -46,12 +46,19 @@ def monomial(start, stop=None, cross_truncation=1.,
     Examples:
         >>> numpoly.monomial(4)
         polynomial([1, q0, q0**2, q0**3])
-        >>> numpoly.monomial(4, 5, names=2, graded=True, reverse=True)
+        >>> numpoly.monomial(start=4, stop=5, names=2,
+        ...                  graded=True, reverse=True)
         polynomial([q1**4, q0*q1**3, q0**2*q1**2, q0**3*q1, q0**4])
         >>> numpoly.monomial(2, [3, 4], graded=True)
         polynomial([q0**2, q0*q1, q1**2, q1**3])
-        >>> numpoly.monomial(0, 4, names=("q2", "q4"),
-        ...                  cross_truncation=0.5, graded=True, reverse=True)
+        >>> numpoly.monomial(
+        ...     start=0,
+        ...     stop=4,
+        ...     names=("q2", "q4"),
+        ...     cross_truncation=0.5,
+        ...     graded=True,
+        ...     reverse=True,
+        ... )
         polynomial([1, q4, q2, q4**2, q2**2, q4**3, q2**3])
 
     """

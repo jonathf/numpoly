@@ -24,7 +24,8 @@ def array_split(ary, indices_or_sections, axis=0):
         >>> poly
         polynomial([[1, q0, q0**2, q0**3],
                     [q0**4, q0**5, q0**6, q0**7]])
-        >>> part1, part2, part3 = numpoly.array_split(poly, 3, axis=1)
+        >>> parts = numpoly.array_split(poly, 3, axis=1)
+        >>> part1, part2, part3 = parts
         >>> part1
         polynomial([[1, q0],
                     [q0**4, q0**5]])

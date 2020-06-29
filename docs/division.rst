@@ -1,5 +1,5 @@
-Division
-========
+Polynomial Division
+===================
 
 Numerical division can be split into two variants: floor division and true
 division:
@@ -54,7 +54,8 @@ For example:
     >>> dividend == quotient*divisor+remainder
     True
 
-In ``numpy``, the "syntactic sugar" operators:
+In ``numpy``, the "Python syntactic sugar" operators have the following
+behavior:
 
 * ``/`` is used for true division.
 * ``//`` is used for floor division.
@@ -63,7 +64,7 @@ In ``numpy``, the "syntactic sugar" operators:
   computational cost.
 
 In ``numpoly``, which takes precedence if any of the values are of
-``numpoly.ndpoly`` objects:
+``numpoly.ndpoly`` objects, take the following behavior:
 
 * ``/`` is used for polynomial division, which is backwards compatible with
   ``numpy``.

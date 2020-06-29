@@ -52,11 +52,11 @@ def allclose(a, b, rtol=1e-5, atol=1e-8, equal_nan=False):
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
-        >>> numpoly.allclose([1e10*q0, 1e-7], [1.00001e10*q0, 1e-8])
+        >>> numpoly.allclose([1e9*q0, 1e-7], [1.00001e9*q0, 1e-8])
         False
-        >>> numpoly.allclose([1e10*q0, 1e-8], [1.00001e10*q0, 1e-9])
+        >>> numpoly.allclose([1e9*q0, 1e-8], [1.00001e9*q0, 1e-9])
         True
-        >>> numpoly.allclose([1e10*q0, 1e-8], [1.00001e10*q1, 1e-9])
+        >>> numpoly.allclose([1e9*q0, 1e-8], [1.00001e9*q1, 1e-9])
         False
         >>> numpoly.allclose([q0, numpy.nan],
         ...                  [q0, numpy.nan], equal_nan=True)

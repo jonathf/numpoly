@@ -47,7 +47,8 @@ def prod(a, axis=None, dtype=None, out=None, keepdims=False, **kwargs):
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
-        >>> poly = numpoly.polynomial([[[1, q0, q0**2], [q0+q1, q1, q1]]])
+        >>> poly = numpoly.polynomial([[[1, q0, q0**2],
+        ...                             [q0+q1, q1, q1]]])
         >>> numpoly.prod(poly)
         polynomial(q0**3*q1**3+q0**4*q1**2)
         >>> numpoly.prod(poly, keepdims=True)

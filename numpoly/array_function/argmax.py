@@ -42,7 +42,8 @@ def argmax(a, axis=None, out=None, **kwargs):
         2
         >>> numpoly.argmax([1, q0, q1])
         2
-        >>> numpoly.argmax([[3*q0**2, q0**2], [2*q0**2, 4*q0**2]], axis=0)
+        >>> numpoly.argmax([[3*q0**2, q0**2],
+        ...                 [2*q0**2, 4*q0**2]], axis=0)
         array([0, 1])
 
     """

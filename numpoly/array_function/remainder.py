@@ -4,8 +4,8 @@ import numpoly
 
 from ..dispatch import implements_ufunc
 
-REMAINDER_ERROR_MSG = """
-Remainder involving polynomial division differs from numerical division;
+REMAINDER_ERROR_MSG = """\
+Polynomial division differs from numerical division;
 Use ``numpoly.poly_remainder`` to get polynomial remainder."""
 
 
@@ -46,6 +46,11 @@ def remainder(x1, x2, out=None, where=True, **kwargs):
     Examples:
         >>> numpoly.remainder([14, 7], 5)
         polynomial([4, 2])
+        >>> numpoly.remainder(numpoly.variable(), 2) # doctest: +IGNORE_EXCEPTION_DETAIL
+        Traceback (most recent call last):
+            ...
+        numpoly.baseclass.FeatureNotSupported: Polynomial division ...
+        Use ``numpoly.poly_remainder`` to get polynomial remainder.
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
