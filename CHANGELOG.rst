@@ -1,4 +1,7 @@
-* Numpy function additions: `ones`.
+Master Branch
+=============
+
+* Numpy function additions: `diag`, `diagonal`, `ones`
 * Added changelog (the file you currently are reading).
 
 Version 1.0.3 (2020-06-26)
