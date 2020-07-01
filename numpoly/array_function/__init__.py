@@ -52,6 +52,7 @@ from .multiply import multiply
 from .negative import negative
 from .nonzero import nonzero
 from .not_equal import not_equal
+from .ones import ones
 from .outer import outer
 from .positive import positive
 from .power import power
