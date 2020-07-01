@@ -71,6 +71,8 @@ Collection
 .. autofunction:: numpoly.array_function.concatenate
 .. autofunction:: numpoly.array_function.count_nonzero
 .. autofunction:: numpoly.array_function.cumsum
+.. autofunction:: numpoly.array_function.diag
+.. autofunction:: numpoly.array_function.diagonal
 .. autofunction:: numpoly.array_function.divide
 .. autofunction:: numpoly.array_function.divmod
 .. autofunction:: numpoly.array_function.dsplit
@@ -102,6 +104,7 @@ Collection
 .. autofunction:: numpoly.array_function.negative
 .. autofunction:: numpoly.array_function.nonzero
 .. autofunction:: numpoly.array_function.not_equal
+.. autofunction:: numpoly.array_function.ones
 .. autofunction:: numpoly.array_function.outer
 .. autofunction:: numpoly.array_function.positive
 .. autofunction:: numpoly.array_function.power

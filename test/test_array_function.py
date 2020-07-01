@@ -224,6 +224,41 @@ def test_cumsum(interface):
     assert numpy.all(interface.cumsum(poly1, axis=1) == [[0, Y], [X, X+1]])
 
 
+def test_diag(func_interface):
+    poly = polynomial([[1, 2, X], [4, Y, 6], [7, 8, X+Y]])
+    assert numpy.all(func_interface.diag(poly) == [1, Y, X+Y])
+    assert numpy.all(func_interface.diag(poly, k=1) == [2, 6])
+    assert numpy.all(func_interface.diag(poly, k=-1) == [4, 8])
+
+    poly = polynomial([X, Y])
+    assert numpy.all(func_interface.diag(poly) == [[X, 0], [0, Y]])
+    assert numpy.all(func_interface.diag(poly, k=1) ==
+                     [[0, X, 0], [0, 0, Y], [0, 0, 0]])
+    assert numpy.all(func_interface.diag(poly, k=-1) ==
+                     [[0, 0, 0], [X, 0, 0], [0, Y, 0]])
+
+
+def test_diagonal(interface):
+    poly = polynomial([[1, 2, X], [4, Y, 6], [7, 8, X+Y]])
+    assert numpy.all(interface.diagonal(poly) == [1, Y, X+Y])
+    assert numpy.all(interface.diagonal(poly, offset=1) == [2, 6])
+    assert numpy.all(interface.diagonal(poly, offset=-1) == [4, 8])
+
+    poly = numpoly.monomial(27).reshape(3, 3, 3)
+    assert numpy.all(interface.diagonal(poly, axis1=0, axis2=1) ==
+                     [[1, X**12, X**24],
+                      [X, X**13, X**25],
+                      [X**2, X**14, X**26]])
+    assert numpy.all(interface.diagonal(poly, axis1=0, axis2=2) ==
+                     [[1, X**10, X**20],
+                      [X**3, X**13, X**23],
+                      [X**6, X**16, X**26]])
+    assert numpy.all(interface.diagonal(poly, axis1=1, axis2=2) ==
+                     [[1, X**4, X**8],
+                      [X**9, X**13, X**17],
+                      [X**18, X**22, X**26]])
+
+
 def test_divmod(func_interface):
     array = numpy.array([7, 11])
     quotient, remainder = func_interface.divmod(array, 5)
