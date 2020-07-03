@@ -1,16 +1,15 @@
-"""Find the largest exponents in the polynomial."""
+"""Find the lead exponents for each polynomial."""
 import numpy
 import numpoly
 
 
-def largest_exponent(poly, graded=False, reverse=False):
+def lead_exponent(poly, graded=False, reverse=False):
     """
-    Find the largest exponents in the polynomial.
+    Find the lead exponents for each polynomial.
 
     As polynomials are not inherently sortable, values are sorted using the
     highest `lexicographical` ordering. Between the values that have the same
-    highest ordering, the elements are sorted using the coefficients. This also
-    ensures that the method behaves as expected with ``numpy.ndarray``.
+    highest ordering, the elements are sorted using the coefficients.
 
     Args:
         poly (numpoly.ndpoly):
@@ -32,9 +31,9 @@ def largest_exponent(poly, graded=False, reverse=False):
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
-        >>> numpoly.largest_exponent([1, q0+1, q0**2+q0+1]).T
+        >>> numpoly.lead_exponent([1, q0+1, q0**2+q0+1]).T
         array([[0, 1, 2]])
-        >>> numpoly.largest_exponent(
+        >>> numpoly.lead_exponent(
         ...     [1, q0, q1, q0*q1, q0**3-1]).T
         array([[0, 1, 0, 1, 3],
                [0, 0, 1, 1, 0]])
@@ -44,6 +43,8 @@ def largest_exponent(poly, graded=False, reverse=False):
     shape = poly.shape
     poly = poly.ravel()
     out = numpy.zeros(poly.shape+(len(poly.names),), dtype=int)
+    if not poly.size:
+        return out
     for idx in numpoly.glexsort(poly.exponents.T, graded=graded, reverse=reverse):
         out[poly.coefficients[idx] != 0] = poly.exponents[idx]
     return out.reshape(shape+(len(poly.names),))

@@ -145,7 +145,8 @@ The default ordering implemented in ``numpoly`` is defined as follows:
 
 These rules together allow for a total comparison for all polynomials.
 
-.. autofunction:: numpoly.poly_function.largest_exponent.largest_exponent
+.. autofunction:: numpoly.poly_function.lead_coefficient.lead_coefficient
+.. autofunction:: numpoly.poly_function.lead_exponent.lead_exponent
 .. autofunction:: numpoly.poly_function.sortable_proxy.sortable_proxy
 
 In ``numpoly``, there are a few global options that can be passed to
