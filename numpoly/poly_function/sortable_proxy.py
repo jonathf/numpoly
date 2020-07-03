@@ -47,7 +47,7 @@ def sortable_proxy(poly, graded=False, reverse=False):
     poly = numpoly.aspolynomial(poly)
     coefficients = poly.coefficients
     proxy = numpy.tile(-1, poly.shape)
-    largest = numpoly.largest_exponent(poly, graded=graded, reverse=reverse)
+    largest = numpoly.lead_exponent(poly, graded=graded, reverse=reverse)
 
     for idx in numpoly.glexsort(
             poly.exponents.T, graded=graded, reverse=reverse):

@@ -1,9 +1,9 @@
-"""Find the largest exponents in the polynomial."""
+"""Find the largest exponents in the polynomial, for each polynomial in the polynomial array."""
 import numpy
 import numpoly
 
 
-def largest_exponent(poly, graded=False, reverse=False):
+def lead_exponent(poly, graded=False, reverse=False):
     """
     Find the largest exponents in the polynomial.
 
@@ -32,9 +32,9 @@ def largest_exponent(poly, graded=False, reverse=False):
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
-        >>> numpoly.largest_exponent([1, q0+1, q0**2+q0+1]).T
+        >>> numpoly.lead_exponent([1, q0+1, q0**2+q0+1]).T
         array([[0, 1, 2]])
-        >>> numpoly.largest_exponent(
+        >>> numpoly.lead_exponent(
         ...     [1, q0, q1, q0*q1, q0**3-1]).T
         array([[0, 1, 0, 1, 3],
                [0, 0, 1, 1, 0]])

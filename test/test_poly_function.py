@@ -142,8 +142,8 @@ def test_sortable_proxy():
                       [ 9,  3,  6,  7]])
 
 
-def test_largest_exponent():
-    exponents = numpoly.largest_exponent(POLY1)
+def test_lead_exponent():
+    exponents = numpoly.lead_exponent(POLY1)
     xs, ys = exponents[:, :, 0], exponents[:, :, 1]
     assert numpy.all(xs == [[0, 1, 1, 2], [0, 0, 0, 0],
                             [1, 2, 0, 1], [0, 0, 0, 0]])
