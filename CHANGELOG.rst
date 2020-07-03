@@ -1,6 +1,7 @@
 Master Branch
 =============
 
+* Polynomial function addition: `lead_coefficient`.
 * Rename function `largest_exponent -> lead_exponent`
 
 Version 1.0.4 (2020-07-01)
