@@ -40,6 +40,7 @@ from .hstack import hstack
 from .hsplit import hsplit
 from .less import less
 from .less_equal import less_equal
+from .load import load
 from .inner import inner
 from .isclose import isclose
 from .isfinite import isfinite
@@ -63,6 +64,9 @@ from .remainder import remainder as mod, remainder
 from .repeat import repeat
 from .reshape import reshape
 from .rint import rint
+from .save import save
+from .savez import savez
+from .savez_compressed import savez_compressed
 from .split import split
 from .square import square
 from .stack import stack
