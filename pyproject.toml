@@ -6,7 +6,7 @@ build-backend = "poetry.masonry.api"
 name = "numpoly"
 version = "1.0.4"
 description = "Polynomials as a numpy datatype"
-license = "MIT"
+license = "BSD-2-Clause"
 authors = ["Jonathan Feinberg"]
 repository = "https://github.com/jonathf/numpoly"
 documentation = "https://numpoly.readthedocs.io"
@@ -15,7 +15,7 @@ classifiers = [
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Science/Research",
         "Topic :: Scientific/Engineering :: Mathematics",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: BSD 2-Clause \"Simplified\" License (BSD-2-Clause)",
         "Natural Language :: English",
 ]
 
