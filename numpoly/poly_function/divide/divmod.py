@@ -77,16 +77,25 @@ def poly_divmod(dividend, divisor, out=(None, None), where=True, **kwargs):
         candidates = get_division_candidate(dividend, divisor)
         if candidates is None:
             break
-        idx1, idx2, include, candidate = candidates
+        idx1, idx2, include = candidates
 
+        # construct candidate
+        candidate = dividend.coefficients[idx1]/numpy.where(
+            include, divisor.coefficients[idx2], 1)
         exponent_diff = dividend.exponents[idx1]-divisor.exponents[idx2]
         candidate = candidate*numpoly.prod(divisor.indeterminants**exponent_diff, 0)
+        key = dividend.keys[idx1]
 
         # iterate division algorithm
         quotient = numpoly.add(
             quotient, numpoly.where(include, candidate, 0), **kwargs)
         dividend = numpoly.subtract(
             dividend, numpoly.where(include, divisor*candidate, 0), **kwargs)
+
+        # ensure the candidate values are actual zero
+        if key in dividend.keys:
+            dividend.values[key][include] = 0
+
         dividend, divisor = numpoly.align_polynomials(dividend, divisor)
 
     return quotient, dividend
@@ -138,16 +147,7 @@ def get_division_candidate(x1, x2):
             if not numpy.any(include):
                 continue
 
-            # construct candidate
-            candidate = x1.coefficients[idx1]/numpy.where(
-                include, x2.coefficients[idx2], 1)
-
-            # really big relative error makes division algorithm
-            # into a convergence strategy which needs a cutoff.
-            if numpy.all(numpy.abs(candidate) < 1e-30):
-                continue
-
-            return idx1, idx2, include, candidate
+            return idx1, idx2, include
 
     # No valid candidate pair found; Assume we are done.
     return None

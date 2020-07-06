@@ -65,6 +65,18 @@ def test_poly_divmod():
     assert numpoly.poly_divmod(Y, X+2) == (0, Y)
     assert numpoly.poly_divmod(X*Y, X+2) == (Y, -2*Y)
 
+    x1 = -1.715408531156317e+18
+    x2 = 3.097893826691672e+18
+    divided, remainder = numpoly.poly_divmod(x1, x2)
+    assert numpoly.allclose(x1, x2*divided)
+    assert remainder == 0
+
+    x1 = (24*3600)**2*398600.4415
+    x2 = 2.689498059130061e-63*X**2+4.351432444850692e-27*X+1760083471.506941
+    divided, remainder = numpoly.poly_divmod(x1, x2)
+    assert numpoly.allclose(x1, x2*divided+remainder)
+    assert numpy.allclose(remainder, x1)
+
     assert divmod(X+3, 2) == (0.5*X+1.5, 0)
     assert divmod(Y+3, 2) == (0.5*Y+1.5, 0)
     assert divmod(3, numpoly.polynomial(2)) == (1.5, 0)
