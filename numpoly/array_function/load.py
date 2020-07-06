@@ -44,14 +44,6 @@ def load(file, mmap_mode=None, allow_pickle=False,
             dictionary class must be closed to avoid leaking file
             descriptors.
 
-    Notes:
-        For ``.npy`` files (stored with ``numpoly.save``) the polynomial
-        indeterminant names are not stored and might not make the save-load
-        round trip correctly.
-        For ``.npz`` files (stored with ``numpoly.savez``) the return value is
-        a Python `dict`, instead of the :class:`numpy.lib.npyio.NpzFile` which
-        :func:`numpy.load` returns.
-
     Examples:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([q0, q1-1])

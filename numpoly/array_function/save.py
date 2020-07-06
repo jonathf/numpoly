@@ -7,7 +7,7 @@ from ..dispatch import implements
 
 
 @implements(numpy.save)
-def save(file, arr, allow_pickle=False, fix_imports=True):
+def save(file, arr, allow_pickle=True, fix_imports=True):
     """
     Save polynomial array to a binary file in NumPy ``.npy`` format.
 
@@ -32,17 +32,6 @@ def save(file, arr, allow_pickle=False, fix_imports=True):
             pickle will try to map the new Python 3 names to the old module
             names used in Python 2, so that the pickle data stream is readable
             with Python 2.
-
-    Note:
-        The polynomial indeterminant names are not stored with the stored
-        array. They need to be provided on load, or default names will be
-        used instead. For storing polynomials with names intact, use
-        ``numpoly.savez`` instead.
-
-        Unlike numpy's save interface, `allow_pickle` is set to False. This
-        is because the discrepancy of this parameter in save and load is
-        causing an error. User is free to turn it on again manually, but then
-        would have to do the same when loading.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)

@@ -90,6 +90,8 @@ Collection
 .. autofunction:: numpoly.array_function.isfinite
 .. autofunction:: numpoly.array_function.less
 .. autofunction:: numpoly.array_function.less_equal
+.. autofunction:: numpoly.array_function.load
+.. autofunction:: numpoly.array_function.loadtxt
 .. autofunction:: numpoly.array_function.logical_and
 .. autofunction:: numpoly.array_function.logical_or
 .. autofunction:: numpoly.array_function.matmul
@@ -115,6 +117,10 @@ Collection
 .. autofunction:: numpoly.array_function.rint
 .. autofunction:: numpoly.array_function.round
 .. autofunction:: numpoly.array_function.round_
+.. autofunction:: numpoly.array_function.save
+.. autofunction:: numpoly.array_function.savetxt
+.. autofunction:: numpoly.array_function.savez
+.. autofunction:: numpoly.array_function.savez_compressed
 .. autofunction:: numpoly.array_function.square
 .. autofunction:: numpoly.array_function.split
 .. autofunction:: numpoly.array_function.stack

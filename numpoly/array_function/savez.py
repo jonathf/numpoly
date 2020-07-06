@@ -30,14 +30,6 @@ def savez(file, *args, **kwargs):
             Arrays to save to the file. Arrays will be saved in the file with
             the keyword names.
 
-    Notes:
-        If opened with :func:`numpy.load` instead of
-        :func:`~numpoly.array_function.load.load`, the polynomials keys will
-        contain extra indeterminant names, and values are structured arrays.
-        Full round trip can be completed by casting with
-        :func:`~numpoly.construct.polynomial.polynomial` and using the extra
-        key information.
-
     Examples:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([q0, q1-1])
@@ -57,4 +49,5 @@ def savez(file, *args, **kwargs):
     }
     polynomials = {"-".join(poly.names)+"-"+key: poly.values
                    for key, poly in polynomials.items()}
-    numpy.savez(file, **kwargs, **polynomials)
+    kwargs.update(polynomials)
+    numpy.savez(file, **kwargs)

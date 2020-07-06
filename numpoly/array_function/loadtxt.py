@@ -1,5 +1,4 @@
-"""
-"""
+"""Load data from a text file."""
 import re
 import os
 import numpy
