@@ -1,7 +1,10 @@
 """Load polynomial or pickled objects from ``.npy``, ``.npz`` or pickled files."""
-import os
 import numpy
 import numpoly
+try:
+    from os import PathLike
+except ImportError:
+    PathLike = str
 
 
 def load(file, mmap_mode=None, allow_pickle=False,
@@ -53,7 +56,7 @@ def load(file, mmap_mode=None, allow_pickle=False,
         {'a': array([1, 2]), 'p': polynomial([q0, q1-1])}
 
     """
-    if isinstance(file, (str, bytes, os.PathLike)):
+    if isinstance(file, (str, bytes, PathLike)):
         with open(file, "rb") as src:
             return load(file=src, mmap_mode=mmap_mode, allow_pickle=allow_pickle,
                         fix_imports=fix_imports, encoding=encoding)

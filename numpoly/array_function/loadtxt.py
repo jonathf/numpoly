@@ -1,11 +1,15 @@
 """Load data from a text file."""
 import re
-import os
+
 import numpy
 from numpy.lib.recfunctions import unstructured_to_structured
 import numpoly
 
 from .savetxt import HEADER_TEMPLATE
+try:
+    from os import PathLike
+except ImportError:
+    PathLike = str
 
 HEADER_REGEX = re.compile(HEADER_TEMPLATE.format(
     version=r"\S+", names=r"(\S+)", keys=r"(\S+)", shape=r"(\S+)"))
@@ -84,7 +88,7 @@ def loadtxt(fname, dtype=float, comments="# ", delimiter=None, converters=None,
                     [q0, q2**2-1.0]])
 
     """
-    if isinstance(fname, (str, bytes, os.PathLike)):
+    if isinstance(fname, (str, bytes, PathLike)):
         with open(fname) as src:
             header = src.readline()
     else:
@@ -95,7 +99,8 @@ def loadtxt(fname, dtype=float, comments="# ", delimiter=None, converters=None,
     array = numpy.loadtxt(fname, dtype=dtype, comments=comments,
                           delimiter=delimiter, converters=converters,
                           skiprows=skiprows, usecols=usecols, unpack=unpack,
-                          ndmin=ndmin, max_rows=max_rows)
+                          ndmin=ndmin, max_rows=max_rows, encoding=encoding)
+
     if header.startswith(comments+"numpoly:"):
         names, keys, shape = re.search(HEADER_REGEX, header).groups()
         names = names.split(",")
@@ -104,4 +109,5 @@ def loadtxt(fname, dtype=float, comments="# ", delimiter=None, converters=None,
         dtype = numpy.dtype([(key, array.dtype) for key in keys])
         array = unstructured_to_structured(array, dtype)
         array = numpoly.polynomial(array, names=names).reshape(shape)
+
     return array

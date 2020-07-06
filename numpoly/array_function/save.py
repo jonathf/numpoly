@@ -1,9 +1,13 @@
 """Save polynomial array to a binary file in NumPy ``.npy`` format."""
-import os
 import numpy
 import numpoly
 
 from ..dispatch import implements
+try:
+    from os import PathLike
+except ImportError:
+    PathLike = str
+
 
 
 @implements(numpy.save)
@@ -41,7 +45,7 @@ def save(file, arr, allow_pickle=True, fix_imports=True):
         polynomial([1, q0, q1**2-1])
 
     """
-    if isinstance(file, (str, bytes, os.PathLike)):
+    if isinstance(file, (str, bytes, PathLike)):
         with open(file, "wb") as src:
             return save(src, arr=arr, allow_pickle=allow_pickle, fix_imports=fix_imports)
     arr = numpoly.aspolynomial(arr)
