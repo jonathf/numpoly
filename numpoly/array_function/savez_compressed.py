@@ -39,17 +39,12 @@ def savez_compressed(file, *args, **kwargs):
         key information.
 
     Examples:
-        >>> q0, q1, q2 = numpoly.variable(3)
-        >>> poly = numpoly.polynomial([1, q0, q2**2-1])
-        >>> numpoly.savez_compressed("/tmp/savez.npz", poly)
+        >>> q0, q1 = numpoly.variable(3)
+        >>> poly = numpoly.polynomial([q0, q1-1])
+        >>> array = numpy.array([1, 2])
+        >>> numpoly.savez_compressed("/tmp/savez.npz", a=array, p=poly)
         >>> numpoly.load("/tmp/savez.npz")
-        {'arr_0': polynomial([1, q0, q2**2-1])}
-        >>> raw = dict(numpy.load("/tmp/savez.npz"))
-        >>> raw
-        {'q0-q2-arr_0': array([( 1, 0, 0), ( 0, 0, 1), (-1, 1, 0)],
-              dtype=[(';;', '<i8'), (';=', '<i8'), ('<;', '<i8')])}
-        >>> numpoly.polynomial(raw["q0-q2-arr_0"], names=("q0", "q2"))
-        polynomial([1, q0, q2**2-1])
+        {'a': array([1, 2]), 'p': polynomial([q0, q1-1])}
 
     """
     for idx, arg in enumerate(args):

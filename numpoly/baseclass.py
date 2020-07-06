@@ -27,6 +27,7 @@ array back to a polynomial:
     polynomial(3*q1+4*q0-1)
 """
 from __future__ import division
+import logging
 import re
 from six import string_types
 
@@ -242,9 +243,23 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
 
     def __array_function__(self, func, types, args, kwargs):
         """Dispatch method for functions."""
+        logger = logging.getLogger(__name__)
+        fname = func.__name__
         if func not in dispatch.FUNCTION_COLLECTION:
             raise FeatureNotSupported(
-                "function '%s' not supported by numpoly." % func.__name__)
+                "function '%s' not supported by numpoly." % fname)
+
+        # notify that numpy.save* works, but numpy.load* fails
+        if fname in ("save", "savez", "savez_compressed"):
+            logger.warning("""\
+numpy.%s used to store numpoly.ndpoly (instead of numpoly.%s).
+This works, but restoring requires using numpoly.load, \
+as numpy.load will not work as expected.""" % (fname, fname))
+        elif fname == "savetxt":
+            logger.warning("""\
+numpy.%s used to store numpoly.ndpoly (instead of numpoly.%s).
+This works, but restoring requires using numpoly.loadtxt, \
+as numpy.loadtxt will not work as expected.""" % (fname, fname))
         return dispatch.FUNCTION_COLLECTION[func](*args, **kwargs)
 
     # ======================================
@@ -641,3 +656,9 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     def __rdivmod__(self, value):
         """Return divmod(value, self)."""
         return poly_function.poly_divmod(value, self)
+
+    def __reduce__(self):
+        """Extract state to be pickled."""
+        return (construct.polynomial_from_attributes,
+                (self.exponents, self.coefficients, self.names,
+                 self.dtype, self.allocation, False))

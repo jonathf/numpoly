@@ -1,6 +1,7 @@
 """
 """
 import re
+import os
 import numpy
 from numpy.lib.recfunctions import unstructured_to_structured
 import numpoly
@@ -78,28 +79,20 @@ def loadtxt(fname, dtype=float, comments="# ", delimiter=None, converters=None,
     Examples:
         >>> q0, q1, q2 = numpoly.variable(3)
         >>> poly = numpoly.polynomial([[1, q0], [q0, q2**2-1]])
-        >>> numpoly.savetxt("/tmp/poly.txt", poly, fmt="%g")
-        >>> with open("/tmp/poly.txt") as src:
-        ...     print(src.read().strip())
-        # numpoly:... names:q0,q2 keys:;;,<;,;= shape:2,2
-        1 0 0
-        0 1 0
-        0 1 0
-        -1 0 1
+        >>> numpoly.savetxt("/tmp/poly.txt", poly)
         >>> numpoly.loadtxt("/tmp/poly.txt")
         polynomial([[1.0, q0],
                     [q0, q2**2-1.0]])
-        >>> array = numpy.loadtxt("/tmp/poly.txt")
-        >>> dtype = numpy.dtype([(";;", int), (";=", int), (">;", int)])
-        >>> from numpy.lib.recfunctions import unstructured_to_structured
-        >>> array = unstructured_to_structured(array, dtype)
-        >>> numpoly.polynomial(array, names=("q0", "q2")).reshape(2, 2)
-        polynomial([[1, q2**2],
-                    [q2**2, q0**3-1]])
 
     """
-    with open(fname) as src:
-        header = src.readline()
+    if isinstance(fname, (str, bytes, os.PathLike)):
+        with open(fname) as src:
+            header = src.readline()
+    else:
+        header = fname.readline()
+    if isinstance(header, bytes):
+        header = header.decode("utf-8")
+
     array = numpy.loadtxt(fname, dtype=dtype, comments=comments,
                           delimiter=delimiter, converters=converters,
                           skiprows=skiprows, usecols=usecols, unpack=unpack,

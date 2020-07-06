@@ -3,10 +3,13 @@ import numpy
 from numpy.lib.recfunctions import structured_to_unstructured
 import numpoly
 
+from ..dispatch import implements
+
 
 HEADER_TEMPLATE = "numpoly:{version} names:{names} keys:{keys} shape:{shape}"
 
 
+@implements(numpy.savetxt)
 def savetxt(fname, X, fmt="%.18e", delimiter=" ", newline="\n",
             header="", footer="", comments="# ", encoding=None):
     """
@@ -55,17 +58,11 @@ def savetxt(fname, X, fmt="%.18e", delimiter=" ", newline="\n",
             1.14. Default is 'latin1'.
 
     Examples:
-        >>> q0, q1, q2 = numpoly.variable(3)
-        >>> poly = numpoly.polynomial([1, q0, q2**2-1])
-        >>> numpoly.savetxt("/tmp/poly.txt", poly, fmt="%g")
-        >>> with open("/tmp/poly.txt") as src:
-        ...     print(src.read().strip())
-        # numpoly:... names:q0,q2 keys:;;,;=,<; shape:3
-        1 0 0
-        0 0 1
-        -1 1 0
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly = numpoly.polynomial([1, q0, q1**2-1])
+        >>> numpoly.savetxt("/tmp/poly.txt", poly)
         >>> numpoly.loadtxt("/tmp/poly.txt")
-        polynomial([1.0, q0, q2**2-1.0])
+        polynomial([1.0, q0, q1**2-1.0])
 
     """
     if isinstance(X, numpoly.ndpoly):

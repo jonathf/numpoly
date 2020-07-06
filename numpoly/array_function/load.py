@@ -1,4 +1,5 @@
 """Load polynomial or pickled objects from ``.npy``, ``.npz`` or pickled files."""
+import os
 import numpy
 import numpoly
 
@@ -52,21 +53,21 @@ def load(file, mmap_mode=None, allow_pickle=False,
         :func:`numpy.load` returns.
 
     Examples:
-        >>> q0, q1, q2 = numpoly.variable(3)
-        >>> poly = numpoly.polynomial([1, q0, q1**2-1])
-        >>> numpoly.save("/tmp/123.npy", poly)
-        >>> numpoly.load("/tmp/123.npy")
-        polynomial([1, q0, q1**2-1])
-        >>> mypoly = q2**2-1
-        >>> myarray = numpy.array([1, 2, 3])
-        >>> numpoly.savez("/tmp/123.npz", mypoly=mypoly, myarray=myarray)
-        >>> numpoly.load("/tmp/123.npz")  # doctest: +NORMALIZE_WHITESPACE
-        {'myarray': array([1, 2, 3]),
-         'mypoly': polynomial(q2**2-1)}
+        >>> q0, q1 = numpoly.variable(2)
+        >>> poly = numpoly.polynomial([q0, q1-1])
+        >>> array = numpy.array([1, 2])
+        >>> numpoly.savez("/tmp/savez.npz", a=array, p=poly)
+        >>> numpoly.load("/tmp/savez.npz")
+        {'a': array([1, 2]), 'p': polynomial([q0, q1-1])}
 
     """
-    out = numpy.load(file=file, mmap_mode=mmap_mode,
-                     allow_pickle=allow_pickle, fix_imports=fix_imports)
+    if isinstance(file, (str, bytes, os.PathLike)):
+        with open(file, "rb") as src:
+            return load(file=src, mmap_mode=mmap_mode, allow_pickle=allow_pickle,
+                        fix_imports=fix_imports, encoding=encoding)
+
+    out = numpy.load(file=file, mmap_mode=mmap_mode, allow_pickle=allow_pickle,
+                     fix_imports=fix_imports, encoding=encoding)
     if isinstance(out, numpy.lib.npyio.NpzFile):
         out = dict(out)
         for key, value in list(out.items()):
@@ -86,7 +87,9 @@ def load(file, mmap_mode=None, allow_pickle=False,
             key = "-".join(key[length:])
             out[key] = numpoly.polynomial(value, names=names)
 
-    else:
-        if out.dtype.names:
-            out = numpoly.polynomial(out)
+    elif out.dtype.names:
+        names = numpy.load(file=file, mmap_mode=mmap_mode,
+                           allow_pickle=allow_pickle,
+                           fix_imports=fix_imports, encoding=encoding).tolist()
+        out = numpoly.polynomial(out, names=names)
     return out

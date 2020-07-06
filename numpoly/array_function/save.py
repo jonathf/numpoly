@@ -1,5 +1,5 @@
 """Save polynomial array to a binary file in NumPy ``.npy`` format."""
-import logging
+import os
 import numpy
 import numpoly
 
@@ -45,33 +45,16 @@ def save(file, arr, allow_pickle=False, fix_imports=True):
         would have to do the same when loading.
 
     Examples:
-        >>> # Normal usage
-        >>> q0, q1, q2 = numpoly.variable(3)
+        >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([1, q0, q1**2-1])
         >>> numpoly.save("/tmp/example1.npy", poly)
         >>> numpoly.load("/tmp/example1.npy")
         polynomial([1, q0, q1**2-1])
-        >>> # Backwards compatibility
-        >>> array = numpy.array([1, 2, 3])
-        >>> numpoly.save("/tmp/example2.npy", array)
-        >>> numpoly.load("/tmp/example2.npy")
-        polynomial([1, 2, 3])
-        >>> # Round-trip not preserved
-        >>> poly = q2**2-1
-        >>> numpoly.save("/tmp/example3.npy", poly)
-        >>> numpoly.load("/tmp/example3.npy")
-        polynomial(q0**2-1)
 
     """
-    logger = logging.getLogger(__name__)
+    if isinstance(file, (str, bytes, os.PathLike)):
+        with open(file, "wb") as src:
+            return save(src, arr=arr, allow_pickle=allow_pickle, fix_imports=fix_imports)
     arr = numpoly.aspolynomial(arr)
-    default_names = numpoly.variable(len(arr.names)).names
-    if arr.names != default_names and not allow_pickle:
-        logger.warning(
-            "polynomial indeterminant names not aligned with the defaults,"
-            "and will not be restored correctly with ``numpoly.load``."
-        )
-        logger.warning(
-            "Use ``pickle`` or ``numpoly.savez`` to preserve round-trip."
-        )
     numpy.save(file=file, arr=arr.values, allow_pickle=allow_pickle, fix_imports=fix_imports)
+    numpy.save(file=file, arr=numpy.array(arr.names), allow_pickle=allow_pickle, fix_imports=fix_imports)
