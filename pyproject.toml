@@ -15,7 +15,7 @@ classifiers = [
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Science/Research",
         "Topic :: Scientific/Engineering :: Mathematics",
-        "License :: OSI Approved :: BSD 2-Clause \"Simplified\" License (BSD-2-Clause)",
+        "License :: OSI Approved :: BSD License",
         "Natural Language :: English",
 ]
 
