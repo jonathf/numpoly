@@ -1,8 +1,15 @@
 Master Branch
 =============
 
+Version 1.0.5 (2020-07-08)
+==========================
+
+* Bugfix: Poly-division with large relative error caused infinity-loops.
+* Pickle support.
+* Rename function `largest_exponent -> lead_exponent`.
 * Polynomial function addition: `lead_coefficient`.
-* Rename function `largest_exponent -> lead_exponent`
+* (Unwrapped) numpy function addition: `load`, `loadtxt`.
+* Numpy function additions: `save`, `savetxt`, `savez`, `savez_compressed`.
 
 Version 1.0.4 (2020-07-01)
 ==========================
