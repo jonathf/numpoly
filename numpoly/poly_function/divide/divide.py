@@ -51,6 +51,6 @@ def poly_divide(x1, x2, out=None, where=True, **kwargs):
         polynomial([0.0, q0])
 
     """
-    dividend, remainder = poly_divmod(x1, x2, out=out, where=where, **kwargs)
+    dividend, _ = poly_divmod(x1, x2, out=out, where=where, **kwargs)
     return dividend
 

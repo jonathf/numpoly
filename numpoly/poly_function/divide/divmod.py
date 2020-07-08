@@ -81,12 +81,18 @@ def poly_divmod(dividend, divisor, out=(None, None), where=True, **kwargs):
 
         exponent_diff = dividend.exponents[idx1]-divisor.exponents[idx2]
         candidate = candidate*numpoly.prod(divisor.indeterminants**exponent_diff, 0)
+        key = dividend.keys[idx1]
 
         # iterate division algorithm
         quotient = numpoly.add(
             quotient, numpoly.where(include, candidate, 0), **kwargs)
         dividend = numpoly.subtract(
             dividend, numpoly.where(include, divisor*candidate, 0), **kwargs)
+
+        # ensure the candidate values are actual zero
+        if key in dividend.keys:
+            dividend.values[key][include] = 0
+
         dividend, divisor = numpoly.align_polynomials(dividend, divisor)
 
     return quotient, dividend
