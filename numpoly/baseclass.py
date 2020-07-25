@@ -498,6 +498,11 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
             dtype=dtype,
         )
 
+    def diagonal(self, offset=0, axis1=0, axis2=1):
+        """Wrap ndarray.diagonal."""
+        return array_function.diagonal(
+            self, offset=offset, axis1=axis1, axis2=axis2)
+
     def round(self, decimals=0, out=None):
         """Wrap ndarray.round."""
         # Not sure why it is required. Likely a numpy bug.
@@ -551,6 +556,10 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
     def __eq__(self, other):
         """Left equality."""
         return array_function.equal(self, other)
+
+    def __req__(self, other):
+        """Right equality."""
+        return array_function.equal(other, self)
 
     def __getitem__(self, index):
         """

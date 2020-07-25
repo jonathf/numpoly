@@ -64,6 +64,7 @@ from .prod import prod
 from .remainder import remainder as mod, remainder
 from .repeat import repeat
 from .reshape import reshape
+from .result_type import result_type
 from .rint import rint
 from .save import save
 from .savetxt import savetxt

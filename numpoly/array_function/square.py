@@ -36,8 +36,8 @@ def square(x, out=None, where=True, **kwargs):
             This is a scalar if `x` is a scalar.
 
     Examples:
-        >>> numpoly.square([-1j, 1])
-        polynomial([(-1-0j), (1+0j)])
+        >>> numpoly.square([1j, 1])
+        polynomial([(-1+0j), (1+0j)])
         >>> poly = numpoly.sum(numpoly.variable(2))
         >>> poly
         polynomial(q1+q0)

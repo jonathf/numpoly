@@ -1,6 +1,5 @@
 """Move axes of an array to new positions."""
 import numpy
-import numpoly
 
 from ..dispatch import implements, simple_dispatch
 

@@ -46,6 +46,8 @@ def multiply(x1, x2, out=None, where=True, **kwargs):
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
+    # x1, x2 = numpoly.broadcast_arrays(
+    #     numpoly.polynomial(x1), numpoly.polynomial(x2))
     no_output = out is None
     if no_output:
         exponents = (numpy.tile(x1.exponents, (len(x2.exponents), 1))+
