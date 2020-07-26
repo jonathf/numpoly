@@ -51,10 +51,10 @@ def equal(x1, x2, out=None, where=True, **kwargs):
     if out is None:
         out = numpy.ones(x1.shape, dtype=bool)
     if not out.shape:
-        return bool(equal(x1.ravel(), x2.ravel(), out=out.ravel()).item())
+        return numpy.bool_(equal(x1.ravel(), x2.ravel(), out=out.ravel()).item())
     for coeff1, coeff2 in zip(x1.coefficients, x2.coefficients):
         out &= numpy.equal(coeff1, coeff2, where=where, **kwargs)
 
     if not out.size:
-        out = bool(out)
+        out = numpy.bool_(out)
     return out

@@ -36,6 +36,7 @@ def align_polynomials(*polys):
         polynomial([q0, q1])
 
     """
+    # polys = numpoly.broadcast_arrays(*polys)
     polys = align_shape(*polys)
     polys = align_indeterminants(*polys)
     polys = align_exponents(*polys)
@@ -60,21 +61,22 @@ def align_shape(*polys):
         >>> q0, q1 = numpoly.variable(2)
         >>> poly1 = 4*q0
         >>> poly2 = numpoly.polynomial([[2*q0+1, 3*q0-q1]])
-        >>> print(poly1.shape)
+        >>> poly1.shape
         ()
-        >>> print(poly2.shape)
+        >>> poly2.shape
         (1, 2)
         >>> poly1, poly2 = numpoly.align_shape(poly1, poly2)
-        >>> print(poly1)
-        [[4*q0 4*q0]]
-        >>> print(poly2)
-        [[2*q0+1 -q1+3*q0]]
-        >>> print(poly1.shape)
+        >>> poly1
+        polynomial([[4*q0, 4*q0]])
+        >>> poly2
+        polynomial([[2*q0+1, -q1+3*q0]])
+        >>> poly1.shape
         (1, 2)
-        >>> print(poly2.shape)
+        >>> poly2.shape
         (1, 2)
 
     """
+    # return tuple(numpoly.broadcast_arrays(*polys))
     polys = [numpoly.aspolynomial(poly) for poly in polys]
     common = 1
     for poly in polys:

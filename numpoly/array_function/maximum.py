@@ -70,5 +70,5 @@ def maximum(x1, x2, out=None, **kwargs):
 
         indices = (coefficients1[idx] != 0) | (coefficients2[idx] != 0)
         indices &= coefficients1[idx] != coefficients2[idx]
-        out[indices] = coefficients1[idx][indices] > coefficients2[idx][indices]
+        out[indices] = (coefficients1[idx] > coefficients2[idx])[indices]
     return numpoly.where(out, x1, x2)

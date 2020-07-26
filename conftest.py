@@ -15,6 +15,8 @@ COLLECTION = {
     "greater_equal": "__ge__",
     "less": "__lt__",
     "less_equal": "__le__",
+    "equal": "__eq__",
+    "not_equal": "__ne__",
 }
 
 

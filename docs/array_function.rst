@@ -114,6 +114,7 @@ Collection
 .. autofunction:: numpoly.array_function.remainder
 .. autofunction:: numpoly.array_function.repeat
 .. autofunction:: numpoly.array_function.reshape
+.. autofunction:: numpoly.array_function.result_type
 .. autofunction:: numpoly.array_function.rint
 .. autofunction:: numpoly.array_function.round
 .. autofunction:: numpoly.array_function.round_

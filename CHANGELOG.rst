@@ -1,6 +1,13 @@
 Master Branch
 =============
 
+* First iteration for deprecating `align_shape`:
+  * Added common `assert_equal` function to test contiguous-ness, shape,
+    dtype etc. in a more automated way.
+  * Small patches here and there to assert contiguous-ness.
+* Tests for `numpoly.equal`
+* Numpy function additions: `result_type`.
+
 Version 1.0.5 (2020-07-08)
 ==========================
 

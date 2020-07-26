@@ -93,7 +93,7 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
     # align indeterminants and exponents
     polynomials = numpoly.align.align_indeterminants(*collection)
     polynomials = numpoly.align.align_exponents(*polynomials)
-    dtype = numpoly.common_type(*polynomials)
+    dtype = numpoly.result_type(*polynomials)
 
     # Store results into new array
     ret_val = numpoly.ndpoly(

@@ -76,4 +76,4 @@ def power(x1, x2, **kwargs):
     else:
         out = numpoly.concatenate([power(x1, x.T).T[numpy.newaxis]
                                    for x in x2.T], axis=0).T
-    return out
+    return numpoly.polynomial(out)
