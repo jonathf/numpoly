@@ -1,12 +1,17 @@
 Master Branch
 =============
 
+Version 1.0.6 (2020-07-27)
+==========================
+
 * First iteration for deprecating `align_shape`:
   * Added common `assert_equal` function to test contiguous-ness, shape,
     dtype etc. in a more automated way.
   * Small patches here and there to assert contiguous-ness.
-* Tests for `numpoly.equal`
-* Numpy function additions: `result_type`.
+* Tests for `numpoly.equal`.
+* Rename single variable differentiation: `diff -> derivative` (as the former
+  is reserved in numpy).
+* Numpy function additions: `result_type`, `diff`.
 
 Version 1.0.5 (2020-07-08)
 ==========================
