@@ -73,6 +73,7 @@ Collection
 .. autofunction:: numpoly.array_function.cumsum
 .. autofunction:: numpoly.array_function.diag
 .. autofunction:: numpoly.array_function.diagonal
+.. autofunction:: numpoly.array_function.diff
 .. autofunction:: numpoly.array_function.divide
 .. autofunction:: numpoly.array_function.divmod
 .. autofunction:: numpoly.array_function.dsplit

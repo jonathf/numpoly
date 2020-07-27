@@ -5,7 +5,7 @@ import numpy
 import numpoly
 
 
-def diff(poly, *diffvars):
+def derivative(poly, *diffvars):
     """
     Polynomial differential operator.
 
@@ -23,11 +23,11 @@ def diff(poly, *diffvars):
         >>> poly = numpoly.polynomial([1, q0, q0*q1**2+1])
         >>> poly
         polynomial([1, q0, q0*q1**2+1])
-        >>> numpoly.diff(poly, "q0")
+        >>> numpoly.derivative(poly, "q0")
         polynomial([0, 1, q1**2])
-        >>> numpoly.diff(poly, 0, 1)
+        >>> numpoly.derivative(poly, 0, 1)
         polynomial([0, 0, 2*q1])
-        >>> numpoly.diff(poly, q0, q0, q0)
+        >>> numpoly.derivative(poly, q0, q0, q0)
         polynomial([0, 0, 0])
 
     """
@@ -90,7 +90,7 @@ def gradient(poly):
 
     """
     poly = numpoly.aspolynomial(poly)
-    polys = [diff(poly, diffvar)[numpy.newaxis]
+    polys = [derivative(poly, diffvar)[numpy.newaxis]
              for diffvar in poly.names]
     return numpoly.concatenate(polys, axis=0)
 

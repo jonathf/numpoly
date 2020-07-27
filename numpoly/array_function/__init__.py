@@ -25,6 +25,7 @@ from .concatenate import concatenate
 from .count_nonzero import count_nonzero
 from .cumsum import cumsum
 from .diag import diag
+from .diff import diff
 from .diagonal import diagonal
 from .true_divide import true_divide, true_divide as divide
 from .divmod import divmod

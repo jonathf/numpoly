@@ -31,26 +31,30 @@ class MethodDispatch(object):
                 func = getattr(poly, "__%s__" % name)
             return func(*args, **kwargs)
         return dispatch_to_method
+    def __repr__(self):
+        return "method"
 
 
 if parse(numpy.__version__) < parse("1.17.0"):
     # Use internal interface only (Python 2 in practice)
-    INTERFACES = [numpoly, MethodDispatch()]
-    FUNC_INTERFACES = [numpoly]
+    INTERFACES = ["numpoly", "method"]
+    FUNC_INTERFACES = ["numpoly"]
 else:
     # use both internal and __array_function__ interface (Python 3 in practice)
-    INTERFACES = [numpoly, numpy, MethodDispatch()]
-    FUNC_INTERFACES = [numpoly, numpy]
+    INTERFACES = ["numpoly", "numpy", "method"]
+    FUNC_INTERFACES = ["numpoly", "numpy"]
+
+ALL_INTERFACES = {"numpy": numpy, "numpoly": numpoly, "method": MethodDispatch()}
 
 
 @pytest.fixture(params=FUNC_INTERFACES)
 def func_interface(request):
-    return request.param
+    return ALL_INTERFACES[request.param]
 
 
 @pytest.fixture(params=INTERFACES)
 def interface(request):
-    return request.param
+    return ALL_INTERFACES[request.param]
 
 
 @pytest.fixture(scope="function", autouse=True)

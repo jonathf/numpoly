@@ -6,7 +6,9 @@ Master Branch
     dtype etc. in a more automated way.
   * Small patches here and there to assert contiguous-ness.
 * Tests for `numpoly.equal`
-* Numpy function additions: `result_type`.
+* Rename single variable differentiation: `diff -> derivative` (as the former
+  is reserved in numpy).
+* Numpy function additions: `result_type`, `diff`.
 
 Version 1.0.5 (2020-07-08)
 ==========================

@@ -345,6 +345,23 @@ def test_diagonal(interface):
                   [X**18, X**22, X**26]])
 
 
+def test_diff(func_interface):
+    """Tests for numpoly.diff."""
+    poly = polynomial([[1, 2, X], [4, Y, 6], [7, 8, X+Y]])
+    assert_equal(func_interface.diff(poly),
+                 [[1, X-2], [Y-4, 6-Y], [1, X+Y-8]])
+    assert_equal(func_interface.diff(poly, n=2),
+                 [[X-3], [10-2*Y], [X+Y-9]])
+    assert_equal(func_interface.diff(poly, axis=0),
+                 [[3, Y-2, 6-X,], [3, 8-Y, X+Y-6]])
+    assert_equal(func_interface.diff(poly, append=X),
+                 [[1, X-2, 0], [Y-4, 6-Y, X-6], [1, X+Y-8, -Y]])
+    assert_equal(func_interface.diff(poly, prepend=Y),
+                 [[1-Y, 1, X-2], [4-Y, Y-4, 6-Y], [7-Y, 1, X+Y-8]])
+    assert_equal(func_interface.diff(poly, append=X, prepend=Y),
+                 [[1-Y, 1, X-2, 0], [4-Y, Y-4, 6-Y, X-6], [7-Y, 1, X+Y-8, -Y]])
+
+
 def test_divmod(func_interface):
     """Tests for numpoly.divmod."""
     array = numpy.array([7, 11])
