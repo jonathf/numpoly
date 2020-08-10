@@ -7,12 +7,19 @@ executors:
     my-executor:
         docker:
             - image: circleci/python:3.7.3
+              auth:
+                username: jonathf
+                password: $DOCKERHUB_PASSWORD
+
         working_directory: /home/circleci/project
 
 jobs:
     test-py27:
         docker:
             - image: circleci/python:2.7.16
+              auth:
+                username: jonathf
+                password: $DOCKERHUB_PASSWORD
         steps:
             - checkout
             - run:
