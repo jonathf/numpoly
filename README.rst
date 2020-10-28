@@ -1,4 +1,4 @@
-.. image:: doc/.static/numpoly_logo.svg
+.. image:: https://github.com/jonathf/numpoly/raw/master/doc/.static/numpoly_logo.svg
    :height: 200 px
    :width: 200 px
    :align: center
