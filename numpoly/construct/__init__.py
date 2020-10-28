@@ -3,6 +3,7 @@ from .polynomial import polynomial
 from .aspolynomial import aspolynomial
 from .clean import clean_attributes
 from .from_attributes import polynomial_from_attributes
+from .from_roots import polynomial_from_roots
 from .monomial import monomial
 from .symbols import symbols
 from .variable import variable

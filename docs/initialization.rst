@@ -71,6 +71,7 @@ that can be used:
 .. autofunction:: numpoly.monomial
 .. autofunction:: numpoly.symbols
 .. autofunction:: numpoly.polynomial_from_attributes
+.. autofunction:: numpoly.polynomial_from_roots
 
 Baseclass
 ---------

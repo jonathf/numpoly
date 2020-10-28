@@ -18,6 +18,7 @@ from .construct import (
     aspolynomial,
     clean_attributes,
     polynomial_from_attributes,
+    polynomial_from_roots,
     monomial,
     symbols,
     variable,

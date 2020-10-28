@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "numpoly"
-version = "1.0.6"
+version = "1.0.7"
 description = "Polynomials as a numpy datatype"
 license = "BSD-2-Clause"
 authors = ["Jonathan Feinberg"]

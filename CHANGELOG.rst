@@ -1,6 +1,9 @@
 Master Branch
 =============
 
+ADDED:
+  * Polynomial constructor: `polynomial_from_roots`.
+
 Version 1.0.6 (2020-07-27)
 ==========================
 
