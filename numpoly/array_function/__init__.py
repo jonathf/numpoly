@@ -31,6 +31,7 @@ from .true_divide import true_divide, true_divide as divide
 from .divmod import divmod
 from .dsplit import dsplit
 from .dstack import dstack
+from .ediff1d import ediff1d
 from .equal import equal
 from .expand_dims import expand_dims
 from .floor import floor

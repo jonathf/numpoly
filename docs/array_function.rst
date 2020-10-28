@@ -78,6 +78,7 @@ Collection
 .. autofunction:: numpoly.array_function.divmod
 .. autofunction:: numpoly.array_function.dsplit
 .. autofunction:: numpoly.array_function.dstack
+.. autofunction:: numpoly.array_function.ediff1d
 .. autofunction:: numpoly.array_function.equal
 .. autofunction:: numpoly.array_function.expand_dims
 .. autofunction:: numpoly.array_function.floor

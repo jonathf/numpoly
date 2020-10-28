@@ -390,6 +390,14 @@ def test_dstack(func_interface):
                  [[[1, Y], [X, 3], [2, 4]]])
 
 
+def test_ediff1d(func_interface):
+    """Tests for numpoly.ediff1d."""
+    poly1 = numpoly.polynomial([1, X, 2])
+    assert_equal(func_interface.ediff1d(poly1), [X-1, 2-X])
+    poly2 = numpoly.polynomial([Y, 3, 4])
+    assert_equal(func_interface.ediff1d(poly2), [3-Y, 1])
+
+
 def test_expand_dims(func_interface):
     """Tests for numpoly.expand_dims."""
     poly1 = numpoly.polynomial([[1, X], [Y, 2], [3, 4]])
