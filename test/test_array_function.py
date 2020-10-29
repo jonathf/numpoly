@@ -487,8 +487,10 @@ def test_full(func_interface):
     assert_equal(func_interface.full((3,), X), [X, X, X])
     assert_equal(numpoly.aspolynomial(func_interface.full((3,), 1.*X)), [1.*X, X, X])
     assert_equal(numpoly.full((3,), Y, dtype=float), [1.*Y, Y, Y])
-    with raises(ValueError):
-        numpy.full((3,), Y, dtype=float)
+    if func_interface is numpy:  # fails in numpy, but only with func dispatch.
+        with raises(ValueError, ):
+            assert_equal(numpy.full((3,), Y, dtype=float), [1.*Y, Y, Y])
+            raise ValueError
 
 
 def test_full_like(func_interface):

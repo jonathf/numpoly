@@ -1,14 +1,14 @@
-"""The differences between consecutive elements of an array."""
+"""Difference between consecutive elements of an array."""
 import numpy
 import numpoly
 
-from ..dispatch import implements, simple_dispatch
+from ..dispatch import implements
 
 
 @implements(numpy.ediff1d)
 def ediff1d(ary, to_end=None, to_begin=None):
     """
-    The differences between consecutive elements of an array.
+    Difference between consecutive elements of an array.
 
     Args:
         ary (numpoly.ndpoly):
@@ -31,15 +31,15 @@ def ediff1d(ary, to_end=None, to_begin=None):
         polynomial([q0-1, q0**2-q0, q0**3-q0**2])
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.ediff1d(poly, to_begin=q0, to_end=[1, q1])
-        polynomial([q1, q0-1, q0**2-q0, q0**3-q0**2, 1, q0])
+        polynomial([q0, q0-1, q0**2-q0, q0**3-q0**2, 1, q1])
 
     """
     ary = numpoly.aspolynomial(ary).ravel()
     arys = [ary[1:]-ary[:-1]]
     if to_end is not None:
-        arys.insert(0, numpoly.aspolynomial(to_end).ravel())
+        arys.append(numpoly.aspolynomial(to_end).ravel())
     if to_begin is not None:
-        arys.append(numpoly.aspolynomial(to_begin).ravel())
+        arys.insert(0, numpoly.aspolynomial(to_begin).ravel())
     if len(arys) > 1:
         arys = numpoly.align_dtype(*arys)
         arys = numpoly.align_exponents(*arys)

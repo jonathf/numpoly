@@ -1,6 +1,15 @@
 Master Branch
 =============
 
+Version 1.0.8 (2020-10-29)
+==========================
+
+ADDED:
+  * Numpy function additions: `ediff1d`, `full`, `full_like`, `copyto`.
+
+Version 1.0.7 (2020-10-28)
+==========================
+
 ADDED:
   * Polynomial constructor: `polynomial_from_roots`.
 
