@@ -450,6 +450,23 @@ def test_floor_divide(interface):
     assert_equal(out, [[0., Y], [0., 1.]])
 
 
+def test_full(func_interface):
+    """Tests for numpoly.full."""
+    # TODO numpoly.copyto
+    # assert_equal(func_inumpoly.full((3,), X), [X, X, X])
+    # assert_equal(func_interface.full((3,), Y, dtype=float), [1.*Y, Y, Y])
+    assert_equal(numpoly.full((3,), X), [X, X, X])
+    assert_equal(numpoly.full((3,), Y, dtype=float), [1.*Y, Y, Y])
+
+
+def test_full_like(func_interface):
+    """Tests for numpoly.full_like."""
+    poly = numpoly.polynomial([1, X, 2])
+    assert_equal(func_interface.full_like(poly, X), [X, X, X])
+    poly = numpoly.polynomial([1., X, 2])
+    assert_equal(func_interface.full_like(poly, Y), [1.*Y, Y, Y])
+
+
 def test_greater(interface):
     """Tests for numpoly.greater."""
     poly = numpoly.polynomial([[1, X, X-1, X**2],

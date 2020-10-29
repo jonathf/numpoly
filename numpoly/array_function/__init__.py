@@ -36,6 +36,8 @@ from .equal import equal
 from .expand_dims import expand_dims
 from .floor import floor
 from .floor_divide import floor_divide
+from .full import full
+from .full_like import full_like
 from .greater import greater
 from .greater_equal import greater_equal
 from .hstack import hstack

@@ -83,6 +83,8 @@ Collection
 .. autofunction:: numpoly.array_function.expand_dims
 .. autofunction:: numpoly.array_function.floor
 .. autofunction:: numpoly.array_function.floor_divide
+.. autofunction:: numpoly.array_function.full
+.. autofunction:: numpoly.array_function.full_like
 .. autofunction:: numpoly.array_function.greater
 .. autofunction:: numpoly.array_function.greater_equal
 .. autofunction:: numpoly.array_function.hsplit
