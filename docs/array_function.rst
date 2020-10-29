@@ -69,6 +69,7 @@ Collection
 .. autofunction:: numpoly.array_function.choose
 .. autofunction:: numpoly.array_function.common_type
 .. autofunction:: numpoly.array_function.concatenate
+.. autofunction:: numpoly.array_function.copyto
 .. autofunction:: numpoly.array_function.count_nonzero
 .. autofunction:: numpoly.array_function.cumsum
 .. autofunction:: numpoly.array_function.diag

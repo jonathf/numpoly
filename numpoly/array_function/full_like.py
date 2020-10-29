@@ -45,6 +45,7 @@ def full_like(a, fill_value, dtype=None, order="K", subok=True, shape=None):
         polynomial([q1-1, q1-1, q1-1])
 
     """
+    del subok
     if not isinstance(a, numpy.ndarray):
         a = numpoly.polynomial(a)
     fill_value = numpoly.aspolynomial(fill_value)

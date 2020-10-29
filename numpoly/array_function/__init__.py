@@ -22,6 +22,7 @@ from .ceil import ceil
 from .choose import choose
 from .common_type import common_type
 from .concatenate import concatenate
+from .copyto import copyto
 from .count_nonzero import count_nonzero
 from .cumsum import cumsum
 from .diag import diag
