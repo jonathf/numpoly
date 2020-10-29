@@ -33,28 +33,36 @@ def assert_equal(results, reference, c_contiguous=None,
 
     """
     if type_ is None:
-        assert isinstance(results, (numpy.bool_, numpy.number, numpy.ndarray))
+        assert isinstance(results, (numpy.bool_, numpy.number, numpy.ndarray)), (
+            "unrecognized results type: %s" % results)
     else:
-        assert isinstance(results, type_)
+        assert isinstance(results, type_), (
+            "invalid results type: %s != %s" % (results, type_))
     if isinstance(results, numpoly.ndpoly):
         reference = numpoly.aspolynomial(reference)
     else:
         results = numpy.asarray(results)
         reference = numpy.asarray(reference)
 
+    assert results.shape == reference.shape, (
+        "shape mismatch: %s != %s" % (results, reference))
+    assert results.dtype == reference.dtype, (
+        "dtype mismatch: %s != %s" % (results, reference))
+    if results.shape:
+        assert numpy.all(results == reference), (
+            "value mismatch: %s != %s" % (results, reference))
+    else:
+        assert results == reference, (
+            "value mismatch: %s != %s" % (results, reference))
+
     if c_contiguous is None:
         c_contiguous = reference.flags["C_CONTIGUOUS"]
-    assert results.flags["C_CONTIGUOUS"] == c_contiguous
+    assert results.flags["C_CONTIGUOUS"] == c_contiguous, (
+        "c_contiguous mismatch: %s != %s" % (results, reference))
     if f_contiguous is None:
         f_contiguous = reference.flags["F_CONTIGUOUS"]
-    assert results.flags["F_CONTIGUOUS"] == f_contiguous
-
-    assert results.shape == reference.shape
-    assert results.dtype == reference.dtype
-    if results.shape:
-        assert numpy.all(results == reference)
-    else:
-        assert results == reference
+    assert results.flags["F_CONTIGUOUS"] == f_contiguous, (
+        "f_contiguous mismatch: %s != %s" % (results, reference))
 
 
 def test_absolute(interface):
@@ -289,6 +297,30 @@ def test_concatenate(func_interface):
     assert_equal(func_interface.concatenate([poly1, poly1], 1),
                  [[0, Y, 0, Y], [X, 1, X, 1]])
 
+
+def test_copyto(func_interface):
+    """Tests for numpoly.copyto."""
+    poly = numpoly.polynomial([1, X, Y])
+    poly_ref = numpoly.polynomial([1, X, Y])
+    with raises(ValueError):
+        func_interface.copyto(poly.values, poly_ref, casting="safe")
+    with raises(ValueError):
+        numpoly.copyto(poly.values, [1, 2, 3], casting="safe")
+    func_interface.copyto(poly, X)
+    assert_equal(poly, [X, X, X])
+    func_interface.copyto(poly.values, poly_ref, casting="unsafe")
+    assert_equal(poly, poly_ref)
+    func_interface.copyto(poly, 4)
+    assert_equal(poly, [4, 4, 4])
+    func_interface.copyto(poly.values, poly_ref.values, casting="unsafe")
+    assert_equal(poly, poly_ref)
+    poly = numpoly.polynomial([1, 2, 3])
+    func_interface.copyto(poly, [3, 2, 1], casting="unsafe")
+    assert_equal(poly, [3, 2, 1])
+    func_interface.copyto(poly.values, numpoly.polynomial([1, 2, 3]), casting="unsafe")
+    assert_equal(poly, [1, 2, 3])
+
+
 def test_count_nonzero(func_interface):
     """Tests for numpoly.count_nonzero."""
     poly1 = polynomial([[0, Y], [X, 1]])
@@ -390,6 +422,14 @@ def test_dstack(func_interface):
                  [[[1, Y], [X, 3], [2, 4]]])
 
 
+def test_ediff1d(func_interface):
+    """Tests for numpoly.ediff1d."""
+    poly1 = numpoly.polynomial([1, X, 2])
+    assert_equal(func_interface.ediff1d(poly1), [X-1, 2-X])
+    poly2 = numpoly.polynomial([Y, 3, 4])
+    assert_equal(func_interface.ediff1d(poly2), [3-Y, 1])
+
+
 def test_expand_dims(func_interface):
     """Tests for numpoly.expand_dims."""
     poly1 = numpoly.polynomial([[1, X], [Y, 2], [3, 4]])
@@ -440,6 +480,25 @@ def test_floor_divide(interface):
     )
     numpoly.floor_divide(poly, 2, out=[out])
     assert_equal(out, [[0., Y], [0., 1.]])
+
+
+def test_full(func_interface):
+    """Tests for numpoly.full."""
+    assert_equal(func_interface.full((3,), X), [X, X, X])
+    assert_equal(numpoly.aspolynomial(func_interface.full((3,), 1.*X)), [1.*X, X, X])
+    assert_equal(numpoly.full((3,), Y, dtype=float), [1.*Y, Y, Y])
+    if func_interface is numpy:  # fails in numpy, but only with func dispatch.
+        with raises(ValueError, ):
+            assert_equal(numpy.full((3,), Y, dtype=float), [1.*Y, Y, Y])
+            raise ValueError
+
+
+def test_full_like(func_interface):
+    """Tests for numpoly.full_like."""
+    poly = numpoly.polynomial([1, X, 2])
+    assert_equal(func_interface.full_like(poly, X), [X, X, X])
+    poly = numpoly.polynomial([1., X, 2])
+    assert_equal(func_interface.full_like(poly, Y), [1.*Y, Y, Y])
 
 
 def test_greater(interface):

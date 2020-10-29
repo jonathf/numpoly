@@ -22,6 +22,7 @@ from .ceil import ceil
 from .choose import choose
 from .common_type import common_type
 from .concatenate import concatenate
+from .copyto import copyto
 from .count_nonzero import count_nonzero
 from .cumsum import cumsum
 from .diag import diag
@@ -31,10 +32,13 @@ from .true_divide import true_divide, true_divide as divide
 from .divmod import divmod
 from .dsplit import dsplit
 from .dstack import dstack
+from .ediff1d import ediff1d
 from .equal import equal
 from .expand_dims import expand_dims
 from .floor import floor
 from .floor_divide import floor_divide
+from .full import full
+from .full_like import full_like
 from .greater import greater
 from .greater_equal import greater_equal
 from .hstack import hstack
