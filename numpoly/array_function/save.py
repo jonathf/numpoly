@@ -1,13 +1,14 @@
 """Save polynomial array to a binary file in NumPy ``.npy`` format."""
+PathLike = str
+try:
+    from os import PathLike
+except ImportError:  # pragma: no cover
+    pass
+
 import numpy
 import numpoly
 
 from ..dispatch import implements
-try:
-    from os import PathLike
-except ImportError:
-    PathLike = str
-
 
 
 @implements(numpy.save)

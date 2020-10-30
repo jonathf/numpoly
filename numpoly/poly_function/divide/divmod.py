@@ -98,7 +98,7 @@ def poly_divmod(dividend, divisor, out=(None, None), where=True, **kwargs):
     return quotient, dividend
 
 
-def get_division_candidate(x1, x2):
+def get_division_candidate(x1, x2, cutoff=1e-30):
     """
     Find the next exponent candidate pair in the iterative subtraction process.
 
@@ -107,6 +107,9 @@ def get_division_candidate(x1, x2):
             The array being divided.
         x2 (numpoly.ndpoly):
             Array that that will divide the dividend.
+        cutoff (float):
+            Threshold for when a value is so small that it is no longer a valid
+            candidate. Required to avoid infinity loops in some edge cases.
 
     Returns:
         (Optional[Tuple[int, int, numpy.ndarray]):
@@ -150,7 +153,7 @@ def get_division_candidate(x1, x2):
 
             # really big relative error makes division algorithm
             # into a convergence strategy which needs a cutoff.
-            if numpy.all(numpy.abs(candidate) < 1e-30):
+            if numpy.all(numpy.abs(candidate) < cutoff):
                 continue
 
             return idx1, idx2, include, candidate

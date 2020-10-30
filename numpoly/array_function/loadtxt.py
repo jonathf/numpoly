@@ -1,15 +1,16 @@
 """Load data from a text file."""
 import re
+PathLike = str
+try:
+    from os import PathLike
+except ImportError:  # pragma: no cover
+    pass
 
 import numpy
 from numpy.lib.recfunctions import unstructured_to_structured
 import numpoly
 
 from .savetxt import HEADER_TEMPLATE
-try:
-    from os import PathLike
-except ImportError:
-    PathLike = str
 
 HEADER_REGEX = re.compile(HEADER_TEMPLATE.format(
     version=r"\S+", names=r"(\S+)", keys=r"(\S+)", shape=r"(\S+)"))

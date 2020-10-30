@@ -1,6 +1,11 @@
 Master Branch
 =============
 
+ADDED:
+  * Numpy function additions: `one_like`, `zeros_like`.
+CHANGED:
+  * Enforce 100 percent coverage in CI.
+
 Version 1.0.8 (2020-10-29)
 ==========================
 

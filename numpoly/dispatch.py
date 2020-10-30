@@ -76,7 +76,8 @@ def simple_dispatch(
     """
     inputs = numpoly.align_polynomials(*inputs)
     no_output = out is None
-    for key in inputs[0].keys:
+    keys = inputs[0].keys if no_output else out.keys
+    for key in keys:
 
         if out is None:
             tmp = numpy_func(*[poly[key] for poly in inputs], **kwargs)

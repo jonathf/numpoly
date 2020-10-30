@@ -557,10 +557,6 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
         """Left equality."""
         return array_function.equal(self, other)
 
-    def __req__(self, other):
-        """Right equality."""
-        return array_function.equal(other, self)
-
     def __getitem__(self, index):
         """
         Get array item or slice.

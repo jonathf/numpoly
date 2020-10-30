@@ -71,7 +71,4 @@ def greater(x1, x2, out=None, **kwargs):
         indices &= coefficients1[idx] != coefficients2[idx]
         out[indices] = numpy.greater(
             coefficients1[idx], coefficients2[idx], **kwargs)[indices]
-
-    if not out.size:
-        out = bool(out)
     return out

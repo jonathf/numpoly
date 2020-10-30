@@ -112,6 +112,7 @@ Collection
 .. autofunction:: numpoly.array_function.nonzero
 .. autofunction:: numpoly.array_function.not_equal
 .. autofunction:: numpoly.array_function.ones
+.. autofunction:: numpoly.array_function.ones_like
 .. autofunction:: numpoly.array_function.outer
 .. autofunction:: numpoly.array_function.positive
 .. autofunction:: numpoly.array_function.power
@@ -139,3 +140,4 @@ Collection
 .. autofunction:: numpoly.array_function.vstack
 .. autofunction:: numpoly.array_function.where
 .. autofunction:: numpoly.array_function.zeros
+.. autofunction:: numpoly.array_function.zeros_like
