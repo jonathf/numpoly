@@ -9,7 +9,6 @@ arrays of polynomials based on ``numpy.ndarray`` objects.
    :caption: Contents:
 
    introduction
-   initialization
    array_function
    division
    comparison

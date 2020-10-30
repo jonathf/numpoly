@@ -1,5 +1,63 @@
-Numpy Wrappers
-==============
+Numpy
+=====
+
+The ``numpoly`` concept of arrays is taken from `numpy`_. But it goes a bit deeper
+than just inspiration. The base class
+:class:`numpoly.ndpoly <numpoly.baseclass.ndpoly>` is a direct subclass of
+:class:`numpy.ndarray`:
+
+.. code:: python
+
+    >>> issubclass(numpoly.ndpoly, numpy.ndarray)
+    True
+
+The intentions is to have a library that is fast with the respect of the number
+of coefficients, as it leverages `numpy`_'s speed where possible.
+
+In addition ``numpoly`` is designed to be behave both as you would expect as a
+polynomial, but also, where possible, to behave as a `numpy`_ numerical array.
+In practice this means that ``numpoly`` provides a lot functions that also
+exists in `numpy`_, which does about the same thing. If one of these
+``numpoly`` function is provided with a :class:`numpy.ndarray` object, the
+returned values is the same as if provided to the `numpy`_ function with the
+same name. For example:
+
+.. code:: python
+
+    >>> num_array = numpy.array([[1, 2], [3, 4]])
+    >>> numpoly.transpose(num_array)
+    polynomial([[1, 3],
+                [2, 4]])
+
+And this works the other way around as well. If a polynomial is provided to the
+`numpy`_ function, it will behave the same way as if it was provided to the
+``numpoly`` equivalent. For example:
+
+.. code:: python
+
+    >>> poly_array = numpoly.polynomial([[1, q0-1], [q1**2, 4]])
+    >>> numpy.transpose(poly_array)
+    polynomial([[1, q1**2],
+                [q0-1, 4]])
+
+Though the overlap in functionality between `numpy`_ and ``numpoly`` is large,
+there are still lots of functionality which is specific for each of them.
+The most obvious, in the case of ``numpoly`` feature not found in `numpy`_ is
+the ability to evaluate the polynomials:
+
+.. code:: python
+
+    >>> poly
+    polynomial(q1**2-q0)
+    >>> poly(4, 4)
+    12
+    >>> poly(4)
+    polynomial(q1**2-4)
+    >>> poly([1, 2, 3])
+    polynomial([q1**2-1, q1**2-2, q1**2-3])
+
+Function Compatibility
+----------------------
 
 The numpy library comes with a large number of functions for manipulating
 :class:`numpy.ndarray` objects. Many of these functions are supported

@@ -18,73 +18,112 @@ not to also start talking about *multi-dimensional polynomial arrays*.
 The main idea here is that in the same way as :class:`numpy.ndarray` are
 composed of scalars, :class:`ndpoly <numpoly.baseclass.ndpoly>` --
 the baseclass for the polynomial arrays -- are composed of simpler polynomials.
-For example:
+This gives us a mental model of a polynomial that looks like this:
+
+.. math::
+
+    \Phi(q_1, \dots, q_D) =
+        [\Phi_1(q_1, \dots, q_D), \cdots, \Phi_N(q_1, \dots, q_D)]
+
+where :math:`\Phi` is polynomial vector, :math:`N` is the number of terms in
+the polynomial sum, and :math:`q_d` is the :math:`d`-th indeterminant name.
+This mental model is shown in practice in how numpoly displays its polynomials
+in the REPL:
 
 .. code:: python
 
     >>> q0, q1 = numpoly.variable(2)
-    >>> poly = q1**2-q0
-    >>> poly
-    polynomial(q1**2-q0)
     >>> expansion = numpoly.polynomial([1, q0, q1**2])
     >>> expansion
     polynomial([1, q0, q1**2])
 
-This gives a convenient interface for dealing with many polynomials at the same
-time.
+Another way to look at the polynomials is to keep the polynomial array as a
+single polynomial sum: A multivariate polynomial can in the case of ``numpoly``
+be defined as:
 
-The ``numpoly`` concept of arrays, which is taken from `numpy`_ goes deeper
-than just inspiration. The base class
-:class:`numpoly.ndpoly <numpoly.baseclass.ndpoly>` is a direct subclass of
-:class:`numpy.ndarray`:
+.. math::
 
-.. code:: python
+    \Phi(q_1, \dots, q_D) = \sum_{n=1}^N c_n q_1^{k_{1n}} \cdots q_D^{k_{Dn}}
 
-    >>> issubclass(numpoly.ndpoly, numpy.ndarray)
-    True
+where :math:`c_n` is a multi-dimensional polynomial
+coefficients, and :math:`k_{nd}` is the exponent for the :math:`n`-th
+polynomial term and the :math:`d`-th indeterminant name.
 
-The intentions is to have a library that is fast with the respect of the number
-of coefficients, as it leverages `numpy`_'s speed where possible.
+Neither of the two ways of representing a polynomial array is incorrect, and
+serves different purposes. The former works well for visualisation, while the
+latter form gives a better mental model of how ``numpoly`` handles its
+polynomial internally.
 
-In addition ``numpoly`` is designed to be behave both as you would expect as a
-polynomial, but also, where possible, to behave as a `numpy`_ numerical array.
-In practice this means that ``numpoly`` provides a lot functions that also
-exists in `numpy`_, which does about the same thing. If one of these ``numpoly``
-function is provided with a :class:`numpy.ndarray` object, the returned values
-is the same as if provided to the `numpy`_ function with the same name. For
-example:
+Modelling polynomials by storing the coefficients as multi-dimensional arrays
+is deliberate. Assuming few :math:`k_{nd}` and large dimensional :math:`c_n`,
+all numerical operations that are limited to the coefficients, can be done
+fast, as `numpy`_ can do the heavy lifting.
 
-.. code:: python
+This way of representing a polynomial also means that to uniquely defined a
+polynomial, we only need the three components:
 
-    >>> num_array = numpy.array([[1, 2], [3, 4]])
-    >>> numpoly.transpose(num_array)
-    polynomial([[1, 3],
-                [2, 4]])
+* ``coefficients`` -- the polynomial coefficients :math:`c_n` as
+  multi-dimensional arrays.
+* ``exponents`` -- the exponents :math:`k_{nd}` as a 2-dimensional matrix.
+* ``indeterminants`` -- the names of the variables, typically ``q0``, ``q1``,
+  etc.
 
-And this works the other way around as well. If a polynomial is provided to the
-`numpy`_ function, it will behave the same way as if it was provided to the
-``numpoly`` equivalent. For example:
-
-.. code:: python
-
-    >>> poly_array = numpoly.polynomial([[1, q0-1], [q1**2, 4]])
-    >>> numpy.transpose(poly_array)
-    polynomial([[1, q1**2],
-                [q0-1, 4]])
-
-Though the compatibility layer between `numpy`_ and ``numpoly`` is large, there
-are still lots of functionality which is polynomial specific. The most obvious,
-is the ability to evaluate the polynomials:
+We can access these three defining properties directly from any ``numpoly``
+polynomials. For example, for a simple polynomial with scalar coefficients:
 
 .. code:: python
 
+    >>> q0, q1 = numpoly.variable(2)
+    >>> poly = numpoly.polynomial(4*q0+3*q1-1)
     >>> poly
-    polynomial(q1**2-q0)
-    >>> poly(4, 4)
-    12
-    >>> poly(4)
-    polynomial(q1**2-4)
-    >>> poly([1, 2, 3])
-    polynomial([q1**2-1, q1**2-2, q1**2-3])
+    polynomial(3*q1+4*q0-1)
+    >>> indet = poly.indeterminants
+    >>> indet
+    polynomial([q0, q1])
+    >>> coeff = poly.coefficients
+    >>> coeff
+    [-1, 4, 3]
+    >>> expon = poly.exponents
+    >>> expon
+    array([[0, 0],
+           [1, 0],
+           [0, 1]], dtype=uint32)
+
+Because these three properties uniquely define a polynomial array, they can
+also be used to reconstruct the original polynomial:
+
+.. code:: python
+
+    >>> terms = coeff*numpoly.prod(indet**expon, -1)
+    >>> terms
+    polynomial([-1, 4*q0, 3*q1])
+    >>> poly = numpoly.sum(terms, axis=0)
+    >>> poly
+    polynomial(3*q1+4*q0-1)
+
+.. note::
+
+    As mentioned the chosen representation works best with relatively few
+    :math:`k_{nd}` and large :math:`c_n`. for large number :math:`k_{nd}` and
+    relatively small :math:`c_n` however, the advantage disappears. And even
+    worse, in the case where polynomial terms :math:`q_1^{k_{1n}} \cdots
+    q_D^{k_{Dn}}` are sparsely represented, the ``numpoly`` representation is
+    quite memory inefficient. So it is worth keeping in mind that the advantage
+    of this implementation depends a little upon what kind of problems you are
+    working on. It is not the tool for all problems.
+
+Constructors
+------------
+
+.. autofunction:: numpoly.variable
+.. autofunction:: numpoly.polynomial
+.. autofunction:: numpoly.aspolynomial
+.. autofunction:: numpoly.monomial
+.. autofunction:: numpoly.symbols
+.. autofunction:: numpoly.polynomial_from_attributes
+.. autofunction:: numpoly.polynomial_from_roots
+
+.. autoclass:: numpoly.baseclass.ndpoly
+    :members: coefficients, exponents, from_attributes, indeterminants, keys, names, values, __new__, __call__, _dtype, isconstant, todict, tonumpy
 
 .. _numpy: https://numpy.org/doc/stable
