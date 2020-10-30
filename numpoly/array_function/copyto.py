@@ -3,7 +3,7 @@ import logging
 import numpy
 import numpoly
 
-from ..dispatch import implements
+from ..dispatch import implements, simple_dispatch
 
 
 @implements(numpy.copyto)
@@ -52,7 +52,7 @@ def copyto(dst, src, casting="same_kind", where=True):
         if dst.dtype.names is None:
             if src.isconstant():
                 return numpy.copyto(
-                    src.tonumpy(), dst, casting=casting, where=where)
+                    dst, src.tonumpy(), casting=casting, where=where)
             raise ValueError(
                 "Could not convert src %s to dst %s" % (src, dst))
         if casting != "unsafe":

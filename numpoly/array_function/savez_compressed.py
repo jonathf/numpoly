@@ -37,6 +37,10 @@ def savez_compressed(file, *args, **kwargs):
         >>> numpoly.savez_compressed("/tmp/savez.npz", a=array, p=poly)
         >>> numpoly.load("/tmp/savez.npz")
         {'a': array([1, 2]), 'p': polynomial([q0, q1-1])}
+        >>> numpoly.savez_compressed("/tmp/savez.npz", array, poly)
+        >>> out = numpoly.load("/tmp/savez.npz")
+        >>> out["arr_0"], out["arr_1"]
+        (array([1, 2]), polynomial([q0, q1-1]))
 
     """
     for idx, arg in enumerate(args):

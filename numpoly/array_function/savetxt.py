@@ -64,6 +64,9 @@ def savetxt(fname, X, fmt="%.18e", delimiter=" ", newline="\n",
         >>> numpoly.savetxt("/tmp/poly.txt", poly)
         >>> numpoly.loadtxt("/tmp/poly.txt")
         polynomial([1.0, q0, q1**2-1.0])
+        >>> numpoly.savetxt("/tmp/poly.txt", poly, header="my header")
+        >>> numpoly.loadtxt("/tmp/poly.txt", skiprows=1)
+        polynomial([1.0, q0, q1**2-1.0])
 
     """
     if isinstance(X, numpoly.ndpoly):

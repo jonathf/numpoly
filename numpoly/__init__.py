@@ -47,10 +47,11 @@ def get_version(name):
         True
 
     """
+    version = None
     try:
         version = pkg_resources.get_distribution(name).version
     except pkg_resources.DistributionNotFound:
-        version = None
+        pass
     return version
 
 

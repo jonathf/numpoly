@@ -182,6 +182,9 @@ def test_around(interface):
     assert_equal(interface.round(poly), 123.*X+Y)
     assert_equal(interface.round(poly, decimals=1), 123.4*X+Y)
     assert_equal(interface.round(poly, decimals=-2), 100.*X)
+    out = 5.*X+6.*Y
+    interface.round(poly, decimals=1, out=out)
+    assert_equal(out, 123.4*X+Y)
 
 
 def test_array_repr(func_interface):
@@ -306,6 +309,8 @@ def test_copyto(func_interface):
         func_interface.copyto(poly.values, poly_ref, casting="safe")
     with raises(ValueError):
         numpoly.copyto(poly.values, [1, 2, 3], casting="safe")
+    with raises(ValueError):
+        numpoly.copyto(X, Y, casting="unsafe")
     func_interface.copyto(poly, X)
     assert_equal(poly, [X, X, X])
     func_interface.copyto(poly.values, poly_ref, casting="unsafe")
@@ -319,6 +324,9 @@ def test_copyto(func_interface):
     assert_equal(poly, [3, 2, 1])
     func_interface.copyto(poly.values, numpoly.polynomial([1, 2, 3]), casting="unsafe")
     assert_equal(poly, [1, 2, 3])
+    out = numpy.zeros(3, dtype=float)
+    numpoly.copyto(out, poly, casting="unsafe")
+    assert_equal(out, [1., 2., 3.])
 
 
 def test_count_nonzero(func_interface):
@@ -443,6 +451,10 @@ def test_expand_dims(func_interface):
 def test_equal(interface):
     """Tests for numpoly.equal."""
     poly = polynomial([[0, 2+Y], [X, 2]])
+    assert_equal(interface.equal(X, X), True)
+    assert_equal(interface.equal(X, [X]), [True])
+    assert_equal([X] == X, [True])
+    assert_equal(interface.equal(X, Y), False)
     assert_equal(([X, 2+Y] == poly), [[False, True], [True, False]])
     assert_equal(interface.equal(numpoly.polynomial([X, 2+Y]), poly),
                  [[False, True], [True, False]])
@@ -497,6 +509,7 @@ def test_full_like(func_interface):
     """Tests for numpoly.full_like."""
     poly = numpoly.polynomial([1, X, 2])
     assert_equal(func_interface.full_like(poly, X), [X, X, X])
+    assert_equal(numpoly.full_like([1, X, 2], X), [X, X, X])
     poly = numpoly.polynomial([1., X, 2])
     assert_equal(func_interface.full_like(poly, Y), [1.*Y, Y, Y])
 
@@ -764,6 +777,15 @@ def test_not_equal(interface):
     assert_equal(interface.not_equal(poly, poly.T), [[False, True], [True, False]])
 
 
+def test_ones_like(func_interface):
+    """Tests for numpoly.ones_like."""
+    poly = numpoly.polynomial([1, X, 2])
+    assert_equal(func_interface.ones_like(poly), [1, 1, 1])
+    assert_equal(numpoly.ones_like([1, X, 2]), [1, 1, 1])
+    poly = numpoly.polynomial([1., X, 2])
+    assert_equal(func_interface.ones_like(poly), [1., 1., 1.])
+
+
 def test_outer(func_interface):
     """Tests for numpoly.outer."""
     poly1, poly2 = polynomial([[0, Y], [X+1, 1]])
@@ -943,3 +965,12 @@ def test_where(func_interface):
     assert_equal(func_interface.where([1, 0, 1], poly1, poly2), [0, 0, 0])
     assert_equal(func_interface.where(poly1)[0], [1])
     assert_equal(func_interface.where(poly2)[0], [0, 2])
+
+
+def test_zeros_like(func_interface):
+    """Tests for numpoly.zeros_like."""
+    poly = numpoly.polynomial([1, X, 2])
+    assert_equal(func_interface.zeros_like(poly), [0, 0, 0])
+    assert_equal(numpoly.zeros_like([1, X, 2]), [0, 0, 0])
+    poly = numpoly.polynomial([1., X, 2])
+    assert_equal(func_interface.zeros_like(poly), [0., 0., 0.])

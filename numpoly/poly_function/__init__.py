@@ -5,7 +5,8 @@ from .derivative import derivative, gradient, hessian
 from .isconstant import isconstant
 from .lead_coefficient import lead_coefficient
 from .lead_exponent import lead_exponent
-from .divide import poly_divide, poly_divmod, poly_remainder
+from .divide import (
+    get_division_candidate, poly_divide, poly_divmod, poly_remainder)
 from .set_dimensions import set_dimensions
 from .sortable_proxy import sortable_proxy
 from .tonumpy import tonumpy

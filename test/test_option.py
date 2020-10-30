@@ -18,11 +18,22 @@ POLYNOMIAL_CONFIGURATIONS = [
 
 @pytest.fixture(params=POLYNOMIAL_CONFIGURATIONS)
 def display_config(request):
+    """Parameterization of various display options."""
     yield request.param
 
 
 def test_display_order(display_config):
+    """Ensure string output changes with various display options."""
     expected_output = display_config.pop("expected_output")
     polynomial = numpy.sum(numpoly.monomial(3, names=("q0", "q1")))
     with numpoly.global_options(**display_config):
         assert str(polynomial) == expected_output
+
+
+def test_illegal_option():
+    """Ensure that illegal arguments raises error."""
+    with pytest.raises(KeyError):
+        numpoly.set_options(not_an_argument=4)
+    with pytest.raises(KeyError):
+        with numpoly.global_options(not_an_argument=4):
+            pass

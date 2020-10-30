@@ -1,10 +1,12 @@
 """Load polynomial or pickled objects from ``.npy``, ``.npz`` or pickled files."""
 import numpy
 import numpoly
+
+PathLike = str
 try:
     from os import PathLike
-except ImportError:
-    PathLike = str
+except ImportError:  # pragma: no cover
+    pass
 
 
 def load(file, mmap_mode=None, allow_pickle=False,

@@ -62,6 +62,7 @@ from .negative import negative
 from .nonzero import nonzero
 from .not_equal import not_equal
 from .ones import ones
+from .ones_like import ones_like
 from .outer import outer
 from .positive import positive
 from .power import power
@@ -86,3 +87,4 @@ from .vsplit import vsplit
 from .vstack import vstack
 from .where import where
 from .zeros import zeros
+from .zeros_like import zeros_like

@@ -65,11 +65,14 @@ def test_poly_divmod():
     assert numpoly.poly_divmod(Y, X+2) == (0, Y)
     assert numpoly.poly_divmod(X*Y, X+2) == (Y, -2*Y)
 
-    x1 = -1.715408531156317e+18
-    x2 = 3.097893826691672e+18
+    x1 = numpoly.polynomial(-1.715408531156317e+18)
+    x2 = numpoly.polynomial(3.097893826691672e+18)
     divided, remainder = numpoly.poly_divmod(x1, x2)
     assert numpoly.allclose(x1, x2*divided)
     assert remainder == 0
+
+    # No candidate and no infinity loops when cutoff is reached:
+    assert numpoly.poly_function.get_division_candidate(x1, x2, cutoff=1) is None
 
     x1 = (24*3600)**2*398600.4415
     x2 = 2.689498059130061e-63*X**2+4.351432444850692e-27*X+1760083471.506941
@@ -172,3 +175,12 @@ def test_lead_coefficient():
    assert empty.size == 0
    assert empty.dtype == int
    assert empty.shape == (0,)
+
+
+def test_set_dimensions():
+    """Tests for numpoly.set_dimensions."""
+    assert numpoly.set_dimensions(POLY1).names == ("q0", "q1", "q2")
+    assert numpoly.set_dimensions(POLY1, 1).names == ("q0",)
+    assert numpoly.set_dimensions(POLY1, 2).names == ("q0", "q1")
+    assert numpoly.set_dimensions(POLY1, 3).names == ("q0", "q1", "q2")
+    assert numpoly.set_dimensions(POLY1, 4).names == ("q0", "q1", "q2", "q3")

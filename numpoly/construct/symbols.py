@@ -44,6 +44,8 @@ def symbols(names=None, asarray=False, dtype="i8", allocation=None):
         polynomial([q0, q1, q2, q3, q4, q5, q6])
         >>> numpoly.symbols("q3:6")
         polynomial([q3, q4, q5])
+        >>> numpoly.symbols(["q0", "q3", "q99"])
+        polynomial([q0, q3, q99])
 
     """
     if names is None:
@@ -64,7 +66,7 @@ def symbols(names=None, asarray=False, dtype="i8", allocation=None):
             asarray = True
             names = [name for name in names.split(",") if name]
 
-        elif re.search(r"(\d*):(\d+)", names):
+        elif re.search(r"\d*:\d+", names):
 
             match = re.search(r"(\d*):(\d+)", names)
             start = int(match.group(1) or 0)
@@ -72,17 +74,6 @@ def symbols(names=None, asarray=False, dtype="i8", allocation=None):
             names = [
                 names.replace(match.group(0), str(idx))
                 for idx in range(start, end)
-            ]
-
-        elif re.search(r"([a-zA-Z]+):([a-zA-Z]+)", names):
-
-            match = re.search(r"([a-zA-Z]):([a-zA-Z])", names)
-            start = string.ascii_letters.index(match.group(1))
-            end = string.ascii_letters.index(match.group(2))
-            names = [
-                names.replace(
-                    match.group(0), string.ascii_letters[idy])
-                for idy in range(start, end+1)
             ]
 
         else:
