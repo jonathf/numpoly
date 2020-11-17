@@ -12,8 +12,10 @@ public.
 Baseclass
 ---------
 
-.. autoclass:: numpoly.ndpoly
-    :members: coefficients, exponents, from_attributes, indeterminants, keys, names, values, __new__, __call__, _dtype, isconstant, todict, tonumpy
+.. autosummary::
+    :toctree: api
+
+    ndpoly
 
 Constructors
 ------------

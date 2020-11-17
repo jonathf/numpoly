@@ -15,5 +15,5 @@ Useful links:
    :caption: Quick Overview:
 
    get_started
-   user_guide/index.rst
+   user_guide.rst
    reference.rst
