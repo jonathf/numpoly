@@ -13,9 +13,30 @@ Baseclass
 ---------
 
 .. autosummary::
+    :template: ndpoly.rst
     :toctree: api
 
     ndpoly
+
+.. autosummary::
+    :toctree: api
+
+    ndpoly.coefficients
+    ndpoly.dtype
+    ndpoly.exponents
+    ndpoly.indeterminants
+    ndpoly.keys
+    ndpoly.names
+    ndpoly.values
+    ndpoly.KEY_OFFSET
+
+Exceptions
+----------
+
+.. autosummary::
+    :toctree: api
+
+    FeatureNotSupported
 
 Constructors
 ------------
@@ -29,7 +50,47 @@ Constructors
     monomial
     symbols
     polynomial_from_attributes
+    ndpoly.from_attributes
     polynomial_from_roots
+
+Leading coefficient
+-------------------
+
+.. autosummary::
+   :toctree: api
+
+   lead_coefficient
+   lead_exponent
+   sortable_proxy
+
+Polynomial specific
+-------------------
+
+.. autosummary::
+   :toctree: api
+
+   call
+   decompose
+   set_dimensions
+   isconstant
+   ndpoly.isconstant
+   ndpoly.todict
+   ndpoly.tonumpy
+
+Array creation
+--------------
+
+.. autosummary::
+   :toctree: api
+
+   diag
+   diagonal
+   full
+   full_like
+   ones
+   ones_like
+   zeros
+   zeros_like
 
 Arithmetics
 -----------
@@ -83,16 +144,6 @@ Logic
    logical_and
    logical_or
    not_equal
-
-Leading coefficient
--------------------
-
-.. autosummary::
-   :toctree: api
-
-   lead_coefficient
-   lead_exponent
-   sortable_proxy
 
 Rounding
 --------
@@ -203,21 +254,6 @@ Shape manipulation
    tile
    transpose
 
-Array creation
---------------
-
-.. autosummary::
-   :toctree: api
-
-   diag
-   diagonal
-   full
-   full_like
-   ones
-   ones_like
-   zeros
-   zeros_like
-
 Miscellaneous
 -------------
 
@@ -243,3 +279,13 @@ Global options
    global_options
    get_options
    set_options
+
+Utilities
+---------
+
+.. autosummary::
+   :toctree: api
+
+   glexindex
+   glexsort
+   cross_truncate

@@ -70,30 +70,6 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     be consider using construction functions like `variable`, `monomial`,
     `polynomial`, etc.
 
-    Attributes:
-        coefficients (List[numpy.ndarray, ...]):
-            The polynomial coefficients. Together with exponents defines the
-            polynomial form.
-        exponents (numpy.ndarray):
-            The polynomial exponents. 2-dimensional where the first axis is the
-            same length as coefficients and the second is the length of the
-            indeterminant names.
-        keys (List[str, ...]):
-            The raw names of the coefficients. One-to-one with `exponents`, but
-            as string as to be compatible with numpy structured array. Unlike
-            the exponents, that are useful for mathematical manipulation, the
-            keys are useful as coefficient lookup.
-        indeterminants (numpoly.ndpoly):
-            Secondary polynomial only consisting of an array of simple
-            independent variables found in the polynomial array.
-        names (Tuple[str, ...]):
-            Same as `indeterminants`, but only the names as string.
-        values (numpy.ndarray):
-            Expose the underlying structured array.
-        allocation (int):
-            The number of polynomial coefficients allocated to the polynomial.
-            Has to be at least as large as to have space for all exponents.
-
     Examples:
         >>> poly = ndpoly(
         ...     exponents=[(0, 1), (0, 0)], shape=(3,))
@@ -117,7 +93,8 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
 
     _dtype = None
     """
-    The underlying structure array's actual dtype.
+    Underlying structure array's actual dtype.
+
     Column names correspond to polynomial exponents.
     The numerical values can be calculated using the formula:
     ``poly._dtype.view(numpy.uint32)-poly.KEY_OFFSET``.
@@ -125,12 +102,20 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
 
     keys = None
     """
+    The raw names of the coefficients.
+
+    One-to-one with `exponents`, but as string as to be compatible with numpy
+    structured array. Unlike the exponents, that are useful for mathematical
+    manipulation, the keys are useful as coefficient lookup.
+
     The column names in the underlying structured array dtype
     ``ndpoly._dtype``.
     """
 
     names = None
     """
+    Same as `indeterminants`, but only the names as string.
+
     Positional list of indeterminant names.
     """
 
@@ -143,6 +128,11 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     # The largest index found with this property is 58: ':'.
     # Above this, everything looks like it works as expected.
     KEY_OFFSET = 59
+    """
+    Internal number off-set between exponent and its stored value.
+
+    Exponents are stored in structured array names, which are limited to not accept the letter ':'. By adding an offset between the represented value and the stored value, the letter ':' is skipped.
+    """
 
     def __new__(
             cls,
@@ -271,6 +261,8 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
         """
         Polynomial coefficients.
 
+        Together with exponents defines the polynomial form.
+
         Examples:
             >>> q0, q1 = numpoly.variable(2)
             >>> poly = numpoly.polynomial([2*q0**4, -3*q1**2+14])
@@ -293,6 +285,9 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
     def exponents(self):
         """
         Polynomial exponents.
+
+        2-dimensional where the first axis is the same length as coefficients
+        and the second is the length of the indeterminant names.
 
         Examples:
             >>> q0, q1 = numpoly.variable(2)
@@ -380,6 +375,9 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
     def indeterminants(self):
         """
         Polynomial indeterminants.
+
+        Secondary polynomial only consisting of an array of simple independent
+        variables found in the polynomial array.
 
         Examples:
             >>> q0, q1 = numpoly.variable(2)
@@ -483,7 +481,7 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
 
     @property
     def dtype(self):
-        """Show coefficient dtype instead of the structured array."""
+        """Datatype of the polynomial coefficients."""
         return self._dtype
 
     def astype(self, dtype, **kwargs):

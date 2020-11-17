@@ -1,5 +1,8 @@
+User guide
+==========
+
 Introduction
-============
+------------
 
 In `numpy`_ the concept of *array* is generalized to imply arrays of arbitrary
 dimension, overlapping with the concept of *scalars*, *matrices* and *tensors*.
@@ -37,6 +40,10 @@ in the REPL:
     >>> expansion
     polynomial([1, q0, q1**2])
 
+Here :func:`numpoly.variable` creates to simple indeterminants, and the
+:func:`numpoly.polynomial` constructor joins an array of polynomials into a
+polynomial array, much like :func:`numpy.array` does for numerics in `numpy`_
+
 Another way to look at the polynomials is to keep the polynomial array as a
 single polynomial sum: A multivariate polynomial can in the case of ``numpoly``
 be defined as:
@@ -62,14 +69,16 @@ fast, as `numpy`_ can do the heavy lifting.
 This way of representing a polynomial also means that to uniquely defined a
 polynomial, we only need the three components:
 
-* ``coefficients`` -- the polynomial coefficients :math:`c_n` as
-  multi-dimensional arrays.
-* ``exponents`` -- the exponents :math:`k_{nd}` as a 2-dimensional matrix.
-* ``indeterminants`` -- the names of the variables, typically ``q0``, ``q1``,
-  etc.
+* :attr:`~numpoly.ndpoly.coefficients` -- the polynomial coefficients
+  :math:`c_n` as multi-dimensional arrays.
+* :attr:`~numpoly.ndpoly.exponents` -- the exponents :math:`k_{nd}` as a
+  2-dimensional matrix.
+* :attr:`~numpoly.ndpoly.indeterminants` -- the names of the variables,
+  typically ``q0``, ``q1``, etc.
 
-We can access these three defining properties directly from any ``numpoly``
-polynomials. For example, for a simple polynomial with scalar coefficients:
+We can access these three defining properties directly from any
+:class:`numpoly.ndpoly` polynomial. For example, for a simple polynomial with
+scalar coefficients:
 
 .. code:: python
 
@@ -94,12 +103,16 @@ also be used to reconstruct the original polynomial:
 
 .. code:: python
 
-    >>> terms = coeff*numpoly.prod(indet**expon, -1)
+    >>> terms = coeff*numpoly.prod(indet**expon, axis=-1)
     >>> terms
     polynomial([-1, 4*q0, 3*q1])
     >>> poly = numpoly.sum(terms, axis=0)
     >>> poly
     polynomial(3*q1+4*q0-1)
+
+Here :func:`numpoly.prod` and :func:`numpoly.sum` is used analogous to their
+`numpy`_ counterparts :func:`numpy.prod` and :func:`numpy.sum` to multiply and
+add terms together over an axis.
 
 .. note::
 
@@ -115,12 +128,11 @@ also be used to reconstruct the original polynomial:
 .. _numpy: https://numpy.org/doc/stable
 
 Numpy functions
-===============
+---------------
 
-The ``numpoly`` concept of arrays is taken from `numpy`_. But it goes a bit deeper
-than just inspiration. The base class
-:class:`numpoly.ndpoly` is a direct subclass of
-:class:`numpy.ndarray`:
+The ``numpoly`` concept of arrays is taken from `numpy`_. But it goes a bit
+deeper than just inspiration. The base class :class:`numpoly.ndpoly` is a
+direct subclass of :class:`numpy.ndarray`:
 
 .. code:: python
 
@@ -136,7 +148,7 @@ In practice this means that ``numpoly`` provides a lot functions that also
 exists in `numpy`_, which does about the same thing. If one of these
 ``numpoly`` function is provided with a :class:`numpy.ndarray` object, the
 returned values is the same as if provided to the `numpy`_ function with the
-same name. For example:
+same name. For example :func:`numpoly.transpose`:
 
 .. code:: python
 
@@ -147,11 +159,11 @@ same name. For example:
 
 And this works the other way around as well. If a polynomial is provided to the
 `numpy`_ function, it will behave the same way as if it was provided to the
-``numpoly`` equivalent. For example:
+``numpoly`` equivalent. So following the same example, we can use
+:func:`numpy.transpose` to transpose :class:`numpoly.ndpoly` polynomials:
 
 .. code:: python
 
-    >>> q0, q1 = numpoly.variable(2)
     >>> poly_array = numpoly.polynomial([[1, q0-1], [q1**2, 4]])
     >>> numpy.transpose(poly_array)
     polynomial([[1, q1**2],
@@ -174,8 +186,8 @@ the ability to evaluate the polynomials:
     >>> poly([1, 2, 3])
     polynomial([q1**2-1, q1**2-2, q1**2-3])
 
-Function Compatibility
-----------------------
+Function compatibility
+~~~~~~~~~~~~~~~~~~~~~~
 
 The numpy library comes with a large number of functions for manipulating
 :class:`numpy.ndarray` objects. Many of these functions are supported
@@ -192,44 +204,51 @@ For example:
 .. code:: python
 
     >>> poly = numpoly.variable()**numpy.arange(4)
-    >>> print(poly)
-    [1 q0 q0**2 q0**3]
-    >>> print(numpoly.sum(poly, keepdims=True))
-    [q0**3+q0**2+q0+1]
-    >>> print(numpy.sum(poly, keepdims=True)) # doctest: +SKIP
-    [q0**3+q0**2+q0+1]
+    >>> poly
+    polynomial([1, q0, q0**2, q0**3])
+    >>> numpoly.sum(poly, keepdims=True)
+    polynomial([q0**3+q0**2+q0+1])
+    >>> numpy.sum(poly, keepdims=True)
+    polynomial([q0**3+q0**2+q0+1])
 
-For earlier versions of numpy, the last line will not work.
+For earlier versions of `numpy`_, the last line will not work and will instead
+raise an error.
 
-Not everything is possible to support, and even within the list of supported
-functions, not all use cases can be covered. Bit if such an unsupported edge
-case is encountered, an ``numpoly.baseclass.FeatureNotSupported`` error should
-be raised, so it should be obvious when they happen.
+In addition, not everything is possible to support, and even within the list of
+supported functions, not all use cases can be covered. Bit if such an
+unsupported edge case is encountered, an :class:`numpoly.FeatureNotSupported`
+error should be raised, so it should be obvious when they happen.
 
 As a developer note, ``numpoly`` aims at being backwards compatible with
-`numpy`_ as far as possible when it comes to the functions. This means that all
-functions below should as far as possible mirror the behavior their `numpy`_
-counterparts, and for polynomial constant, they should be identical (except for
-the object type). Function that provides behavior not covered by `numpy`_
-should be placed elsewhere.
+`numpy`_ as far as possible when it comes to the functions it provides. This
+means that all functions below should as far as possible mirror the behavior
+their `numpy`_ counterparts, and for polynomial constant, they should be
+identical (except for the object type). Function that provides behavior not
+covered by `numpy`_ should be placed elsewhere.
 
 .. _numpy: https://numpy.org/doc/stable
 
 Comparison operators
-====================
+--------------------
 
-Because numbers have a natural total ordering, doing comparisons is mostly a
-trivial concept. The only difficulty is how complex numbers are handled for
-unsymmetrical operators. While they are not supported in pure Python:
+Because (real) numbers have a natural total ordering, mathematically speaking,
+doing comparisons and sorting is at least conceptually for the most part
+trivial. There are a few exceptions though. Take for example complex numbers,
+which does not have a total ordering, it then there are not always possible to
+assess if one number is large than the other. To get around this limitation,
+some choices has to be made. For example, in pure Python the choice to raise
+exception for all comparison of complex numbers:
 
 .. code:: python
 
-    >>> from contextlib import suppress
-    >>> with suppress(TypeError):
-    ...     1+3j > 3+1j
+    >>> 1+3j > 3+1j
+    Traceback (most recent call last):
+      ...
+    TypeError: '>' not supported between instances of 'complex' and 'complex'
 
-In ``numpy``, comparisons are supported, but limited to the real part,
-ignoring the imaginary part:
+In ``numpy`` a different choice were made. Comparisons of complex numbers are
+supported, but they limit the compare to the real part only, ignoring the
+imaginary part of the numbers. For example:
 
 .. code:: python
 
@@ -237,13 +256,15 @@ ignoring the imaginary part:
     ...  numpy.array([3+3j, 3+1j, 1+3j, 1+1j]))
     array([False, False,  True,  True])
 
-Polynomials comparisons are a lot more complicated as there are no total
-ordering. However, it is possible to impose a total order that is both
-internally consistent and which is backwards compatible with the behavior of
-``numpy.ndarray``. It requires som design choices, which is opinionated, and
+Polynomials does not have a total ordering either, and imposing one requires
+many choices dealing with various edge cases. However, it is possible to impose
+a total order that is both internally consistent and which is backwards
+compatible with the behavior of
+``numpy.ndarray``. It requires some design choices, which are opinionated, and
 might not always align with everyones taste.
 
-The default ordering implemented in ``numpoly`` is defined as follows:
+With this in mind, the ordering implemented in ``numpoly`` is defined
+as follows:
 
 * Polynomials containing terms with the highest exponents are considered the
   largest:
@@ -287,6 +308,8 @@ The default ordering implemented in ``numpoly`` is defined as follows:
     >>> 4*q0 < q0**2+3*q0 < q0**3+2*q0
     True
 
+  Here leading means the term in the polynomial that is the largest, as
+  defined by the rules here so far.
 
 * Polynomials of equal polynomial order are sorted reverse lexicographically:
 
@@ -303,7 +326,7 @@ The default ordering implemented in ``numpoly`` is defined as follows:
     >>> 4*q0**3+4*q0 < 3*q1**3+3*q1 < 2*q2**3+2*q2
     True
 
-  Composite polynomials of the same order are sorted by lexicographically by
+  Composite polynomials of the same order are sorted lexicographically by
   the dominant indeterminant name:
 
   .. code:: python
@@ -377,10 +400,10 @@ behavior. In particular:
   opposite. Defaults to false.
 
 Polynomial division
-===================
+-------------------
 
-Numerical division can be split into two variants: floor division and true
-division:
+Numerical division can be split into two variants: floor division
+(:func:`numpoly.floor_divide`) and true division (:func:`numpoly.true_divide`):
 
 .. code:: python
 
@@ -393,8 +416,9 @@ division:
     >>> quotient_floor
     3
 
-The discrepancy between the two can be captured by a remainder, which allow us
-to more formally define them as follows:
+The discrepancy between the two can be captured by a remainder
+(:func:`numpoly.remainder`), which allow us to more formally define them as
+follows:
 
 .. code:: python
 
@@ -408,9 +432,9 @@ to more formally define them as follows:
 
 
 In the case of polynomials, neither true nor floor division is supported like
-this. Instead it support its own kind of polynomial division. Polynomial
-division falls back to behave like floor division for all constants, as it does
-not round values:
+this. Instead it support its own kind of polynomial division
+:func:`numpoly.poly_divide`. Polynomial division falls back to behave like
+floor division for all constants, as it does not round values:
 
 .. code:: python
 
@@ -421,8 +445,8 @@ not round values:
     >>> quotient
     polynomial(q0+1.0)
 
-However, like floor division, it can still have remainders.
-For example:
+However, like floor division, it can still have remainders using
+:func:`numpoly.poly_remainder`. For example:
 
 .. code:: python
 
@@ -435,19 +459,21 @@ For example:
 In ``numpy``, the "Python syntactic sugar" operators have the following
 behavior:
 
-* ``/`` is used for true division.
-* ``//`` is used for floor division.
-* ``%`` is used for remainder.
+* ``/`` is used for true division :func:`numpoly.true_divide`.
+* ``//`` is used for floor division :func:`numpoly.floor_divide`.
+* ``%`` is used for remainder :func:`numpoly.remainder`.
 * ``divmod`` is used for floor division and remainder in combination to save
-  computational cost.
+  computational cost through :func:`numpoly.divmod`.
 
 In ``numpoly``, which takes precedence if any of the values are of
-``numpoly.ndpoly`` objects, take the following behavior:
+:class:`numpoly.ndpoly` objects, take the following behavior:
 
-* ``/`` is used for polynomial division, which is backwards compatible with
-  ``numpy``.
-* ``//`` is still used for floor division as in ``numpy``, which is only
-  possible if divisor is a constant.
-* ``%`` is used for polynomial remainder, which is not backwards compatible.
-* ``divmod`` is used for polynomial division and remainder in combination to
-  save computation cost.
+* ``/`` is used for polynomial division :func:`numpoly.poly_divide`, which is
+  not compatible with `numpy`_.
+* ``//`` is still used for floor division :func:`numpoly.floor_divide` which is
+  compatible with `numpy`_, and only works if divisor is a constant.
+* ``%`` is used for polynomial remainder :func:`numpoly.poly_remainder`, which
+  is not backwards compatible.
+* ``divmod`` uses :func:`numpoly.poly_divmod` which is used to save computation
+  cost by doing :func:`numpoly.poly_divide` and :func:`numpoly.remainder` at
+  the same time.
