@@ -1,4 +1,4 @@
-Comparison Operators
+Comparison operators
 ====================
 
 Because numbers have a natural total ordering, doing comparisons is mostly a
@@ -145,12 +145,8 @@ The default ordering implemented in ``numpoly`` is defined as follows:
 
 These rules together allow for a total comparison for all polynomials.
 
-.. autofunction:: numpoly.poly_function.lead_coefficient.lead_coefficient
-.. autofunction:: numpoly.poly_function.lead_exponent.lead_exponent
-.. autofunction:: numpoly.poly_function.sortable_proxy.sortable_proxy
-
 In ``numpoly``, there are a few global options that can be passed to
-`numpoly.set_options` (or `numpoly.global_options`) to change this
+:func:`numpoly.set_options` (or :func:`numpoly.global_options`) to change this
 behavior. In particular:
 
 ``sort_graded``

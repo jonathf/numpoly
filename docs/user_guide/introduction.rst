@@ -16,9 +16,9 @@ one could say that *polynomial expansions* could just as well be termed
 not to also start talking about *multi-dimensional polynomial arrays*.
 
 The main idea here is that in the same way as :class:`numpy.ndarray` are
-composed of scalars, :class:`ndpoly <numpoly.baseclass.ndpoly>` --
-the baseclass for the polynomial arrays -- are composed of simpler polynomials.
-This gives us a mental model of a polynomial that looks like this:
+composed of scalars, :class:`numpoly.ndpoly` -- the baseclass for the
+polynomial arrays -- are composed of simpler polynomials. This gives us a
+mental model of a polynomial that looks like this:
 
 .. math::
 
@@ -111,19 +111,5 @@ also be used to reconstruct the original polynomial:
     quite memory inefficient. So it is worth keeping in mind that the advantage
     of this implementation depends a little upon what kind of problems you are
     working on. It is not the tool for all problems.
-
-Constructors
-------------
-
-.. autofunction:: numpoly.variable
-.. autofunction:: numpoly.polynomial
-.. autofunction:: numpoly.aspolynomial
-.. autofunction:: numpoly.monomial
-.. autofunction:: numpoly.symbols
-.. autofunction:: numpoly.polynomial_from_attributes
-.. autofunction:: numpoly.polynomial_from_roots
-
-.. autoclass:: numpoly.baseclass.ndpoly
-    :members: coefficients, exponents, from_attributes, indeterminants, keys, names, values, __new__, __call__, _dtype, isconstant, todict, tonumpy
 
 .. _numpy: https://numpy.org/doc/stable

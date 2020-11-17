@@ -1,4 +1,4 @@
-Polynomial Division
+Polynomial division
 ===================
 
 Numerical division can be split into two variants: floor division and true
@@ -73,7 +73,3 @@ In ``numpoly``, which takes precedence if any of the values are of
 * ``%`` is used for polynomial remainder, which is not backwards compatible.
 * ``divmod`` is used for polynomial division and remainder in combination to
   save computation cost.
-
-.. autofunction:: numpoly.poly_function.poly_divide
-.. autofunction:: numpoly.poly_function.poly_divmod
-.. autofunction:: numpoly.poly_function.poly_remainder

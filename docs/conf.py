@@ -17,14 +17,15 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'NumPoly'
-copyright = '2019, Jonathan Feinberg'
+import time
+project = 'numpoly'
+copyright = '%d, Jonathan Feinberg' % time.gmtime().tm_year
 author = 'Jonathan Feinberg'
 
 # The short X.Y version
-version = ''
-# The full version, including alpha/beta/rc tags
-release = '0.2'
+import numpoly
+version = numpoly.__version__
+release = numpoly.__version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -75,27 +76,41 @@ exclude_patterns = ['.build', 'Thumbs.db', '.DS_Store']
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = None
 
+# Create stubs automatically for all auto-summaries:
+autosummary_generate = True
+numpydoc_show_class_members = False
 
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'pydata_sphinx_theme'
+html_logo = ".static/numpoly_logo2.svg"
+html_theme_options = {
+    "github_url": "https://github.com/jonathf/numpoly",
+    "use_edit_page_button": True,
+}
+html_context = {
+    "github_user": "jonathf",
+    "github_repo": "numpoly",
+    "github_version": "master",
+    "doc_path": "docs",
+}
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 
-html_theme_options = {
-    "github_user": "jonathf",
-    "github_repo": "numpoly",
-    "github_banner": True,
-    "logo": "numpoly_logo.svg",
-    "logo_name": False,
-    "logo_text_align": "center",
-    "description": "Numerical polynomial arrays",
- }
+# html_theme_options = {
+#     "github_user": "jonathf",
+#     "github_repo": "numpoly",
+#     "github_banner": True,
+#     "logo": "numpoly_logo.svg",
+#     "logo_name": False,
+#     "logo_text_align": "center",
+#     "description": "Numerical polynomial arrays",
+#  }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -111,19 +126,19 @@ html_static_path = ['.static']
 # 'searchbox.html']``.
 
 html_sidebars = {
-    '**': [
-        'about.html',
-        'navigation.html',
-        'relations.html',
-        'searchbox.html',
-    ]
+    # '**': [
+    #     'about.html',
+    #     'navigation.html',
+    #     'relations.html',
+    #     'searchbox.html',
+    # ]
  }
 
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'numpolydoc'
+htmlhelp_basename = 'numpoly'
 
 
 # -- Options for LaTeX output ------------------------------------------------
