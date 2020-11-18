@@ -37,13 +37,10 @@ Feature Overview
   ``divmod``.
 * Extra polynomial specific attributes exposed on the polynomial objects like
   ``poly.exponents``, ``poly.coefficients``, ``poly.indeterminants`` etc.
-* Polynomial derivation through functions like ``numpoly.diff``,
+* Polynomial derivation through functions like ``numpoly.derivative``,
   ``numpoly.gradient``, ``numpoly.hessian`` etc.
 * Decompose polynomial sums into vector of addends using ``numpoly.decompose``.
 * Variable substitution through ``numpoly.call``.
-
-``numpoly`` is currently being used as the backend is the uncertainty
-quantification library `chaospy <https://github.com/jonathf/chaospy>`_.
 
 Installation
 ------------
@@ -54,13 +51,6 @@ Installation should be straight forward:
 
     pip install numpoly
 
-And you should be ready to go. That is it. You should now be able to import the
-library in your Python REPL:
-
-.. code-block:: python
-
-    >>> import numpoly
-
 Example Usage
 -------------
 
@@ -69,13 +59,16 @@ constructors:
 
 .. code-block:: python
 
+    >>> import numpoly
     >>> numpoly.monomial(start=0, stop=3, names=2)
     polynomial([1, q0, q0**2, q1, q0*q1, q1**2])
 
-It is also possible to construct your own from symbols:
+It is also possible to construct your own from symbols together with
+`numpy <https://python.org>`_:
 
 .. code-block:: python
 
+    >>> import numpy
     >>> q0, q1 = numpoly.variable(2)
     >>> numpoly.polynomial([1, q0**2-1, q0*q1, q1**2-1])
     polynomial([1, q0**2-1, q0*q1, q1**2-1])
@@ -104,39 +97,3 @@ Or manipulated using various numpy functions:
                 [q0**2, q0**3]])
     >>> numpy.sum(numpoly.monomial(13)[::3])
     polynomial(q0**12+q0**9+q0**6+q0**3+1)
-
-Development
------------
-
-Development is done using `Poetry <https://poetry.eustace.io/>`_ manager.
-Inside the repository directory, install and create a virtual environment with:
-
-.. code-block:: bash
-
-   poetry install
-
-To run tests:
-
-.. code-block:: bash
-
-   poetry run pytest numpoly test doc --doctest-modules
-
-To build documentation, run:
-
-.. code-block:: bash
-
-   cd doc/
-   make html
-
-The documentation will be generated into the folder ``doc/.build/html``.
-
-Questions and Contributions
----------------------------
-
-Please feel free to `file an issue
-<https://github.com/jonathf/numpoly/issues>`_ for:
-
-* bug reporting
-* asking questions related to usage
-* requesting new features
-* wanting to contribute with code

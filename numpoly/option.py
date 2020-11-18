@@ -131,4 +131,3 @@ def global_options(**kwargs):
         yield get_options()
     finally:
         set_options(**options)
-

@@ -1,2 +1,3 @@
-sphinx_automodapi
 numpy
+sphinx_automodapi
+pydata_sphinx_theme
