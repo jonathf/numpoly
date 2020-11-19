@@ -1,6 +1,13 @@
 Master Branch
 =============
 
+CHANGED:
+  * Call signature change to `numpoly.call` to make its usage different from
+    `__call__`.
+
+Version 1.0.9 (2020-11-18)
+==========================
+
 ADDED:
   * Numpy function additions: `one_like`, `zeros_like`.
 CHANGED:

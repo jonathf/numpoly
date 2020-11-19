@@ -549,7 +549,7 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
                     [1, 2, 3]]])
 
         """
-        return poly_function.call(self, *args, **kwargs)
+        return poly_function.call(self, args, kwargs)
 
     def __eq__(self, other):
         """Left equality."""
