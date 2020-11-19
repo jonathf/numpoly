@@ -1,6 +1,15 @@
 Master Branch
 =============
 
+CHANGED:
+  * The call signature of `numpoly.call` changed to make its usage different
+    from `__call__`.
+  * the call signature of `numpoly.monomial` change to make it more aligned
+    with its parent `numpoly.glexindex`.
+
+Version 1.0.9 (2020-11-18)
+==========================
+
 ADDED:
   * Numpy function additions: `one_like`, `zeros_like`.
 CHANGED:

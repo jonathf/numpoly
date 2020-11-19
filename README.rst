@@ -60,7 +60,7 @@ constructors:
 .. code-block:: python
 
     >>> import numpoly
-    >>> numpoly.monomial(start=0, stop=3, names=2)
+    >>> numpoly.monomial(start=0, stop=3, dimensions=2)
     polynomial([1, q0, q0**2, q1, q0*q1, q1**2])
 
 It is also possible to construct your own from symbols together with

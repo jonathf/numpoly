@@ -25,7 +25,7 @@ def display_config(request):
 def test_display_order(display_config):
     """Ensure string output changes with various display options."""
     expected_output = display_config.pop("expected_output")
-    polynomial = numpy.sum(numpoly.monomial(3, names=("q0", "q1")))
+    polynomial = numpy.sum(numpoly.monomial(3, dimensions=("q0", "q1")))
     with numpoly.global_options(**display_config):
         assert str(polynomial) == expected_output
 

@@ -4,7 +4,7 @@ import numpy
 import numpoly
 
 
-def call(poly, *args, **kwargs):
+def call(poly, args=(), kwargs=None):
     """
     Evaluate polynomial by inserting new values in to the indeterminants.
 
@@ -13,10 +13,11 @@ def call(poly, *args, **kwargs):
     Args:
         poly (numpoly.ndpoly):
             Polynomial to evaluate.
-        args (int, float, numpy.ndarray, numpoly.ndpoly):
+        args (Sequence[None, int, float, numpy.ndarray, numpoly.ndpoly]):
             Argument to evaluate indeterminants. Ordered positional by
-            ``poly.indeterminants``.
-        kwargs (int, float, numpy.ndarray, numpoly.ndpoly):
+            ``poly.indeterminants``. None values indicate that a variable is
+            not to be evaluated, creating a partial evaluation.
+        kwargs (Dict[str, Union[int, float, numpy.ndarray, numpoly.ndpoly]]):
             Same as ``args``, but positioned by name.
 
     Returns:
@@ -27,25 +28,25 @@ def call(poly, *args, **kwargs):
     Examples:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([[q0, q0-1], [q1, q1+q0]])
-        >>> poly()
+        >>> numpoly.call(poly)
         polynomial([[q0, q0-1],
                     [q1, q1+q0]])
         >>> poly
         polynomial([[q0, q0-1],
                     [q1, q1+q0]])
-        >>> poly(1, 0)
+        >>> numpoly.call(poly, (1, 0))
         array([[1, 0],
                [0, 1]])
-        >>> poly(1, q1=[0, 1, 2])
+        >>> numpoly.call(poly, (1,), {"q1": [0, 1, 2]})
         array([[[1, 1, 1],
                 [0, 0, 0]],
         <BLANKLINE>
                [[0, 1, 2],
                 [1, 2, 3]]])
-        >>> poly(q1)
+        >>> numpoly.call(poly, (q1,))
         polynomial([[q1, q1-1],
                     [q1, 2*q1]])
-        >>> poly(q1=q0-1, q0=2*q1)
+        >>> numpoly.call(poly, kwargs={"q1": q0-1, "q0": 2*q1})
         polynomial([[2*q1, 2*q1-1],
                     [q0-1, 2*q1+q0-1]])
 
@@ -53,6 +54,8 @@ def call(poly, *args, **kwargs):
     logger = logging.getLogger(__name__)
 
     # Make sure kwargs contains all args and nothing but indeterminants:
+    kwargs = kwargs if kwargs else {}
+    args = list(args)
     for arg, indeterminant in zip(args, poly.names):
         if indeterminant in kwargs:
             raise TypeError(
@@ -69,7 +72,7 @@ def call(poly, *args, **kwargs):
     indeterminants = poly.indeterminants
     for indeterminant in indeterminants:
         name = indeterminant.names[0]
-        if name not in kwargs:
+        if kwargs.get(name, None) is None:
             kwargs[name] = indeterminant
 
     # There can only be one shape:
