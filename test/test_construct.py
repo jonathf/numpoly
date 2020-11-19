@@ -47,8 +47,8 @@ def test_aspolynomial():
 def test_monomial():
     assert not numpoly.monomial(0).size
     assert numpoly.monomial(1) == 1
-    assert numpy.all(numpoly.monomial(2, names="q0") == [1, X])
-    assert numpoly.monomial(1, 2, names="q0") == X
+    assert numpy.all(numpoly.monomial(2, dimensions="q0") == [1, X])
+    assert numpoly.monomial(1, 2, dimensions="q0") == X
 
 
 def test_polynomial():
