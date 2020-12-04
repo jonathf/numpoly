@@ -182,12 +182,8 @@ def remove_redundant_coefficients(exponents, coefficients):
             for exponent, coefficient in zip(exponents, coefficients)
             if numpy.any(coefficient) or not numpy.any(exponent)
         ]))
-        if elements:
-            exponents = numpy.asarray(elements[0], dtype=int)
-            coefficients = list(elements[1])
-        else:
-            exponents = numpy.zeros((1, 1), dtype=int)
-            coefficients = [numpy.array(0)]
+        exponents = numpy.asarray(elements[0], dtype=int)
+        coefficients = list(elements[1])
     return exponents, coefficients
 
 
