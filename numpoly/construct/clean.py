@@ -235,13 +235,13 @@ def remove_redundant_names(exponents, names):
 
     """
     exponents = numpy.asarray(exponents)
-    names = list(names)
 
     indices = numpy.any(exponents != 0, 0)
     if not numpy.any(indices):
         indices[0] = True
 
     if names:
+        names = list(names)
         names = numpy.array(names)[indices].tolist()
     exponents = exponents[:, indices]
     return exponents, names
