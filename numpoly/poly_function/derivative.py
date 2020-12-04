@@ -40,10 +40,12 @@ def derivative(poly, *diffvars):
             idx = diffvar
         else:
             diffvar = numpoly.aspolynomial(diffvar)
-            assert len(diffvar.names) == 1, "only one at the time"
-            assert numpy.all(diffvar.exponents == 1), (
+            exponents, names = numpoly.remove_redundant_names(
+                diffvar.exponents, diffvar.names)
+            assert len(names) == 1, "only one at the time"
+            assert numpy.all(exponents == 1), (
                 "derivative variable assumes singletons")
-            idx = poly.names.index(diffvar.names[0])
+            idx = poly.names.index(names[0])
 
         exponents = poly.exponents
         coefficients = [
@@ -76,10 +78,11 @@ def gradient(poly):
         variable in ``poly.indeterminants``, filled with gradient values.
 
     Examples:
-        >>> q0, q1 = numpoly.variable(2)
+        >>> q0 = numpoly.variable()
         >>> poly = 5*q0**5+4
         >>> numpoly.gradient(poly)
         polynomial([25*q0**4])
+        >>> q0, q1 = numpoly.variable(2)
         >>> poly = 4*q0**3+2*q1**2+3
         >>> numpoly.gradient(poly)
         polynomial([12*q0**2, 4*q1])
@@ -111,10 +114,11 @@ def hessian(poly):
         variable in ``poly.indeterminants``, filled with Hessian values.
 
     Examples:
-        >>> q0, q1 = numpoly.variable(2)
+        >>> q0 = numpoly.variable()
         >>> poly = 5*q0**5+4
         >>> numpoly.hessian(poly)
         polynomial([[100*q0**3]])
+        >>> q0, q1 = numpoly.variable(2)
         >>> poly = 4*q0**3+2*q1**2+3
         >>> numpoly.hessian(poly)
         polynomial([[24*q0, 0],

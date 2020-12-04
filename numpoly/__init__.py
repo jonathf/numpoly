@@ -17,6 +17,8 @@ from .construct import (
     polynomial,
     aspolynomial,
     clean_attributes,
+    remove_redundant_coefficients,
+    remove_redundant_names,
     polynomial_from_attributes,
     polynomial_from_roots,
     monomial,

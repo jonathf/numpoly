@@ -11,7 +11,8 @@ def polynomial_from_attributes(
         names,
         dtype=None,
         allocation=None,
-        clean=True,
+        retain_coefficients=None,
+        retain_dimensions=None,
 ):
     """
     Construct polynomial from polynomial attributes.
@@ -34,9 +35,11 @@ def polynomial_from_attributes(
         allocation (Optional[int]):
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
-        clean (bool):
-            Clean up attributes, removing redundant indeterminant names and
-            exponents.
+        retain_coefficients (Optional[bool]):
+            Do not remove redundant coefficients. If omitted use global
+            defaults.
+        retain_dimensions (Optional[bool]):
+            Do not remove redundant dimensions. If omitted use global defaults.
 
     Returns:
         (numpoly.ndpoly):
@@ -62,9 +65,13 @@ def polynomial_from_attributes(
         polynomial(0)
 
     """
-    if clean:
-        exponents, coefficients, names = clean_.postprocess_attributes(
-            exponents, coefficients, names)
+    exponents, coefficients, names = clean_.postprocess_attributes(
+        exponents=exponents,
+        coefficients=coefficients,
+        names=names,
+        retain_coefficients=retain_coefficients,
+        retain_dimensions=retain_dimensions,
+    )
     if coefficients:
         dtype = coefficients[0].dtype if dtype is None else dtype
         shape = coefficients[0].shape

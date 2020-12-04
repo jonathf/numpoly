@@ -2,8 +2,6 @@
 import numpy
 import numpoly
 
-from .clean import postprocess_attributes
-
 
 def compose_polynomial_array(
         arrays,
@@ -79,8 +77,6 @@ def compose_polynomial_array(
     coefficients = numpy.array([collection[key] for key in exponents])
     coefficients = coefficients.reshape(-1, *shape)
 
-    exponents, coefficients, names = postprocess_attributes(
-        exponents, coefficients, names)
     return numpoly.ndpoly.from_attributes(
         exponents=exponents,
         coefficients=coefficients,

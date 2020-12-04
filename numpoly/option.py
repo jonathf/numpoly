@@ -3,15 +3,17 @@ from contextlib import contextmanager
 
 GLOBAL_OPTIONS_DEFAULTS = {
     "default_varname": "q",
-    "force_number_suffix": True,
-    "varname_filter": r"q\d+",
-    "sort_graded": True,
-    "sort_reverse": False,
     "display_graded": True,
     "display_reverse": False,
     "display_inverse": True,
     "display_exponent": "**",
     "display_multiply": "*",
+    "force_number_suffix": True,
+    "retain_dimensions": False,
+    "retain_coefficients": False,
+    "sort_graded": True,
+    "sort_reverse": False,
+    "varname_filter": r"q\d+",
 }
 _NUMPOLY_OPTIONS = GLOBAL_OPTIONS_DEFAULTS.copy()
 
@@ -51,23 +53,6 @@ def set_options(**kwargs):
     Args:
         default_varname (str):
             Polynomial indeterminant defaults, if not defined explicitly.
-        force_number_suffix (bool):
-            Add a postfix index to single indeterminant name. If
-            single indeterminant name, e.g. 'q' is provided, but the
-            polynomial is multivariate, an extra postfix index is
-            added to differentiate the names: 'q0, q1, q2, ...'. If
-            true, enforce this behavior for single variables as well
-            such that 'q' always get converted to 'q0'.
-        varname_filter (str):
-            Regular expression defining valid indeterminant names.
-        sort_graded (bool):
-            Graded sorting, meaning the indices are always sorted by the index
-            sum. E.g. ``x**2*y**2*z**2`` has an exponent sum of 6, and will
-            therefore be consider larger than both ``x**3*y*z``, ``x*y**2*z and
-            ``x*y*z**2``, which all have exponent sum of 5.
-        sort_reverse (bool):
-            Reverse lexicographical sorting meaning that ``x*y**3`` is
-            considered bigger than ``x**3*y``, instead of the opposite.
         display_graded (bool):
             When displaying polynomials as strings, sort polynomial sums in graded order.
         display_reverse (bool):
@@ -79,6 +64,31 @@ def set_options(**kwargs):
         display_multiply (str):
             Multiplication sign; Separates coefficients and
             indeterminants, and indeterminants from each other.
+        force_number_suffix (bool):
+            Add a postfix index to single indeterminant name. If
+            single indeterminant name, e.g. 'q' is provided, but the
+            polynomial is multivariate, an extra postfix index is
+            added to differentiate the names: 'q0, q1, q2, ...'. If
+            true, enforce this behavior for single variables as well
+            such that 'q' always get converted to 'q0'.
+        retain_coefficients (bool):
+            After each operation a cleanup is done to reduce the polynomial to
+            its smallest memory imprint. If true, do not remove redundant
+            coefficients (consisting of only zeros).
+        retain_dimensions (bool):
+            After each operation a cleanup is done to reduce the polynomial to
+            its smallest memory imprint. If true, do not remove redundant
+            dimensions (not represented in polynomial anymore).
+        sort_graded (bool):
+            Graded sorting, meaning the indices are always sorted by the index
+            sum. E.g. ``x**2*y**2*z**2`` has an exponent sum of 6, and will
+            therefore be consider larger than both ``x**3*y*z``, ``x*y**2*z and
+            ``x*y*z**2``, which all have exponent sum of 5.
+        sort_reverse (bool):
+            Reverse lexicographical sorting meaning that ``x*y**3`` is
+            considered bigger than ``x**3*y``, instead of the opposite.
+        varname_filter (str):
+            Regular expression defining valid indeterminant names.
 
     Examples:
         >>> numpoly.monomial([3, 3])

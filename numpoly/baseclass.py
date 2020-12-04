@@ -315,7 +315,8 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
             names=None,
             dtype=None,
             allocation=None,
-            clean=True,
+            retain_coefficients=None,
+            retain_dimensions=None,
     ):
         """
         Construct polynomial from polynomial attributes.
@@ -339,9 +340,12 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
             allocation (Optional[int]):
                 The maximum number of polynomial exponents. If omitted, use
                 length of exponents for allocation.
-            clean (bool):
-                Clean up attributes, removing redundant names and exponents.
-                Used to ensure alignment isn't broken.
+            retain_coefficients (Optional[bool]):
+                Do not remove redundant coefficients. If omitted use global
+                defaults.
+            retain_dimensions (Optional[bool]):
+                Do not remove redundant dimensions. If omitted use global
+                defaults.
 
         Returns:
             (numpoly.ndpoly):
@@ -368,7 +372,8 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
             names=names,
             dtype=dtype,
             allocation=allocation,
-            clean=clean,
+            retain_coefficients=retain_coefficients,
+            retain_dimensions=retain_dimensions,
         )
 
     @property

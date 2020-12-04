@@ -22,4 +22,3 @@ def test_align_polynomials():
     assert not Y_.shape
     assert X_ == X
     assert Y_ == Y
-
