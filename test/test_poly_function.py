@@ -5,7 +5,7 @@ import sympy
 import numpy
 import numpoly
 
-X, Y = numpoly.variable(2)
+X, Y = numpoly.symbols("q0"), numpoly.symbols("q1")
 POLY1 = numpoly.polynomial([[1, X, X-1, X**2],
                             [Y, Y-1, Y**2, 1],
                             [X-1, X**2, 1, X],

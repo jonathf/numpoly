@@ -30,9 +30,10 @@ def lead_exponent(poly, graded=False, reverse=False):
             is used to indicate the exponent for the different indeterminants.
 
     Examples:
-        >>> q0, q1 = numpoly.variable(2)
+        >>> q0 = numpoly.variable()
         >>> numpoly.lead_exponent([1, q0+1, q0**2+q0+1]).T
         array([[0, 1, 2]])
+        >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.lead_exponent(
         ...     [1, q0, q1, q0*q1, q0**3-1]).T
         array([[0, 1, 0, 1, 3],

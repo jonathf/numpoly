@@ -7,7 +7,8 @@ import numpoly
 from numpoly.construct.clean import (
     postprocess_attributes, PolynomialConstructionError)
 
-X, Y = XY = numpoly.variable(2)
+XY = numpoly.variable(2)
+X, Y = numpoly.symbols("q0"), numpoly.symbols("q1")
 
 
 def test_postprocess_attributes():

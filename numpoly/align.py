@@ -20,7 +20,8 @@ def align_polynomials(*polys):
             compatible for further operations.
 
     Examples:
-        >>> q0, _ = q0q1 = numpoly.variable(2)
+        >>> q0 = numpoly.variable()
+        >>> q0q1 = numpoly.variable(2)
         >>> q0
         polynomial(q0)
         >>> q0.coefficients
@@ -106,8 +107,10 @@ def align_indeterminants(*polys):
             compatible for further operations.
 
     Examples:
+        >>> q0 = numpoly.variable()
+        >>> poly1 = numpoly.polynomial(2*q0+1)
         >>> q0, q1 = numpoly.variable(2)
-        >>> poly1, poly2 = numpoly.polynomial([2*q0+1, 3*q0-q1])
+        >>> poly2 = numpoly.polynomial(3*q0-q1)
         >>> poly1.indeterminants
         polynomial([q0])
         >>> poly2.indeterminants
@@ -124,12 +127,7 @@ def align_indeterminants(*polys):
 
     """
     polys = [numpoly.aspolynomial(poly) for poly in polys]
-    common_names = sorted({
-        name
-        for poly in polys
-        if not poly.isconstant()
-        for name in poly.names
-    })
+    common_names = sorted({name for poly in polys for name in poly.names})
     if not common_names:
         return polys
 
@@ -147,8 +145,10 @@ def align_indeterminants(*polys):
             exponents=exponents,
             coefficients=poly.coefficients,
             names=common_names,
-            clean=False,
+            retain_coefficients=True,
+            retain_names=True,
         )
+    assert all([polys[0].names == poly.names for poly in polys])
 
     return tuple(polys)
 
@@ -203,6 +203,7 @@ def align_exponents(*polys):
         polys = list(align_indeterminants(*polys))
 
     global_exponents = [tuple(exponent) for exponent in polys[0].exponents]
+
     for poly in polys[1:]:
         global_exponents.extend([tuple(exponent)
                                  for exponent in poly.exponents
@@ -214,6 +215,7 @@ def align_exponents(*polys):
             for exponent, coefficient in zip(
                 poly.exponents, poly.coefficients)
         }
+
         zeros = numpy.zeros(poly.shape, dtype=poly.dtype)
         coefficients = [lookup.get(exponent, zeros)
                         for exponent in global_exponents]
@@ -221,7 +223,8 @@ def align_exponents(*polys):
             exponents=global_exponents,
             coefficients=coefficients,
             names=poly.names,
-            clean=False,
+            retain_coefficients=True,
+            retain_names=True,
         )
     return tuple(polys)
 
@@ -255,6 +258,7 @@ def align_dtype(*polys):
         coefficients=poly.coefficients,
         names=poly.indeterminants,
         dtype=dtype,
-        clean=False,
+        retain_coefficients=True,
+        retain_names=True,
     ) for poly in polys]
     return tuple(polys)

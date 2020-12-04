@@ -64,8 +64,8 @@ jobs:
                 command: |
                     source /home/circleci/venv/bin/activate
                     coverage run --source numpoly/ --module pytest --doctest-modules numpoly/ test/ docs/*.rst README.rst
-                    coverage report --show-missing --fail-under=100
                     codecov
+                    coverage report --show-missing --fail-under=100
     linting:
         executor: my-executor
         steps:

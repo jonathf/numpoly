@@ -69,9 +69,7 @@ def call(poly, args=(), kwargs=None):
         return poly.copy()
 
     # Saturate kwargs with values not given:
-    indeterminants = poly.indeterminants
-    for indeterminant in indeterminants:
-        name = indeterminant.names[0]
+    for name, indeterminant in zip(poly.names, poly.indeterminants):
         if kwargs.get(name, None) is None:
             kwargs[name] = indeterminant
 
@@ -101,5 +99,5 @@ def call(poly, args=(), kwargs=None):
         if out.isconstant():
             out = out.tonumpy()
         else:
-            out, _ = numpoly.align_indeterminants(out, indeterminants)
+            out, _ = numpoly.align_indeterminants(out, poly.indeterminants)
     return out

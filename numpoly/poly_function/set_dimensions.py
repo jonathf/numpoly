@@ -51,7 +51,7 @@ def set_dimensions(poly, dimensions=None):
     elif diff < 0:
         indices = True ^ numpy.any(poly.exponents[:, dimensions:], -1)
         exponents = poly.exponents[:, :dimensions]
-        exponents = exponents[indices, numpy.arange(dimensions)]
+        exponents = exponents[indices]
         coefficients = [
             coeff for coeff, idx in zip(poly.coefficients, indices) if idx]
         names = poly.names[:dimensions]
@@ -65,5 +65,5 @@ def set_dimensions(poly, dimensions=None):
         names=names,
         dtype=poly.dtype,
         allocation=poly.allocation,
-        clean=False,
+        retain_names=True,
     )

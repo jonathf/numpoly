@@ -3,7 +3,8 @@ import numpy
 from pytest import raises
 import numpoly
 
-X, Y = XY = numpoly.variable(2)
+XY = numpoly.variable(2)
+X, Y = numpoly.symbols("q0"), numpoly.symbols("q1")
 EMPTY = numpoly.polynomial([])
 
 
