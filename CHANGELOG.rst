@@ -1,6 +1,14 @@
 Master Branch
 =============
 
+ADDED:
+  * Functions `remove_redundant_coefficients` and
+    `remove_redundant_names` to explicitly remove junk information.
+  * Global flags
+
+Version 1.1.0 (2020-11-19)
+==========================
+
 CHANGED:
   * The call signature of `numpoly.call` changed to make its usage different
     from `__call__`.

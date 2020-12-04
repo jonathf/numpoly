@@ -9,7 +9,7 @@ GLOBAL_OPTIONS_DEFAULTS = {
     "display_exponent": "**",
     "display_multiply": "*",
     "force_number_suffix": True,
-    "retain_dimensions": False,
+    "retain_names": False,
     "retain_coefficients": False,
     "sort_graded": True,
     "sort_reverse": False,
@@ -75,10 +75,10 @@ def set_options(**kwargs):
             After each operation a cleanup is done to reduce the polynomial to
             its smallest memory imprint. If true, do not remove redundant
             coefficients (consisting of only zeros).
-        retain_dimensions (bool):
+        retain_names (bool):
             After each operation a cleanup is done to reduce the polynomial to
             its smallest memory imprint. If true, do not remove redundant
-            dimensions (not represented in polynomial anymore).
+            names (not represented in polynomial anymore).
         sort_graded (bool):
             Graded sorting, meaning the indices are always sorted by the index
             sum. E.g. ``x**2*y**2*z**2`` has an exponent sum of 6, and will

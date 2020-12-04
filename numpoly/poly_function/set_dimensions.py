@@ -65,5 +65,5 @@ def set_dimensions(poly, dimensions=None):
         names=names,
         dtype=poly.dtype,
         allocation=poly.allocation,
-        retain_dimensions=True,
+        retain_names=True,
     )

@@ -146,7 +146,7 @@ def align_indeterminants(*polys):
             coefficients=poly.coefficients,
             names=common_names,
             retain_coefficients=True,
-            retain_dimensions=True,
+            retain_names=True,
         )
     assert all([polys[0].names == poly.names for poly in polys])
 
@@ -224,7 +224,7 @@ def align_exponents(*polys):
             coefficients=coefficients,
             names=poly.names,
             retain_coefficients=True,
-            retain_dimensions=True,
+            retain_names=True,
         )
     return tuple(polys)
 
@@ -259,6 +259,6 @@ def align_dtype(*polys):
         names=poly.indeterminants,
         dtype=dtype,
         retain_coefficients=True,
-        retain_dimensions=True,
+        retain_names=True,
     ) for poly in polys]
     return tuple(polys)

@@ -316,7 +316,7 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
             dtype=None,
             allocation=None,
             retain_coefficients=None,
-            retain_dimensions=None,
+            retain_names=None,
     ):
         """
         Construct polynomial from polynomial attributes.
@@ -343,9 +343,8 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
             retain_coefficients (Optional[bool]):
                 Do not remove redundant coefficients. If omitted use global
                 defaults.
-            retain_dimensions (Optional[bool]):
-                Do not remove redundant dimensions. If omitted use global
-                defaults.
+            retain_names (Optional[bool]):
+                Do not remove redundant names. If omitted use global defaults.
 
         Returns:
             (numpoly.ndpoly):
@@ -373,7 +372,7 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
             dtype=dtype,
             allocation=allocation,
             retain_coefficients=retain_coefficients,
-            retain_dimensions=retain_dimensions,
+            retain_names=retain_names,
         )
 
     @property

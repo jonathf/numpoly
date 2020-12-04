@@ -270,6 +270,21 @@ Miscellaneous
    copyto
    result_type
 
+Constructor helpers
+-------------------
+
+.. autosummary::
+   :toctree: api
+
+   align_dtype
+   align_exponents
+   align_indeterminants
+   align_polynomials
+   align_shape
+   clean_attributes
+   remove_redundant_coefficients
+   remove_redundant_names
+
 Global options
 --------------
 

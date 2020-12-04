@@ -11,7 +11,7 @@ class PolynomialConstructionError(ValueError):
 def clean_attributes(
         poly,
         retain_coefficients=None,
-        retain_dimensions=None,
+        retain_names=None,
 ):
     """
     Clean up polynomial attributes.
@@ -26,8 +26,8 @@ def clean_attributes(
         retain_coefficients (Optional[bool]):
             Do not remove redundant coefficients. If omitted use global
             defaults.
-        retain_dimensions (Optional[bool]):
-            Do not remove redundant dimensions. If omitted use global defaults.
+        retain_names (Optional[bool]):
+            Do not remove redundant names. If omitted use global defaults.
 
     Returns:
         Same as `poly`, but with attributes cleaned up.
@@ -40,7 +40,7 @@ def clean_attributes(
         array([[1, 0],
                [0, 1]], dtype=uint32)
         >>> q0 = numpoly.clean_attributes(
-        ...     q0, retain_coefficients=False, retain_dimensions=False)
+        ...     q0, retain_coefficients=False, retain_names=False)
         >>> q0.indeterminants
         polynomial([q0])
         >>> q0.exponents
@@ -53,7 +53,7 @@ def clean_attributes(
         names=poly.names,
         dtype=poly.dtype,
         retain_coefficients=retain_coefficients,
-        retain_dimensions=retain_dimensions,
+        retain_names=retain_names,
     )
 
 
@@ -62,7 +62,7 @@ def postprocess_attributes(
         coefficients,
         names=None,
         retain_coefficients=None,
-        retain_dimensions=None,
+        retain_names=None,
 ):
     """
     Clean up polynomial attributes.
@@ -82,8 +82,8 @@ def postprocess_attributes(
         retain_coefficients (Optional[bool]):
             Do not remove redundant coefficients. If omitted use global
             defaults.
-        retain_dimensions (Optional[bool]):
-            Do not remove redundant dimensions. If omitted use global defaults.
+        retain_names (Optional[bool]):
+            Do not remove redundant names. If omitted use global defaults.
 
     Returns:
         (numpoly.ndarray, List[numpy.ndarray], Optional[Tuple[str, ...]]):
@@ -123,9 +123,9 @@ def postprocess_attributes(
             raise PolynomialConstructionError(
                 "Duplicate indeterminant names: %s" % names)
 
-    if retain_dimensions is None:
-        retain_dimensions = numpoly.get_options()["retain_dimensions"]
-    if not retain_dimensions:
+    if retain_names is None:
+        retain_names = numpoly.get_options()["retain_names"]
+    if not retain_names:
         exponents, names = remove_redundant_names(exponents, names)
 
     exponents_, count = numpy.unique(exponents, return_counts=True, axis=0)

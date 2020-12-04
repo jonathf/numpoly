@@ -12,7 +12,7 @@ def polynomial_from_attributes(
         dtype=None,
         allocation=None,
         retain_coefficients=None,
-        retain_dimensions=None,
+        retain_names=None,
 ):
     """
     Construct polynomial from polynomial attributes.
@@ -38,8 +38,8 @@ def polynomial_from_attributes(
         retain_coefficients (Optional[bool]):
             Do not remove redundant coefficients. If omitted use global
             defaults.
-        retain_dimensions (Optional[bool]):
-            Do not remove redundant dimensions. If omitted use global defaults.
+        retain_names (Optional[bool]):
+            Do not remove redundant names. If omitted use global defaults.
 
     Returns:
         (numpoly.ndpoly):
@@ -70,7 +70,7 @@ def polynomial_from_attributes(
         coefficients=coefficients,
         names=names,
         retain_coefficients=retain_coefficients,
-        retain_dimensions=retain_dimensions,
+        retain_names=retain_names,
     )
     if coefficients:
         dtype = coefficients[0].dtype if dtype is None else dtype

@@ -37,6 +37,6 @@ def decompose(poly):
             coefficients=[poly[key]],
             names=poly.indeterminants,
             retain_coefficients=True,
-            retain_dimensions=True,
+            retain_names=True,
         )[numpy.newaxis] for key, expon in zip(poly.keys, poly.exponents)
     ])
