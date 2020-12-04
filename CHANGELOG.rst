@@ -4,7 +4,15 @@ Master Branch
 ADDED:
   * Functions `remove_redundant_coefficients` and
     `remove_redundant_names` to explicitly remove junk information.
-  * Global flags
+  * Global flags `retain_coefficients` and `retain_names` to set global
+    defaults.
+CHANGED:
+  * Post-process with `postprocess_attribute` mandatory for all calls to
+    `clean_attributes`, but because of the new flags, keeping polynomial
+    unchanged is still possible.
+REMOVED:
+  * Flag `clean` arg replaced with more explicit `retain_coefficients` and
+    `retain_names`.
 
 Version 1.1.0 (2020-11-19)
 ==========================
