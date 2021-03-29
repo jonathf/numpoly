@@ -1,6 +1,15 @@
 Master Branch
 =============
 
+Version 1.1.2 (2021-03-29)
+==========================
+
+ADDED:
+  * Numpy function addition: `roots`.
+
+Version 1.1.1 (2020-12-04)
+==========================
+
 ADDED:
   * Functions `remove_redundant_coefficients` and
     `remove_redundant_names` to explicitly remove junk information.

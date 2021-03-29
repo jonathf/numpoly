@@ -48,7 +48,10 @@ def assert_equal(results, reference, c_contiguous=None,
         "shape mismatch: %s != %s" % (results, reference))
     assert results.dtype == reference.dtype, (
         "dtype mismatch: %s != %s" % (results, reference))
-    if results.shape:
+
+    if not isinstance(results, numpoly.ndpoly):
+        assert numpy.allclose(results, reference)
+    elif results.shape:
         assert numpy.all(results == reference), (
             "value mismatch: %s != %s" % (results, reference))
     else:
@@ -496,7 +499,7 @@ def test_floor_divide(interface):
 
 def test_full(func_interface):
     """Tests for numpoly.full."""
-    assert_equal(func_interface.full((3,), X), [X, X, X])
+    assert_equal(numpoly.full((3,), X), [X, X, X])
     assert_equal(numpoly.aspolynomial(func_interface.full((3,), 1.*X)), [1.*X, X, X])
     assert_equal(numpoly.full((3,), Y, dtype=float), [1.*Y, Y, Y])
     if func_interface is numpy:  # fails in numpy, but only with func dispatch.
@@ -876,6 +879,20 @@ def test_rint(func_interface):
     """Tests for numpoly.rint."""
     poly = numpoly.polynomial([-1.7*X, X-1.5])
     assert_equal(func_interface.rint(poly), [-2.*X, X-2.])
+
+
+def test_roots(func_interface):
+    func_interface = numpoly
+    poly = [3.2, 2, 1]
+    assert_equal(func_interface.roots(poly),
+                 [-0.3125+0.46351241j, -0.3125-0.46351241j])
+    poly = 3.2*Y**2+2*Y+1
+    assert_equal(func_interface.roots(poly),
+                 [-0.3125+0.46351241j, -0.3125-0.46351241j])
+    with raises(ValueError):
+        func_interface.roots(X*Y)
+    with raises(ValueError):
+        func_interface.roots([[X, 1], [2, X]])
 
 
 def test_split(func_interface):

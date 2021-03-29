@@ -76,6 +76,7 @@ Polynomial specific
    ndpoly.isconstant
    ndpoly.todict
    ndpoly.tonumpy
+   roots
 
 Array creation
 --------------
