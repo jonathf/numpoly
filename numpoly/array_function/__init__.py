@@ -72,6 +72,7 @@ from .repeat import repeat
 from .reshape import reshape
 from .result_type import result_type
 from .rint import rint
+from .roots import roots
 from .save import save
 from .savetxt import savetxt
 from .savez import savez
