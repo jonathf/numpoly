@@ -1,10 +1,10 @@
 """Return the roots of a polynomial."""
 import numpy
 import numpoly
-from ..dispatch import implements_function
+# from ..dispatch import implements
 
 
-@implements_function(numpy.roots)
+# @implements(numpy.roots)
 def roots(poly):
     """
     Return the roots of a polynomial.
