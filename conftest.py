@@ -37,6 +37,7 @@ class MethodDispatch(object):
 
 INTERFACES = ["numpoly", "numpy", "method"]
 FUNC_INTERFACES = ["numpoly", "numpy"]
+
 ALL_INTERFACES = {"numpy": numpy, "numpoly": numpoly, "method": MethodDispatch()}
 
 

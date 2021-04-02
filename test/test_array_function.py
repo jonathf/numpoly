@@ -356,6 +356,7 @@ def test_det():
     poly = polynomial([[1, Y], [X, 1]])
     assert_equal(numpoly.det([array, poly]), [-2, 1-X*Y])
     assert_equal(numpy.linalg.det(poly), 1-X*Y)
+    assert_equal(numpoly.det([[1, X, Y], [Y, 1, X], [X, Y, 1]]), X**3+Y**3-3*X*Y+1)
 
 
 def test_diag(func_interface):
