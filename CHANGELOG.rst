@@ -1,6 +1,12 @@
 Master Branch
 =============
 
+Version 1.1.3 (2021-04-02)
+==========================
+
+ADDED:
+  * Numpy function addition: `det` (from `np.linalg`).
+
 Version 1.1.2 (2021-03-29)
 ==========================
 

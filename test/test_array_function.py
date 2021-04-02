@@ -350,6 +350,14 @@ def test_cumsum(interface):
     assert_equal(interface.cumsum(poly1, axis=1), [[0, Y], [X, X+1]])
 
 
+def test_det():
+    """Test for numpoly.det."""
+    array = [[1, 2], [3, 4]]
+    poly = polynomial([[1, Y], [X, 1]])
+    assert_equal(numpoly.det([array, poly]), [-2, 1-X*Y])
+    assert_equal(numpy.linalg.det(poly), 1-X*Y)
+
+
 def test_diag(func_interface):
     """Tests for numpoly.diag."""
     poly = polynomial([[1, 2, X], [4, Y, 6], [7, 8, X+Y]])
