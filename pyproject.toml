@@ -20,9 +20,8 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "*"
-numpy = "^1.17"
-six = "*"
+python = ">=3.6"
+numpy = ">=1.17"
 
 [tool.poetry.dev-dependencies]
 sympy = "*"
