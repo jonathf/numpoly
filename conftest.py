@@ -35,14 +35,8 @@ class MethodDispatch(object):
         return "method"
 
 
-if parse(numpy.__version__) < parse("1.17.0"):
-    # Use internal interface only (Python 2 in practice)
-    INTERFACES = ["numpoly", "method"]
-    FUNC_INTERFACES = ["numpoly"]
-else:
-    # use both internal and __array_function__ interface (Python 3 in practice)
-    INTERFACES = ["numpoly", "numpy", "method"]
-    FUNC_INTERFACES = ["numpoly", "numpy"]
+INTERFACES = ["numpoly", "numpy", "method"]
+FUNC_INTERFACES = ["numpoly", "numpy"]
 
 ALL_INTERFACES = {"numpy": numpy, "numpoly": numpoly, "method": MethodDispatch()}
 

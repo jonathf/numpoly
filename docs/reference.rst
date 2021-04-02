@@ -166,6 +166,7 @@ Sums/Products
    :toctree: api
 
    cumsum
+   det
    mean
    prod
    sum

@@ -25,6 +25,7 @@ from .concatenate import concatenate
 from .copyto import copyto
 from .count_nonzero import count_nonzero
 from .cumsum import cumsum
+from .det import det
 from .diag import diag
 from .diff import diff
 from .diagonal import diagonal
