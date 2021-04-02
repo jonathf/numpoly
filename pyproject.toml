@@ -20,7 +20,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.6"
+python = "^3.6"
 numpy = ">=1.17"
 
 [tool.poetry.dev-dependencies]
@@ -29,7 +29,7 @@ pylint = "*"
 pytest = "*"
 pytest-cov = "*"
 codecov = "*"
-coverage = "*"
+coverage = "^5.0"
 Sphinx = "*"
 pydocstyle = "3.0.0"
 sphinx_automodapi = "*"
