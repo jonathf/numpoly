@@ -7,7 +7,7 @@ def cross_truncate(indices, bound, norm):
     Truncate of indices using L_p norm.
 
     .. math:
-        L_p(x) = \sum_i |x_i/b_i|^p ^{1/p} \leq 1
+        L_p(x) = (\sum_i |x_i/b_i|^p )^{1/p} \leq 1
 
     where :math:`b_i` are bounds that each :math:`x_i` should follow.
 
@@ -37,7 +37,9 @@ def cross_truncate(indices, bound, norm):
 
     """
     assert norm >= 0, "negative L_p norm not allowed"
-    bound = numpy.asfarray(bound).flatten()*numpy.ones(indices.shape[1])
+    indices = numpy.asarray(indices)
+    bound = numpy.asfarray(bound).ravel()*numpy.ones(indices.shape[1])
+    nudge_factor = 1e-12*indices.shape[1]
 
     if numpy.any(bound < 0):
         return numpy.zeros((len(indices),), dtype=bool)
@@ -49,13 +51,12 @@ def cross_truncate(indices, bound, norm):
         return out
 
     if norm == 0:
-        out = numpy.sum(indices > 0, axis=-1) <= 1
+        out = numpy.sum(indices > 0, axis=-1) <= 1+nudge_factor
         out[numpy.any(indices > bound, axis=-1)] = False
     elif norm == numpy.inf:
-        out = numpy.max(indices/bound, axis=-1) <= 1
+        out = numpy.max(indices/bound, axis=-1) <= 1+nudge_factor
     else:
-        out = numpy.sum((indices/bound)**norm, axis=-1)**(1./norm) <= 1
+        out = numpy.sum((indices/bound)**norm, axis=-1)**(1./norm) <= 1+nudge_factor
 
     assert numpy.all(out[numpy.all(indices == 0, axis=-1)])
-
     return out

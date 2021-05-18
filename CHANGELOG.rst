@@ -1,6 +1,12 @@
 Master Branch
 =============
 
+Version 1.1.4 (2021-05-18)
+==========================
+
+FIXED:
+  * truncate function affected by rounding error.
+
 Version 1.1.3 (2021-04-02)
 ==========================
 
