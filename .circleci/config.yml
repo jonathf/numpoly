@@ -6,31 +6,14 @@ version: 2.1
 executors:
     my-executor:
         docker:
-            - image: circleci/python:3.9.2
+            - image: circleci/python:3.7.8
               auth:
                 username: jonathf
                 password: $DOCKERHUB_PASSWORD
-
         working_directory: /home/circleci/project
 
 jobs:
-    test-py36:
-        docker:
-            - image: circleci/python:3.6.13
-              auth:
-                username: jonathf
-                password: $DOCKERHUB_PASSWORD
-        steps:
-            - checkout
-            - run:
-                name: "Installation"
-                command: |
-                    pip install --user . sympy pytest
-            - run:
-                name: "Run tests"
-                command: |
-                    ~/.local/bin/pytest --doctest-modules numpoly test
-    build-cache:
+    test:
         executor: my-executor
         steps:
             - checkout
@@ -49,28 +32,6 @@ jobs:
                 key: deps-{{ checksum "poetry.lock"}}
                 paths:
                     - /home/circleci/venv
-            - persist_to_workspace:
-                paths:
-                    - project
-                    - venv
-                root: /home/circleci
-    test:
-        executor: my-executor
-        steps:
-            - attach_workspace:
-                at: /home/circleci
-            - run:
-                name: "Run tests"
-                command: |
-                    source /home/circleci/venv/bin/activate
-                    coverage run --source numpoly/ --module pytest --doctest-modules numpoly/ test/ docs/*.rst README.rst
-                    codecov
-                    coverage report --show-missing --fail-under=100
-    linting:
-        executor: my-executor
-        steps:
-            - attach_workspace:
-                at: /home/circleci
             - run:
                 name: "Run pylint"
                 command: |
@@ -81,11 +42,13 @@ jobs:
                 command: |
                     source /home/circleci/venv/bin/activate
                     pydocstyle numpoly
-    sphinx:
-        executor: my-executor
-        steps:
-            - attach_workspace:
-                at: /home/circleci
+            - run:
+                name: "Run tests"
+                command: |
+                    source /home/circleci/venv/bin/activate
+                    coverage run --source numpoly/ --module pytest --doctest-modules numpoly/ test/ docs/*.rst README.rst
+                    codecov
+                    coverage report --show-missing --fail-under=100
             - run:
                 name: "Run Sphinx build"
                 command: |
@@ -94,8 +57,15 @@ jobs:
     deploy:
         executor: my-executor
         steps:
-            - attach_workspace:
-                at: /home/circleci
+            - checkout
+            - restore_cache:
+                keys:
+                    - deps-{{ checksum "poetry.lock"}}
+            - run:
+                name: "Installation"
+                command: |
+                    source /home/circleci/venv/bin/activate
+                    poetry install
             - run:
                 name: "Verify tag version"
                 command: |
@@ -114,33 +84,12 @@ workflows:
     version: 2.1
     workflow:
         jobs:
-            - test-py36:
-                filters:
-                    <<: *version-tags
-            - build-cache:
-                filters:
-                    <<: *version-tags
             - test:
                 filters:
                     <<: *version-tags
-                requires:
-                    - build-cache
-            - linting:
-                filters:
-                    <<: *version-tags
-                requires:
-                    - build-cache
-            - sphinx:
-                filters:
-                    <<: *version-tags
-                requires:
-                    - build-cache
             - deploy:
                 requires:
-                    - test-py36
                     - test
-                    - linting
-                    - sphinx
                 filters:
                     <<: *version-tags
                     branches:
