@@ -68,17 +68,7 @@ def polynomial(
         polynomial(q0**5+3*q0*q1-4)
 
     """
-    if poly_like is None:
-        poly = numpoly.ndpoly(
-            exponents=[(0,)],
-            shape=(),
-            names=names,
-            dtype=dtype,
-            allocation=allocation,
-        )
-        poly[";"] = 0
-
-    elif isinstance(poly_like, dict):
+    if isinstance(poly_like, dict):
         poly = numpoly.ndpoly(exponents=[(0,)], shape=())
         exponents, coefficients = zip(*list(poly_like.items()))
         poly = numpoly.ndpoly.from_attributes(
