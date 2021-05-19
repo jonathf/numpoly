@@ -1,16 +1,21 @@
 """Attempt to cast an object into a polynomial array."""
+from typing import Optional, Tuple, Union
+
 import numpy
+from numpy.typing import DTypeLike
+
 import numpoly
 
 from .compose import compose_polynomial_array
+from ..baseclass import ndpoly, PolyLike
 
 
 def polynomial(
-        poly_like=None,
-        names=None,
-        dtype=None,
-        allocation=None,
-):
+        poly_like: PolyLike = 0,
+        names: Union[None, str, Tuple[str, ...], ndpoly] = None,
+        dtype: Optional[DTypeLike] = None,
+        allocation: Optional[int] = None,
+) -> ndpoly:
     """
     Attempt to cast an object into a polynomial array.
 
@@ -31,20 +36,19 @@ def polynomial(
     ==================  =======================================================
 
     Args:
-        poly_like (typing.Any):
+        poly_like:
             Input to be converted to a `numpoly.ndpoly` polynomial type.
-        names (str, typing.Tuple[str, ...]):
+        names:
             Name of the indeterminant variables. If possible to infer from
             ``poly_like``, this argument will be ignored.
-        dtype (type, numpy.dtype):
+        dtype:
             Data type used for the polynomial coefficients.
-        allocation (Optional[int]):
+        allocation:
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
 
     Returns:
-        (numpoly.ndpoly):
-            Polynomial based on input ``poly_like``.
+        Polynomial based on input ``poly_like``.
 
     Examples:
         >>> numpoly.polynomial({(1,): 1})
@@ -100,8 +104,9 @@ def polynomial(
     elif isinstance(poly_like, numpy.ndarray) and poly_like.dtype.names:
 
         keys = numpy.asarray(poly_like.dtype.names, dtype="U")
-        keys = [key for key in keys if not key.isdigit()]
-        keys = numpy.array(keys, dtype="U%d" % numpy.max(numpy.char.str_len(keys)))
+        keys = numpy.array([key for key in keys if not key.isdigit()])
+        keys = numpy.array(
+            keys, dtype=f"U{numpy.max(numpy.char.str_len(keys))}")
         exponents = keys.view(numpy.uint32)-numpoly.ndpoly.KEY_OFFSET
         exponents = exponents.reshape(len(keys), -1)
 
@@ -116,7 +121,7 @@ def polynomial(
     elif isinstance(poly_like, (int, float, numpy.ndarray, numpy.generic)):
         poly = numpoly.ndpoly.from_attributes(
             exponents=[(0,)],
-            coefficients=numpy.array([poly_like]),
+            coefficients=[numpy.asarray(poly_like)],
             names=names,
             dtype=dtype,
             allocation=allocation,
@@ -124,11 +129,13 @@ def polynomial(
 
     # handler for sympy objects
     elif hasattr(poly_like, "as_poly"):
-        poly_like = poly_like.as_poly()
-        exponents = poly_like.monoms()
-        coefficients = [int(coeff) if coeff.is_integer else float(coeff)
-                        for coeff in poly_like.coeffs()]
-        names = [str(elem) for elem in poly_like.gens]
+        poly_like = poly_like.as_poly()  # type: ignore
+        exponents = poly_like.monoms()  # type: ignore
+        coefficients = [
+            int(coeff) if coeff.is_integer else float(coeff)  # type: ignore
+            for coeff in poly_like.coeffs()  # type: ignore
+        ]
+        names = [str(elem) for elem in poly_like.gens]  # type: ignore
         poly = numpoly.ndpoly.from_attributes(
             exponents=exponents,
             coefficients=coefficients,
@@ -138,7 +145,7 @@ def polynomial(
 
     else:
         poly = compose_polynomial_array(
-            arrays=poly_like,
+            arrays=poly_like,  # type: ignore
             dtype=dtype,
             allocation=allocation,
         )

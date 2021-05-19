@@ -1,8 +1,13 @@
 """Truncation rules for indices."""
 import numpy
+from numpy.typing import ArrayLike
 
 
-def cross_truncate(indices, bound, norm):
+def cross_truncate(
+        indices: ArrayLike,
+        bound: ArrayLike,
+        norm: float,
+) -> numpy.ndarray:
     r"""
     Truncate of indices using L_p norm.
 
@@ -12,11 +17,11 @@ def cross_truncate(indices, bound, norm):
     where :math:`b_i` are bounds that each :math:`x_i` should follow.
 
     Args:
-        indices (Sequence[int]):
+        indices:
             Indices to be truncated.
-        bound (int, Sequence[int]):
+        bound:
             The bound function for witch the indices can not be larger than.
-        norm (float, Sequence[float]):
+        norm:
             The `p` in the `L_p`-norm. Support includes both `L_0` and `L_inf`.
 
     Returns:
@@ -25,38 +30,38 @@ def cross_truncate(indices, bound, norm):
 
     Examples:
         >>> indices = numpy.array(numpy.mgrid[:10, :10]).reshape(2, -1).T
-        >>> indices[cross_truncate(indices, 2, norm=0)].T
+        >>> indices[cross_truncate(indices, 2, norm=0.)].T
         array([[0, 0, 0, 1, 2],
                [0, 1, 2, 0, 0]])
-        >>> indices[cross_truncate(indices, 2, norm=1)].T
+        >>> indices[cross_truncate(indices, 2, norm=1.)].T
         array([[0, 0, 0, 1, 1, 2],
                [0, 1, 2, 0, 1, 0]])
-        >>> indices[cross_truncate(indices, [0, 1], norm=1)].T
+        >>> indices[cross_truncate(indices, [0, 1], norm=1.)].T
         array([[0, 0],
                [0, 1]])
 
     """
     assert norm >= 0, "negative L_p norm not allowed"
     indices = numpy.asarray(indices)
-    bound = numpy.asfarray(bound).ravel()*numpy.ones(indices.shape[1])
+    bound_ = numpy.broadcast_to(numpy.asfarray(bound).ravel(), (indices.shape[1],))
     nudge_factor = 1e-12*indices.shape[1]
 
-    if numpy.any(bound < 0):
+    if numpy.any(bound_ < 0):
         return numpy.zeros((len(indices),), dtype=bool)
 
-    if numpy.any(bound == 0):
-        out = numpy.all(indices[:, bound == 0] == 0, axis=-1)
-        if numpy.any(bound):
-            out &= cross_truncate(indices[:, bound != 0], bound[bound != 0], norm=norm)
+    if numpy.any(bound_ == 0):
+        out = numpy.all(indices[:, bound_ == 0] == 0, axis=-1)
+        if numpy.any(bound_):
+            out &= cross_truncate(indices[:, bound_ != 0], bound_[bound_ != 0], norm=norm)
         return out
 
     if norm == 0:
         out = numpy.sum(indices > 0, axis=-1) <= 1+nudge_factor
-        out[numpy.any(indices > bound, axis=-1)] = False
+        out[numpy.any(indices > bound_, axis=-1)] = False
     elif norm == numpy.inf:
-        out = numpy.max(indices/bound, axis=-1) <= 1+nudge_factor
+        out = numpy.max(indices/bound_, axis=-1) <= 1+nudge_factor
     else:
-        out = numpy.sum((indices/bound)**norm, axis=-1)**(1./norm) <= 1+nudge_factor
+        out = numpy.sum((indices/bound_)**norm, axis=-1)**(1./norm) <= 1+nudge_factor
 
     assert numpy.all(out[numpy.all(indices == 0, axis=-1)])
     return out

@@ -1,19 +1,21 @@
 """Convert numpoly.ndpoly to sympy polynomial."""
+from typing import Any
 import numpy
 
+from .baseclass import PolyLike
 
-def to_sympy(poly):
+
+def to_sympy(poly: PolyLike) -> Any:
     """
     Convert numpoly object to sympy object, or array of sympy objects.
 
     Args:
-        poly (numpoly.ndpoly):
+        poly:
             Polynomial object to convert to sympy.
 
     Returns:
-        (numpy.ndarray, sympy.core.expr.Expr):
-            If scalar, a sympy expression object, or if array, numpy.array with
-            expression object values.
+        If scalar, a sympy expression object, or if array, numpy.array with
+        expression object values.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)

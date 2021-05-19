@@ -1,35 +1,44 @@
 """Multi indices for monomial exponents."""
+from typing import Optional
+
 import numpy
+from numpy.typing import ArrayLike
 
 from .cross_truncation import cross_truncate
 from .glexsort import glexsort
 
 
-def glexindex(start, stop=None, dimensions=1, cross_truncation=1.,
-              graded=False, reverse=False):
+def glexindex(
+        start: ArrayLike,
+        stop: Optional[ArrayLike] = None,
+        dimensions: int = 1,
+        cross_truncation: ArrayLike = 1.,
+        graded: bool = False,
+        reverse: bool = False,
+) -> numpy.ndarray:
     """
     Generate graded lexicographical multi-indices for the monomial exponents.
 
     Args:
-        start (Union[int, numpy.ndarray]):
+        start:
             The lower order of the indices. If array of int, counts as lower
             bound for each axis.
-        stop (Union[int, numpy.ndarray, None]):
+        stop:
             The maximum shape included. If omitted: stop <- start; start <- 0
             If int is provided, set as largest total order. If array of int,
             set as upper bound for each axis.
-        dimensions (int):
+        dimensions:
             The number of dimensions in the expansion.
-        cross_truncation (float, Tuple[float, float]):
+        cross_truncation:
             Use hyperbolic cross truncation scheme to reduce the number of
             terms in expansion. If two values are provided, first is low bound
             truncation, while the latter upper bound. If only one value, upper
             bound is assumed.
-        graded (bool):
+        graded:
             Graded sorting, meaning the indices are always sorted by the index
             sum. E.g. ``(2, 2, 2)`` has a sum of 6, and will therefore be
             consider larger than both ``(3, 1, 1)`` and ``(1, 1, 3)``.
-        reverse (bool):
+        reverse:
             Reversed lexicographical sorting meaning that ``(1, 3)`` is
             considered smaller than ``(3, 1)``, instead of the opposite.
 
@@ -61,7 +70,6 @@ def glexindex(start, stop=None, dimensions=1, cross_truncation=1.,
 
     if indices.size:
         indices = indices[glexsort(indices.T, graded=graded, reverse=reverse)]
-
     return indices
 
 

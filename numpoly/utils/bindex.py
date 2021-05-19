@@ -1,24 +1,32 @@
 """Multi indices for monomial exponents."""
+from typing import Optional, Union
 import numpy
+from numpy.typing import ArrayLike
 
 from .glexindex import glexindex
 
 
-def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
+def bindex(
+        start: ArrayLike,
+        stop: Optional[ArrayLike] = None,
+        dimensions: int = 1,
+        ordering: str = "G",
+        cross_truncation: ArrayLike = 1.,
+) -> numpy.ndarray:
     """
     Generate multi-indices for the monomial exponents.
 
     Args:
-        start (Union[int, numpy.ndarray]):
+        start:
             The lower order of the indices. If array of int, counts as lower
             bound for each axis.
-        stop (Union[int, numpy.ndarray, None]):
+        stop:
             The maximum shape included. If omitted: stop <- start; start <- 0
             If int is provided, set as largest total order. If array of int,
             set as upper bound for each axis.
-        dimensions (int):
+        dimensions:
             The number of dimensions in the expansion.
-        ordering (str):
+        ordering:
             Short hand for the criteria to sort the indices by.
 
             ``G``
@@ -31,15 +39,14 @@ def bindex(start, stop=None, dimensions=1, ordering="G", cross_truncation=1.):
                 considered bigger than ``(3, 1)``, instead of the opposite.
             ``I``
                 The biggest values are in the front instead of the back.
-        cross_truncation (float, Tuple[float, float]):
+        cross_truncation:
             Use hyperbolic cross truncation scheme to reduce the number of
             terms in expansion. If two values are provided, first is low bound
             truncation, while the latter upper bound. If only one value, upper
             bound is assumed.
 
     Returns:
-        list:
-            Order list of indices.
+        Order indices.
 
     Examples:
         >>> numpoly.bindex(4).tolist()

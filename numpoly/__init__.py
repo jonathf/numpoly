@@ -38,7 +38,7 @@ from .utils import (
 from .option import get_options, set_options, global_options
 
 
-def get_version(name):
+def get_version(name: str) -> bool:
     """
     Get distribution version number, if it exists.
 
@@ -57,7 +57,7 @@ def get_version(name):
     return version
 
 
-def configure_logging():
+def configure_logging() -> None:
     """Configure logging for Numpoly."""
     logpath = os.environ.get("NUMPOLY_LOGPATH", os.devnull)
     logging.basicConfig(level=logging.DEBUG, filename=logpath, filemode="w")
@@ -69,5 +69,5 @@ def configure_logging():
     logger.addHandler(streamer)
 
 
-__version__ = get_version("numpoly")
+__version__: str = get_version("numpoly")
 configure_logging()

@@ -26,18 +26,17 @@ array back to a polynomial:
     >>> numpoly.aspolynomial(array, names=("q0", "q1"))
     polynomial(3*q1+4*q0-1)
 """
-from __future__ import division
+from typing import (Any, Callable, Dict, Iterator, List,
+                    Optional, Sequence, Tuple, Union)
 import logging
 import re
 from six import string_types
 
 import numpy
-from numpy.lib import recfunctions
-
-from . import align, construct, dispatch, array_function, poly_function, option
+from numpy.typing import ArrayLike, DTypeLike
 
 
-REDUCE_MAPPINGS = {
+REDUCE_MAPPINGS: Dict[Callable, Callable] = {
     numpy.add: numpy.sum,
     numpy.multiply: numpy.prod,
     numpy.logical_and: numpy.all,
@@ -45,7 +44,7 @@ REDUCE_MAPPINGS = {
     numpy.maximum: numpy.amax,
     numpy.minimum: numpy.amin,
 }
-ACCUMULATE_MAPPINGS = {
+ACCUMULATE_MAPPINGS: Dict[Callable, Callable] = {
     numpy.add: numpy.cumsum,
     numpy.multiply: numpy.cumprod,
 }
@@ -89,9 +88,9 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     # Stuff to get subclassing of ndarray to run smooth
     # =================================================
 
-    __array_priority__ = 16
+    __array_priority__: int = 16
 
-    _dtype = None
+    _dtype: numpy.dtype
     """
     Underlying structure array's actual dtype.
 
@@ -100,7 +99,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     ``poly._dtype.view(numpy.uint32)-poly.KEY_OFFSET``.
     """
 
-    keys = None
+    keys: numpy.ndarray
     """
     The raw names of the coefficients.
 
@@ -112,14 +111,14 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     ``ndpoly._dtype``.
     """
 
-    names = None
+    names: Tuple[str, ...]
     """
     Same as `indeterminants`, but only the names as string.
 
     Positional list of indeterminant names.
     """
 
-    allocation = None
+    allocation: int
     """
     The number of polynomial coefficients allocated to polynomial.
     """
@@ -127,42 +126,44 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     # Numpy structured array names doesn't like characters reserved by Python.
     # The largest index found with this property is 58: ':'.
     # Above this, everything looks like it works as expected.
-    KEY_OFFSET = 59
+    KEY_OFFSET: int = 59
     """
     Internal number off-set between exponent and its stored value.
 
-    Exponents are stored in structured array names, which are limited to not accept the letter ':'. By adding an offset between the represented value and the stored value, the letter ':' is skipped.
+    Exponents are stored in structured array names, which are limited to not
+    accept the letter ':'. By adding an offset between the represented value
+    and the stored value, the letter ':' is skipped.
     """
 
     def __new__(
             cls,
-            exponents=((0,),),
-            shape=(),
-            names=None,
-            dtype=None,
-            allocation=None,
-            **kwargs
-    ):
+            exponents: ArrayLike = ((0,),),
+            shape: Tuple[int, ...] = (),
+            names: Union[None, str, Tuple[str, ...], "ndpoly"] = None,
+            dtype: Optional[DTypeLike] = None,
+            allocation: Optional[int] = None,
+            **kwargs: Any
+    ) -> "ndpoly":
         """
         Class constructor.
 
         Args:
-            exponents (numpy.ndarray):
+            exponents:
                 The exponents in an integer array with shape ``(N, D)``, where
                 ``N`` is the number of terms in the polynomial sum and ``D`` is
                 the number of dimensions.
-            shape (Tuple[int, ...]):
+            shape:
                 Shape of created array.
-            names (Union[None, str, Tuple[str], numpoly.ndpoly]):
+            names:
                 The name of the indeterminant variables in the polynomial. If
                 polynomial, inherent from it. Else, pass argument to
                 `numpoly.symbols` to create the indeterminants names. If only
                 one name is provided, but more than one is required,
                 indeterminants will be extended with an integer index. If
                 omitted, use ``numpoly.get_options()["default_varname"]``.
-            dtype (Optional[numpy.dtype]):
+            dtype:
                 Any object that can be interpreted as a numpy data type.
-            allocation (Optional[int]):
+            allocation:
                 The maximum number of polynomial exponents. If omitted, use
                 length of exponents for allocation.
             kwargs:
@@ -178,6 +179,12 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         else:
             keys = numpy.zeros(0, dtype="U1")
 
+        dtype = int if dtype is None else dtype
+        dtype_ = numpy.dtype([(key, dtype) for key in keys])
+
+        obj = super(ndpoly, cls).__new__(
+            cls, shape=shape, dtype=dtype_, **kwargs)
+
         if allocation is None:
             allocation = 2*len(keys)
         assert isinstance(allocation, int) and allocation >= len(keys), (
@@ -186,40 +193,37 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             allocation_ = numpy.arange(allocation-len(keys), len(keys))
             allocation_ = [str(s) for s in allocation_]
             keys = numpy.concatenate([keys, allocation_])
+        obj.allocation = allocation
 
         if names is None:
             names = option.get_options()["default_varname"]
-            names = construct.symbols("%s:%d" % (names, exponents.shape[-1])).names
+            obj.names = construct.symbols(
+                "%s:%d" % (names, exponents.shape[-1])).names
         elif isinstance(names, string_types):
-            names = construct.symbols(names).names
+            obj.names = construct.symbols(names).names
         elif isinstance(names, ndpoly):
-            names = names.names
-        for name in names:
+            obj.names = names.names
+        else:
+            obj.names = tuple(str(name) for name in names)
+        for name in obj.names:
             assert re.search(option.get_options()["varname_filter"], name), (
                 "invalid polynomial name; "
                 "expected format: %r" % option.get_options()["varname_filter"])
 
-        dtype = int if dtype is None else dtype
-        dtype_ = numpy.dtype([(key, dtype) for key in keys])
-
-        obj = super(ndpoly, cls).__new__(
-            cls, shape=shape, dtype=dtype_, **kwargs)
         obj._dtype = numpy.dtype(dtype)  # pylint: disable=protected-access
         obj.keys = keys
-        obj.names = tuple(names)
-        obj.allocation = allocation
         return obj
 
-    def __array_finalize__(self, obj):
+    def __array_finalize__(self, obj: "ndpoly") -> None:
         """Finalize numpy constructor."""
         if obj is None:
             return
-        self.keys = getattr(obj, "keys", None)
-        self.names = getattr(obj, "names", None)
-        self.allocation = getattr(obj, "allocation", None)
-        self._dtype = getattr(obj, "_dtype", None)
+        self.keys = getattr(obj, "keys")
+        self.names = getattr(obj, "names")
+        self.allocation = getattr(obj, "allocation")
+        self._dtype = getattr(obj, "_dtype")
 
-    def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+    def __array_ufunc__(self, ufunc: Callable, method: Callable, *inputs: Any, **kwargs: Any) -> Any:
         """Dispatch method for operators."""
         if method == "reduce":
             ufunc = REDUCE_MAPPINGS[ufunc]
@@ -231,8 +235,9 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             raise FeatureNotSupported("ufunc '%s' not supported." % ufunc)
         return dispatch.UFUNC_COLLECTION[ufunc](*inputs, **kwargs)
 
-    def __array_function__(self, func, types, args, kwargs):
+    def __array_function__(self, func: Callable, types: Any, args: Tuple[Any, ...], kwargs: Dict[str, Any]) -> Any:
         """Dispatch method for functions."""
+        del types
         logger = logging.getLogger(__name__)
         fname = func.__name__
         if func not in dispatch.FUNCTION_COLLECTION:
@@ -257,7 +262,7 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
     # ======================================
 
     @property
-    def coefficients(self):
+    def coefficients(self) -> List[numpy.ndarray]:
         """
         Polynomial coefficients.
 
@@ -282,7 +287,7 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
         return list(out)
 
     @property
-    def exponents(self):
+    def exponents(self) -> numpy.ndarray:
         """
         Polynomial exponents.
 
@@ -310,45 +315,44 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
 
     @staticmethod
     def from_attributes(
-            exponents,
-            coefficients,
-            names=None,
-            dtype=None,
-            allocation=None,
-            retain_coefficients=None,
-            retain_names=None,
-    ):
+            exponents: ArrayLike,
+            coefficients: Sequence[ArrayLike],
+            names: Union[None, str, Sequence[str], "ndpoly"] = None,
+            dtype: Optional[DTypeLike] = None,
+            allocation: Optional[int] = None,
+            retain_coefficients: Optional[bool] = None,
+            retain_names: Optional[bool] = None,
+    ) -> "ndpoly":
         """
         Construct polynomial from polynomial attributes.
 
         Args:
-            exponents (numpy.ndarray):
+            exponents:
                 The exponents in an integer array with shape ``(N, D)``, where
                 ``N`` is the number of terms in the polynomial sum and ``D`` is
                 the number of dimensions.
-            coefficients (Iterable[numpy.ndarray]):
+            coefficients:
                 The polynomial coefficients. Must correspond to `exponents` by
                 having the same length ``N``.
-            names (Union[None, str, Tuple[str, ...], numpoly.ndpoly]):
+            names:
                 The indeterminants names, either as string names or as
                 simple polynomials. Must correspond to the exponents by having
                 length 1 or ``D``. If omitted, use
                 ``numpoly.get_options()["default_varname"]``.
-            dtype (Optional[numpy.dtype]):
+            dtype:
                 The data type of the polynomial. If omitted, extract from
                 `coefficients`.
-            allocation (Optional[int]):
+            allocation:
                 The maximum number of polynomial exponents. If omitted, use
                 length of exponents for allocation.
-            retain_coefficients (Optional[bool]):
+            retain_coefficients:
                 Do not remove redundant coefficients. If omitted use global
                 defaults.
-            retain_names (Optional[bool]):
+            retain_names:
                 Do not remove redundant names. If omitted use global defaults.
 
         Returns:
-            (numpoly.ndpoly):
-                Polynomials with attributes defined by input.
+            Polynomials with attributes defined by input.
 
         Examples:
             >>> numpoly.ndpoly.from_attributes(
@@ -376,7 +380,7 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
         )
 
     @property
-    def indeterminants(self):
+    def indeterminants(self) -> "ndpoly":
         """
         Polynomial indeterminants.
 
@@ -399,7 +403,7 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
         )
 
     @property
-    def values(self):
+    def values(self) -> numpy.ndarray:
         """
         Expose the underlying structured array.
 
@@ -418,13 +422,12 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
             buffer=self.data
         )
 
-    def isconstant(self):
+    def isconstant(self) -> bool:
         """
         Check if a polynomial is constant or not.
 
         Returns:
-            (bool):
-                True if all elements in array are constant.
+            True if all elements in array are constant.
 
         Examples:
             >>> q0 = numpoly.variable()
@@ -438,14 +441,12 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
         """
         return poly_function.isconstant(self)
 
-    def todict(self):
+    def todict(self) -> Dict[Tuple[int, ...], numpy.ndarray]:
         """
         Cast to dict where keys are exponents and values are coefficients.
 
         Returns:
-            (Dict[Tuple[int, ...], numpy.ndarray]):
-                Dictionary where keys are exponents and values are
-                coefficients.
+            Dictionary where keys are exponents and values are coefficients.
 
         Examples:
             >>> q0, q1 = numpoly.variable(2)
@@ -460,13 +461,12 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
                 for exponent, coefficient in zip(
                     self.exponents, self.coefficients)}
 
-    def tonumpy(self):
+    def tonumpy(self) -> numpy.ndarray:
         """
         Cast polynomial to numpy.ndarray, if possible.
 
         Returns:
-            (numpy.ndarray):
-                Same as object, but cast to `numpy.ndarray`.
+            Same as object, but cast to `numpy.ndarray`.
 
         Raises:
             numpoly.baseclass.FeatureNotSupported:
@@ -484,11 +484,11 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
     # =============================================
 
     @property
-    def dtype(self):
+    def dtype(self) -> numpy.dtype:
         """Datatype of the polynomial coefficients."""
         return self._dtype
 
-    def astype(self, dtype, **kwargs):
+    def astype(self, dtype: Any, **kwargs: Any) -> "ndpoly":  # type: ignore
         """Wrap ndarray.astype."""
         coefficients = [coefficient.astype(dtype, **kwargs)
                         for coefficient in self.coefficients]
@@ -500,22 +500,34 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
             dtype=dtype,
         )
 
-    def diagonal(self, offset=0, axis1=0, axis2=1):
+    def diagonal(self, offset: int = 0, axis1: int = 0, axis2: int = 1) -> "ndpoly":  # type: ignore
         """Wrap ndarray.diagonal."""
         return array_function.diagonal(
             self, offset=offset, axis1=axis1, axis2=axis2)
 
-    def round(self, decimals=0, out=None):
+    def round(self, decimals: int = 0, out: Optional["ndpoly"] = None) -> "ndpoly":  # type: ignore
         """Wrap ndarray.round."""
         # Not sure why it is required. Likely a numpy bug.
         return array_function.around(self, decimals=decimals, out=out)
 
-    def max(self, axis=None, out=None, keepdims=False, **kwargs):
+    def max(  # type: ignore
+            self,
+            axis: Optional[ArrayLike] = None,
+            out: Optional["ndpoly"] = None,
+            keepdims: bool = False,
+            **kwargs: Any,
+    ) -> "ndpoly":
         """Wrap ndarray.max."""
         return array_function.max(self, axis=axis, out=out,
                                   keepdims=keepdims, **kwargs)
 
-    def min(self, axis=None, out=None, keepdims=False, **kwargs):
+    def min(  # type: ignore
+            self,
+            axis: Optional[ArrayLike] = None,
+            out: Optional["ndpoly"] = None,
+            keepdims: bool = False,
+            **kwargs: Any,
+    ) -> "ndpoly":
         """Wrap ndarray.min."""
         return array_function.min(self, axis=axis, out=out,
                                   keepdims=keepdims, **kwargs)
@@ -524,22 +536,24 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
     # Override dunder methods that isn't dealt with by dispatching
     # ============================================================
 
-    def __call__(self, *args, **kwargs):
+    def __call__(
+            self,
+            *args: Union[ArrayLike, "ndpoly"],
+            **kwargs: Union[ArrayLike, "ndpoly"],
+    ) -> Union[numpy.ndarray, "ndpoly"]:
         """
         Evaluate polynomial by inserting new values in to the indeterminants.
 
         Args:
-            args (int, float, numpy.ndarray, numpoly.ndpoly):
+            args:
                 Argument to evaluate indeterminants. Ordered positional by
                 ``self.indeterminants``.
-            kwargs (int, float, numpy.ndarray, numpoly.ndpoly):
+            kwargs:
                 Same as ``args``, but positioned by name.
 
         Returns:
-            (Union[numpy.ndarray, numpoly.ndpoly]):
-                Evaluated polynomial. If the resulting array does not contain
-                any indeterminants, an array is returned instead of a
-                polynomial.
+            Evaluated polynomial. If the resulting array does not contain any
+            indeterminants, an array is returned instead of a polynomial.
 
         Examples:
             >>> q0, q1 = numpoly.variable(2)
@@ -555,19 +569,25 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
         """
         return poly_function.call(self, args, kwargs)
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> numpy.ndarray:  # type: ignore
         """Left equality."""
         return array_function.equal(self, other)
 
-    def __getitem__(self, index):
+    def __getitem__(
+        self,
+        index: Union[str, ArrayLike],
+    ) -> Union[numpy.ndarray, "ndpoly"]:
         """
         Get array item or slice.
 
         Args:
-            index (Union[int, str, Tuple[int, ...], numpy.ndarray]):
-                The index to extract. If string type, extract using th
+            index:
+                The index to extract. If string type, extract using the
                 underlying structured array data type. Else, extract as
                 numpy.ndarray.
+
+        Returns:
+            Polynomial array element.
 
         Examples:
             >>> q0, q1 = numpoly.variable(2)
@@ -611,7 +631,7 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
     #         self.values[key][index] = other.values[key][index]
 
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator["ndpoly"]:
         """Iterate polynomial array."""
         coefficients = numpy.array(list(self.coefficients))
         return iter(construct.polynomial_from_attributes(
@@ -620,52 +640,57 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
             names=self.names,
         ) for idx in range(len(self)))
 
-    def __ne__(self, other):
+    def __ne__(self, other: object) -> numpy.ndarray:  # type: ignore
         """Not equal."""
         return array_function.not_equal(self, other)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Canonical string representation."""
         return array_function.array_repr(self)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Pretty string representation."""
         return array_function.array_str(self)
 
-    def __truediv__(self, value):
+    def __truediv__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return self/value."""
         return poly_function.poly_divide(self, value)
 
-    def __rtruediv__(self, value):
+    def __rtruediv__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return value/self."""
         return poly_function.poly_divide(value, self)
 
-    def __div__(self, value):
+    def __div__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return self/value."""
         return poly_function.poly_divide(self, value)
 
-    def __rdiv__(self, value):
+    def __rdiv__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return value/self."""
         return poly_function.poly_divide(value, self)
 
-    def __mod__(self, value):
+    def __mod__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return self%value."""
         return poly_function.poly_remainder(self, value)
 
-    def __rmod__(self, value):
+    def __rmod__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return value%self."""
         return poly_function.poly_remainder(value, self)
 
-    def __divmod__(self, value):
+    def __divmod__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return divmod(self, value)."""
         return poly_function.poly_divmod(self, value)
 
-    def __rdivmod__(self, value):
+    def __rdivmod__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return divmod(value, self)."""
         return poly_function.poly_divmod(value, self)
 
-    def __reduce__(self):
+    def __reduce__(self) -> Tuple[Callable, Tuple]:
         """Extract state to be pickled."""
         return (construct.polynomial_from_attributes,
                 (self.exponents, self.coefficients, self.names,
                  self.dtype, self.allocation, False))
+
+
+PolyLike = Union[ArrayLike, ndpoly]
+
+from . import construct, dispatch, array_function, poly_function, option

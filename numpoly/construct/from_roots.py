@@ -1,12 +1,17 @@
 """Find a polynomial with the given sequence of roots."""
+from typing import Optional, Sequence
+
 import numpy
+from numpy.typing import DTypeLike
+
 import numpoly
+from ..baseclass import ndpoly
 
 
 def polynomial_from_roots(
-    seq_of_zeros,
-    dtype=None,
-):
+    seq_of_zeros: Sequence[int],
+    dtype: Optional[DTypeLike] = None,
+) -> ndpoly:
     """
     Find the coefficients of a polynomial with the given sequence of roots.
 
@@ -18,16 +23,15 @@ def polynomial_from_roots(
     are returned.
 
     Args:
-        seq_of_zeros (numpy.ndarray):
+        seq_of_zeros:
             A sequence of polynomial roots, or a square array or matrix object.
             Either shape (N,) or (N, N).
-        dtype (Optional[numpy.dtype]):
+        dtype:
             Any object that can be interpreted as a numpy data type.
 
     Returns:
-        (numpoly.ndpoly):
-            1-D polynomial which have `seq_of_zeros` as roots. Leading
-            coefficient is always 1.
+        1-D polynomial which have `seq_of_zeros` as roots.
+        Leading coefficient is always 1.
 
     Raises:
         ValueError:

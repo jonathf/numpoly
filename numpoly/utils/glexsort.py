@@ -1,8 +1,13 @@
 """Sort keys lexicographically."""
 import numpy
+from numpy.typing import ArrayLike
 
 
-def glexsort(keys, graded=False, reverse=False):
+def glexsort(
+    keys: ArrayLike,
+    graded: bool = False,
+    reverse: bool = False,
+) -> numpy.ndarray:
     """
     Sort keys graded lexicographically.
 
@@ -10,19 +15,18 @@ def glexsort(keys, graded=False, reverse=False):
     lexicographical ordering.
 
     Args:
-        keys (Sequence(Sequence[int])):
+        keys:
             Values to sort.
-        graded (bool):
+        graded:
             Graded sorting, meaning the indices are always sorted by the index
             sum. E.g. ``(2, 2, 2)`` has a sum of 6, and will therefore be
             consider larger than both ``(3, 1, 1)`` and ``(1, 1, 3)``.
-        reverse (bool):
+        reverse:
             Reverse lexicographical sorting meaning that ``(1, 3)`` is
             considered smaller than ``(3, 1)``, instead of the opposite.
 
     Returns:
-        (numpy.ndarray):
-            Array of indices that sort the keys along the specified axis.
+        Array of indices that sort the keys along the specified axis.
 
     Examples:
         >>> indices = numpy.array([[0, 0, 0, 1, 2, 1],
@@ -47,13 +51,12 @@ def glexsort(keys, graded=False, reverse=False):
         array([1, 2, 3, 4, 5, 6])
 
     """
-    keys = numpy.atleast_2d(keys)
-
+    keys_ = numpy.atleast_2d(keys)
     if reverse:
-        keys = keys[::-1]
+        keys_ = keys_[::-1]
 
-    indices = numpy.array(numpy.lexsort(keys))
+    indices = numpy.array(numpy.lexsort(keys_))
     if graded:
         indices = indices[numpy.argsort(
-            numpy.sum(keys[:, indices], axis=0))].T
+            numpy.sum(keys_[:, indices], axis=0))].T
     return indices

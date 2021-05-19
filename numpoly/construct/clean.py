@@ -1,7 +1,9 @@
 """Clean up polynomial attributes."""
-from six import string_types
+from typing import List, Optional, Sequence, Tuple, Union
 import numpy
+from numpy.typing import ArrayLike
 import numpoly
+from ..baseclass import ndpoly
 
 
 class PolynomialConstructionError(ValueError):
@@ -9,10 +11,10 @@ class PolynomialConstructionError(ValueError):
 
 
 def clean_attributes(
-        poly,
-        retain_coefficients=None,
-        retain_names=None,
-):
+        poly: ndpoly,
+        retain_coefficients: Optional[bool] = None,
+        retain_names: Optional[bool] = None,
+) -> ndpoly:
     """
     Clean up polynomial attributes.
 
@@ -21,12 +23,12 @@ def clean_attributes(
     only zeros.
 
     Args:
-        poly (numpoly.ndpoly):
+        poly:
             Polynomial to clean up.
-        retain_coefficients (Optional[bool]):
+        retain_coefficients:
             Do not remove redundant coefficients. If omitted use global
             defaults.
-        retain_names (Optional[bool]):
+        retain_names:
             Do not remove redundant names. If omitted use global defaults.
 
     Returns:
@@ -58,36 +60,36 @@ def clean_attributes(
 
 
 def postprocess_attributes(
-        exponents,
-        coefficients,
-        names=None,
-        retain_coefficients=None,
-        retain_names=None,
-):
+        exponents: ArrayLike,
+        coefficients: Sequence[ArrayLike],
+        names: Union[None, str, Tuple[str, ...], ndpoly] = None,
+        retain_coefficients: Optional[bool] = None,
+        retain_names: Optional[bool] = None,
+) -> Tuple[numpy.ndarray, List[numpy.ndarray], Optional[Tuple[str, ...]]]:
     """
     Clean up polynomial attributes.
 
     Args:
-        exponents (numpy.ndarray):
+        exponents:
             The exponents in an integer array with shape ``(N, D)``, where
             ``N`` is the number of terms in the polynomial sum and ``D`` is
             the number of dimensions.
-        coefficients (Sequence[numpy.ndarray]):
+        coefficients:
             The polynomial coefficients. Must correspond to `exponents` by
             having the same length ``N``.
-        names (Union[None, Sequence[str], numpoly.ndpoly]):
+        names:
             The indeterminant names, either as string names or as
             simple polynomials. Must correspond to the exponents by having
             length ``D``.
-        retain_coefficients (Optional[bool]):
+        retain_coefficients:
             Do not remove redundant coefficients. If omitted use global
             defaults.
-        retain_names (Optional[bool]):
+        retain_names:
             Do not remove redundant names. If omitted use global defaults.
 
     Returns:
-        (numpoly.ndarray, List[numpy.ndarray], Optional[Tuple[str, ...]]):
-            Same as input, but post-processed.
+        Same as inputs `exponents`, `coefficients` and `names`, but
+        post-processed.
 
     """
     exponents = numpy.asarray(exponents)
@@ -95,25 +97,27 @@ def postprocess_attributes(
         raise PolynomialConstructionError(
             "expected exponents.ndim == 2; found %d" % exponents.ndim)
 
-    coefficients = [numpy.asarray(coefficient) for coefficient in coefficients]
-    if coefficients and len(exponents) != len(coefficients):
+    coefficients_ = [numpy.asarray(coefficient)
+                     for coefficient in coefficients]
+    if coefficients_ and len(exponents) != len(coefficients_):
         raise PolynomialConstructionError(
-            "expected len(exponents) == len(coefficients); found %d != %d" % (
-                len(exponents), len(coefficients)))
+            "expected len(exponents) == len(coefficients_); found %d != %d" % (
+                len(exponents), len(coefficients_)))
 
     if retain_coefficients is None:
         retain_coefficients = numpoly.get_options()["retain_coefficients"]
-    if not retain_coefficients and coefficients:
-        exponents, coefficients = remove_redundant_coefficients(exponents, coefficients)
+    if not retain_coefficients and coefficients_:
+        exponents, coefficients_ = remove_redundant_coefficients(
+            exponents, coefficients_)
 
     if isinstance(names, numpoly.ndpoly):
         names = names.names
-    if isinstance(names, string_types):
+    if isinstance(names, str):
         if exponents.shape[1] > 1:
-            names = ["%s%d" % (names, idx)
-                     for idx in range(exponents.shape[1])]
+            names = tuple("%s%d" % (names, idx)
+                          for idx in range(exponents.shape[1]))
         else:
-            names = [names]
+            names = (names,)
     if names:
         if len(names) != exponents.shape[1]:
             raise PolynomialConstructionError(
@@ -133,21 +137,24 @@ def postprocess_attributes(
         raise PolynomialConstructionError(
             "Duplicate exponent keys found: %s" % exponents_[count > 1][0])
 
-    return exponents, coefficients, names
+    return numpy.asarray(exponents), list(coefficients_), names
 
 
-def remove_redundant_coefficients(exponents, coefficients):
+def remove_redundant_coefficients(
+        exponents: ArrayLike,
+        coefficients: Sequence[ArrayLike],
+) -> Tuple[numpy.ndarray, List[numpy.ndarray]]:
     """
     Remove coefficients if they are redundant to the polynomial representation.
 
     Will always keep at least one coefficient.
 
     Args:
-        exponents (numpy.ndarray):
+        exponents:
             The exponents in an integer array with shape ``(N, D)``, where
             ``N`` is the number of terms in the polynomial sum and ``D`` is
             the number of dimensions.
-        coefficients (Sequence[numpy.ndarray]):
+        coefficients:
             The polynomial coefficients. Must correspond to `exponents` by
             having the same length ``N``.
 
@@ -170,35 +177,38 @@ def remove_redundant_coefficients(exponents, coefficients):
         (array([[0]]), [])
 
     """
-    exponents = numpy.asarray(exponents)
-    coefficients = [numpy.asarray(coefficient) for coefficient in coefficients]
+    exponents_ = numpy.asarray(exponents)
+    coefficients_ = [numpy.asarray(coefficient) for coefficient in coefficients]
 
-    if not coefficients:
-        assert exponents.shape == (1, 1)
+    if not coefficients_:
+        assert exponents_.shape == (1, 1)
 
     else:
         elements = list(zip(*[
             (exponent, coefficient)
-            for exponent, coefficient in zip(exponents, coefficients)
+            for exponent, coefficient in zip(exponents_, coefficients_)
             if numpy.any(coefficient) or not numpy.any(exponent)
         ]))
-        exponents = numpy.asarray(elements[0], dtype=int)
-        coefficients = list(elements[1])
-    return exponents, coefficients
+        exponents_ = numpy.asarray(elements[0], dtype=int)
+        coefficients_ = list(elements[1])
+    return exponents_, coefficients_
 
 
-def remove_redundant_names(exponents, names):
+def remove_redundant_names(
+        exponents: ArrayLike,
+        names: Optional[Sequence[str]],
+) -> Tuple[numpy.ndarray, Optional[Tuple[str, ...]]]:
     """
     Remove names if they are redundant to the polynomial representation.
 
     Will always keep at least one dimension.
 
     Args:
-        exponents (numpy.ndarray):
+        exponents:
             The exponents in an integer array with shape ``(N, D)``, where
             ``N`` is the number of terms in the polynomial sum and ``D`` is
             the number of dimensions.
-        names (Sequence[str]):
+        names:
             The indeterminant names, either as string names or as
             simple polynomials. Must correspond to the exponents by having
             length ``D``.
@@ -214,30 +224,29 @@ def remove_redundant_names(exponents, names):
         array([[0, 0],
                [1, 1]])
         >>> names
-        ['q0', 'q1']
+        ('q0', 'q1')
         >>> exponents, names = remove_redundant_names(
         ...     [[0, 0], [0, 1]], ["q0", "q1"])
         >>> exponents
         array([[0],
                [1]])
         >>> names
-        ['q1']
+        ('q1',)
         >>> exponents, names = remove_redundant_names(
         ...     [[0, 0]], ["q0", "q1"])
         >>> exponents
         array([[0]])
         >>> names
-        ['q0']
+        ('q0',)
 
     """
-    exponents = numpy.asarray(exponents)
-
-    indices = numpy.any(exponents != 0, 0)
+    exponents_ = numpy.asarray(exponents)
+    indices = numpy.any(exponents_ != 0, 0)
     if not numpy.any(indices):
         indices[0] = True
 
-    if names:
-        names = list(names)
-        names = numpy.array(names)[indices].tolist()
-    exponents = exponents[:, indices]
-    return exponents, names
+    exponents_ = exponents_[:, indices]
+    if names is None:
+        return exponents_, names
+    names_ = tuple(numpy.array(names)[indices].tolist())
+    return exponents_, names_
