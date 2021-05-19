@@ -2,7 +2,7 @@
 from typing import Optional, Sequence
 
 import numpy
-from numpy.typing import DTypeLike
+import numpy.typing
 
 import numpoly
 from ..baseclass import ndpoly
@@ -10,7 +10,7 @@ from ..baseclass import ndpoly
 
 def polynomial_from_roots(
     seq_of_zeros: Sequence[int],
-    dtype: Optional[DTypeLike] = None,
+    dtype: Optional[numpy.typing.DTypeLike] = None,
 ) -> ndpoly:
     """
     Find the coefficients of a polynomial with the given sequence of roots.

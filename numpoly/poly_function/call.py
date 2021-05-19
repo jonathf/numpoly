@@ -1,29 +1,35 @@
-"""Evaluate polynomial."""
+"""Evaluate polynomial by inserting new values in to the indeterminants."""
+from typing import Dict, Sequence, Optional, Union
 import logging
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 
-def call(poly, args=(), kwargs=None):
+
+def call(
+        poly: PolyLike,
+        args: Sequence[Optional[PolyLike]] = (),
+        kwargs: Dict[str, PolyLike] = None,
+) -> Union[numpy.ndarray, ndpoly]:
     """
     Evaluate polynomial by inserting new values in to the indeterminants.
 
     Equivalent to calling the polynomial or using the ``__call__`` method.
 
     Args:
-        poly (numpoly.ndpoly):
+        poly:
             Polynomial to evaluate.
-        args (Sequence[None, int, float, numpy.ndarray, numpoly.ndpoly]):
+        args:
             Argument to evaluate indeterminants. Ordered positional by
             ``poly.indeterminants``. None values indicate that a variable is
             not to be evaluated, creating a partial evaluation.
-        kwargs (Dict[str, Union[int, float, numpy.ndarray, numpoly.ndpoly]]):
+        kwargs:
             Same as ``args``, but positioned by name.
 
     Returns:
-        (Union[numpy.ndarray, numpoly.ndpoly]):
-            Evaluated polynomial. If the resulting array does not contain any
-            indeterminants, an array is returned instead of a polynomial.
+        Evaluated polynomial. If the resulting array does not contain any
+        indeterminants, an array is returned instead of a polynomial.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
@@ -53,42 +59,38 @@ def call(poly, args=(), kwargs=None):
     """
     logger = logging.getLogger(__name__)
 
-    # Make sure kwargs contains all args and nothing but indeterminants:
+    poly = numpoly.aspolynomial(poly)
     kwargs = kwargs if kwargs else {}
-    args = list(args)
-    for arg, indeterminant in zip(args, poly.names):
-        if indeterminant in kwargs:
+
+    parameters = dict(zip(poly.names, poly.indeterminants))
+    if kwargs:
+        parameters.update(kwargs)
+    for arg, name in zip(args, poly.names):
+        if name in kwargs:
             raise TypeError(
-                "multiple values for argument '%s'" % indeterminant)
-        kwargs[indeterminant] = arg
-    extra_args = [key for key in kwargs if key not in poly.names]
+                "multiple values for argument '%s'" % name)
+        if arg is not None:
+            parameters[name] = arg
+    extra_args = [key for key in parameters if key not in poly.names]
     if extra_args:
         raise TypeError("unexpected keyword argument '%s'" % extra_args[0])
 
-    if not kwargs:
-        return poly.copy()
-
-    # Saturate kwargs with values not given:
-    for name, indeterminant in zip(poly.names, poly.indeterminants):
-        if kwargs.get(name, None) is None:
-            kwargs[name] = indeterminant
-
     # There can only be one shape:
     ones = numpy.ones((), dtype=int)
-    for value in kwargs.values():
-        ones = ones * numpy.ones(numpoly.polynomial(value).shape, dtype=int)
+    for value in parameters.values():
+        ones = ones*numpy.ones(numpoly.polynomial(value).shape, dtype=int)
     shape = poly.shape+ones.shape
 
     logger.debug("poly shape: %s", poly.shape)
-    logger.debug("kwargs common shape: %s", ones.shape)
+    logger.debug("parameter common shape: %s", ones.shape)
     logger.debug("output shape: %s", shape)
 
     # main loop:
-    out = 0
+    out = numpy.zeros((), dtype=int)
     for exponent, coefficient in zip(poly.exponents, poly.coefficients):
         term = ones
         for power, name in zip(exponent, poly.names):
-            term = term*kwargs[name]**power
+            term = term*parameters[name]**power
         if isinstance(term, numpoly.ndpoly):
             tmp = numpoly.outer(coefficient, term)
         else:

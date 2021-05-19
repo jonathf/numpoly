@@ -1,6 +1,5 @@
 """Implementation wrapper."""
 from typing import Any, Callable, Optional, Sequence
-import numpy
 import numpoly
 
 from .baseclass import ndpoly

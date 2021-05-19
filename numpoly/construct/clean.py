@@ -1,7 +1,10 @@
 """Clean up polynomial attributes."""
+from __future__ import annotations
 from typing import List, Optional, Sequence, Tuple, Union
+
 import numpy
-from numpy.typing import ArrayLike
+import numpy.typing
+
 import numpoly
 from ..baseclass import ndpoly
 
@@ -60,8 +63,8 @@ def clean_attributes(
 
 
 def postprocess_attributes(
-        exponents: ArrayLike,
-        coefficients: Sequence[ArrayLike],
+        exponents: numpy.typing.ArrayLike,
+        coefficients: Sequence[numpy.typing.ArrayLike],
         names: Union[None, str, Tuple[str, ...], ndpoly] = None,
         retain_coefficients: Optional[bool] = None,
         retain_names: Optional[bool] = None,
@@ -141,8 +144,8 @@ def postprocess_attributes(
 
 
 def remove_redundant_coefficients(
-        exponents: ArrayLike,
-        coefficients: Sequence[ArrayLike],
+        exponents: numpy.typing.ArrayLike,
+        coefficients: Sequence[numpy.typing.ArrayLike],
 ) -> Tuple[numpy.ndarray, List[numpy.ndarray]]:
     """
     Remove coefficients if they are redundant to the polynomial representation.
@@ -195,7 +198,7 @@ def remove_redundant_coefficients(
 
 
 def remove_redundant_names(
-        exponents: ArrayLike,
+        exponents: numpy.typing.ArrayLike,
         names: Optional[Sequence[str]],
 ) -> Tuple[numpy.ndarray, Optional[Tuple[str, ...]]]:
     """

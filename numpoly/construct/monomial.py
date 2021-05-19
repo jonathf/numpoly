@@ -1,18 +1,19 @@
 """Monomial construction."""
+from __future__ import annotations
 from typing import Optional
 
 import numpy
-from numpy.typing import ArrayLike
-import numpoly
+import numpy.typing
 
+import numpoly
 from ..baseclass import ndpoly
 
 
 def monomial(
-        start: ArrayLike,
-        stop: Optional[ArrayLike] = None,
+        start: numpy.typing.ArrayLike,
+        stop: Optional[numpy.typing.ArrayLike] = None,
         dimensions: int = 1,
-        cross_truncation: ArrayLike = 1.,
+        cross_truncation: numpy.typing.ArrayLike = 1.,
         graded: bool = False,
         reverse: bool = False,
         allocation: Optional[int] = None,

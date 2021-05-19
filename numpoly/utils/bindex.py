@@ -1,17 +1,19 @@
 """Multi indices for monomial exponents."""
-from typing import Optional, Union
+from __future__ import annotations
+from typing import Optional
+
 import numpy
-from numpy.typing import ArrayLike
+import numpy.typing
 
 from .glexindex import glexindex
 
 
 def bindex(
-        start: ArrayLike,
-        stop: Optional[ArrayLike] = None,
+        start: numpy.typing.ArrayLike,
+        stop: Optional[numpy.typing.ArrayLike] = None,
         dimensions: int = 1,
         ordering: str = "G",
-        cross_truncation: ArrayLike = 1.,
+        cross_truncation: numpy.typing.ArrayLike = 1.,
 ) -> numpy.ndarray:
     """
     Generate multi-indices for the monomial exponents.

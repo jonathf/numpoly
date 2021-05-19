@@ -1,8 +1,9 @@
 """Attempt to cast an object into a polynomial array."""
+from __future__ import annotations
 from typing import Optional, Tuple, Union
 
 import numpy
-from numpy.typing import DTypeLike
+import numpy.typing
 
 import numpoly
 
@@ -13,7 +14,7 @@ from ..baseclass import ndpoly, PolyLike
 def polynomial(
         poly_like: PolyLike = 0,
         names: Union[None, str, Tuple[str, ...], ndpoly] = None,
-        dtype: Optional[DTypeLike] = None,
+        dtype: Optional[numpy.typing.DTypeLike] = None,
         allocation: Optional[int] = None,
 ) -> ndpoly:
     """

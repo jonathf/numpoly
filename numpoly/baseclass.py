@@ -26,6 +26,7 @@ array back to a polynomial:
     >>> numpoly.aspolynomial(array, names=("q0", "q1"))
     polynomial(3*q1+4*q0-1)
 """
+from __future__ import annotations
 from typing import (Any, Callable, Dict, Iterator, List,
                     Optional, Sequence, Tuple, Union)
 import logging
@@ -33,7 +34,7 @@ import re
 from six import string_types
 
 import numpy
-from numpy.typing import ArrayLike, DTypeLike
+import numpy.typing
 
 
 REDUCE_MAPPINGS: Dict[Callable, Callable] = {
@@ -90,7 +91,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
 
     __array_priority__: int = 16
 
-    _dtype: numpy.dtype
+    _dtype: numpy.dtype = numpy.dtype(int)
     """
     Underlying structure array's actual dtype.
 
@@ -99,7 +100,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     ``poly._dtype.view(numpy.uint32)-poly.KEY_OFFSET``.
     """
 
-    keys: numpy.ndarray
+    keys: numpy.ndarray = numpy.empty((), dtype=int)
     """
     The raw names of the coefficients.
 
@@ -111,14 +112,14 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     ``ndpoly._dtype``.
     """
 
-    names: Tuple[str, ...]
+    names: Tuple[str, ...] = ()
     """
     Same as `indeterminants`, but only the names as string.
 
     Positional list of indeterminant names.
     """
 
-    allocation: int
+    allocation: int = 0
     """
     The number of polynomial coefficients allocated to polynomial.
     """
@@ -137,10 +138,10 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
 
     def __new__(
             cls,
-            exponents: ArrayLike = ((0,),),
+            exponents: numpy.typing.ArrayLike = ((0,),),
             shape: Tuple[int, ...] = (),
             names: Union[None, str, Tuple[str, ...], "ndpoly"] = None,
-            dtype: Optional[DTypeLike] = None,
+            dtype: Optional[numpy.typing.DTypeLike] = None,
             allocation: Optional[int] = None,
             **kwargs: Any
     ) -> "ndpoly":
@@ -315,10 +316,10 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
 
     @staticmethod
     def from_attributes(
-            exponents: ArrayLike,
-            coefficients: Sequence[ArrayLike],
+            exponents: numpy.typing.ArrayLike,
+            coefficients: Sequence[numpy.typing.ArrayLike],
             names: Union[None, str, Sequence[str], "ndpoly"] = None,
-            dtype: Optional[DTypeLike] = None,
+            dtype: Optional[numpy.typing.DTypeLike] = None,
             allocation: Optional[int] = None,
             retain_coefficients: Optional[bool] = None,
             retain_names: Optional[bool] = None,
@@ -512,7 +513,7 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
 
     def max(  # type: ignore
             self,
-            axis: Optional[ArrayLike] = None,
+            axis: Optional[numpy.typing.ArrayLike] = None,
             out: Optional["ndpoly"] = None,
             keepdims: bool = False,
             **kwargs: Any,
@@ -523,7 +524,7 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
 
     def min(  # type: ignore
             self,
-            axis: Optional[ArrayLike] = None,
+            axis: Optional[numpy.typing.ArrayLike] = None,
             out: Optional["ndpoly"] = None,
             keepdims: bool = False,
             **kwargs: Any,
@@ -538,8 +539,8 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
 
     def __call__(
             self,
-            *args: Union[ArrayLike, "ndpoly"],
-            **kwargs: Union[ArrayLike, "ndpoly"],
+            *args: Union[numpy.typing.ArrayLike, "ndpoly"],
+            **kwargs: Union[numpy.typing.ArrayLike, "ndpoly"],
     ) -> Union[numpy.ndarray, "ndpoly"]:
         """
         Evaluate polynomial by inserting new values in to the indeterminants.
@@ -575,7 +576,7 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
 
     def __getitem__(
         self,
-        index: Union[str, ArrayLike],
+        index: Union[str, numpy.typing.ArrayLike],
     ) -> Union[numpy.ndarray, "ndpoly"]:
         """
         Get array item or slice.
@@ -652,35 +653,35 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
         """Pretty string representation."""
         return array_function.array_str(self)
 
-    def __truediv__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
+    def __truediv__(self, value: Union[numpy.typing.ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return self/value."""
         return poly_function.poly_divide(self, value)
 
-    def __rtruediv__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
+    def __rtruediv__(self, value: Union[numpy.typing.ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return value/self."""
         return poly_function.poly_divide(value, self)
 
-    def __div__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
+    def __div__(self, value: Union[numpy.typing.ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return self/value."""
         return poly_function.poly_divide(self, value)
 
-    def __rdiv__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
+    def __rdiv__(self, value: Union[numpy.typing.ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return value/self."""
         return poly_function.poly_divide(value, self)
 
-    def __mod__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
+    def __mod__(self, value: Union[numpy.typing.ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return self%value."""
         return poly_function.poly_remainder(self, value)
 
-    def __rmod__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
+    def __rmod__(self, value: Union[numpy.typing.ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return value%self."""
         return poly_function.poly_remainder(value, self)
 
-    def __divmod__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
+    def __divmod__(self, value: Union[numpy.typing.ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return divmod(self, value)."""
         return poly_function.poly_divmod(self, value)
 
-    def __rdivmod__(self, value: Union[ArrayLike, "ndpoly"]) -> "ndpoly":
+    def __rdivmod__(self, value: Union[numpy.typing.ArrayLike, "ndpoly"]) -> "ndpoly":
         """Return divmod(value, self)."""
         return poly_function.poly_divmod(value, self)
 
@@ -691,6 +692,6 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
                  self.dtype, self.allocation, False))
 
 
-PolyLike = Union[ArrayLike, ndpoly]
+PolyLike = Union[numpy.typing.ArrayLike, ndpoly]
 
 from . import construct, dispatch, array_function, poly_function, option

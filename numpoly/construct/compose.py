@@ -1,7 +1,9 @@
 """Compose polynomial from array of arrays of polynomials."""
+from __future__ import annotations
 from typing import List, Optional, Sequence, Set, Tuple
+
 import numpy
-from numpy.typing import DTypeLike
+import numpy.typing
 
 import numpoly
 from ..baseclass import ndpoly, PolyLike
@@ -9,7 +11,7 @@ from ..baseclass import ndpoly, PolyLike
 
 def compose_polynomial_array(
         arrays: Sequence[PolyLike],
-        dtype: Optional[DTypeLike] = None,
+        dtype: Optional[numpy.typing.DTypeLike] = None,
         allocation: Optional[int] = None,
 ) -> ndpoly:
     """
@@ -46,7 +48,7 @@ def compose_polynomial_array(
     names = oarrays[indices][0] if numpy.any(indices) else None
     oarrays = oarrays.tolist()
 
-    dtypes: List[DTypeLike] = []
+    dtypes: List[numpy.typing.DTypeLike] = []
     keys: Set[Tuple[int, ...]] = {(0,)}
     for array in oarrays:
         if isinstance(array, numpoly.ndpoly):

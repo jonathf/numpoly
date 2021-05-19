@@ -1,5 +1,6 @@
 """Align polynomials."""
-from typing import Tuple, Union
+from __future__ import annotations
+from typing import Tuple
 
 import numpy
 import numpoly

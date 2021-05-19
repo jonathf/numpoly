@@ -3,16 +3,16 @@ from typing import Optional, Sequence
 import re
 
 import numpy
-from numpy.typing import DTypeLike
-import numpoly
+import numpy.typing
 
+import numpoly
 from ..baseclass import ndpoly
 
 
 def symbols(
         names: Optional[Sequence[str]] = None,
         asarray: bool = False,
-        dtype: DTypeLike = "i8",
+        dtype: numpy.typing.DTypeLike = "i8",
         allocation: Optional[int] = None,
 ) -> ndpoly:
     """

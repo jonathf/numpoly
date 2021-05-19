@@ -1,11 +1,13 @@
 """Truncation rules for indices."""
+from __future__ import annotations
+
 import numpy
-from numpy.typing import ArrayLike
+import numpy.typing
 
 
 def cross_truncate(
-        indices: ArrayLike,
-        bound: ArrayLike,
+        indices: numpy.typing.ArrayLike,
+        bound: numpy.typing.ArrayLike,
         norm: float,
 ) -> numpy.ndarray:
     r"""

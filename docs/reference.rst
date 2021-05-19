@@ -38,6 +38,14 @@ Exceptions
 
     FeatureNotSupported
 
+Type annotation
+---------------
+
+.. autosummary::
+    :toctree: api
+
+    PolyLike
+
 Constructors
 ------------
 

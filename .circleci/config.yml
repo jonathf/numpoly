@@ -53,7 +53,7 @@ jobs:
                 name: "Run Sphinx build"
                 command: |
                     source /home/circleci/venv/bin/activate
-                    sphinx-build docs/ docs/.build -b html -n -v --color -T -W --keep-going
+                    sphinx-build docs/ docs/.build -b html -v --color -T -W --keep-going
     deploy:
         executor: my-executor
         steps:

@@ -1,17 +1,18 @@
 """Sort keys lexicographically."""
+from __future__ import annotations
 import numpy
-from numpy.typing import ArrayLike
+import numpy.typing
 
 
 def glexsort(
-    keys: ArrayLike,
+    keys: numpy.typing.ArrayLike,
     graded: bool = False,
     reverse: bool = False,
 ) -> numpy.ndarray:
     """
-    Sort keys graded lexicographically.
+    Sort keys using graded lexicographical ordering.
 
-    Same as ``numpy.lexsort``, but also support graded reverse
+    Same as ``numpy.lexsort``, but also support graded and reverse
     lexicographical ordering.
 
     Args:

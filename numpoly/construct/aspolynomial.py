@@ -1,7 +1,8 @@
 """Convert the input to an polynomial array."""
+from __future__ import annotations
 from typing import Optional, Union, Tuple
 
-from numpy.typing import DTypeLike
+import numpy.typing
 import numpoly
 
 from ..baseclass import PolyLike, ndpoly
@@ -10,7 +11,7 @@ from ..baseclass import PolyLike, ndpoly
 def aspolynomial(
         poly_like: PolyLike,
         names: Union[None, str, Tuple[str, ...], ndpoly] = None,
-        dtype: Optional[DTypeLike] = None,
+        dtype: Optional[numpy.typing.DTypeLike] = None,
 ) -> ndpoly:
     """
     Convert the input to an polynomial array.

@@ -4,7 +4,7 @@ import logging
 import os
 import pkg_resources
 
-from .baseclass import ndpoly, FeatureNotSupported
+from .baseclass import ndpoly, FeatureNotSupported, PolyLike
 
 from .align import (
     align_polynomials,

@@ -1,18 +1,19 @@
 """Multi indices for monomial exponents."""
+from __future__ import annotations
 from typing import Optional
 
 import numpy
-from numpy.typing import ArrayLike
+import numpy.typing
 
 from .cross_truncation import cross_truncate
 from .glexsort import glexsort
 
 
 def glexindex(
-        start: ArrayLike,
-        stop: Optional[ArrayLike] = None,
+        start: numpy.typing.ArrayLike,
+        stop: Optional[numpy.typing.ArrayLike] = None,
         dimensions: int = 1,
-        cross_truncation: ArrayLike = 1.,
+        cross_truncation: numpy.typing.ArrayLike = 1.,
         graded: bool = False,
         reverse: bool = False,
 ) -> numpy.ndarray:

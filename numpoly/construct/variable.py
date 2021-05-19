@@ -1,16 +1,16 @@
 """Simple constructor to create single variables to create polynomials."""
 from typing import Optional
 
-from numpy.typing import DTypeLike
-import numpoly
+import numpy.typing
 
+import numpoly
 from ..baseclass import ndpoly
 
 
 def variable(
         dimensions: int = 1,
         asarray: bool = False,
-        dtype: DTypeLike = "i8",
+        dtype: numpy.typing.DTypeLike = "i8",
         allocation: Optional[int] = None,
 ) -> ndpoly:
     """

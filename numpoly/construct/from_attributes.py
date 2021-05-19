@@ -1,6 +1,9 @@
 """Construct polynomial from polynomial attributes."""
+from __future__ import annotations
 from typing import Optional, Sequence, Tuple, Union
-from numpy.typing import ArrayLike, DTypeLike
+
+import numpy.typing
+
 import numpoly
 
 from . import clean
@@ -8,10 +11,10 @@ from ..baseclass import ndpoly
 
 
 def polynomial_from_attributes(
-        exponents: ArrayLike,
-        coefficients: Sequence[ArrayLike],
+        exponents: numpy.typing.ArrayLike,
+        coefficients: Sequence[numpy.typing.ArrayLike],
         names: Union[None, str, Tuple[str, ...], ndpoly] = None,
-        dtype: Optional[DTypeLike] = None,
+        dtype: Optional[numpy.typing.DTypeLike] = None,
         allocation: Optional[int] = None,
         retain_coefficients: Optional[bool] = None,
         retain_names: Optional[bool] = None,
