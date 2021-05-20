@@ -501,12 +501,16 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
             dtype=dtype,
         )
 
-    def diagonal(self, offset: int = 0, axis1: int = 0, axis2: int = 1) -> "ndpoly":  # type: ignore
+    def diagonal(  # type: ignore
+        self, offset: int = 0, axis1: int = 0, axis2: int = 1,
+    ) -> "ndpoly":
         """Wrap ndarray.diagonal."""
         return array_function.diagonal(
             self, offset=offset, axis1=axis1, axis2=axis2)
 
-    def round(self, decimals: int = 0, out: Optional["ndpoly"] = None) -> "ndpoly":  # type: ignore
+    def round(  # type: ignore
+        self, decimals: int = 0, out: Optional["ndpoly"] = None,
+    ) -> "ndpoly":
         """Wrap ndarray.round."""
         # Not sure why it is required. Likely a numpy bug.
         return array_function.around(self, decimals=decimals, out=out)
@@ -574,18 +578,13 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
         """Left equality."""
         return array_function.equal(self, other)
 
-    def __getitem__(
-        self,
-        index: Union[str, numpy.typing.ArrayLike],
-    ) -> Union[numpy.ndarray, "ndpoly"]:
+    def __getitem__(self, index: Any) -> "ndpoly":
         """
         Get array item or slice.
 
         Args:
             index:
-                The index to extract. If string type, extract using the
-                underlying structured array data type. Else, extract as
-                numpy.ndarray.
+                The index to extract.
 
         Returns:
             Polynomial array element.
@@ -600,13 +599,8 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
             polynomial([-4*q0+1, q0**2])
             >>> poly[:, 1]
             polynomial([q0**2, q0*q1**2])
-            >>> poly["<;"]
-            array([[-4,  0],
-                   [ 0,  0]])
 
         """
-        if isinstance(index, string_types):
-            return numpy.asarray(super(ndpoly, self).__getitem__(index))
         return construct.polynomial_from_attributes(
             exponents=self.exponents,
             coefficients=[coeff[index] for coeff in self.coefficients],
@@ -630,7 +624,6 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
     #             names = list(self.values.dtype.names)
     #             names[idx] = key
     #         self.values[key][index] = other.values[key][index]
-
 
     def __iter__(self) -> Iterator["ndpoly"]:
         """Iterate polynomial array."""

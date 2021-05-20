@@ -1,29 +1,36 @@
 """Repeat elements of an array."""
+from __future__ import annotations
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.repeat)
-def repeat(a, repeats, axis=0):
+def repeat(
+    a: PolyLike,
+    repeats: numpy.typing.ArrayLike,
+    axis: int = 0,
+) -> ndpoly:
     """
     Repeat elements of an array.
 
     Args:
-        a (numpoly.ndpoly):
+        a:
             Input array.
-        repeats (Union[int, numpy.ndarray]):
+        repeats:
             The number of repetitions for each element. `repeats` is
             broadcasted to fit the shape of the given axis.
-        axis (Optional[int]):
+        axis:
             The axis along which to repeat values. By default, use the
             flattened input array, and return a flat output array.
 
     Returns:
-        (ndarray):
-            Output array which has the same shape as `a`, except along the
-            given axis.
+        Output array which has the same shape as `a`, except along the
+        given axis.
 
     Examples:
         >>> q0 = numpoly.variable()

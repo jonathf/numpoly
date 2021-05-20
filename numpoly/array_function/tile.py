@@ -1,12 +1,16 @@
 """Construct an array by repeating A the number of times given by reps."""
+from __future__ import annotations
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.tile)
-def tile(A, reps):
+def tile(A: PolyLike, reps: numpy.typing.ArrayLike) -> ndpoly:
     """
     Construct an array by repeating A the number of times given by reps.
 
@@ -24,14 +28,13 @@ def tile(A, reps):
     (1, 1, 2, 2).
 
     Args:
-        A (numpoly.ndpoly):
+        A:
             The input array.
-        reps (numpy.ndarray):
+        reps:
             The number of repetitions of `A` along each axis.
 
     Returns:
-        (numpoly.ndpoly):
-            The tiled output array.
+        The tiled output array.
 
     Examples:
         >>> q0 = numpoly.variable()

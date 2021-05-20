@@ -1,18 +1,21 @@
 """Polynomials differentiation functions."""
-from six import string_types
+from __future__ import annotations
+from typing import Union
 
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 
-def derivative(poly, *diffvars):
+
+def derivative(poly: PolyLike, *diffvars: Union[ndpoly, str, int]) -> ndpoly:
     """
     Polynomial differential operator.
 
     Args:
-        poly (numpoly.ndpoly):
+        poly:
             Polynomial to differentiate.
-        diffvars (numpoly.ndpoly, str):
+        diffvars:
             Singleton variables to take derivative off.
 
     Returns:
@@ -34,7 +37,7 @@ def derivative(poly, *diffvars):
     poly = poly_ref = numpoly.aspolynomial(poly)
 
     for diffvar in diffvars:
-        if isinstance(diffvar, string_types):
+        if isinstance(diffvar, str):
             idx = poly.names.index(diffvar)
         elif isinstance(diffvar, int):
             idx = diffvar
@@ -42,7 +45,7 @@ def derivative(poly, *diffvars):
             diffvar = numpoly.aspolynomial(diffvar)
             exponents, names = numpoly.remove_redundant_names(
                 diffvar.exponents, diffvar.names)
-            assert len(names) == 1, "only one at the time"
+            assert names is not None and len(names) == 1, "one at the time"
             assert numpy.all(exponents == 1), (
                 "derivative variable assumes singletons")
             idx = poly.names.index(names[0])
@@ -64,12 +67,12 @@ def derivative(poly, *diffvars):
     return poly
 
 
-def gradient(poly):
+def gradient(poly: PolyLike) -> ndpoly:
     """
     Polynomial gradient operator.
 
     Args:
-        poly (numpoly.ndpoly):
+        poly:
             Polynomial to differentiate. If polynomial vector is provided,
             the Jacobi-matrix is returned instead.
 
@@ -98,7 +101,7 @@ def gradient(poly):
     return numpoly.concatenate(polys, axis=0)
 
 
-def hessian(poly):
+def hessian(poly: PolyLike) -> ndpoly:
     """
     Construct Hessian matrix of polynomials.
 
@@ -106,7 +109,7 @@ def hessian(poly):
     is a vector.
 
     Args:
-        poly (numpoly.ndpoly):
+        poly:
             Polynomial to differentiate.
 
     Returns:

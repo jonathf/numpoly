@@ -1,19 +1,27 @@
 """Adjust the dimensions of a polynomial."""
+from __future__ import annotations
+from typing import Optional
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 
-def set_dimensions(poly, dimensions=None):
+
+def set_dimensions(poly: PolyLike, dimensions: Optional[int] = None) -> ndpoly:
     """
     Adjust the dimensions of a polynomial.
 
     Args:
-        poly (numpoly.ndpoly):
+        poly:
             Input polynomial
-        dimensions (int):
+        dimensions:
             The dimensions of the output polynomial. If omitted, increase
-            polynomial with one dimension. If the new dim is smaller then
-            `poly`'s dimensions, variables with cut components are all cut.
+            polynomial with one dimension.
+
+    Returns:
+        Polynomials with no internal dimensions. Unless the new dim is smaller
+        then `poly`'s dimensions, the polynomial should have the same content.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
@@ -35,18 +43,17 @@ def set_dimensions(poly, dimensions=None):
         exponents = numpy.hstack([poly.exponents, padding])
         coefficients = poly.coefficients
         varname = numpoly.get_options()["default_varname"]
-        names = list(poly.names)
+        names_ = list(poly.names)
         idx = 0
-        while len(names) < dimensions:
+        while len(names_) < dimensions:
             candidate = "%s%d" % (varname, idx)
-            if candidate not in names:
-                names.append(candidate)
+            if candidate not in names_:
+                names_.append(candidate)
             idx += 1
 
-        indices = numpy.lexsort([names])
+        indices = numpy.lexsort([names_])
         exponents = exponents[:, indices]
-        names = [names[idx] for idx in indices]
-
+        names = tuple(names_[idx] for idx in indices)
 
     elif diff < 0:
         indices = True ^ numpy.any(poly.exponents[:, dimensions:], -1)

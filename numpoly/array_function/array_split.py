@@ -1,12 +1,21 @@
 """Split an array into multiple sub-arrays."""
+from __future__ import annotations
+from typing import List
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.array_split)
-def array_split(ary, indices_or_sections, axis=0):
+def array_split(
+    ary: PolyLike,
+    indices_or_sections: numpy.typing.ArrayLike,
+    axis: int = 0,
+) -> List[ndpoly]:
     """
     Split an array into multiple sub-arrays.
 

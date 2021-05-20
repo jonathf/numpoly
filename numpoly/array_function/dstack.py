@@ -1,12 +1,15 @@
 """Stack arrays in sequence depth wise (along third axis)."""
+from __future__ import annotations
+from typing import Sequence
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.dstack)
-def dstack(tup):
+def dstack(tup: Sequence[PolyLike]) -> ndpoly:
     """
     Stack arrays in sequence depth wise (along third axis).
 
@@ -21,14 +24,12 @@ def dstack(tup):
     `block` provide more general stacking and concatenation operations.
 
     Args:
-        tup (Sequence[numpoly.ndpoly]):
+        tup:
             The arrays must have the same shape along all but the third axis.
             1-D or 2-D arrays must have the same shape.
 
     Returns:
-        (numpoly.ndpoly):
-            The array formed by stacking the given arrays, will be at least
-            3-D.
+        The array formed by stacking the given arrays, will be at least 3-D.
 
     Examples:
         >>> poly1 = numpoly.variable(3)

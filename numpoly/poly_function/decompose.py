@@ -1,9 +1,12 @@
 """Decompose a polynomial to component form."""
+from __future__ import annotations
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 
-def decompose(poly):
+
+def decompose(poly: PolyLike) -> ndpoly:
     """
     Decompose a polynomial to component form.
 
@@ -11,13 +14,12 @@ def decompose(poly):
     with ``chaospy.sum(output, 0)``.
 
     Args:
-        poly (numpoly.ndpoly):
-            Polynomial to decompose
+        poly:
+            Polynomial to decompose.
 
     Returns:
-        (numpoly.ndpoly):
-            Decomposed polynomial with ``poly.shape==(M,)+output.shape``
-            where ``M`` is the number of components in `poly`.
+        Decomposed polynomial with ``poly.shape==(M,)+output.shape``,
+        where ``M`` is the number of components in `poly`.
 
     Examples:
         >>> q0 = numpoly.variable()
@@ -31,10 +33,11 @@ def decompose(poly):
         polynomial([q0**2-1, 2])
 
     """
+    poly = numpoly.aspolynomial(poly)
     return numpoly.concatenate([
         numpoly.construct.polynomial_from_attributes(
             exponents=[expon],
-            coefficients=[poly[key]],
+            coefficients=[numpy.asarray(poly.values[key])],
             names=poly.indeterminants,
             retain_coefficients=True,
             retain_names=True,

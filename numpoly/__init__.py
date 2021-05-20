@@ -38,18 +38,18 @@ from .utils import (
 from .option import get_options, set_options, global_options
 
 
-def get_version(name: str) -> bool:
+def get_version(name: str) -> str:
     """
     Get distribution version number, if it exists.
 
     Examples:
-        >>> get_version("numpy") is None
+        >>> get_version("numpy") == ""
         False
-        >>> get_version("not_an_distribution") is None
+        >>> get_version("not_an_distribution") == ""
         True
 
     """
-    version = None
+    version = ""
     try:
         version = pkg_resources.get_distribution(name).version
     except pkg_resources.DistributionNotFound:

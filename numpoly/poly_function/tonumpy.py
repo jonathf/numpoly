@@ -1,19 +1,22 @@
 """Cast polynomial to numpy.ndarray, if possible."""
+from __future__ import annotations
+
 import numpy
 import numpoly
 
+from ..baseclass import PolyLike
 
-def tonumpy(poly):
+
+def tonumpy(poly: PolyLike) -> numpy.ndarray:
     """
     Cast polynomial to numpy.ndarray, if possible.
 
     Args:
-        poly (numpoly.ndpoly):
+        poly:
             polynomial to cast.
 
     Returns:
-        (numpy.ndarray):
-            Numpy array.
+        Numpy array.
 
     Raises:
         numpoly.baseclass.FeatureNotSupported:

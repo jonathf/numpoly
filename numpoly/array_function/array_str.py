@@ -1,13 +1,22 @@
 """Return a string representation of the data in an array."""
+from __future__ import annotations
+from typing import Optional
+
 import numpy
 import numpoly
 
+from ..baseclass import PolyLike
 from ..dispatch import implements
 from .array_repr import to_string
 
 
 @implements(numpy.array_str)
-def array_str(a, max_line_width=None, precision=None, suppress_small=None):
+def array_str(
+        a: PolyLike,
+        max_line_width: Optional[int] = None,
+        precision: Optional[float] = None,
+        suppress_small: Optional[bool] = None,
+) -> str:
     """
     Return a string representation of the data in an array.
 
@@ -16,23 +25,22 @@ def array_str(a, max_line_width=None, precision=None, suppress_small=None):
     returns information on the kind of array and its data type.
 
     Args:
-        a (numpoly.ndpoly):
+        a:
             Input array.
-        max_line_width (Optional[int]):
+        max_line_width:
             Inserts newlines if text is longer than `max_line_width`. Defaults
             to ``numpy.get_printoptions()['linewidth']``.
-        precision (Optional[int]):
+        precision:
             Floating point precision. Defaults to
             ``numpy.get_printoptions()['precision']``.
-        suppress_small (Optional[bool]):
+        suppress_small:
             Represent numbers "very close" to zero as zero; default is False.
             Very close is defined by precision: if the precision is 8, e.g.,
             numbers smaller (in absolute value) than 5e-9 are represented as
             zero. Defaults to ``numpy.get_printoptions()['suppress']``.
 
     Returns:
-        (str):
-            The string representation of an array.
+        The string representation of an array.
 
     Examples:
         >>> q0 = numpoly.variable()

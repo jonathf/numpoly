@@ -1,23 +1,25 @@
 """Compute the determinant of an polynomial array."""
+from __future__ import annotations
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.linalg.det)
-def det(a):
+def det(a: PolyLike) -> ndpoly:
     """
     Compute the determinant of an polynomial array.
 
     Args:
-        a (numpoly.ndpoly):
+        a:
             Input array to compute determinants for.
             Shape on form `(..., M, M)`.
 
     Returns:
-        (numpoly.ndpoly):
-            Determinant of `a`. Shape `(...)`.
+        Determinant of `a`. Shape `(...)`.
 
     Notes:
         Broadcasting rules apply, see the `numpy.linalg` documentation for

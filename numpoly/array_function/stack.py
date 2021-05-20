@@ -1,12 +1,20 @@
 """Join a sequence of arrays along a new axis."""
+from __future__ import annotations
+from typing import Optional
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.stack)
-def stack(arrays, axis=0, out=None):
+def stack(
+    arrays: PolyLike,
+    axis: int = 0,
+    out: Optional[ndpoly] = None,
+) -> ndpoly:
     """
     Join a sequence of arrays along a new axis.
 
@@ -15,19 +23,18 @@ def stack(arrays, axis=0, out=None):
     dimension and if ``axis=-1`` it will be the last dimension.
 
     Args:
-        arrays (Sequence[numpoly.ndpoly]):
+        arrays:
             Each array must have the same shape.
-        axis (Optional[int]):
+        axis:
             The axis in the result array along which the input arrays are
             stacked.
-        out (Optional[numpy.ndarray]):
+        out:
             If provided, the destination to place the result. The shape must be
             correct, matching that of what stack would have returned if no out
             argument were specified.
 
     Returns:
-        (numpoly.ndpoly):
-            The stacked array has one more dimension than the input arrays.
+        The stacked array has one more dimension than the input arrays.
 
     Examples:
         >>> poly = numpoly.variable(3)

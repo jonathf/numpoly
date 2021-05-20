@@ -1,12 +1,19 @@
 """Split an array into multiple sub-arrays horizontally (column-wise)."""
+from __future__ import annotations
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.hsplit)
-def hsplit(ary, indices_or_sections):
+def hsplit(
+    ary: PolyLike,
+    indices_or_sections: numpy.typing.ArrayLike,
+) -> ndpoly:
     """
     Split an array into multiple sub-arrays horizontally (column-wise).
 

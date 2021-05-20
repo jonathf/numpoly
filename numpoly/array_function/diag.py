@@ -1,27 +1,28 @@
 """Extract a diagonal or construct a diagonal array."""
+from __future__ import annotations
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.diag)
-def diag(y, k=0):
+def diag(y: PolyLike, k: int = 0) -> ndpoly:
     """
     Extract a diagonal or construct a diagonal array.
 
     Args:
-        v (numpoly.ndpoly):
+        v:
             If `v` is a 2-D array, return a copy of its `k`-th diagonal.
             If `v` is a 1-D array, return a 2-D array with `v` on the `k`-th
             diagonal.
-        k (int):
+        k:
             Diagonal in question. Use `k > 0` for diagonals above the main
             diagonal, and `k < 0` for diagonals below the main diagonal.
 
     Returns:
-        (numpoly.ndpoly):
-            The extracted diagonal or constructed diagonal array.
+        The extracted diagonal or constructed diagonal array.
 
     Examples:
         >>> poly = numpoly.monomial(9).reshape(3, 3)

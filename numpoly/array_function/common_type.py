@@ -1,12 +1,14 @@
 """Return a scalar type which is common to the input arrays."""
+from __future__ import annotations
 import numpy
 import numpoly
 
+from ..baseclass import PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.common_type)
-def common_type(*arrays):
+def common_type(*arrays: PolyLike) -> numpy.dtype:
     """
     Return a scalar type which is common to the input arrays.
 
@@ -19,12 +21,11 @@ def common_type(*arrays):
     returned dtype without loss of information.
 
     Args:
-        arrays (numpoly.ndpoly):
+        arrays:
             Input arrays.
 
     Return:
-        out (numpy.generic):
-            Data type code.
+        Data type code.
 
     Examples:
         >>> scalar = numpy.array(2, dtype=numpy.float32)
@@ -37,6 +38,6 @@ def common_type(*arrays):
         True
 
     """
-    arrays = [numpoly.aspolynomial(array) for array in arrays]
-    arrays = [array[array.keys[0]] for array in arrays]
-    return numpy.common_type(*arrays)
+    arrays_ = [numpoly.aspolynomial(array) for array in arrays]
+    arrays_ = [array.values[array.keys[0]] for array in arrays_]
+    return numpy.common_type(*arrays_)

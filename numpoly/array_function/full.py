@@ -1,30 +1,39 @@
 """Return a new array of given shape and type, filled with `fill_value`."""
+from __future__ import annotations
+from typing import Optional, Sequence, Union
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.full)
-def full(shape, fill_value, dtype=None, order="C"):
+def full(
+    shape: Union[int, Sequence[int]],
+    fill_value: PolyLike,
+    dtype: Optional[numpy.typing.DTypeLike] = None,
+    order: str = "C",
+) -> ndpoly:
     """
     Return a new array of given shape and type, filled with `fill_value`.
 
     Args:
-        shape (int, Sequence[int]):
+        shape:
             Shape of the new array, e.g., ``(2, 3)`` or ``2``.
-        fill_value (numpoly.ndpoly):
+        fill_value:
             Fill value. Must be broadcast compatible with `shape`.
-        dtype : data-type, optional
+        dtype:
             The desired data-type for the array  The default, None, means
             inherit from `fill_value`.
-        order : {'C', 'F'}, optional
+        order:
             Whether to store multidimensional data in C- or Fortran-contiguous
-            (row- or column-wise) order in memory.
+            (row- or column-wise) order in memory. Valid values: "C", "F".
 
     Returns:
-        out : ndarray
-            Array of `fill_value` with the given shape, dtype, and order.
+        Array of `fill_value` with the given shape, dtype, and order.
 
     Examples:
         >>> numpoly.full((2, 4), 4)
@@ -46,5 +55,5 @@ def full(shape, fill_value, dtype=None, order="C"):
         order=order,
     )
     for key in fill_value.keys:
-        out[key] = fill_value[key]
+        out.values[key] = fill_value.values[key]
     return out

@@ -1,12 +1,20 @@
 """Return the indices of the minimum values along an axis."""
+from __future__ import annotations
+from typing import Any, Optional
+
 import numpy
 import numpoly
 
+from ..baseclass import PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.argmin)
-def argmin(a, axis=None, out=None, **kwargs):
+def argmin(
+        a: PolyLike,
+        axis: Optional[int] = None,
+        out: Optional[numpy.ndarray] = None,
+) -> Any:
     """
     Return the indices of the minimum values along an axis.
 
@@ -16,19 +24,18 @@ def argmin(a, axis=None, out=None, **kwargs):
     ensures that the method behaves as expected with ``numpy.ndarray``.
 
     Args:
-        a (numpoly.ndpoly):
+        a:
             Input array.
-        axis (Optional[int]):
+        axis:
             By default, the index is into the flattened array, otherwise along
             the specified axis.
-        out (Optional[numpoly.ndpoly]):
+        out:
             If provided, the result will be inserted into this array. It should
             be of the appropriate shape and dtype.
 
     Returns:
-        (numpy.ndarray, int):
-            Array of indices into the array. It has the same shape as `a.shape`
-            with the dimension along `axis` removed.
+        Array of indices into the array. It has the same shape as `a.shape`
+        with the dimension along `axis` removed.
 
     Notes:
         In case of multiple occurrences of the minimum values, the
@@ -46,7 +53,8 @@ def argmin(a, axis=None, out=None, **kwargs):
         array([1, 0])
 
     """
+    a = numpoly.aspolynomial(a)
     options = numpoly.get_options()
     proxy = numpoly.sortable_proxy(
         a, graded=options["sort_graded"], reverse=options["sort_reverse"])
-    return numpy.argmin(proxy, axis=axis, out=out, **kwargs)
+    return numpy.argmin(proxy, axis=axis, out=out)

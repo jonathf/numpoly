@@ -1,12 +1,19 @@
 """Split array into multiple sub-arrays along the 3rd axis (depth)."""
+from __future__ import annotations
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.dsplit)
-def dsplit(ary, indices_or_sections):
+def dsplit(
+    ary: PolyLike,
+    indices_or_sections: numpy.typing.ArrayLike,
+) -> ndpoly:
     """
     Split array into multiple sub-arrays along the 3rd axis (depth).
 

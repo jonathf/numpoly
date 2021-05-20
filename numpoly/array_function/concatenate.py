@@ -1,30 +1,37 @@
 """Join a sequence of arrays along an existing axis."""
+from __future__ import annotations
+from typing import Optional, Sequence
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.concatenate)
-def concatenate(arrays, axis=0, out=None):
+def concatenate(
+    arrays: Sequence[PolyLike],
+    axis: int = 0,
+    out: Optional[ndpoly] = None,
+) -> ndpoly:
     """
     Join a sequence of arrays along an existing axis.
 
     Args:
-        arrays (Iterable[numpoly.ndpoly]):
+        arrays:
             The arrays must have the same shape, except in the dimension
             corresponding to `axis` (the first, by default).
-        axis (Optional[int]):
+        axis:
             The axis along which the arrays will be joined.  If axis is None,
             arrays are flattened before use.  Default is 0.
-        out (Optional[numpy.ndarray]):
+        out:
             If provided, the destination to place the result. The shape must be
             correct, matching that of what concatenate would have returned if
             no out argument were specified.
 
     Returns:
-        (numpoly.ndpoly):
-            The concatenated array.
+        The concatenated array.
 
     Examples:
         >>> const = numpy.array([[1, 2], [3, 4]])

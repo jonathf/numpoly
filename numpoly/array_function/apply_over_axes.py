@@ -1,13 +1,22 @@
 """Apply a function repeatedly over multiple axes."""
+from __future__ import annotations
 from functools import wraps
+from typing import Callable
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.apply_over_axes)
-def apply_over_axes(func, a, axes):
+def apply_over_axes(
+    func: Callable,
+    a: PolyLike,
+    axes: numpy.typing.ArrayLike,
+) -> ndpoly:
     """
     Apply a function repeatedly over multiple axes.
 
@@ -19,18 +28,17 @@ def apply_over_axes(func, a, axes):
     argument.
 
     Args:
-        func (Callable):
+        func:
             This function must take two arguments, `func(a, axis)`.
-        a (numpoly.ndpoly):
+        a:
             Input array.
-        axes (numpy.ndarray, int):
+        axes:
             Axes over which `func` is applied; the elements must be integers.
 
     Returns:
-        (numpoly.ndpoly):
-            The output array.  The number of dimensions is the same as `a`, but
-            the shape can be different.  This depends on whether `func` changes
-            the shape of its output with respect to its input.
+        The output array.  The number of dimensions is the same as `a`, but
+        the shape can be different.  This depends on whether `func` changes
+        the shape of its output with respect to its input.
 
     Examples:
         >>> polynomial = numpy.arange(24).reshape(2, 4, 3)

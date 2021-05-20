@@ -1,16 +1,27 @@
 """Return element-wise quotient and remainder simultaneously."""
+from __future__ import annotations
+from typing import Any, Optional, Tuple, Union
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements_ufunc
 
 DIVMOD_ERROR_MSG = """
-Division-remainder involving polynomial division differs from numerical division;
-Use ``numpoly.poly_divmod`` to get polynomial division-remainder."""
+Division-remainder involving polynomial division differs from numerical
+division; Use ``numpoly.poly_divmod`` to get polynomial division-remainder."""
 
 
 @implements_ufunc(numpy.divmod)
-def divmod(x1, x2, out=(None, None), where=True, **kwargs):
+def divmod(
+        x1: PolyLike,
+        x2: PolyLike,
+        out: Union[None, ndpoly, Tuple[ndpoly, ...]] = None,
+        where: Optional[numpy.ndarray] = numpy.array(True),
+        **kwargs: Any,
+) -> Tuple[ndpoly, ndpoly]:
     """
     Return element-wise quotient and remainder simultaneously.
 
@@ -19,19 +30,19 @@ def divmod(x1, x2, out=(None, None), where=True, **kwargs):
     built-in function ``divmod`` on arrays.
 
     Args:
-        x1 (numpoly.ndpoly):
+        x1:
             Dividend array.
-        x2 (numpoly.ndpoly):
+        x2:
             Divisor array. If ``x1.shape != x2.shape``, they must be
             broadcastable to a common shape (which becomes the shape of the
             output).
-        out (Tuple[Optional[numpoly.ndpoly], Optional[numpoly.ndpoly]]):
+        out:
             A location into which the result is stored. If provided, it must
             have a shape that the inputs broadcast to. If not provided or
             `None`, a freshly-allocated array is returned. A tuple (possible
             only as a keyword argument) must have length equal to the number of
             outputs.
-        where (Optional[numpy.ndarray]):
+        where:
             This condition is broadcast over the input. At locations where the
             condition is True, the `out` array will be set to the ufunc result.
             Elsewhere, the `out` array will retain its original value. Note
@@ -42,8 +53,7 @@ def divmod(x1, x2, out=(None, None), where=True, **kwargs):
             Keyword args passed to numpy.ufunc.
 
     Returns:
-        (Tuple[numpoly.ndpoly, numpoly.ndpoly]):
-            Element-wise quotient and remainder resulting from floor division.
+        Element-wise quotient and remainder resulting from floor division.
 
     Raises:
         numpoly.baseclass.FeatureNotSupported:
@@ -59,6 +69,8 @@ def divmod(x1, x2, out=(None, None), where=True, **kwargs):
     x1, x2 = numpoly.align_polynomials(x1, x2)
     if not x1.isconstant() or not x2.isconstant():
         raise numpoly.FeatureNotSupported(DIVMOD_ERROR_MSG)
+    out = (out,) if isinstance(out, ndpoly) else out
+    out = tuple(o.values for o in out) if out is not None else (None, None)
     quotient, remainder = numpy.divmod(
         x1.tonumpy(), x2.tonumpy(), out=out, where=where, **kwargs)
     return numpoly.polynomial(quotient), numpoly.polynomial(remainder)

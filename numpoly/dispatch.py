@@ -81,7 +81,8 @@ def simple_dispatch(
     for key in keys:
 
         if out is None:
-            tmp = numpy_func(*[poly[key] for poly in inputs], **kwargs)
+            tmp = numpy_func(*[poly.values[key]
+                               for poly in inputs], **kwargs)
             out = numpoly.ndpoly(
                 exponents=inputs[0].exponents,
                 shape=tmp.shape,
@@ -91,11 +92,13 @@ def simple_dispatch(
             out[key] = tmp
 
         elif no_output:
-            out[key] = numpy_func(*[poly[key] for poly in inputs], **kwargs)
+            out[key] = numpy_func(*[poly.values[key]
+                                    for poly in inputs], **kwargs)
 
         else:
             tmp = numpy_func(
-                *[poly[key] for poly in inputs], out=out[key], **kwargs)
+                *[poly.values[key]
+                  for poly in inputs], out=out.values[key], **kwargs)
 
     if no_output:
         out = numpoly.clean_attributes(out)

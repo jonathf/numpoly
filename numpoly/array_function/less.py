@@ -1,27 +1,36 @@
 """Return the truth value of (x1 < x2) element-wise."""
+from __future__ import annotations
+from typing import Any, Optional
+
 import numpy
 import numpoly
 
+from ..baseclass import PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.less)
-def less(x1, x2, out=None, **kwargs):
+def less(
+        x1: PolyLike,
+        x2: PolyLike,
+        out: Optional[numpy.ndarray] = None,
+        **kwargs: Any,
+) -> numpy.ndarray:
     """
     Return the truth value of (x1 < x2) element-wise.
 
     Args:
-        x1, x2 (numpoly.ndpoly):
+        x1, x2:
             Input arrays. If ``x1.shape != x2.shape``, they must be
             broadcastable to a common shape (which becomes the shape of the
             output).
-        out (Optional[numpy.ndarray]):
+        out:
             A location into which the result is stored. If provided, it must
             have a shape that the inputs broadcast to. If not provided or
             `None`, a freshly-allocated array is returned. A tuple (possible
             only as a keyword argument) must have length equal to the number of
             outputs.
-        where (Optional[numpy.ndarray]):
+        where:
             This condition is broadcast over the input. At locations where the
             condition is True, the `out` array will be set to the ufunc result.
             Elsewhere, the `out` array will retain its original value. Note
@@ -32,10 +41,9 @@ def less(x1, x2, out=None, **kwargs):
             Keyword args passed to numpy.ufunc.
 
     Returns:
-        out (numpy.ndarray, scalar):
-            Output array, element-wise comparison of `x1` and `x2`. Typically
-            of type bool, unless ``dtype=object`` is passed. This is a scalar
-            if both `x1` and `x2` are scalars.
+        Output array, element-wise comparison of `x1` and `x2`. Typically of
+        type bool, unless ``dtype=object`` is passed. This is a scalar if both
+        `x1` and `x2` are scalars.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)

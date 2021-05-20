@@ -1,7 +1,11 @@
 """Matrix product of two arrays."""
+from __future__ import annotations
+from typing import Any, Optional
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 ERROR_MESSAGE = """\
@@ -11,23 +15,27 @@ matmul: Input operand %d does not have enough dimensions \
 
 
 @implements(numpy.matmul)
-def matmul(x1, x2, out=None, **kwargs):
+def matmul(
+    x1: PolyLike,
+    x2: PolyLike,
+    out: Optional[ndpoly] = None,
+    **kwargs: Any,
+) -> ndpoly:
     """
     Matrix product of two arrays.
 
     Args:
-        x1, x2 (numpoly.ndpoly):
+        x1, x2:
             Input arrays, scalars not allowed.
-        out (Optional[numpoly.ndpoly]):
+        out:
             A location into which the result is stored. If provided, it must have
             a shape that matches the signature `(n,k),(k,m)->(n,m)`. If not
             provided or `None`, a freshly-allocated array is returned.
             n,k,m
 
     Returns:
-        (numpoly.ndpoly):
-            The matrix product of the inputs. This is a scalar only when both
-            x1, x2 are 1-d vectors.
+        The matrix product of the inputs. This is a scalar only when both
+        x1, x2 are 1-d vectors.
 
     Raises:
         ValueError:

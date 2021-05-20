@@ -1,12 +1,16 @@
 """Return elements chosen from `x` or `y` depending on `condition`."""
+from __future__ import annotations
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.where)
-def where(condition, *args):
+def where(condition: numpy.typing.ArrayLike, *args: PolyLike) -> ndpoly:
     """
     Return elements chosen from `x` or `y` depending on `condition`.
 
@@ -18,16 +22,15 @@ def where(condition, *args):
         provided.
 
     Args:
-        condition (numpy.ndarray, bool):
+        condition:
             Where True, yield `x`, otherwise yield `y`.
-        x (numpoly.ndpoly): array_like
+        x:
             Values from which to choose. `x`, `y` and `condition` need to be
             broadcastable to some shape.
 
     Returns:
-        (numpoly.ndpoly):
-            An array with elements from `x` where `condition` is True, and
-            elements from `y` elsewhere.
+        An array with elements from `x` where `condition` is True,
+        and elements from `y` elsewhere.
 
     Examples:
         >>> poly = numpoly.variable()*numpy.arange(4)

@@ -1,12 +1,21 @@
 """Return True if two arrays are element-wise equal within a tolerance."""
+from __future__ import annotations
+
 import numpy
 import numpoly
 
+from ..baseclass import PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.allclose)
-def allclose(a, b, rtol=1e-5, atol=1e-8, equal_nan=False):
+def allclose(
+    a: PolyLike,
+    b: PolyLike,
+    rtol: float = 1e-5,
+    atol: float = 1e-8,
+    equal_nan: bool = False,
+) -> bool:
     """
     Return True if two arrays are element-wise equal within a tolerance.
 
@@ -20,20 +29,19 @@ def allclose(a, b, rtol=1e-5, atol=1e-8, equal_nan=False):
     sign in both arrays.
 
     Args:
-        a, b (numpoly.ndpoly):
+        a, b:
             Input arrays to compare.
-        rtol (float):
+        rtol:
             The relative tolerance parameter (see Notes).
-        atol : float
+        atol:
             The absolute tolerance parameter (see Notes).
-        equal_nan : bool
+        equal_nan:
             Whether to compare NaN's as equal.  If True, NaN's in `a` will be
             considered equal to NaN's in `b` in the output array.
 
     Returns:
-        (bool):
-            Returns True if the two arrays are equal within the given
-            tolerance; False otherwise.
+        Returns True if the two arrays are equal within the given tolerance;
+        False otherwise.
 
     Notes:
         If the following equation is element-wise True, then allclose returns

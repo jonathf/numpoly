@@ -1,16 +1,26 @@
 """Counts the number of non-zero values in the array a."""
+from __future__ import annotations
+from typing import Any, Sequence, Union
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import PolyLike
 from ..dispatch import implements
 
+
 @implements(numpy.count_nonzero)
-def count_nonzero(q0, axis=None, **kwargs):
+def count_nonzero(
+    x: PolyLike,
+    axis: Union[None, int, Sequence[int]] = None,
+    **kwargs: Any,
+) -> Union[int, numpy.ndarray]:
     """
     Count the number of non-zero values in the array a.
 
     Args:
-        x (numpoly.ndpoly):
+        x:
             The array for which to count non-zeros.
         axis: (Union[int, Tuple[int], None]):
             Axis or tuple of axes along which to count non-zeros. Default is
@@ -18,10 +28,8 @@ def count_nonzero(q0, axis=None, **kwargs):
             version of a.
 
     Returns:
-        count (Union[bool, numpy.ndarray]):
-            Number of non-zero values in the array along a given axis.
-            Otherwise, the total number of non-zero values in the array is
-            returned.
+        Number of non-zero values in the array along a given axis. Otherwise,
+        the total number of non-zero values in the array is returned.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
@@ -38,5 +46,6 @@ def count_nonzero(q0, axis=None, **kwargs):
         array([1, 3])
 
     """
-    a = numpoly.aspolynomial(q0)
-    return numpy.count_nonzero(numpy.any(a.coefficients, axis=0), axis=axis)
+    a = numpoly.aspolynomial(x)
+    index = numpy.any(numpy.asarray(a.coefficients), axis=0)
+    return numpy.count_nonzero(index, axis=axis)

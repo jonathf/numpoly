@@ -1,12 +1,15 @@
 """Stack arrays in sequence vertically (row wise)."""
+from __future__ import annotations
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.vstack)
-def vstack(tup):
+def vstack(tup: PolyLike) -> ndpoly:
     """
     Stack arrays in sequence vertically (row wise).
 
@@ -20,14 +23,12 @@ def vstack(tup):
     `block` provide more general stacking and concatenation operations.
 
     Args:
-        tup (Sequence[numpoly.ndpoly]):
+        tup:
             The arrays must have the same shape along all but the first axis.
             1-D arrays must have the same length.
 
     Returns:
-        (numpoly.ndpoly):
-            The array formed by stacking the given arrays, will be at least
-            2-D.
+        The array formed by stacking the given arrays, will be at least 2-D.
 
     Examples:
         >>> poly1 = numpoly.variable(3)

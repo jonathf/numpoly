@@ -1,19 +1,22 @@
 """Check if a polynomial is constant or not."""
+from __future__ import annotations
+
 import numpy
 import numpoly
 
+from ..baseclass import PolyLike
 
-def isconstant(poly):
+
+def isconstant(poly: PolyLike) -> bool:
     """
     Check if a polynomial is constant or not.
 
     Args:
-        poly (numpoly.ndpoly):
+        poly:
             polynomial to check if is constant or not.
 
     Returns:
-        (bool):
-            True if polynomial has no indeterminants.
+        True if polynomial has no indeterminants.
 
     Examples:
         >>> q0 = numpoly.variable()

@@ -1,37 +1,40 @@
 """Save polynomial array to a binary file in NumPy ``.npy`` format."""
-PathLike = str
-try:
-    from os import PathLike
-except ImportError:  # pragma: no cover
-    pass
+from __future__ import annotations
+from os import PathLike
 
 import numpy
 import numpoly
 
+from ..baseclass import PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.save)
-def save(file, arr, allow_pickle=True, fix_imports=True):
+def save(
+        file: PathLike,
+        arr: PolyLike,
+        allow_pickle: bool = True,
+        fix_imports: bool = True,
+) -> None:
     """
     Save polynomial array to a binary file in NumPy ``.npy`` format.
 
     Args:
-        file (file, str, pathlib.Path):
+        file:
             File or filename to which the data is saved. If file is a
             file-object, then the filename is unchanged. If file is a string
             or Path, a ``.npy`` extension will be appended to the filename if
             it does not already have one.
-        arr (numpoly.ndpoly, Iterable[numpoly.ndpoly]):
+        arr:
             Array data to be saved.
-        allow_pickle (bool):
+        allow_pickle:
             Allow saving object arrays using Python pickles. Reasons for
             disallowing pickles include security (loading pickled data can
             execute arbitrary code) and portability (pickled objects may not be
             loadable on different Python installations, for example if the
             stored objects require libraries that are not available, and not
             all pickled data is compatible between Python 2 and Python 3).
-        fix_imports (bool):
+        fix_imports:
             Only useful in forcing objects in object arrays on Python 3 to be
             pickled in a Python 2 compatible way. If `fix_imports` is True,
             pickle will try to map the new Python 3 names to the old module
@@ -48,7 +51,10 @@ def save(file, arr, allow_pickle=True, fix_imports=True):
     """
     if isinstance(file, (str, bytes, PathLike)):
         with open(file, "wb") as src:
-            return save(src, arr=arr, allow_pickle=allow_pickle, fix_imports=fix_imports)
+            return save(src, arr=arr,
+                        allow_pickle=allow_pickle, fix_imports=fix_imports)
     arr = numpoly.aspolynomial(arr)
-    numpy.save(file=file, arr=arr.values, allow_pickle=allow_pickle, fix_imports=fix_imports)
-    numpy.save(file=file, arr=numpy.array(arr.names), allow_pickle=allow_pickle, fix_imports=fix_imports)
+    numpy.save(file=file, arr=arr.values,
+               allow_pickle=allow_pickle, fix_imports=fix_imports)
+    numpy.save(file=file, arr=numpy.array(arr.names),
+               allow_pickle=allow_pickle, fix_imports=fix_imports)

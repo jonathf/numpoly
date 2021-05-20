@@ -1,9 +1,17 @@
 """Find the lead coefficients for each polynomial."""
+from __future__ import annotations
+
 import numpy
 import numpoly
 
+from ..baseclass import PolyLike
 
-def lead_coefficient(poly, graded=False, reverse=False):
+
+def lead_coefficient(
+        poly: PolyLike,
+        graded: bool = False,
+        reverse: bool = False,
+) -> numpy.ndarray:
     """
     Find the lead coefficients for each polynomial.
 
@@ -12,21 +20,20 @@ def lead_coefficient(poly, graded=False, reverse=False):
     highest ordering, the elements are sorted using the coefficients.
 
     Args:
-        poly (numpoly.ndpoly):
+        poly:
             Polynomial to locate coefficients on.
-        graded (bool):
+        graded:
             Graded sorting, meaning the indices are always sorted by the index
             sum. E.g. ``q0**2*q1**2*q2**2`` has an exponent sum of 6, and will
             therefore be consider larger than both ``q0**3*q1*q2``,
             ``q0*q1**3*q2`` and ``q0*q1*z**3``.
-        reverse (bool):
+        reverse:
             Reverses lexicographical sorting meaning that ``q0*q1**3`` is
             considered bigger than ``q0**3*q1``, instead of the opposite.
 
     Returns:
-        (numpy.ndarray):
-            Array of same shape and type as `poly`, containing all the lead
-            coefficients.
+        Array of same shape and type as `poly`, containing all the lead
+        coefficients.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
@@ -40,7 +47,8 @@ def lead_coefficient(poly, graded=False, reverse=False):
     out = numpy.zeros(poly.shape, dtype=poly.dtype)
     if not out.size:
         return out
-    for idx in numpoly.glexsort(poly.exponents.T, graded=graded, reverse=reverse):
+    for idx in numpoly.glexsort(
+            poly.exponents.T, graded=graded, reverse=reverse):
         values = poly.coefficients[idx]
         indices = values != 0
         out[indices] = values[indices]
