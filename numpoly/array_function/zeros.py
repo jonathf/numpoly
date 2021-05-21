@@ -1,29 +1,44 @@
 """Return a new array of given shape and type, filled with zeros."""
+from __future__ import annotations
+from typing import Any, Sequence
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly
 from ..dispatch import implements
+
+Order = Any
+try:
+    from typing import Literal, Union
+    Order = Union[Literal["C"], Literal["F"], None]  # type: ignore
+except ImportError:
+    pass
 
 
 @implements(numpy.zeros)
-def zeros(shape, dtype=float, order="C"):
+def zeros(
+    shape: Union[int, Sequence[int]],
+    dtype: numpy.typing.DTypeLike = float,
+    order: Order = "C",
+) -> ndpoly:
     """
     Return a new array of given shape and type, filled with zeros.
 
     Args:
-        shape : int or tuple of ints
+        shape:
             Shape of the new array, e.g., ``(2, 3)`` or ``2``.
-        dtype : data-type, optional
-            The desired data-type for the array, e.g., `numpy.int8`.  Default is
-            `numpy.float64`.
-        order : {'C', 'F'}, optional, default: 'C'
+        dtype:
+            The desired data-type for the array, e.g., `numpy.int8`.
+            Default is `numpy.float64`.
+        order:
             Whether to store multi-dimensional data in row-major
             (C-style) or column-major (Fortran-style) order in
             memory.
 
     Returns:
-        (numpoly.ndpoly):
-            Array of zeros with the given shape, dtype, and order.
+        Array of zeros with the given shape, dtype, and order.
 
     Examples:
         >>> numpoly.zeros(5)

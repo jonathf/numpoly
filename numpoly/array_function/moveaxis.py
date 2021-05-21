@@ -1,28 +1,34 @@
 """Move axes of an array to new positions."""
+from __future__ import annotations
+from typing import Sequence, Union
 import numpy
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements, simple_dispatch
 
 
 @implements(numpy.moveaxis)
-def moveaxis(a, source, destination):
+def moveaxis(
+    a: PolyLike,
+    source: Union[int, Sequence[int]],
+    destination: Union[int, Sequence[int]],
+) -> ndpoly:
     """
     Move axes of an array to new positions.
 
     Other axes remain in their original order.
 
     Args:
-        a (numpoly.ndpoly):
+        a:
             The array whose axes should be reordered.
-        source (Union[int, Tuple[int, ...]]):
+        source:
             Original positions of the axes to move. These must be unique.
-        destination (Union[int, Tuple[int, ...]]):
+        destination:
             Destination positions for each of the original axes. These must
             also be unique.
 
     Returns:
-        result (numpoly.ndpoly):
-            Array with moved axes. This array is a view of the input array.
+        Array with moved axes. This array is a view of the input array.
 
     Examples:
         >>> poly = numpoly.monomial(6).reshape(1, 2, 3)

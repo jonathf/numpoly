@@ -1,48 +1,58 @@
 """Monomial construction."""
-from __future__ import division
+from __future__ import annotations
+from typing import Optional
 
 import numpy
+import numpy.typing
+
 import numpoly
+from ..baseclass import ndpoly
 
 
-def monomial(start, stop=None, dimensions=None, cross_truncation=1.,
-             graded=False, reverse=False, allocation=None):
+def monomial(
+        start: numpy.typing.ArrayLike,
+        stop: Optional[numpy.typing.ArrayLike] = None,
+        dimensions: int = 1,
+        cross_truncation: numpy.typing.ArrayLike = 1.,
+        graded: bool = False,
+        reverse: bool = False,
+        allocation: Optional[int] = None,
+) -> ndpoly:
     """
     Create an polynomial monomial expansion.
 
     Args:
-        start (int, numpy.ndarray):
+        start:
             The minimum polynomial to include. If int is provided, set as
             lowest total order. If array of int, set as lower order along each
             indeterminant.
-        stop (int, numpy.ndarray):
+        stop:
             The maximum shape included. If omitted:
             ``stop <- start; start <- 0`` If int is provided, set as largest
             total order. If array of int, set as largest order along each
             indeterminant.
-        dimensions (None, numpoly.ndpoly, int, str, Tuple[str, ...])
+        dimensions:
             The indeterminants names used to create the monomials expansion.
             If int provided, set the number of names to be used.
-        cross_truncation (float):
+        cross_truncation:
             The hyperbolic cross truncation scheme to reduce the number of
             terms in expansion. In other words, it sets the :math:`q` in the
             :math:`L_q`-norm.
-        graded (bool):
+        graded:
             Graded sorting, meaning the indices are always sorted by the index
             sum. E.g. ``q0**2*q1**2*q2**2`` has an exponent sum of 6, and will
             therefore be consider larger than both ``q0**3*q1*q2``,
             ``q0*q1**2*q2`` and ``q0*q1*q2**2``, which all have exponent
             sum of 5.
-        reverse (bool):
+        reverse:
             Reverse lexicographical sorting meaning that ``q0*q1**3`` is
             considered bigger than ``q0**3*q1``, instead of the opposite.
-        allocation (Optional[int]):
+        allocation:
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
 
     Returns:
-        (numpoly.ndpoly):
-            Monomial expansion.
+        Monomial expansion.
 
     Examples:
         >>> numpoly.monomial(4)

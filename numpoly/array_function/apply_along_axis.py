@@ -1,13 +1,23 @@
 """Apply a function to 1-D slices along the given axis."""
+from __future__ import annotations
 from functools import wraps
+from typing import Any, Callable, List
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.apply_along_axis)
-def apply_along_axis(func1d, axis, arr, *args, **kwargs):
+def apply_along_axis(
+    func1d: Callable[[PolyLike], PolyLike],
+    axis: int,
+    arr: PolyLike,
+    *args: Any,
+    **kwargs: Any,
+) -> ndpoly:
     """
     Apply a function to 1-D slices along the given axis.
 
@@ -33,12 +43,12 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
                 out[ii+s_[...,]+kk] = func1d(arr[ii+s_[:,]+kk])
 
     Args:
-        func1d (Callable[[numpoly.ndpoly], Any]):
+        func1d:
             This function should accept 1-D arrays. It is applied to 1-D slices
             of `arr` along the specified axis.
-        axis (int):
+        axis:
             Axis along which `arr` is sliced.
-        arr (numpoly.ndpoly):
+        arr:
             Input array.
         args:
             Additional arguments to `func1d`.
@@ -46,12 +56,11 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
             Additional named arguments to `func1d`.
 
     Returns:
-        out (numpoly.ndpoly):
-            The output array. The shape of `out` is identical to the shape of
-            `arr`, except along the `axis` dimension. This axis is removed, and
-            replaced with new dimensions equal to the shape of the return value
-            of `func1d`. So if `func1d` returns a scalar `out` will have one
-            fewer dimensions than `arr`.
+        The output array. The shape of `out` is identical to the shape of
+        `arr`, except along the `axis` dimension. This axis is removed, and
+        replaced with new dimensions equal to the shape of the return value of
+        `func1d`. So if `func1d` returns a scalar `out` will have one fewer
+        dimensions than `arr`.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
@@ -64,7 +73,7 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
         polynomial([q0+1.0, 2.0*q1+3.0, 6.0])
 
     """
-    collection = list()
+    collection: List[ndpoly] = list()
 
     @wraps(func1d)
     def wrapper_func(array):
@@ -72,7 +81,8 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
         # Align indeterminants in case slicing changed them
         array = numpoly.polynomial(
             array, names=arr.indeterminants, allocation=arr.allocation)
-        array, _ = numpoly.align.align_indeterminants(array, arr.indeterminants)
+        array, _ = numpoly.align.align_indeterminants(
+            array, arr.indeterminants)
 
         # Evaluate function
         out = func1d(array, *args, **kwargs)

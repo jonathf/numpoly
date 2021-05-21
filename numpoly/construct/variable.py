@@ -1,26 +1,35 @@
 """Simple constructor to create single variables to create polynomials."""
+from typing import Optional
+
+import numpy.typing
+
 import numpoly
+from ..baseclass import ndpoly
 
 
-def variable(dimensions=1, asarray=False, dtype="i8", allocation=None):
+def variable(
+        dimensions: int = 1,
+        asarray: bool = False,
+        dtype: numpy.typing.DTypeLike = "i8",
+        allocation: Optional[int] = None,
+) -> ndpoly:
     """
     Construct variables that can be used to construct polynomials.
 
     Args:
-        dimensions (int):
+        dimensions:
             Number of dimensions in the array.
-        asarray (bool):
+        asarray:
             Enforce output as array even in the case where there is only one
             variable.
-        dtype (numpy.dtype):
+        dtype:
             The data type of the polynomial coefficients.
-        allocation (Optional[int]):
+        allocation:
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
 
     Returns:
-        (chaospy.poly.polynomial):
-            Polynomial array with unit components in each dimension.
+        Polynomial array with unit components in each dimension.
 
     Examples:
         >>> numpoly.variable()

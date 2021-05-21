@@ -1,14 +1,32 @@
-"""Construct an array from an index array and a set of arrays to choose from."""
+"""Construct array from an index array and a set of arrays to choose from."""
+from __future__ import annotations
+from typing import Any, Optional
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
+
+Mode = Any
+try:
+    from typing import Literal, Union
+    Model = Union[Literal["raise"],  # type: ignore
+                  Literal["wrap"], Literal["clip"]]
+except ImportError:
+    pass
 
 
 @implements(numpy.choose)
-def choose(a, choices, out=None, mode="raise"):
+def choose(
+    a: numpy.typing.ArrayLike,
+    choices: PolyLike,
+    out: Optional[ndpoly] = None,
+    mode: Mode = "raise",
+) -> ndpoly:
     """
-    Construct an array from an index array and a set of arrays to choose from.
+    Construct array from an index array and a set of arrays to choose from.
 
     First of all, if confused or uncertain, definitely look at the Examples -
     in its full generality, this function is less simple than it might
@@ -42,30 +60,29 @@ def choose(a, choices, out=None, mode="raise"):
       are mapped to `n-1`; and then the new array is constructed as above.
 
     Args:
-        a (int, numpy.ndarray):
+        a:
             This array must contain integers in `[0, n-1]`, where `n` is the
             number of choices, unless ``mode=wrap`` or ``mode=clip``, in which
             cases any integers are permissible.
-        choices (Sequence[numpoly.ndpoly]):
+        choices:
             Choice arrays. `a` and all of the choices must be broadcastable to
             the same shape.  If `choices` is itself an array (not recommended),
             then its outermost dimension (i.e., the one corresponding to
             ``choices.shape[0]``) is taken as defining the "sequence".
-        out (Optional[numpoly.ndpoly]):
+        out:
             If provided, the result will be inserted into this array. It should
             be of the appropriate shape and dtype. Note that `out` is always
             buffered if `mode='raise'`; use other modes for better performance.
-        mode (Optional[str]):
+        mode:
             {'raise' (default), 'wrap', 'clip'}, optional
             Specifies how indices outside `[0, n-1]` will be treated:
 
-              * 'raise' : an exception is raised
-              * 'wrap' : value becomes value mod `n`
-              * 'clip' : values < 0 are mapped to 0, values > n-1 are mapped to n-1
+              * 'raise': an exception is raised.
+              * 'wrap': value becomes value mod `n`.
+              * 'clip': values<0 are mapped to 0, values>n-1 are mapped to n-1.
 
     Returns:
-        merged_array (numpoly.ndpoly):
-            The merged result.
+        The merged result.
 
     Raises:
         ValueError: shape mismatch
@@ -93,5 +110,6 @@ def choose(a, choices, out=None, mode="raise"):
 
     """
     choices = numpoly.aspolynomial(choices)
+    a = numpy.asarray(a)
     result = numpy.choose(a, choices=choices.values, out=out, mode=mode)
     return numpoly.aspolynomial(result, names=choices.indeterminants)

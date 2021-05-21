@@ -4,7 +4,7 @@ import logging
 import os
 import pkg_resources
 
-from .baseclass import ndpoly, FeatureNotSupported
+from .baseclass import ndpoly, FeatureNotSupported, PolyLike
 
 from .align import (
     align_polynomials,
@@ -36,20 +36,21 @@ from .utils import (
     glexsort,
 )
 from .option import get_options, set_options, global_options
+from .dispatch import FUNCTION_COLLECTION, UFUNC_COLLECTION
 
 
-def get_version(name):
+def get_version(name: str) -> str:
     """
     Get distribution version number, if it exists.
 
     Examples:
-        >>> get_version("numpy") is None
+        >>> get_version("numpy") == ""
         False
-        >>> get_version("not_an_distribution") is None
+        >>> get_version("not_an_distribution") == ""
         True
 
     """
-    version = None
+    version = ""
     try:
         version = pkg_resources.get_distribution(name).version
     except pkg_resources.DistributionNotFound:
@@ -57,7 +58,7 @@ def get_version(name):
     return version
 
 
-def configure_logging():
+def configure_logging() -> None:
     """Configure logging for Numpoly."""
     logpath = os.environ.get("NUMPOLY_LOGPATH", os.devnull)
     logging.basicConfig(level=logging.DEBUG, filename=logpath, filemode="w")

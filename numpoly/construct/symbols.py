@@ -1,13 +1,20 @@
 """Construct symbol variables."""
+from typing import Optional, Sequence
 import re
-import string
-from six import string_types
 
 import numpy
+import numpy.typing
+
 import numpoly
+from ..baseclass import ndpoly
 
 
-def symbols(names=None, asarray=False, dtype="i8", allocation=None):
+def symbols(
+        names: Optional[Sequence[str]] = None,
+        asarray: bool = False,
+        dtype: numpy.typing.DTypeLike = "i8",
+        allocation: Optional[int] = None,
+) -> ndpoly:
     """
     Construct symbol variables.
 
@@ -19,21 +26,20 @@ def symbols(names=None, asarray=False, dtype="i8", allocation=None):
     * ``{letter}:{letter}`` can be used to define a alphabet range.
 
     Args:
-        names (None, str, Tuple[str, ...]):
+        names:
             Indeterminants are determined by splitting the string on space. If
             iterable of strings, indeterminants defined directly.
-        asarray (bool):
+        asarray:
             Enforce output as array even in the case where there is only one
             variable.
-        dtype (numpy.dtype):
+        dtype:
             The data type of the polynomial coefficients.
-        allocation (Optional[int]):
+        allocation:
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
 
     Returns:
-        (numpoly.ndpoly):
-            Polynomial array with unit components in each dimension.
+        Polynomial array with unit components in each dimension.
 
     Examples:
         >>> numpoly.symbols()
@@ -49,44 +55,48 @@ def symbols(names=None, asarray=False, dtype="i8", allocation=None):
 
     """
     if names is None:
-        coefficients = numpy.ones((1, 1) if asarray else 1, dtype=dtype)
-        return numpoly.ndpoly.from_attributes(
+        coefficients = [numpy.ones(1, dtype=dtype)]
+        out = numpoly.ndpoly.from_attributes(
             exponents=[(1,)],
             coefficients=coefficients,
             dtype=dtype,
             allocation=allocation,
         )
+        if not asarray:
+            out = numpoly.aspolynomial(out[0])
+        return out
 
-    if not isinstance(names, string_types):
-        names = list(names)
+    if not isinstance(names, str):
+        names = tuple(names)
 
     else:
         names = re.sub(" ", ",", names)
         if "," in names:
             asarray = True
-            names = [name for name in names.split(",") if name]
-
-        elif re.search(r"\d*:\d+", names):
-
-            match = re.search(r"(\d*):(\d+)", names)
-            start = int(match.group(1) or 0)
-            end = int(match.group(2))
-            names = [
-                names.replace(match.group(0), str(idx))
-                for idx in range(start, end)
-            ]
+            names = tuple(name for name in names.split(",") if name)
 
         else:
-            names = [names]
+            match = re.search(r"(\d*):(\d+)", names)
+            if match:
+                start = int(match.group(1) or 0)
+                end = int(match.group(2))
+                names = tuple(
+                    names.replace(match.group(0), str(idx))
+                    for idx in range(start, end)
+                )
 
-    assert isinstance(names, list)
+            else:
+                names = (names,)
+
+    assert isinstance(names, tuple)
     exponents = numpy.eye(len(names), dtype=int)
     coefficients = numpy.eye(len(names), dtype=dtype)
-    if len(names) == 1 and not asarray:
-        coefficients = coefficients[0]
-    return numpoly.ndpoly.from_attributes(
+    out = numpoly.ndpoly.from_attributes(
         exponents=exponents,
         coefficients=coefficients,
         names=names,
         allocation=allocation,
     )
+    if out.size == 1 and not asarray:
+        return numpoly.aspolynomial(out[0])
+    return out

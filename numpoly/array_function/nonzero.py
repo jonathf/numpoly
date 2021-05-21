@@ -1,22 +1,25 @@
 """Return the indices of the elements that are non-zero."""
+from __future__ import annotations
+from typing import Any, Tuple
+
 import numpy
 import numpoly
 
+from ..baseclass import PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.nonzero)
-def nonzero(x, **kwargs):
+def nonzero(x: PolyLike, **kwargs: Any) -> Tuple[numpy.ndarray, ...]:
     """
     Return the indices of the elements that are non-zero.
 
     Args:
-        x (numpoly.ndpoly):
+        x:
             Input array.
 
     Returns:
-        indices (Union[bool, numpoly.ndarray]):
-            Indices of elements that are non-zero.
+        Indices of elements that are non-zero.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
@@ -34,4 +37,4 @@ def nonzero(x, **kwargs):
 
     """
     x = numpoly.aspolynomial(x)
-    return numpy.nonzero(numpy.any(x.coefficients, axis=0))
+    return numpy.nonzero(numpy.any(numpy.asarray(x.coefficients), axis=0))

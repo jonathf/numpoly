@@ -1,12 +1,20 @@
 """Compute the outer product of two vectors."""
+from __future__ import annotations
+from typing import Optional
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.outer)
-def outer(a, b, out=None):
+def outer(
+    a: PolyLike,
+    b: PolyLike,
+    out: Optional[ndpoly] = None,
+) -> ndpoly:
     """
     Compute the outer product of two vectors.
 
@@ -19,18 +27,17 @@ def outer(a, b, out=None):
          [aM*b0            aM*bN ]]
 
     Args:
-        a (numpoly.ndpoly):
+        a:
             First input vector. Input is flattened if not already
             1-dimensional.
-        b (numpoly.ndpoly):
+        b:
             Second input vector. Input is flattened if not already
             1-dimensional.
-        out (numpy.ndarray):
+        out:
             A location where the result is stored.
 
     Returns:
-        (numpoly.ndpoly):
-            ``out[i, j] = a[i] * b[j]``
+        ``out[i, j] = a[i] * b[j]``
 
     Examples:
         >>> poly = numpoly.variable(3)

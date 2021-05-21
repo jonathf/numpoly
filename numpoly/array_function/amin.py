@@ -1,26 +1,35 @@
 """Return the minimum of an array or minimum along an axis."""
+from __future__ import annotations
+from typing import Any, Optional, Sequence, Union
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.amin)
-def amin(a, axis=None, out=None, **kwargs):
+def amin(
+    a: PolyLike,
+    axis: Union[None, int, Sequence[int]] = None,
+    out: Optional[ndpoly] = None,
+    **kwargs: Any,
+) -> ndpoly:
     """
     Return the minimum of an array or minimum along an axis.
 
     Args:
-        a (numpoly.ndpoly):
+        a:
             Input data.
-        axis (int, Tuple[int], None):
+        axis:
             Axis or axes along which to operate.  By default, flattened input
             is used. If this is a tuple of ints, the minimum is selected over
             multiple axes, instead of a single axis or all the axes as before.
-        out (Optional[numpoly.ndpoly]):
+        out:
             Alternative output array in which to place the result. Must be of
             the same shape and buffer length as the expected output.
-        keepdims (Optional[bool]):
+        keepdims:
             If this is set to True, the axes which are reduced are left in the
             result as dimensions with size one. With this option, the result
             will broadcast correctly against the input array.
@@ -29,17 +38,15 @@ def amin(a, axis=None, out=None, **kwargs):
             through to the `amax` method of sub-classes of `ndarray`, however
             any non-default value will be.  If the sub-class' method does not
             implement `keepdims` any exceptions will be raised.
-        initial (int, float, complex, numpoly.ndpoly):
+        initial:
             The minimum value of an output element. Must be present to allow
             computation on empty slice.
-        where : array_like of bool, optional
+        where:
             Elements to compare for the maximum.
 
     Returns:
-        (numpy.ndarray):
-            Minimum of `a`. If `axis` is None, the result is a scalar value.
-            If `axis` is given, the result is an array of dimension
-            ``a.ndim-1``.
+        Minimum of `a`. If `axis` is None, the result is a scalar value.
+        If `axis` is given, the result is an array of dimension ``a.ndim-1``.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
@@ -55,11 +62,11 @@ def amin(a, axis=None, out=None, **kwargs):
 
     """
     del out
-    a = numpoly.aspolynomial(a)
+    poly = numpoly.aspolynomial(a)
     options = numpoly.get_options()
     proxy = numpoly.sortable_proxy(
-        a, graded=options["sort_graded"], reverse=options["sort_reverse"])
+        poly, graded=options["sort_graded"], reverse=options["sort_reverse"])
     indices = numpy.amin(proxy, axis=axis, **kwargs)
-    out = a[numpy.isin(proxy, indices)]
+    out = poly[numpy.isin(proxy, indices)]
     out = out[numpy.argsort(indices.ravel())]
-    return out.reshape(indices.shape)
+    return numpoly.reshape(out, indices.shape)

@@ -1,12 +1,19 @@
 """Return specified diagonals."""
+from __future__ import annotations
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.diagonal)
-def diagonal(a, offset=0, axis1=0, axis2=1):
+def diagonal(
+    a: PolyLike,
+    offset: int = 0,
+    axis1: int = 0,
+    axis2: int = 1,
+) -> ndpoly:
     """
     Return specified diagonals.
 
@@ -19,28 +26,27 @@ def diagonal(a, offset=0, axis1=0, axis2=1):
     to the size of the resulting diagonals.
 
     Args:
-        a (numpoly.ndpoly):
+        a:
             Array from which the diagonals are taken.
-        offset (int):
+        offset:
             Offset of the diagonal from the main diagonal. Can be positive or
             negative. Defaults to main diagonal (0).
-        axis1 (int):
+        axis1:
             Axis to be used as the first axis of the 2-D sub-arrays from which
             the diagonals should be taken.  Defaults to first axis (0).
-        axis2 (int):
+        axis2:
             Axis to be used as the second axis of the 2-D sub-arrays from
             which the diagonals should be taken. Defaults to second axis (1).
 
     Returns:
-        (numpoly.ndpoly):
-            If `a` is 2-D, then a 1-D array containing the diagonal and of the
-            same type as `a` is returned unless `a` is a `matrix`, in which
-            case a 1-D array rather than a (2-D) `matrix` is returned in order
-            to maintain backward compatibility.
+        If `a` is 2-D, then a 1-D array containing the diagonal and of the same
+        type as `a` is returned unless `a` is a `matrix`, in which case a 1-D
+        array rather than a (2-D) `matrix` is returned in order to maintain
+        backward compatibility.
 
-            If ``a.ndim > 2``, then the dimensions specified by `axis1` and
-            `axis2` are removed, and a new axis inserted at the end
-            corresponding to the diagonal.
+        If ``a.ndim > 2``, then the dimensions specified by `axis1` and `axis2`
+        are removed, and a new axis inserted at the end corresponding to the
+        diagonal.
 
     Raises:
         ValueError:

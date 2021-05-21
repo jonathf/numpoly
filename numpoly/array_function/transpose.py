@@ -1,25 +1,31 @@
 """Permute the dimensions of an array."""
+from __future__ import annotations
+from typing import Sequence, Union
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.transpose)
-def transpose(a, axes=None):
+def transpose(
+    a: PolyLike,
+    axes: Union[None, Sequence[int], numpy.ndarray] = None,
+) -> ndpoly:
     """
     Permute the dimensions of an array.
 
     Args:
-        a (numpoly.ndpoly):
+        a:
             Input array.
-        axes (int, Sequence[int]):
+        axes:
             By default, reverse the dimensions, otherwise permute the axes
             according to the values given.
 
     Returns:
-        (numpoly.ndpoly):
-            `a` with its axes permuted.  A view is returned whenever possible.
+        `a` with its axes permuted. A view is returned whenever possible.
 
     Examples:
         >>> poly = numpoly.monomial([3, 3]).reshape(2, 3)

@@ -50,6 +50,7 @@ def test_monomial():
     assert numpoly.monomial(1) == 1
     assert numpy.all(numpoly.monomial(2, dimensions="q0") == [1, X])
     assert numpoly.monomial(1, 2, dimensions="q0") == X
+    assert numpoly.monomial(1, 2, dimensions=None) == X
 
 
 def test_polynomial():

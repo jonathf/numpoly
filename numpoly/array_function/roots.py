@@ -1,24 +1,26 @@
 """Return the roots of a polynomial."""
+from __future__ import annotations
 import numpy
 import numpoly
+
+from ..baseclass import PolyLike
 # from ..dispatch import implements
 
 
 # @implements(numpy.roots)
-def roots(poly):
+def roots(poly: PolyLike) -> numpy.ndarray:
     """
     Return the roots of a polynomial.
 
     Assumes the polynomial has a single dimension.
 
     Args:
-        poly (numpoly.ndpoly, numpy.ndarray):
+        poly:
             Polynomial to take roots of, or if constant, the coefficients of
             said polynomial. This to be compatible with :func:`numpy.roots`.
 
     Returns:
-        (numpy.ndarray):
-            An array containing the roots of the polynomial.
+        An array containing the roots of the polynomial.
 
     Raises:
         ValueError:

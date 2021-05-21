@@ -1,27 +1,34 @@
 """Difference between consecutive elements of an array."""
+from __future__ import annotations
+from typing import Optional
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.ediff1d)
-def ediff1d(ary, to_end=None, to_begin=None):
+def ediff1d(
+    ary: PolyLike,
+    to_end: Optional[PolyLike] = None,
+    to_begin: Optional[PolyLike] = None,
+) -> ndpoly:
     """
     Difference between consecutive elements of an array.
 
     Args:
-        ary (numpoly.ndpoly):
+        ary:
             If necessary, will be flattened before the differences are taken.
-        to_end (Optional[numpoly.ndpoly]):
+        to_end:
             Polynomial(s) to append at the end of the returned differences.
-        to_begin (Optional[numpoly.ndpoly]):
+        to_begin:
             Polynomial(s) to prepend at the beginning of the returned
             differences.
 
     Returns:
-        (numpoly.ndpoly):
-            The differences. Loosely, this is ``ary.flat[1:] - ary.flat[:-1]``.
+        The differences. Loosely, this is ``ary.flat[1:] - ary.flat[:-1]``.
 
     Examples:
         >>> poly = numpoly.monomial(4)
@@ -35,11 +42,12 @@ def ediff1d(ary, to_end=None, to_begin=None):
 
     """
     ary = numpoly.aspolynomial(ary).ravel()
-    arys = [ary[1:]-ary[:-1]]
+    arys_ = [ary[1:]-ary[:-1]]
     if to_end is not None:
-        arys.append(numpoly.aspolynomial(to_end).ravel())
+        arys_.append(numpoly.aspolynomial(to_end).ravel())
     if to_begin is not None:
-        arys.insert(0, numpoly.aspolynomial(to_begin).ravel())
+        arys_.insert(0, numpoly.aspolynomial(to_begin).ravel())
+    arys = tuple(numpoly.aspolynomial(ary) for ary in arys_)
     if len(arys) > 1:
         arys = numpoly.align_dtype(*arys)
         arys = numpoly.align_exponents(*arys)
@@ -55,7 +63,7 @@ def ediff1d(ary, to_end=None, to_begin=None):
     idx = 0
     for ary in arys:
         for key in ary.keys:
-            out[key][idx:idx+ary.size] = ary[key]
+            out.values[key][idx:idx+ary.size] = ary.values[key]
         idx += ary.size
 
     return out

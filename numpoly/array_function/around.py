@@ -1,34 +1,39 @@
 """Evenly round to the given number of decimals."""
-import numpy
-import numpoly
+from __future__ import annotations
+from typing import Optional
 
+import numpy
+
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements, simple_dispatch
 
 
 @implements(numpy.around, numpy.round)
-def around(a, decimals=0, out=None):
+def around(
+    a: PolyLike,
+    decimals: int = 0,
+    out: Optional[ndpoly] = None,
+) -> ndpoly:
     """
     Evenly round to the given number of decimals.
 
     Args:
-        a (numpoly.ndpoly):
+        a:
             Input data.
-        decimals (Optional[int]):
+        decimals:
             Number of decimal places to round to (default: 0). If decimals is
             negative, it specifies the number of positions to the left of the
             decimal point.
-        out (Optional[numpy.ndarray]):
+        out:
             Alternative output array in which to place the result. It must have
             the same shape as the expected output, but the type of the output
             values will be cast if necessary.
 
     Returns:
-        (numpy.ndarray):
-            An array of the same type as `a`, containing the rounded values.
-            Unless `out` was specified, a new array is created.  A reference to
-            the result is returned. The real and imaginary parts of complex
-            numbers are rounded separately.  The result of rounding a float is
-            a float.
+        An array of the same type as `a`, containing the rounded values. Unless
+        `out` was specified, a new array is created.  A reference to the result
+        is returned. The real and imaginary parts of complex numbers are
+        rounded separately.  The result of rounding a float is a float.
 
     Examples:
         >>> q0 = numpoly.variable()
@@ -43,6 +48,6 @@ def around(a, decimals=0, out=None):
     return simple_dispatch(
         numpy_func=numpy.around,
         inputs=(a,),
-        out=out,
+        out=None if out is None else (out,),
         decimals=decimals,
     )

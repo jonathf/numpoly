@@ -1,12 +1,19 @@
 """Returns the type that results from applying type promotion rules."""
+from __future__ import annotations
+from typing import Union
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.result_type)
-def result_type(*arrays_and_dtypes):
+def result_type(
+    *arrays_and_dtypes: Union[PolyLike, numpy.typing.DTypeLike],
+) -> numpy.dtype:
     """
     Return the type that results from applying type promotion rules.
 
@@ -23,12 +30,11 @@ def result_type(*arrays_and_dtypes):
     cast losslessly into the 32-bit float.
 
     Args:
-        arrays_and_dtypes (numpoly.ndpoly, numpy.ndarray, numpy.dtype):
+        arrays_and_dtypes:
             The operands of some operation whose result type is needed.
 
     Returns:
-        (numpy.dtype):
-            The result type.
+        The result type.
 
     Examples:
         >>> q0 = numpoly.variable(dtype="i1")

@@ -1,12 +1,17 @@
 """Save several arrays into a single file in uncompressed ``.npz`` format."""
+from __future__ import annotations
+from os import PathLike
+from typing import Dict
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.savez)
-def savez(file, *args, **kwargs):
+def savez(file: PathLike, *args: PolyLike, **kwargs: PolyLike) -> None:
     """
     Save several arrays into a single file in uncompressed ``.npz`` format.
 
@@ -16,17 +21,17 @@ def savez(file, *args, **kwargs):
     file will match the keyword names.
 
     Args:
-        file (str, file):
+        file:
             Either the filename (string) or an open file (file-like object)
             where the data will be saved. If file is a string or a Path, the
             ``.npz`` extension will be appended to the filename if it is not
             already there.
-        args (numpoly.ndpoly, numpy.ndarray):
+        args:
             Arrays to save to the file. Since it is not possible for Python to
             know the names of the arrays outside `savez`, the arrays will be
             saved with names "arr_0", "arr_1", and so on. These arguments can
             be any expression.
-        kwds (numpoly.ndpoly, numpy.ndarray):
+        kwds:
             Arrays to save to the file. Arrays will be saved in the file with
             the keyword names.
 
@@ -48,10 +53,10 @@ def savez(file, *args, **kwargs):
         kwargs["arr_%d" % idx] = arg
 
     polynomials = {
-        key: kwargs.pop(key) for key, value in list(kwargs.items())
+        key: numpoly.aspolynomial(kwargs.pop(key))
+        for key, value in list(kwargs.items())
         if isinstance(value, numpoly.ndpoly)
     }
-    polynomials = {"-".join(poly.names)+"-"+key: poly.values
-                   for key, poly in polynomials.items()}
-    kwargs.update(polynomials)
+    kwargs.update({"-".join(poly.names)+"-"+key: poly.values
+                   for key, poly in polynomials.items()})
     numpy.savez(file, **kwargs)

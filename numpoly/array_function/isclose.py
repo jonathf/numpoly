@@ -1,12 +1,21 @@
 """Return true where two arrays are element-wise equal within a tolerance."""
+from __future__ import annotations
+
 import numpy
 import numpoly
 
-from ..dispatch import implements, simple_dispatch
+from ..baseclass import PolyLike
+from ..dispatch import implements
 
 
 @implements(numpy.isclose)
-def isclose(a, b, rtol=1e-5, atol=1e-8, equal_nan=False):
+def isclose(
+        a: PolyLike,
+        b: PolyLike,
+        rtol: float = 1e-5,
+        atol: float = 1e-8,
+        equal_nan: bool = False,
+) -> numpy.ndarray:
     """
     Return true where two arrays are element-wise equal within a tolerance.
 
@@ -19,21 +28,20 @@ def isclose(a, b, rtol=1e-5, atol=1e-8, equal_nan=False):
                 that are much smaller than one (see Notes).
 
     Args:
-        a, b (numpoly.ndpoly):
+        a, b:
             Input arrays to compare.
-        rtol (float):
+        rtol:
             The relative tolerance parameter (see Notes).
-        atol (float):
+        atol:
             The absolute tolerance parameter (see Notes).
-        equal_nan (bool):
+        equal_nan:
             Whether to compare NaN's as equal.  If True, NaN's in `a` will be
             considered equal to NaN's in `b` in the output array.
 
     Returns:
-        (numpy.ndarray):
-            Returns a boolean array of where `a` and `b` are equal within the
-            given tolerance. If both `a` and `b` are scalars, returns a single
-            boolean value.
+        Returns a boolean array of where `a` and `b` are equal within the
+        given tolerance. If both `a` and `b` are scalars, returns a single
+        boolean value.
 
     Notes:
         For finite values, isclose uses the following equation to test whether
@@ -68,5 +76,5 @@ def isclose(a, b, rtol=1e-5, atol=1e-8, equal_nan=False):
     out = numpy.ones(a.shape, dtype=bool)
     for key in a.keys:
         out &= numpy.isclose(
-            a[key], b[key], atol=atol, rtol=rtol, equal_nan=equal_nan)
+            a.values[key], b.values[key], atol=atol, rtol=rtol, equal_nan=equal_nan)
     return out

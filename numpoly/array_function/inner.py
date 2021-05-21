@@ -1,12 +1,15 @@
 """Inner product of two arrays."""
+from __future__ import annotations
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.inner)
-def inner(a, b):
+def inner(a: PolyLike, b: PolyLike) -> ndpoly:
     """
     Inner product of two arrays.
 

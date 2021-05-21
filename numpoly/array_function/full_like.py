@@ -1,40 +1,51 @@
 """Return a full array with the same shape and type as a given array."""
+from __future__ import annotations
+from typing import Optional, Sequence
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.full_like)
-def full_like(a, fill_value, dtype=None, order="K", subok=True, shape=None):
+def full_like(
+    a: PolyLike,
+    fill_value: numpy.typing.ArrayLike,
+    dtype: Optional[numpy.typing.DTypeLike] = None,
+    order: str = "K",
+    subok: bool = True,
+    shape: Optional[Sequence[int]] = None,
+) -> ndpoly:
     """
     Return a full array with the same shape and type as a given array.
 
     Args:
-        a (numpoly.ndpoly, numpy.ndarray):
+        a:
             The shape and data-type of `a` define these same attributes of
             the returned array.
-        fill_value (numpoly.ndpoly):
+        fill_value:
             Fill value. Must be broadcast compatible with shape.
-        dtype (Optional[numpy.dtype]):
+        dtype:
             Overrides the data type of the result.
-        order (str):
+        order:
             Overrides the memory layout of the result. 'C' means C-order,
             'F' means F-order, 'A' means 'F' if `a` is Fortran contiguous,
             'C' otherwise. 'K' means match the layout of `a` as closely
             as possible.
-        subok (bool):
+        subok:
             If True, then the newly created array will use the sub-class
             type of 'a', otherwise it will be a base-class array. Defaults
             to True.
-        shape (Optional[Sequence[int]]):
+        shape:
             Overrides the shape of the result. If order='K' and the number of
             dimensions is unchanged, will try to keep order, otherwise,
             order='C' is implied.
 
     Returns:
-        (numpoly.ndpoly):
-            Array of `fill_value` with the same shape and type as `a`.
+        Array of `fill_value` with the same shape and type as `a`.
 
     Examples:
         >>> poly = numpoly.monomial(3)
@@ -57,11 +68,11 @@ def full_like(a, fill_value, dtype=None, order="K", subok=True, shape=None):
         order = "F" if a.flags["F_CONTIGUOUS"] else "C"
     out = numpoly.ndpoly(
         exponents=fill_value.exponents,
-        shape=shape,
+        shape=tuple(shape),
         names=fill_value.indeterminants,
         dtype=dtype,
         order=order,
     )
     for key in fill_value.keys:
-        out[key] = fill_value[key]
+        out.values[key] = fill_value.values[key]
     return out

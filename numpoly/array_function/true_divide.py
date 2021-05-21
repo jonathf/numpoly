@@ -1,9 +1,12 @@
 """Return true division of the inputs, element-wise."""
 from __future__ import division
+from typing import Any, Optional
 
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements_ufunc
 
 DIVIDE_ERROR_MSG = """
@@ -13,7 +16,13 @@ Use ``numpoly.poly_divide`` to get polynomial division."""
 
 
 @implements_ufunc(numpy.true_divide)
-def true_divide(x1, x2, out=None, where=True, **kwargs):
+def true_divide(
+    x1: PolyLike,
+    x2: PolyLike,
+    out: Optional[ndpoly] = None,
+    where: numpy.typing.ArrayLike = True,
+    **kwargs: Any,
+) -> ndpoly:
     """
     Return true division of the inputs, element-wise.
 
@@ -22,19 +31,19 @@ def true_divide(x1, x2, out=None, where=True, **kwargs):
     answer, regardless of input types.
 
     Args:
-        x1 (numpoly.ndpoly):
+        x1:
             Dividend array.
-        x2 (numpoly.ndpoly):
+        x2:
             Divisor array. If ``x1.shape != x2.shape``, they must be
             broadcastable to a common shape (which becomes the shape of the
             output).
-        out (Optional[numpy.ndarray]):
+        out:
             A location into which the result is stored. If provided, it must
             have a shape that the inputs broadcast to. If not provided or
             `None`, a freshly-allocated array is returned. A tuple (possible
             only as a keyword argument) must have length equal to the number of
             outputs.
-        where (Optional[numpy.ndarray]):
+        where:
             This condition is broadcast over the input. At locations where the
             condition is True, the `out` array will be set to the ufunc result.
             Elsewhere, the `out` array will retain its original value. Note
@@ -45,8 +54,7 @@ def true_divide(x1, x2, out=None, where=True, **kwargs):
             Keyword args passed to numpy.ufunc.
 
     Returns:
-        (numpoly.ndpoly):
-            This is a scalar if both `x1` and `x2` are scalars.
+        This is a scalar if both `x1` and `x2` are scalars.
 
     Raises:
         numpoly.baseclass.FeatureNotSupported:
@@ -66,20 +74,21 @@ def true_divide(x1, x2, out=None, where=True, **kwargs):
     if not x2.isconstant():
         raise numpoly.FeatureNotSupported(DIVIDE_ERROR_MSG)
     x2 = x2.tonumpy()
-    no_output = out is None
-    if no_output:
-        out = numpoly.ndpoly(
+    if out is None:
+        out_ = numpoly.ndpoly(
             exponents=x1.exponents,
             shape=x1.shape,
             names=x1.indeterminants,
             dtype=numpy.common_type(x1, numpy.array(1.)),
         )
-    elif not isinstance(out, numpy.ndarray):
-        assert len(out) == 1, "only one output"
-        out = out[0]
+    else:
+        assert len(out) == 1
+        out_ = out[0]
+    assert isinstance(out_, numpoly.ndpoly)
     for key in x1.keys:
-        out[key] = 0
-        numpy.true_divide(x1[key], x2, out=out[key], where=where, **kwargs)
-    if no_output:
-        out = numpoly.clean_attributes(out)
-    return out
+        out_[key] = 0
+        numpy.true_divide(x1.values[key], x2, out=out_.values[key],
+                          where=numpy.asarray(where), **kwargs)
+    if out is None:
+        out_ = numpoly.clean_attributes(out_)
+    return out_

@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "numpoly"
-version = "1.1.4"
+version = "1.2.0"
 description = "Polynomials as a numpy datatype"
 license = "BSD-2-Clause"
 authors = ["Jonathan Feinberg"]
@@ -20,17 +20,22 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6"
-numpy = ">=1.17"
+python = ">=3.7,<4.0"
+numpy = ">=1.20"
 
 [tool.poetry.dev-dependencies]
 sympy = "*"
 pylint = "*"
 pytest = "*"
 pytest-cov = "*"
+mypy = "*"
 codecov = "*"
 coverage = "^5.0"
 Sphinx = "*"
 pydocstyle = "3.0.0"
 sphinx_automodapi = "*"
 pydata_sphinx_theme = "*"
+
+[tool.mypy]
+ignore_missing_imports = true
+plugins = "numpy.typing.mypy_plugin"

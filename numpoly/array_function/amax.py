@@ -1,27 +1,36 @@
 """Return the maximum of an array or maximum along an axis."""
+from __future__ import annotations
+from typing import Any, Optional, Sequence, Union
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.amax)
-def amax(a, axis=None, out=None, **kwargs):
+def amax(
+    a: PolyLike,
+    axis: Union[None, int, Sequence[int]] = None,
+    out: Optional[ndpoly] = None,
+    **kwargs: Any,
+) -> ndpoly:
     """
     Return the maximum of an array or maximum along an axis.
 
     Args:
-        a (numpoly.ndpoly):
+        a:
             Input data.
-        axis (int, Tuple[int], None):
+        axis:
             Axis or axes along which to operate.  By default, flattened input
             is used. If this is a tuple of ints, the maximum is selected over
             multiple axes, instead of a single axis or all the axes as before.
-        out (Optional[numpoly.ndpoly]):
+        out:
             Alternative output array in which to place the result. Must be of
             the same shape and buffer length as the expected output.
 
-        keepdims : bool, optional
+        keepdims:
             If this is set to True, the axes which are reduced are left in the
             result as dimensions with size one. With this option, the result
             will broadcast correctly against the input array.
@@ -30,17 +39,15 @@ def amax(a, axis=None, out=None, **kwargs):
             through to the `amax` method of sub-classes of `ndarray`, however
             any non-default value will be.  If the sub-class' method does not
             implement `keepdims` any exceptions will be raised.
-        initial : scalar, optional
+        initial:
             The minimum value of an output element. Must be present to allow
             computation on empty slice.
-        where : array_like of bool, optional
+        where:
             Elements to compare for the maximum.
 
     Returns:
-        (numpy.ndarray):
-            Maximum of `a`. If `axis` is None, the result is a scalar value.
-            If `axis` is given, the result is an array of dimension
-            ``a.ndim-1``.
+        Maximum of `a`. If `axis` is None, the result is a scalar value.
+        If `axis` is given, the result is an array of dimension ``a.ndim-1``.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
@@ -63,4 +70,4 @@ def amax(a, axis=None, out=None, **kwargs):
     indices = numpy.amax(proxy, axis=axis, **kwargs)
     out = a[numpy.isin(proxy, indices)]
     out = out[numpy.argsort(indices.ravel())]
-    return out.reshape(indices.shape)
+    return numpoly.reshape(out, indices.shape)

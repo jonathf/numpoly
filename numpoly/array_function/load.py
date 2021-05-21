@@ -1,42 +1,47 @@
-"""Load polynomial or pickled objects from ``.npy``, ``.npz`` or pickled files."""
+"""Load polynomial or pickled objects from ``.np{y,z}`` or pickled files."""
+from __future__ import annotations
+from typing import BinaryIO, Dict, Optional, Union
+from os import PathLike
+
 import numpy
 import numpoly
 
-PathLike = str
-try:
-    from os import PathLike
-except ImportError:  # pragma: no cover
-    pass
+from ..baseclass import ndpoly
 
 
-def load(file, mmap_mode=None, allow_pickle=False,
-         fix_imports=True, encoding="ASCII"):
+def load(
+        file: Union[BinaryIO, PathLike],
+        mmap_mode: Optional[str] = None,
+        allow_pickle: bool = False,
+        fix_imports: bool = True,
+        encoding: str = "ASCII",
+) -> Union[ndpoly, Dict[str, ndpoly]]:
     """
-    Load polynomial or pickled objects from ``.npy``, ``.npz`` or pickled files.
+    Load polynomial or pickled objects from ``.np{y,z}`` or pickled files.
 
     Args:
-        file (file, str, pathlib.Path):
+        file:
             The file to read. File-like objects must support the ``seek()``
             and ``read()`` methods. Pickled files require that the file-like
             object support the ``readline()`` method as well.
-        mmap_mode (Optional[str]):
+        mmap_mode:
             If not None, then memory-map the file, using the given mode (see
             `numpy.memmap` for a detailed description of the modes). A
             memory-mapped array is kept on disk. However, it can be accessed
             and sliced like any ndarray. Memory mapping is especially useful
             for accessing small fragments of large files without reading the
             entire file into memory.
-        allow_pickle (bool):
+        allow_pickle:
             Allow loading pickled object arrays stored in npy files. Reasons
             for disallowing pickles include security, as loading pickled data
             can execute arbitrary code. If pickles are disallowed, loading
             object arrays will fail.
-        fix_imports (bool):
+        fix_imports:
             Only useful when loading Python 2 generated pickled files on
             Python 3, which includes npy/npz files containing object arrays.
             If `fix_imports` is True, pickle will try to map the old Python 2
             names to the new names used in Python 3.
-        encoding (Optional[str]):
+        encoding:
             What encoding to use when reading Python 2 strings. Only useful
             when loading Python 2 generated pickled files in Python 3, which
             includes npy/npz files containing object arrays. Values other than
@@ -44,10 +49,8 @@ def load(file, mmap_mode=None, allow_pickle=False,
             numerical data.
 
     Returns:
-        (numpoly.ndpoly, Dict[str, numpoly.ndpoly]):
-            Data stored in the file. For ``.npz`` files, the returned
-            dictionary class must be closed to avoid leaking file
-            descriptors.
+        Data stored in the file. For ``.npz`` files, the returned dictionary
+        class must be closed to avoid leaking file descriptors.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
@@ -60,12 +63,13 @@ def load(file, mmap_mode=None, allow_pickle=False,
     """
     if isinstance(file, (str, bytes, PathLike)):
         with open(file, "rb") as src:
-            return load(file=src, mmap_mode=mmap_mode, allow_pickle=allow_pickle,
+            return load(file=src, mmap_mode=mmap_mode,
+                        allow_pickle=allow_pickle,
                         fix_imports=fix_imports, encoding=encoding)
 
     out = numpy.load(file=file, mmap_mode=mmap_mode, allow_pickle=allow_pickle,
                      fix_imports=fix_imports, encoding=encoding)
-    if isinstance(out, numpy.lib.npyio.NpzFile):
+    if isinstance(out, numpy.lib.npyio.NpzFile):  # type: ignore
         out = dict(out)
         for key, value in list(out.items()):
 

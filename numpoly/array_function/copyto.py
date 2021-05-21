@@ -1,13 +1,22 @@
 """Copy values from one array to another, broadcasting as necessary."""
+from __future__ import annotations
 import logging
+
 import numpy
+import numpy.typing
 import numpoly
 
-from ..dispatch import implements, simple_dispatch
+from ..baseclass import ndpoly, PolyLike
+from ..dispatch import implements
 
 
 @implements(numpy.copyto)
-def copyto(dst, src, casting="same_kind", where=True):
+def copyto(
+        dst: ndpoly,
+        src: PolyLike,
+        casting: str = "same_kind",
+        where: numpy.typing.ArrayLike = True,
+) -> None:
     """
     Copy values from one array to another, broadcasting as necessary.
 
@@ -15,11 +24,11 @@ def copyto(dst, src, casting="same_kind", where=True):
     `where` is provided, it selects which elements to copy.
 
     Args:
-        dst (numpoly.ndpoly):
+        dst:
             The array into which values are copied.
-        src (numpoly.ndpoly):
+        src:
             The array from which values are copied.
-        casting (str):
+        casting:
             Controls what kind of data casting may occur when copying.
 
             * 'no' means the data types should not be cast at all.
@@ -28,7 +37,7 @@ def copyto(dst, src, casting="same_kind", where=True):
             * 'same_kind' means only safe casts or casts within a kind,
                 like float64 to float32, are allowed.
             * 'unsafe' means any data conversions may be done.
-        where (bool, numpy.ndarray):
+        where:
             A boolean array which is broadcasted to match the dimensions
             of `dst`, and selects elements to copy from `src` to `dst`
             wherever it contains the value True.
@@ -62,9 +71,11 @@ def copyto(dst, src, casting="same_kind", where=True):
         logger.warning("You might need to cast `numpoly.polynomial(dst)`.")
         logger.warning("Indeterminant names might be lost.")
         dst_keys = dst.dtype.names
+        dst_ = dst
     else:
         dst_keys = dst.keys
         src, _ = numpoly.align_indeterminants(src, dst)
+        dst_ = dst.values
 
     missing_keys = set(src.keys).difference(dst_keys)
     if missing_keys:
@@ -72,7 +83,9 @@ def copyto(dst, src, casting="same_kind", where=True):
 
     for key in dst_keys:
         if key in src.keys:
-            numpy.copyto(dst[key], src[key], casting=casting, where=where)
+            numpy.copyto(dst_[key], src.values[key],
+                         casting=casting, where=where)
         else:
-            numpy.copyto(dst[key], numpy.array(False, dtype=dst[key].dtype),
+            numpy.copyto(dst_[key],
+                         numpy.array(False, dtype=dst_[key].dtype),
                          casting=casting, where=where)

@@ -1,25 +1,34 @@
 """Calculate the absolute value element-wise."""
-import numpy
-import numpoly
+from __future__ import annotations
+from typing import Any, Optional
 
+import numpy
+import numpy.typing
+
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements, simple_dispatch
 
 
 @implements(numpy.absolute)
-def absolute(x, out=None, where=True, **kwargs):
+def absolute(
+    x: PolyLike,
+    out: Optional[ndpoly] = None,
+    where: numpy.typing.ArrayLike = True,
+    **kwargs: Any,
+) -> ndpoly:
     r"""
     Calculate the absolute value element-wise.
 
     Args:
-        x (numpoly.ndpoly):
+        x:
             Input array.
-        out (Optional[numpy.ndarray]):
+        out:
             A location into which the result is stored. If provided, it must
             have a shape that the inputs broadcast to. If not provided or
             `None`, a freshly-allocated array is returned. A tuple (possible
             only as a keyword argument) must have length equal to the number of
             outputs.
-        where (Union[bool, numpy.ndarray]):
+        where:
             This condition is broadcast over the input. At locations where the
             condition is True, the `out` array will be set to the ufunc result.
             Elsewhere, the `out` array will retain its original value. Note
@@ -30,10 +39,9 @@ def absolute(x, out=None, where=True, **kwargs):
             Keyword args passed to numpy.ufunc.
 
     Returns:
-        absolute (numpoly.ndpoly):
-            An ndarray containing the absolute value of. each element in `x`.
-            For complex input, ``a + ib``, the absolute value is
-            :math:`\sqrt{a^2+b^2}`. This is a scalar if `x` is a scalar.
+        An ndarray containing the absolute value of. each element in `x`.
+        For complex input, ``a + ib``, the absolute value is
+        :math:`\sqrt{a^2+b^2}`. This is a scalar if `x` is a scalar.
 
     Examples:
         >>> q0 = numpoly.variable()
@@ -52,7 +60,7 @@ def absolute(x, out=None, where=True, **kwargs):
     return simple_dispatch(
         numpy_func=numpy.absolute,
         inputs=(x,),
-        out=out,
+        out=None if out is None else (out,),
         where=where,
         **kwargs
     )

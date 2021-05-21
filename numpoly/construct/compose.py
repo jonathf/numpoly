@@ -1,55 +1,60 @@
 """Compose polynomial from array of arrays of polynomials."""
+from __future__ import annotations
+from typing import List, Optional, Sequence, Set, Tuple
+
 import numpy
+import numpy.typing
+
 import numpoly
+from ..baseclass import ndpoly, PolyLike
 
 
 def compose_polynomial_array(
-        arrays,
-        dtype=None,
-        allocation=None,
-):
+        arrays: Sequence[PolyLike],
+        dtype: Optional[numpy.typing.DTypeLike] = None,
+        allocation: Optional[int] = None,
+) -> ndpoly:
     """
     Compose polynomial from array of arrays of polynomials.
 
     Backend for `numpoly.polynomial` when input is undetermined.
 
     Args:
-        arrays (Any):
+        arrays:
             Input to be converted to a `numpoly.ndpoly` polynomial type.
-        dtype (Optional[numpy.dtype]):
+        dtype:
             Data type used for the polynomial coefficients.
-        allocation (Optional[int]):
+        allocation:
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
 
     Return:
-        (numpoly.ndpoly):
-            Polynomial based on input `arrays`.
+        Polynomial based on input `arrays`.
+
     """
-    arrays_ = numpy.array(arrays, dtype=object)
-    shape = arrays_.shape
-    if not arrays_.size:
+    oarrays = numpy.array(arrays, dtype=object)
+    shape = oarrays.shape
+    if not oarrays.size:
         return numpoly.ndpoly(shape=shape, dtype=dtype)
-    if len(arrays_.shape) > 1:
-        return numpoly.concatenate([
-            numpoly.aspolynomial(array, dtype)[numpy.newaxis]
-            for array in arrays
-        ], axis=0)
+    if len(oarrays.shape) > 1:
+        return numpoly.concatenate([numpoly.expand_dims(
+            numpoly.aspolynomial(array, dtype=dtype), axis=0)
+                                    for array in arrays], axis=0)
 
-    arrays = arrays_.flatten()
-
+    oarrays = oarrays.flatten()
     indices = numpy.array([isinstance(array, numpoly.ndpoly)
-                           for array in arrays])
-    arrays[indices] = numpoly.align_indeterminants(*arrays[indices])
-    names = arrays[indices][0] if numpy.any(indices) else None
-    arrays = arrays.tolist()
+                           for array in oarrays])
+    oarrays[indices] = numpoly.align_indeterminants(*oarrays[indices])
+    names = oarrays[indices][0] if numpy.any(indices) else None
+    oarrays = oarrays.tolist()
 
-    dtypes = []
-    keys = {(0,)}
-    for array in arrays:
+    dtypes: List[numpy.typing.DTypeLike] = []
+    keys: Set[Tuple[int, ...]] = {(0,)}
+    for array in oarrays:
         if isinstance(array, numpoly.ndpoly):
             dtypes.append(array.dtype)
-            keys = keys.union([tuple(key) for key in array.exponents.tolist()])
+            keys = keys.union({tuple(int(k) for k in key)
+                               for key in array.exponents.tolist()})
         elif isinstance(array, (numpy.generic, numpy.ndarray)):
             dtypes.append(array.dtype)
         else:
@@ -57,20 +62,20 @@ def compose_polynomial_array(
 
     if dtype is None:
         dtype = numpy.find_common_type(dtypes, [])
-    length = max([len(key) for key in keys])
+    length = max(1, max([len(key) for key in keys]))
 
     collection = {}
-    for idx, array in enumerate(arrays):
+    for idx, array in enumerate(oarrays):
         if isinstance(array, numpoly.ndpoly):
             for key, value in zip(array.exponents, array.coefficients):
                 key = tuple(key)+(0,)*(length-len(key))
                 if key not in collection:
-                    collection[key] = numpy.zeros(len(arrays), dtype=dtype)
+                    collection[key] = numpy.zeros(len(oarrays), dtype=dtype)
                 collection[key][idx] = value
         else:
             key = (0,)*length
             if key not in collection:
-                collection[key] = numpy.zeros(len(arrays), dtype=dtype)
+                collection[key] = numpy.zeros(len(oarrays), dtype=dtype)
             collection[key][idx] = array
 
     exponents = sorted(collection)
@@ -79,7 +84,7 @@ def compose_polynomial_array(
 
     return numpoly.ndpoly.from_attributes(
         exponents=exponents,
-        coefficients=coefficients,
+        coefficients=list(coefficients),
         names=names,
         allocation=allocation,
     )

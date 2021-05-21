@@ -1,12 +1,24 @@
 """Return the product of array elements over a given axis."""
+from __future__ import annotations
+from typing import Any, Optional, Sequence, Union
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.prod, numpy.product)
-def prod(a, axis=None, dtype=None, out=None, keepdims=False, **kwargs):
+def prod(
+    a: PolyLike,
+    axis: Union[None, int, Sequence[int]] = None,
+    dtype: Optional[numpy.typing.DTypeLike] = None,
+    out: Optional[ndpoly] = None,
+    keepdims: bool = False,
+    **kwargs: Any,
+) -> ndpoly:
     """
     Return the product of array elements over a given axis.
 
@@ -41,9 +53,8 @@ def prod(a, axis=None, dtype=None, out=None, keepdims=False, **kwargs):
             Elements to include in the product.
 
     Returns:
-        (numpoly.ndpoly):
-            An array shaped as `a` but with the specified axis removed.
-            Returns a reference to `out` if specified.
+        An array shaped as `a` but with the specified axis removed.
+        Returns a reference to `out` if specified.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
@@ -66,14 +77,14 @@ def prod(a, axis=None, dtype=None, out=None, keepdims=False, **kwargs):
     assert out is None
     if keepdims:
         if axis is None:
-            out = _prod(a.flatten(), axis=0)
-            out = out.reshape((1,)*len(a.shape))
+            out = _prod(numpoly.reshape(a, -1), axis=0)
+            out = numpoly.reshape(out, (1,)*len(a.shape))
             return out
         elif isinstance(axis, int):
             axis = [axis]
 
     if axis is None:
-        out = _prod(a.flatten(), axis=0)
+        out = _prod(numpoly.reshape(a, -1), axis=0)
 
     elif isinstance(axis, int):
         out = _prod(a, axis=axis)
@@ -87,19 +98,18 @@ def prod(a, axis=None, dtype=None, out=None, keepdims=False, **kwargs):
     return out
 
 
-def _prod(a, axis):
+def _prod(a: ndpoly, axis: int) -> ndpoly:
     """
     Backend for the product function.
 
     Args:
-        a (numpoly.ndpoly):
+        a:
             Input data.
-        axis (int):
+        axis:
             The axis to take product over.
 
     Returns:
-        (numpoly.ndpoly):
-            An array shaped as `a` but with the specified axis removed.
+        An array shaped as `a` but with the specified axis removed.
 
     """
     axis = axis+a.ndim if axis < 0 else axis

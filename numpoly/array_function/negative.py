@@ -1,19 +1,28 @@
 """Numerical negative, element-wise."""
-import numpy
-import numpoly
+from __future__ import annotations
+from typing import Any, Optional
 
+import numpy
+import numpy.typing
+
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements, simple_dispatch
 
 
 @implements(numpy.negative)
-def negative(x, out=None, where=True, **kwargs):
+def negative(
+    x: PolyLike,
+    out: Optional[ndpoly] = None,
+    where: numpy.typing.ArrayLike = True,
+    **kwargs: Any,
+) -> ndpoly:
     """
     Numerical negative, element-wise.
 
     Args:
-        x (numpoly.ndpoly):
+        x:
             Input array.
-        out (Optional[numpoly.ndpoly]):
+        out:
             A location into which the result is stored. If provided, it must
             have a shape that the inputs broadcast to. If not provided or
             `None`, a freshly-allocated array is returned. A tuple (possible
@@ -30,9 +39,8 @@ def negative(x, out=None, where=True, **kwargs):
             Keyword args passed to numpy.ufunc.
 
     Returns:
-        y (numpoly.ndpoly):
-            Returned array or scalar: `y = -x`. This is a scalar if `x` is
-            a scalar.
+        Returned array or scalar: `y = -x`.
+        This is a scalar if `x` is a scalar.
 
     Examples:
         >>> q0 = numpoly.variable()
@@ -43,7 +51,7 @@ def negative(x, out=None, where=True, **kwargs):
     return simple_dispatch(
         numpy_func=numpy.negative,
         inputs=(x,),
-        out=out,
+        out=None if out is None else (out,),
         where=where,
         **kwargs
     )

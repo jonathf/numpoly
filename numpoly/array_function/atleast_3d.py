@@ -1,28 +1,31 @@
 """View inputs as arrays with at least three dimensions."""
+from __future__ import annotations
+from typing import List, Union
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.atleast_3d)
-def atleast_3d(*arys):
+def atleast_3d(*arys: PolyLike) -> Union[ndpoly, List[ndpoly]]:
     """
     View inputs as arrays with at least three dimensions.
 
     Args:
-        arys (numpoly.ndpoly):
+        arys:
             One or more array-like sequences. Non-array inputs are converted
             to arrays. Arrays that already have three or more dimensions are
             preserved.
 
     Returns:
-        (numpoly.ndpoly):
-            An array, or list of arrays, each with ``a.ndim >= 3``.  Copies are
-            avoided where possible, and views with three or more dimensions are
-            returned.  For example, a 1-D array of shape ``(N,)`` becomes
-            a view of shape ``(1, N, 1)``, and a 2-D array of shape ``(M, N)``
-            becomes a view of shape ``(M, N, 1)``.
+        An array, or list of arrays, each with ``a.ndim >= 3``.  Copies are
+        avoided where possible, and views with three or more dimensions are
+        returned.  For example, a 1-D array of shape ``(N,)`` becomes a view of
+        shape ``(1, N, 1)``, and a 2-D array of shape ``(M, N)`` becomes a view
+        of shape ``(M, N, 1)``.
 
     Examples:
         >>> numpoly.atleast_3d(numpoly.variable())

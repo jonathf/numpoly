@@ -1,38 +1,46 @@
 """Return the cumulative sum of the elements along a given axis."""
-import numpy
-import numpoly
+from __future__ import annotations
+from typing import Optional
 
+import numpy
+import numpy.typing
+
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements, simple_dispatch
 
 
 @implements(numpy.cumsum)
-def cumsum(a, axis=None, dtype=None, out=None):
+def cumsum(
+    a: PolyLike,
+    axis: Optional[int] = None,
+    dtype: Optional[numpy.typing.DTypeLike] = None,
+    out: Optional[ndpoly] = None,
+) -> ndpoly:
     """
     Return the cumulative sum of the elements along a given axis.
 
     Args:
-        a (numpoly.ndpoly):
+        a:
             Input array.
-        axis (Optional[int]):
+        axis:
             Axis along which the cumulative sum is computed. The default
             (None) is to compute the cumsum over the flattened array.
-        dtype (Optional[numpy.dtype]):
+        dtype:
             Type of the returned array and of the accumulator in which the
             elements are summed.  If `dtype` is not specified, it defaults
             to the dtype of `a`, unless `a` has an integer dtype with a
             precision less than that of the default platform integer.  In
             that case, the default platform integer is used.
-        out (Optional[numpy.ndarray]):
+        out:
             Alternative output array in which to place the result. It must
             have the same shape and buffer length as the expected output
             but the type will be cast if necessary.
 
     Args:
-        (numpoly.ndpoly):
-            A new array holding the result is returned unless `out` is
-            specified, in which case a reference to `out` is returned. The
-            result has the same size as `a`, and the same shape as `a` if
-            `axis` is not None or `a` is a 1-d array.
+        A new array holding the result is returned unless `out` is specified,
+        in which case a reference to `out` is returned. The result has the same
+        size as `a`, and the same shape as `a` if `axis` is not None or `a` is
+        a 1-d array.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
@@ -53,7 +61,7 @@ def cumsum(a, axis=None, dtype=None, out=None):
     return simple_dispatch(
         numpy_func=numpy.cumsum,
         inputs=(a,),
-        out=out,
+        out=None if out is None else (out,),
         axis=axis,
         dtype=dtype,
     )

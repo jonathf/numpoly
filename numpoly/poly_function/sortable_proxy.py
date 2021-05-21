@@ -1,9 +1,17 @@
 """Create a numerical proxy for a polynomial to allow compare."""
+from __future__ import annotations
+
 import numpy
 import numpoly
 
+from ..baseclass import PolyLike
 
-def sortable_proxy(poly, graded=False, reverse=False):
+
+def sortable_proxy(
+    poly: PolyLike,
+    graded: bool = False,
+    reverse: bool = False,
+) -> numpy.ndarray:
     """
     Create a numerical proxy for a polynomial to allow compare.
 
@@ -13,21 +21,20 @@ def sortable_proxy(poly, graded=False, reverse=False):
     ensures that the method behaves as expected with ``numpy.ndarray``.
 
     Args:
-        poly (numpoly.ndpoly):
+        poly:
             Polynomial to convert into something sortable.
-        graded (bool):
+        graded:
             Graded sorting, meaning the indices are always sorted by the index
             sum. E.g. ``q0**2*q1**2*q2**2`` has an exponent sum of 6, and will
             therefore be consider larger than both ``q0**3*q1*q2``,
             ``q0*q1**3*q2`` and ``q0*q1*z**3``.
-        reverse (bool):
+        reverse:
             Reverses lexicographical sorting meaning that ``q0*q1**3`` is
             considered bigger than ``q0**3*q1``, instead of the opposite.
 
     Returns:
-        (numpy.ndarray):
-            Integer array where ``a > b`` is retained for the giving rule of
-            ``ordering``.
+        Integer array where ``a > b`` is retained for the giving rule of
+        ``ordering``.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)

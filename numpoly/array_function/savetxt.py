@@ -1,8 +1,13 @@
 """Save a polynomial array to a text file."""
+from __future__ import annotations
+from typing import Optional
+from os import PathLike
+
 import numpy
 from numpy.lib.recfunctions import structured_to_unstructured
 import numpoly
 
+from ..baseclass import PolyLike
 from ..dispatch import implements
 
 
@@ -10,8 +15,17 @@ HEADER_TEMPLATE = "numpoly:{version} names:{names} keys:{keys} shape:{shape}"
 
 
 @implements(numpy.savetxt)
-def savetxt(fname, X, fmt="%.18e", delimiter=" ", newline="\n",
-            header="", footer="", comments="# ", encoding=None):
+def savetxt(
+    fname: PathLike,
+    X: PolyLike,
+    fmt: str = "%.18e",
+    delimiter: str = " ",
+    newline: str = "\n",
+    header: str = "",
+    footer: str = "",
+    comments: str = "# ",
+    encoding: Optional[str] = None,
+):
     """
     Save a polynomial array to a text file.
 
@@ -21,13 +35,13 @@ def savetxt(fname, X, fmt="%.18e", delimiter=" ", newline="\n",
     separate at the top of the header of the output file.
 
     Args:
-        fname (str, pathlib.Path, filehandle):
+        fname:
             If the filename ends in ``.gz``, the file is automatically saved in
             compressed gzip format. `loadtxt` understands gzipped files
             transparently.
-        X (numpoly.ndpoly):
+        X:
             Data to be saved to a text file.
-        fmt (str, Sequence[str]):
+        fmt:
             A single format (%10.5f), a sequence of formats, or a multi-format
             string, e.g. 'Iteration %d -- %10.5f', in which case `delimiter` is
             ignored. For complex `X`, the legal options for `fmt` are:
@@ -40,19 +54,19 @@ def savetxt(fname, X, fmt="%.18e", delimiter=" ", newline="\n",
               and imaginary part must have separate specifiers,
               e.g. `['%.3e + %.3ej', '(%.15e%+.15ej)']` for 2 columns.
 
-        delimiter (str):
+        delimiter:
             String or character separating columns.
-        newline (str):
+        newline:
             String or character separating lines.
-        header (str):
+        header:
             String that will be written at the beginning of the file.
-        footer (str):
+        footer:
             String that will be written at the end of the file.
-        comments (str):
+        comments:
             String that will be prepended to the ``header`` and ``footer``
             strings, to mark them as comments. Default: '# ',  as expected by
             e.g. ``numpoly.loadtxt``.
-        encoding (Optional[str]):
+        encoding:
             Encoding used to encode the outputfile. Does not apply to output
             streams. If the encoding is something other than 'bytes' or
             'latin1' you will not be able to load the file in NumPy versions <

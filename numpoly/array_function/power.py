@@ -1,12 +1,16 @@
 """First array elements raised to powers from second array, element-wise."""
+from __future__ import annotations
+from typing import Any
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.power)
-def power(x1, x2, **kwargs):
+def power(x1: PolyLike, x2: PolyLike, **kwargs: Any) -> ndpoly:
     """
     First array elements raised to powers from second array, element-wise.
 
@@ -15,19 +19,19 @@ def power(x1, x2, **kwargs):
     integer type raised to a negative integer power will raise a ValueError.
 
     Args:
-        x1 (numpoly.ndpoly):
+        x1:
             The bases.
-        x2 (numpoly.ndpoly):
+        x2:
             The exponents. If ``x1.shape != x2.shape``, they must be
             broadcastable to a common shape (which becomes the shape of the
             output).
-        out (Optional[numpy.ndarray]):
+        out:
             A location into which the result is stored. If provided, it must
             have a shape that the inputs broadcast to. If not provided or
             `None`, a freshly-allocated array is returned. A tuple (possible
             only as a keyword argument) must have length equal to the number of
             outputs.
-        where (Optional[numpy.ndarray]):
+        where:
             This condition is broadcast over the input. At locations where the
             condition is True, the `out` array will be set to the ufunc result.
             Elsewhere, the `out` array will retain its original value. Note
@@ -38,9 +42,8 @@ def power(x1, x2, **kwargs):
             Keyword args passed to numpy.ufunc.
 
     Returns:
-        (numpoly.ndpoly):
-            The bases in `x1` raised to the exponents in `x2`. This is a scalar
-            if both `x1` and `x2` are scalars.
+        The bases in `x1` raised to the exponents in `x2`.
+        This is a scalar if both `x1` and `x2` are scalars.
 
     Examples:
         >>> q0 = numpoly.variable()

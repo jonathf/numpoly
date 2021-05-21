@@ -1,12 +1,21 @@
 """Return the ceiling of the input, element-wise."""
-import numpy
-import numpoly
+from __future__ import annotations
+from typing import Any, Optional
 
+import numpy
+import numpy.typing
+
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements, simple_dispatch
 
 
 @implements(numpy.ceil)
-def ceil(q0, out=None, where=True, **kwargs):
+def ceil(
+    q0: PolyLike,
+    out: Optional[ndpoly] = None,
+    where: numpy.typing.ArrayLike = True,
+    **kwargs: Any,
+) -> ndpoly:
     r"""
     Return the ceiling of the input, element-wise.
 
@@ -14,15 +23,15 @@ def ceil(q0, out=None, where=True, **kwargs):
     `i >= x`.  It is often denoted as :math:`\lceil x \rceil`.
 
     Args:
-        x (numpoly.ndpoly):
+        x:
             Input data.
-        out (Optional[numpy.ndarray]):
+        out:
             A location into which the result is stored. If provided, it must
             have a shape that the inputs broadcast to. If not provided or
             `None`, a freshly-allocated array is returned. A tuple (possible
             only as a keyword argument) must have length equal to the number of
             outputs.
-        where (Optional[numpy.ndarray]):
+        where:
             This condition is broadcast over the input. At locations where the
             condition is True, the `out` array will be set to the ufunc result.
             Elsewhere, the `out` array will retain its original value. Note
@@ -33,9 +42,8 @@ def ceil(q0, out=None, where=True, **kwargs):
             Keyword args passed to numpy.ufunc.
 
     Returns:
-        y (numpoly.ndpoly):
-            The ceiling of each element in `x`, with `float` dtype. This is
-            a scalar if `x` is a scalar.
+        The ceiling of each element in `x`, with `float` dtype.
+        This is a scalar if `x` is a scalar.
 
     Examples:
         >>> q0 = numpoly.variable()
@@ -47,7 +55,7 @@ def ceil(q0, out=None, where=True, **kwargs):
     return simple_dispatch(
         numpy_func=numpy.ceil,
         inputs=(q0,),
-        out=out,
+        out=None if out is None else (out,),
         where=where,
         **kwargs
     )

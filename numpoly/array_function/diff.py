@@ -1,12 +1,22 @@
 """Calculate the n-th discrete difference along the given axis."""
+from __future__ import annotations
+from typing import Optional
+
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.diff)
-def diff(a, n=1, axis=-1, prepend=numpy._NoValue, append=numpy._NoValue):
+def diff(
+    a: PolyLike,
+    n: int = 1,
+    axis: int = -1,
+    prepend: Optional[PolyLike] = None,
+    append: Optional[PolyLike] = None,
+) -> ndpoly:
     """
     Calculate the n-th discrete difference along the given axis.
 
@@ -14,15 +24,15 @@ def diff(a, n=1, axis=-1, prepend=numpy._NoValue, append=numpy._NoValue):
     axis, higher differences are calculated by using `diff` recursively.
 
     Args:
-        a (numpoly.ndpoly):
+        a:
             Input array
-        n (Optional[int]):
-            The number of times values are differenced. If zero, the input is
+        n:
+            The number of times values are "differenced". If zero, the input is
             returned as-is.
-        axis (Optional[int]):
+        axis:
             The axis along which the difference is taken, default is the last
             axis.
-        prepend, append (Optional[numpy.ndarray]):
+        prepend, append:
             Values to prepend or append to `a` along axis prior to
             performing the difference. Scalar values are expanded to
             arrays with length 1 in the direction of axis and the shape
@@ -30,12 +40,10 @@ def diff(a, n=1, axis=-1, prepend=numpy._NoValue, append=numpy._NoValue):
             dimension and shape must match `a` except along axis.
 
     Returns:
-        (numpoly.ndpoly):
-            The n-th differences. The shape of the output is the same as `a`
-            except along `axis` where the dimension is smaller by `n`. The type
-            of the output is the same as the type of the difference between any
-            two elements of `a`. This is the same as the type of `a` in most
-            cases.
+        The n-th differences. The shape of the output is the same as `a` except
+        along `axis` where the dimension is smaller by `n`. The type of the
+        output is the same as the type of the difference between any two
+        elements of `a`. This is the same as the type of `a` in most cases.
 
     Examples:
         >>> q0, q1 = numpoly.variable(2)
@@ -53,14 +61,15 @@ def diff(a, n=1, axis=-1, prepend=numpy._NoValue, append=numpy._NoValue):
                     [-5, q1-2, 0]])
 
     """
-    if append is not numpy._NoValue:
-        if prepend is not numpy._NoValue:
-            a, append, prepend = numpoly.align_indeterminants(a, append, prepend)
+    if append is not None:
+        if prepend is not None:
+            a, append, prepend = numpoly.align_indeterminants(
+                a, append, prepend)
             a, append, prepend = numpoly.align_exponents(a, append, prepend)
         else:
             a, append = numpoly.align_indeterminants(a, append)
             a, append = numpoly.align_exponents(a, append)
-    elif prepend is not numpy._NoValue:
+    elif prepend is not None:
         a, prepend = numpoly.align_indeterminants(a, prepend)
         a, prepend = numpoly.align_exponents(a, prepend)
     else:
@@ -70,11 +79,11 @@ def diff(a, n=1, axis=-1, prepend=numpy._NoValue, append=numpy._NoValue):
     for key in a.keys:
 
         kwargs = {}
-        if append is not numpy._NoValue:
-            kwargs["append"] = append[key]
-        if prepend is not numpy._NoValue:
-            kwargs["prepend"] = prepend[key]
-        tmp = numpy.diff(a[key], n=n, axis=axis, **kwargs)
+        if append is not None:
+            kwargs["append"] = append.values[key]
+        if prepend is not None:
+            kwargs["prepend"] = prepend.values[key]
+        tmp = numpy.diff(a.values[key], n=n, axis=axis, **kwargs)
 
         if out is None:
             out = numpoly.ndpoly(
@@ -83,7 +92,6 @@ def diff(a, n=1, axis=-1, prepend=numpy._NoValue, append=numpy._NoValue):
                 names=a.indeterminants,
                 dtype=tmp.dtype,
             )
-        out[key] = tmp
-
-    out = numpoly.clean_attributes(out)
-    return out
+        out.values[key] = tmp
+    assert out is not None
+    return numpoly.clean_attributes(out)

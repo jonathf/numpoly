@@ -1,11 +1,14 @@
 """Expand the shape of an array."""
+from __future__ import annotations
 import numpy
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
+
 @implements(numpy.expand_dims)
-def expand_dims(a, axis):
+def expand_dims(a: PolyLike, axis: int) -> ndpoly:
     """
     Expand the shape of an array.
 
@@ -13,14 +16,13 @@ def expand_dims(a, axis):
     array shape.
 
     Args:
-        a (numpoly.ndarray):
+        a:
             Input array.
-        axis (int):
+        axis:
             Position in the expanded axes where the new axis is placed.
 
     Returns:
-        (ndpoly):
-            View of `a` with the number of dimensions increased by one.
+        View of `a` with the number of dimensions increased by one.
 
     Examples:
         >>> poly = numpoly.variable(2)

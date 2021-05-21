@@ -1,49 +1,53 @@
 """Construct polynomial from polynomial attributes."""
-import numpy
+from __future__ import annotations
+from typing import Optional, Sequence, Tuple, Union
+
+import numpy.typing
+
 import numpoly
 
-from . import clean as clean_
+from . import clean
+from ..baseclass import ndpoly
 
 
 def polynomial_from_attributes(
-        exponents,
-        coefficients,
-        names,
-        dtype=None,
-        allocation=None,
-        retain_coefficients=None,
-        retain_names=None,
-):
+        exponents: numpy.typing.ArrayLike,
+        coefficients: Sequence[numpy.typing.ArrayLike],
+        names: Union[None, str, Tuple[str, ...], ndpoly] = None,
+        dtype: Optional[numpy.typing.DTypeLike] = None,
+        allocation: Optional[int] = None,
+        retain_coefficients: Optional[bool] = None,
+        retain_names: Optional[bool] = None,
+) -> ndpoly:
     """
     Construct polynomial from polynomial attributes.
 
     Args:
-        exponents (numpy.ndarray):
+        exponents:
             The exponents in an integer array with shape ``(N, D)``, where
             ``N`` is the number of terms in the polynomial sum and ``D`` is
             the number of dimensions.
-        coefficients (Iterable[numpy.ndarray]):
+        coefficients:
             The polynomial coefficients. Must correspond to `exponents` by
             having the same length ``N``.
-        names (Union[Sequence[str], numpoly.ndpoly]):
+        names:
             The indeterminant names, either as string names or as
             simple polynomials. Must correspond to the exponents by having
             length ``D``.
-        dtype (Optional[numpy.dtype]):
+        dtype:
             The data type of the polynomial. If omitted, extract from
             `coefficients`.
-        allocation (Optional[int]):
+        allocation:
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
-        retain_coefficients (Optional[bool]):
+        retain_coefficients:
             Do not remove redundant coefficients. If omitted use global
             defaults.
-        retain_names (Optional[bool]):
+        retain_names:
             Do not remove redundant names. If omitted use global defaults.
 
     Returns:
-        (numpoly.ndpoly):
-            Polynomial array with attributes determined by the input.
+        Polynomial array with attributes determined by the input.
 
     Examples:
         >>> numpoly.ndpoly.from_attributes(
@@ -65,7 +69,7 @@ def polynomial_from_attributes(
         polynomial(0)
 
     """
-    exponents, coefficients, names = clean_.postprocess_attributes(
+    exponents, coefficients, names = clean.postprocess_attributes(
         exponents=exponents,
         coefficients=coefficients,
         names=names,

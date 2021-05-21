@@ -1,19 +1,28 @@
 """Split an array into multiple sub-arrays."""
+from __future__ import annotations
+from typing import List
+
 import numpy
+import numpy.typing
 import numpoly
 
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
 @implements(numpy.split)
-def split(ary, indices_or_sections, axis=0):
+def split(
+    ary: PolyLike,
+    indices_or_sections: numpy.typing.ArrayLike,
+    axis: int = 0,
+) -> List[ndpoly]:
     """
     Split an array into multiple sub-arrays.
 
     Args:
-        ary (numpoly.ndpoly):
+        ary:
             Array to be divided into sub-arrays.
-        indices_or_sections (int, Sequence[int]):
+        indices_or_sections:
             If `indices_or_sections` is an integer, N, the array will be
             divided into N equal arrays along `axis`.  If such a split is not
             possible, an error is raised.
@@ -28,12 +37,11 @@ def split(ary, indices_or_sections, axis=0):
 
             If an index exceeds the dimension of the array along `axis`, an
             empty sub-array is returned correspondingly.
-        axis (int):
+        axis:
             The axis along which to split, default is 0.
 
     Returns:
-        (List[numpoly.ndpoly])
-            A list of sub-arrays.
+        A list of sub-arrays.
 
     Raises:
         ValueError:
