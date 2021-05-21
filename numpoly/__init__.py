@@ -70,5 +70,5 @@ def configure_logging() -> None:
     logger.addHandler(streamer)
 
 
-__version__: str = get_version("numpoly")
+__version__ = get_version("numpoly")
 configure_logging()

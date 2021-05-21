@@ -1,6 +1,21 @@
 Master Branch
 =============
 
+Version 1.2.0 (2021-05-21)
+==========================
+
+ADDED:
+  * Annotations everywhere!
+  * User provided type `PolyLike`: polynmial analog to `ArrayLike`.
+  * CI: mypy checks.
+
+CHANGED:
+  * CI: Replaced workspace attaching in favor of independent runs.
+  * CI: Linting, pydocstyle, Sphinx, mypy in py39, and pytest and coverage in py37.
+
+REMOVED:
+  * Support for python versions 2 and < 3.7.
+
 Version 1.1.4 (2021-05-18)
 ==========================
 
@@ -27,10 +42,12 @@ ADDED:
     `remove_redundant_names` to explicitly remove junk information.
   * Global flags `retain_coefficients` and `retain_names` to set global
     defaults.
+
 CHANGED:
   * Post-process with `postprocess_attribute` mandatory for all calls to
     `clean_attributes`, but because of the new flags, keeping polynomial
     unchanged is still possible.
+
 REMOVED:
   * Flag `clean` arg replaced with more explicit `retain_coefficients` and
     `retain_names`.
@@ -49,6 +66,7 @@ Version 1.0.9 (2020-11-18)
 
 ADDED:
   * Numpy function additions: `one_like`, `zeros_like`.
+
 CHANGED:
   * Enforce 100 percent coverage in CI.
 
