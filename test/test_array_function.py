@@ -33,7 +33,7 @@ def assert_equal(results, reference, c_contiguous=None,
 
     """
     if type_ is None:
-        assert isinstance(results, (numpy.bool_, numpy.number, numpy.ndarray)), (
+        assert isinstance(results, (bool, numpy.bool_, numpy.number, numpy.ndarray)), (
             "unrecognized results type: %s" % results)
     else:
         assert isinstance(results, type_), (
@@ -502,7 +502,7 @@ def test_floor_divide(interface):
         names=("q0", "q1"),
         dtype=float,
     )
-    numpoly.floor_divide(poly, 2, out=[out])
+    numpoly.floor_divide(poly, 2, out=out)
     assert_equal(out, [[0., Y], [0., 1.]])
 
 
@@ -639,6 +639,11 @@ def test_isfinite(func_interface):
     assert_equal(func_interface.isfinite(numpy.nan*X), False)
     poly = numpoly.polynomial([numpy.log(-1.), X, numpy.log(0)])
     assert_equal(func_interface.isfinite(poly), [False, True, False])
+    out = numpy.ones(3, dtype=bool)
+    print(out)
+    func_interface.isfinite(poly, out=(out,))
+    print(out)
+    assert_equal(out, [False, True, False])
 
 
 def test_logical_and(func_interface):

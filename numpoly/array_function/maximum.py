@@ -67,10 +67,11 @@ def maximum(
         polynomial(q0+1)
 
     """
+    del out
     x1, x2 = numpoly.align_polynomials(x1, x2)
     coefficients1 = x1.coefficients
     coefficients2 = x2.coefficients
-    out = numpy.zeros(x1.shape, dtype=bool)
+    out_ = numpy.zeros(x1.shape, dtype=bool)
 
     options = numpoly.get_options()
     for idx in numpoly.glexsort(x1.exponents.T, graded=options["sort_graded"],
@@ -78,5 +79,5 @@ def maximum(
 
         indices = (coefficients1[idx] != 0) | (coefficients2[idx] != 0)
         indices &= coefficients1[idx] != coefficients2[idx]
-        out[indices] = (coefficients1[idx] > coefficients2[idx])[indices]
-    return numpoly.where(out, x1, x2)
+        out_[indices] = (coefficients1[idx] > coefficients2[idx])[indices]
+    return numpoly.where(out_, x1, x2)

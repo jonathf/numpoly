@@ -67,28 +67,28 @@ def symbols(
         return out
 
     if not isinstance(names, str):
-        names = list(names)
+        names = tuple(names)
 
     else:
         names = re.sub(" ", ",", names)
         if "," in names:
             asarray = True
-            names = [name for name in names.split(",") if name]
+            names = tuple(name for name in names.split(",") if name)
 
         else:
             match = re.search(r"(\d*):(\d+)", names)
             if match:
                 start = int(match.group(1) or 0)
                 end = int(match.group(2))
-                names = [
+                names = tuple(
                     names.replace(match.group(0), str(idx))
                     for idx in range(start, end)
-                ]
+                )
 
             else:
-                names = [names]
+                names = (names,)
 
-    assert isinstance(names, list)
+    assert isinstance(names, tuple)
     exponents = numpy.eye(len(names), dtype=int)
     coefficients = numpy.eye(len(names), dtype=dtype)
     out = numpoly.ndpoly.from_attributes(

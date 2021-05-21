@@ -1,7 +1,9 @@
 """Convert numpoly.ndpoly to sympy polynomial."""
 from __future__ import annotations
 from typing import Any
+
 import numpy
+import numpoly
 
 from .baseclass import PolyLike
 
@@ -29,9 +31,10 @@ def to_sympy(poly: PolyLike) -> Any:
         <class 'sympy.core.mul.Mul'>
 
     """
+    poly = numpoly.aspolynomial(poly)
     if poly.shape:
         return numpy.array([to_sympy(poly_) for poly_ in poly])
-    from sympy import symbols
+    from sympy import symbols  # type: ignore
     locals_ = dict(zip(poly.names, symbols(poly.names)))
     polynomial = eval(str(poly), locals_, {})  # pylint: disable=eval-used
     return polynomial

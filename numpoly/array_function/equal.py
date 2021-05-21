@@ -61,7 +61,8 @@ def equal(
     if out is None:
         out = numpy.ones(x1.shape, dtype=bool)
     if not out.shape:
-        return numpy.bool_(equal(x1.ravel(), x2.ravel(), out=out.ravel()).item())
+        return equal(x1.ravel(), x2.ravel(), out=out.ravel()).item()
     for coeff1, coeff2 in zip(x1.coefficients, x2.coefficients):
-        out &= numpy.equal(coeff1, coeff2, where=where, **kwargs)
+        out &= numpy.equal(coeff1, coeff2,
+                           where=numpy.asarray(where), **kwargs)
     return out

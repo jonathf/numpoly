@@ -1,6 +1,6 @@
 """Load polynomial or pickled objects from ``.np{y,z}`` or pickled files."""
 from __future__ import annotations
-from typing import Dict, Optional, Union
+from typing import BinaryIO, Dict, Optional, Union
 from os import PathLike
 
 import numpy
@@ -10,7 +10,7 @@ from ..baseclass import ndpoly
 
 
 def load(
-        file: PathLike,
+        file: Union[BinaryIO, PathLike],
         mmap_mode: Optional[str] = None,
         allow_pickle: bool = False,
         fix_imports: bool = True,
@@ -63,12 +63,13 @@ def load(
     """
     if isinstance(file, (str, bytes, PathLike)):
         with open(file, "rb") as src:
-            return load(file=src, mmap_mode=mmap_mode, allow_pickle=allow_pickle,
+            return load(file=src, mmap_mode=mmap_mode,
+                        allow_pickle=allow_pickle,
                         fix_imports=fix_imports, encoding=encoding)
 
     out = numpy.load(file=file, mmap_mode=mmap_mode, allow_pickle=allow_pickle,
                      fix_imports=fix_imports, encoding=encoding)
-    if isinstance(out, numpy.lib.npyio.NpzFile):
+    if isinstance(out, numpy.lib.npyio.NpzFile):  # type: ignore
         out = dict(out)
         for key, value in list(out.items()):
 

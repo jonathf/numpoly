@@ -36,6 +36,7 @@ from .utils import (
     glexsort,
 )
 from .option import get_options, set_options, global_options
+from .dispatch import FUNCTION_COLLECTION, UFUNC_COLLECTION
 
 
 def get_version(name: str) -> str:

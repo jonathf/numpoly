@@ -52,5 +52,6 @@ def repeat(
 
     """
     a = numpoly.aspolynomial(a)
+    repeats = numpy.asarray(repeats)
     result = numpy.repeat(a.values, repeats=repeats, axis=axis)
     return numpoly.aspolynomial(result, names=a.indeterminants)

@@ -3,68 +3,99 @@ version-tags: &version-tags
         only: /v\d+\.\d+\.\d+(-(alpha|beta|rc|dev|post)\d+)?/
 
 version: 2.1
-executors:
-    my-executor:
+jobs:
+    test-37:
         docker:
-            - image: circleci/python:3.7.8
+            - image: circleci/python:3.7.10
               auth:
                 username: jonathf
                 password: $DOCKERHUB_PASSWORD
-        working_directory: /home/circleci/project
-
-jobs:
-    test:
-        executor: my-executor
         steps:
             - checkout
             - restore_cache:
                 keys:
-                    - deps-{{ checksum "poetry.lock"}}
-                    - deps-
+                    - deps-37-{{ checksum "poetry.lock"}}
+                    - deps-37-
             - run:
                 name: "Installation"
                 command: |
-                    python3 -m venv /home/circleci/venv
-                    source /home/circleci/venv/bin/activate
+                    python3 -m venv $HOME/venv
+                    source $HOME/venv/bin/activate
                     pip install poetry==1.0.5
                     poetry install
             - save_cache:
-                key: deps-{{ checksum "poetry.lock"}}
+                key: deps-37-{{ checksum "poetry.lock"}}
                 paths:
-                    - /home/circleci/venv
+                    - $HOME/venv
+            - run:
+                name: "Run tests"
+                command: |
+                    source $HOME/venv/bin/activate
+                    coverage run --source numpoly/ --module pytest --doctest-modules numpoly/ test/ docs/*.rst README.rst
+            - run:
+                name: "Report home"
+                command: |
+                    source $HOME/venv/bin/activate
+                    codecov
+                    coverage report --show-missing
+    test-39:
+        docker:
+            - image: circleci/python:3.9.4
+              auth:
+                username: jonathf
+                password: $DOCKERHUB_PASSWORD
+        steps:
+            - checkout
+            - restore_cache:
+                keys:
+                    - deps-39-{{ checksum "poetry.lock"}}
+                    - deps-39-
+            - run:
+                name: "Installation"
+                command: |
+                    python3 -m venv $HOME/venv
+                    source $HOME/venv/bin/activate
+                    pip install poetry==1.0.5
+                    poetry install
+            - save_cache:
+                key: deps-39-{{ checksum "poetry.lock"}}
+                paths:
+                    - $HOME/venv
             - run:
                 name: "Run pylint"
                 command: |
-                    source /home/circleci/venv/bin/activate
+                    source $HOME/venv/bin/activate
                     pylint --rcfile=.pylintrc -E numpoly
             - run:
                 name: "Run pydocstyle"
                 command: |
-                    source /home/circleci/venv/bin/activate
+                    source $HOME/venv/bin/activate
                     pydocstyle numpoly
             - run:
-                name: "Run tests"
+                name: "Run mypy"
                 command: |
-                    source /home/circleci/venv/bin/activate
-                    coverage run --source numpoly/ --module pytest --doctest-modules numpoly/ test/ docs/*.rst README.rst
-                    codecov
-                    coverage report --show-missing --fail-under=100
+                    source $HOME/venv/bin/activate
+                    mypy numpoly
             - run:
                 name: "Run Sphinx build"
                 command: |
-                    source /home/circleci/venv/bin/activate
+                    source $HOME/venv/bin/activate
                     sphinx-build docs/ docs/.build -b html -v --color -T -W --keep-going
     deploy:
-        executor: my-executor
+        docker:
+            - image: circleci/python:3.9.4
+              auth:
+                username: jonathf
+                password: $DOCKERHUB_PASSWORD
         steps:
             - checkout
             - restore_cache:
                 keys:
-                    - deps-{{ checksum "poetry.lock"}}
+                    - deps-39-{{ checksum "poetry.lock"}}
             - run:
                 name: "Installation"
                 command: |
-                    source /home/circleci/venv/bin/activate
+                    source $HOME/venv/bin/activate
                     poetry install
             - run:
                 name: "Verify tag version"
@@ -77,19 +108,23 @@ jobs:
             - run:
                 name: "Publish to PyPI"
                 command: |
-                    source /home/circleci/venv/bin/activate
+                    source $HOME/venv/bin/activate
                     poetry publish --build -u jonathf -p $PYPI_PASSWORD -n
 
 workflows:
     version: 2.1
     workflow:
         jobs:
-            - test:
+            - test-37:
+                filters:
+                    <<: *version-tags
+            - test-39:
                 filters:
                     <<: *version-tags
             - deploy:
                 requires:
-                    - test
+                    - test-37
+                    - test-39
                 filters:
                     <<: *version-tags
                     branches:

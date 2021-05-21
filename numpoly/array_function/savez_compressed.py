@@ -56,10 +56,10 @@ def savez_compressed(
         kwargs["arr_%d" % idx] = arg
 
     polynomials = {
-        key: kwargs.pop(key) for key, value in list(kwargs.items())
+        key: numpoly.aspolynomial(kwargs.pop(key))
+        for key, value in list(kwargs.items())
         if isinstance(value, numpoly.ndpoly)
     }
-    polynomials = {"-".join(poly.names)+"-"+key: poly.values
-                   for key, poly in polynomials.items()}
-    kwargs.update(polynomials)
+    kwargs.update({"-".join(poly.names)+"-"+key: poly.values
+                   for key, poly in polynomials.items()})
     numpy.savez_compressed(file, **kwargs)

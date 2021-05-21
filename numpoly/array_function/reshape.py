@@ -1,6 +1,6 @@
 """Gives a new shape to an array without changing its data."""
 from __future__ import annotations
-from typing import Sequence, Union
+from typing import Any, Sequence
 
 import numpy
 import numpoly
@@ -8,12 +8,19 @@ import numpoly
 from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
+Order = Any
+try:
+    from typing import Literal, Union
+    Order = Union[None, Literal["C"], Literal["F"], Literal["A"]]  # type: ignore
+except ImportError:
+    pass
+
 
 @implements(numpy.reshape)
 def reshape(
     a: PolyLike,
     newshape: Union[int, Sequence[int]],
-    order: str = "C",
+    order: Order = "C",
 ) -> ndpoly:
     """
     Give a new shape to an array without changing its data.

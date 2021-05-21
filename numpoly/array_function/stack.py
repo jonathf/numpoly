@@ -1,6 +1,6 @@
 """Join a sequence of arrays along a new axis."""
 from __future__ import annotations
-from typing import Optional
+from typing import Optional, Sequence
 
 import numpy
 import numpoly
@@ -11,7 +11,7 @@ from ..dispatch import implements
 
 @implements(numpy.stack)
 def stack(
-    arrays: PolyLike,
+    arrays: Sequence[PolyLike],
     axis: int = 0,
     out: Optional[ndpoly] = None,
 ) -> ndpoly:

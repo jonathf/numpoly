@@ -60,7 +60,7 @@ def subtract(
     return simple_dispatch(
         numpy_func=numpy.subtract,
         inputs=(x1, x2),
-        out=out,
+        out=None if out is None else (out,),
         where=where,
         **kwargs
     )

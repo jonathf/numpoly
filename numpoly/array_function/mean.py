@@ -66,7 +66,7 @@ def mean(
     return simple_dispatch(
         numpy_func=numpy.mean,
         inputs=(a,),
-        out=out,
+        out=None if out is None else (out,),
         axis=axis,
         dtype=dtype,
         **kwargs

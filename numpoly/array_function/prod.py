@@ -77,14 +77,14 @@ def prod(
     assert out is None
     if keepdims:
         if axis is None:
-            out = _prod(a.flatten(), axis=0)
-            out = out.reshape((1,)*len(a.shape))
+            out = _prod(numpoly.reshape(a, -1), axis=0)
+            out = numpoly.reshape(out, (1,)*len(a.shape))
             return out
         elif isinstance(axis, int):
             axis = [axis]
 
     if axis is None:
-        out = _prod(a.flatten(), axis=0)
+        out = _prod(numpoly.reshape(a, -1), axis=0)
 
     elif isinstance(axis, int):
         out = _prod(a, axis=axis)
@@ -98,7 +98,7 @@ def prod(
     return out
 
 
-def _prod(a, axis) -> ndpoly:
+def _prod(a: ndpoly, axis: int) -> ndpoly:
     """
     Backend for the product function.
 

@@ -45,7 +45,8 @@ def where(condition: numpy.typing.ArrayLike, *args: PolyLike) -> ndpoly:
 
     """
     if isinstance(condition, numpoly.ndpoly):
-        condition = numpy.any(condition.coefficients, 0).astype(bool)
+        condition = numpy.any(numpy.asarray(
+            condition.coefficients), 0).astype(bool)
     if not args:
         return numpy.where(condition)
 

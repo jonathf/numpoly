@@ -63,11 +63,14 @@ def isfinite(
         array([False,  True, False])
 
     """
-    out = simple_dispatch(
+    out_ = simple_dispatch(
         numpy_func=numpy.isfinite,
         inputs=(x,),
-        out=out,
         where=where,
         **kwargs
     )
-    return numpy.all(out.coefficients, axis=0)
+    if out is None:
+        out_ = numpy.all(numpy.asarray(out_.coefficients), axis=0)
+    else:
+        out_ = numpy.all(numpy.asarray(out_.coefficients), out=out[0], axis=0)
+    return out_

@@ -66,11 +66,10 @@ def divmod(
         (polynomial([0, 5, 111]), polynomial([1, 2, 0]))
 
     """
+    del out
     x1, x2 = numpoly.align_polynomials(x1, x2)
     if not x1.isconstant() or not x2.isconstant():
         raise numpoly.FeatureNotSupported(DIVMOD_ERROR_MSG)
-    out = (out,) if isinstance(out, ndpoly) else out
-    out = tuple(o.values for o in out) if out is not None else (None, None)
     quotient, remainder = numpy.divmod(
-        x1.tonumpy(), x2.tonumpy(), out=out, where=where, **kwargs)
+        x1.tonumpy(), x2.tonumpy(), where=where, **kwargs)
     return numpoly.polynomial(quotient), numpoly.polynomial(remainder)

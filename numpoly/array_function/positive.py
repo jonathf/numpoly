@@ -51,7 +51,7 @@ def positive(
     return simple_dispatch(
         numpy_func=numpy.positive,  # pylint: disable=no-member
         inputs=(x,),
-        out=out,
+        out=None if out is None else (out,),
         where=where,
         **kwargs
     )

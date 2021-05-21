@@ -48,6 +48,6 @@ def around(
     return simple_dispatch(
         numpy_func=numpy.around,
         inputs=(a,),
-        out=out,
+        out=None if out is None else (out,),
         decimals=decimals,
     )

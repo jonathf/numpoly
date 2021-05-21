@@ -1,5 +1,6 @@
 """Stack arrays in sequence vertically (row wise)."""
 from __future__ import annotations
+from typing import Sequence
 
 import numpy
 import numpoly
@@ -9,7 +10,7 @@ from ..dispatch import implements
 
 
 @implements(numpy.vstack)
-def vstack(tup: PolyLike) -> ndpoly:
+def vstack(tup: Sequence[PolyLike]) -> ndpoly:
     """
     Stack arrays in sequence vertically (row wise).
 

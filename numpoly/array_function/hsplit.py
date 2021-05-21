@@ -1,5 +1,6 @@
 """Split an array into multiple sub-arrays horizontally (column-wise)."""
 from __future__ import annotations
+from typing import Sequence
 
 import numpy
 import numpy.typing
@@ -13,7 +14,7 @@ from ..dispatch import implements
 def hsplit(
     ary: PolyLike,
     indices_or_sections: numpy.typing.ArrayLike,
-) -> ndpoly:
+) -> Sequence[ndpoly]:
     """
     Split an array into multiple sub-arrays horizontally (column-wise).
 
@@ -47,9 +48,6 @@ def hsplit(
     """
     ary = numpoly.aspolynomial(ary)
     results = numpy.hsplit(ary.values, indices_or_sections=indices_or_sections)
-    return [
-        numpoly.polynomial(
-            result, names=ary.indeterminants, allocation=ary.allocation,
-        )
-        for result in results
-    ]
+    return [numpoly.polynomial(
+        result, names=ary.indeterminants, allocation=ary.allocation)
+            for result in results]

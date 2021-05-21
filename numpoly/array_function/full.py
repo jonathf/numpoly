@@ -47,6 +47,7 @@ def full(
     fill_value = numpoly.aspolynomial(fill_value)
     if dtype is None:
         dtype = fill_value.dtype
+    shape = tuple((shape,) if isinstance(shape, int) else shape)
     out = numpoly.ndpoly(
         exponents=fill_value.exponents,
         shape=shape,

@@ -1,11 +1,12 @@
 """Save several arrays into a single file in uncompressed ``.npz`` format."""
 from __future__ import annotations
 from os import PathLike
+from typing import Dict
 
 import numpy
 import numpoly
 
-from ..baseclass import PolyLike
+from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
@@ -52,10 +53,10 @@ def savez(file: PathLike, *args: PolyLike, **kwargs: PolyLike) -> None:
         kwargs["arr_%d" % idx] = arg
 
     polynomials = {
-        key: kwargs.pop(key) for key, value in list(kwargs.items())
+        key: numpoly.aspolynomial(kwargs.pop(key))
+        for key, value in list(kwargs.items())
         if isinstance(value, numpoly.ndpoly)
     }
-    polynomials = {"-".join(poly.names)+"-"+key: poly.values
-                   for key, poly in polynomials.items()}
-    kwargs.update(polynomials)
+    kwargs.update({"-".join(poly.names)+"-"+key: poly.values
+                   for key, poly in polynomials.items()})
     numpy.savez(file, **kwargs)

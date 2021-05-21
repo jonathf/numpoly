@@ -74,21 +74,21 @@ def true_divide(
     if not x2.isconstant():
         raise numpoly.FeatureNotSupported(DIVIDE_ERROR_MSG)
     x2 = x2.tonumpy()
-    no_output = out is None
-    if no_output:
-        out = numpoly.ndpoly(
+    if out is None:
+        out_ = numpoly.ndpoly(
             exponents=x1.exponents,
             shape=x1.shape,
             names=x1.indeterminants,
             dtype=numpy.common_type(x1, numpy.array(1.)),
         )
-    elif not isinstance(out, numpy.ndarray):
-        assert len(out) == 1, "only one output"
-        out = out[0]
+    else:
+        assert len(out) == 1
+        out_ = out[0]
+    assert isinstance(out_, numpoly.ndpoly)
     for key in x1.keys:
-        out[key] = 0
-        numpy.true_divide(
-            x1.values[key], x2, out=out.values[key], where=where, **kwargs)
-    if no_output:
-        out = numpoly.clean_attributes(out)
-    return out
+        out_[key] = 0
+        numpy.true_divide(x1.values[key], x2, out=out_.values[key],
+                          where=numpy.asarray(where), **kwargs)
+    if out is None:
+        out_ = numpoly.clean_attributes(out_)
+    return out_

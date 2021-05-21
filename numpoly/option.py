@@ -54,9 +54,11 @@ def set_options(**kwargs: Any) -> None:
         default_varname:
             Polynomial indeterminant defaults, if not defined explicitly.
         display_graded:
-            When displaying polynomials as strings, sort polynomial sums in graded order.
+            When displaying polynomials as strings, sort polynomial sums in
+            graded order.
         display_reverse:
-            When displaying polynomials as strings, sort polynomial sums in reversed lexicographical order.
+            When displaying polynomials as strings, sort polynomial sums in
+            reversed lexicographical order.
         display_inverse:
             If true, display polynomials from smallest to largest exponent.
         display_exponent:
@@ -65,12 +67,11 @@ def set_options(**kwargs: Any) -> None:
             Multiplication sign; Separates coefficients and
             indeterminants, and indeterminants from each other.
         force_number_suffix:
-            Add a postfix index to single indeterminant name. If
-            single indeterminant name, e.g. 'q' is provided, but the
-            polynomial is multivariate, an extra postfix index is
-            added to differentiate the names: 'q0, q1, q2, ...'. If
-            true, enforce this behavior for single variables as well
-            such that 'q' always get converted to 'q0'.
+            Add a postfix index to single indeterminant name. If single
+            indeterminant name, e.g. 'q' is provided, but the polynomial is
+            multivariate, an extra postfix index is added to differentiate the
+            names: 'q0, q1, q2, ...'. If true, enforce this behavior for single
+            variables as well such that 'q' always get converted to 'q0'.
         retain_coefficients:
             After each operation a cleanup is done to reduce the polynomial to
             its smallest memory imprint. If true, do not remove redundant

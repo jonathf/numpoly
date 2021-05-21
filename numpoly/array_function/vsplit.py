@@ -1,5 +1,6 @@
 """Split an array into multiple sub-arrays vertically (row-wise)."""
 from __future__ import annotations
+from typing import List
 
 import numpy
 import numpy.typing
@@ -13,7 +14,7 @@ from ..dispatch import implements
 def vsplit(
     ary: PolyLike,
     indices_or_sections: numpy.typing.ArrayLike,
-) -> ndpoly:
+) -> List[ndpoly]:
     """
     Split an array into multiple sub-arrays vertically (row-wise).
 

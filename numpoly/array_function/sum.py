@@ -67,7 +67,7 @@ def sum(
     return simple_dispatch(
         numpy_func=numpy.sum,
         inputs=(a,),
-        out=out,
+        out=None if out is None else (out,),
         axis=axis,
         dtype=dtype,
         keepdims=keepdims,

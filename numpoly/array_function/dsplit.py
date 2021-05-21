@@ -1,5 +1,6 @@
 """Split array into multiple sub-arrays along the 3rd axis (depth)."""
 from __future__ import annotations
+from typing import List
 
 import numpy
 import numpy.typing
@@ -13,7 +14,7 @@ from ..dispatch import implements
 def dsplit(
     ary: PolyLike,
     indices_or_sections: numpy.typing.ArrayLike,
-) -> ndpoly:
+) -> List[ndpoly]:
     """
     Split array into multiple sub-arrays along the 3rd axis (depth).
 

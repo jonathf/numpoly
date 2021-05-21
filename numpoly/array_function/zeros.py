@@ -1,6 +1,6 @@
 """Return a new array of given shape and type, filled with zeros."""
 from __future__ import annotations
-from typing import Sequence, Union
+from typing import Any, Sequence
 
 import numpy
 import numpy.typing
@@ -9,12 +9,19 @@ import numpoly
 from ..baseclass import ndpoly
 from ..dispatch import implements
 
+Order = Any
+try:
+    from typing import Literal, Union
+    Order = Union[Literal["C"], Literal["F"], None]  # type: ignore
+except ImportError:
+    pass
+
 
 @implements(numpy.zeros)
 def zeros(
     shape: Union[int, Sequence[int]],
     dtype: numpy.typing.DTypeLike = float,
-    order: str = "C",
+    order: Order = "C",
 ) -> ndpoly:
     """
     Return a new array of given shape and type, filled with zeros.

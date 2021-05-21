@@ -51,7 +51,7 @@ def negative(
     return simple_dispatch(
         numpy_func=numpy.negative,
         inputs=(x,),
-        out=out,
+        out=None if out is None else (out,),
         where=where,
         **kwargs
     )

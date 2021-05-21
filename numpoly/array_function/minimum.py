@@ -27,7 +27,7 @@ def minimum(
     The net effect is that NaNs are propagated.
 
     Args:
-        x1, x2:
+        x1, x2 :
             The arrays holding the elements to be compared. If ``x1.shape !=
             x2.shape``, they must be broadcastable to a common shape (which
             becomes the shape of the output).
@@ -67,16 +67,17 @@ def minimum(
         polynomial(q0-1)
 
     """
+    del out
     x1, x2 = numpoly.align_polynomials(x1, x2)
     coefficients1 = x1.coefficients
     coefficients2 = x2.coefficients
-    out = numpy.zeros(x1.shape, dtype=bool)
+    out_ = numpy.zeros(x1.shape, dtype=bool)
 
     options = numpoly.get_options()
     for idx in numpoly.glexsort(x1.exponents.T, graded=options["sort_graded"],
                                 reverse=options["sort_reverse"]):
 
         indices = (coefficients1[idx] != 0) | (coefficients2[idx] != 0)
-        indices &= coefficients1[idx] != coefficients2[idx]
-        out[indices] = (coefficients1[idx] < coefficients2[idx])[indices]
-    return numpoly.where(out, x1, x2)
+        indices = coefficients1[idx] != coefficients2[idx]
+        out_[indices] = (coefficients1[idx] < coefficients2[idx])[indices]
+    return numpoly.where(out_, x1, x2)

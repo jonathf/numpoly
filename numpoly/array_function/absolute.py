@@ -60,7 +60,7 @@ def absolute(
     return simple_dispatch(
         numpy_func=numpy.absolute,
         inputs=(x,),
-        out=out,
+        out=None if out is None else (out,),
         where=where,
         **kwargs
     )

@@ -6,7 +6,7 @@ import numpy
 import numpy.typing
 import numpoly
 
-from ..baseclass import ndpoly, PolyLike
+from ..baseclass import PolyLike
 from ..dispatch import implements
 
 
@@ -56,6 +56,7 @@ def not_equal(
 
     """
     x1, x2 = numpoly.align_polynomials(x1, x2)
+    where = numpy.asarray(where)
     for key in x1.keys:
         tmp = numpy.not_equal(
             x1.values[key], x2.values[key], where=where, **kwargs)
@@ -63,4 +64,4 @@ def not_equal(
             out = tmp
         else:
             out |= tmp
-    return out
+    return numpy.asarray(out)

@@ -12,7 +12,7 @@ from ..dispatch import implements
 @implements(numpy.transpose)
 def transpose(
     a: PolyLike,
-    axes: Union[None, int, Sequence[int]] = None,
+    axes: Union[None, Sequence[int], numpy.ndarray] = None,
 ) -> ndpoly:
     """
     Permute the dimensions of an array.

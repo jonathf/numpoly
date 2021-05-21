@@ -252,8 +252,8 @@ def align_dtype(*polys: PolyLike) -> Tuple[ndpoly, ...]:
 
     """
     polys_ = [numpoly.aspolynomial(poly) for poly in polys]
-    dtype = numpy.asarray(numpy.sum([numpy.array(True, dtype=poly.dtype)
-                                     for poly in polys_])).dtype
+    dtype = numpy.asarray(numpy.sum(numpy.array([
+        numpy.array(True, dtype=poly.dtype) for poly in polys_]))).dtype
     polys_ = [numpoly.ndpoly.from_attributes(
         exponents=poly.exponents,
         coefficients=poly.coefficients,

@@ -69,7 +69,7 @@ def greater_equal(
     if out is None:
         out = numpy.greater_equal(coefficients1[0], coefficients2[0], **kwargs)
     if not out.shape:
-        return bool(greater_equal(x1.ravel(), x2.ravel(), out=out.ravel()).item())
+        return greater_equal(x1.ravel(), x2.ravel(), out=out.ravel()).item()
 
     options = numpoly.get_options()
     for idx in numpoly.glexsort(x1.exponents.T, graded=options["sort_graded"],

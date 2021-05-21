@@ -1,6 +1,6 @@
 """Construct array from an index array and a set of arrays to choose from."""
 from __future__ import annotations
-from typing import Literal, Optional, Union
+from typing import Any, Optional
 
 import numpy
 import numpy.typing
@@ -9,13 +9,21 @@ import numpoly
 from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
+Mode = Any
+try:
+    from typing import Literal, Union
+    Model = Union[Literal["raise"],  # type: ignore
+                  Literal["wrap"], Literal["clip"]]
+except ImportError:
+    pass
+
 
 @implements(numpy.choose)
 def choose(
     a: numpy.typing.ArrayLike,
     choices: PolyLike,
     out: Optional[ndpoly] = None,
-    mode: Union[Literal["raise"], Literal["wrap"], Literal["clip"]] = "raise",
+    mode: Mode = "raise",
 ) -> ndpoly:
     """
     Construct array from an index array and a set of arrays to choose from.

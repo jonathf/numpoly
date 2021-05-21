@@ -1,6 +1,6 @@
 """Return an array of zeros with the same shape and type as a given array."""
 from __future__ import annotations
-from typing import Optional, Sequence
+from typing import Any, Optional, Sequence
 
 import numpy
 import numpy.typing
@@ -9,12 +9,19 @@ import numpoly
 from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
+Order = Any
+try:
+    from typing import Literal, Union
+    Order = Union[None, Literal["C"], Literal["F"]]  # type: ignore
+except ImportError:
+    pass
+
 
 @implements(numpy.zeros_like)
 def zeros_like(
         a: PolyLike,
         dtype: Optional[numpy.typing.DTypeLike] = None,
-        order: str = 'K',
+        order: Order = None,
         subok: bool = True,
         shape: Optional[Sequence[int]] = None,
 ) -> ndpoly:
@@ -29,9 +36,8 @@ def zeros_like(
             Overrides the data type of the result.
         order:
             Overrides the memory layout of the result. 'C' means C-order,
-            'F' means F-order, 'A' means 'F' if `a` is Fortran contiguous,
-            'C' otherwise. 'K' means match the layout of `a` as closely
-            as possible.
+            'F' means F-order. If omitted: 'F' if `a` is Fortran contiguous,
+            'C' otherwise.
         subok:
             If True, then the newly created array will use the sub-class
             type of 'a', otherwise it will be a base-class array. Defaults
@@ -53,12 +59,6 @@ def zeros_like(
 
     """
     del subok
-    if not isinstance(a, numpy.ndarray):
-        a = numpoly.polynomial(a)
-    if shape is None:
-        shape = a.shape
-    if dtype is None:
-        dtype = a.dtype
-    if order in ("A", "K"):
-        order = "F" if a.flags["F_CONTIGUOUS"] else "C"
-    return numpoly.polynomial(numpy.zeros(shape, dtype=dtype, order=order))
+    a = numpoly.aspolynomial(a)
+    return numpoly.polynomial(numpy.zeros_like(  # pylint: disable=unexpected-keyword-arg
+        a.values[a.keys[0]], dtype=dtype, order=order, shape=shape))

@@ -54,7 +54,7 @@ def floor(
     return simple_dispatch(
         numpy_func=numpy.floor,
         inputs=(x,),
-        out=out,
+        out=None if out is None else (out,),
         where=where,
         **kwargs
     )

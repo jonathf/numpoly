@@ -52,7 +52,7 @@ def rint(
     return simple_dispatch(
         numpy_func=numpy.rint,
         inputs=(x,),
-        out=out,
+        out=None if out is None else (out,),
         where=where,
         **kwargs
     )

@@ -58,7 +58,8 @@ def logical_or(
     """
     x1 = numpoly.aspolynomial(x1)
     x2 = numpoly.aspolynomial(x2)
-    coefficients1 = numpy.any(x1.coefficients, 0)
-    coefficients2 = numpy.any(x2.coefficients, 0)
+    coefficients1 = numpy.any(numpy.asarray(x1.coefficients), 0)
+    coefficients2 = numpy.any(numpy.asarray(x2.coefficients), 0)
+    where_ = numpy.asarray(where)
     return numpy.logical_or(
-        coefficients1, coefficients2, out=out, where=where, **kwargs)
+        coefficients1, coefficients2, out=out, where=where_, **kwargs)

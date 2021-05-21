@@ -28,10 +28,9 @@ def matmul(
         x1, x2:
             Input arrays, scalars not allowed.
         out:
-            A location into which the result is stored. If provided, it must have
-            a shape that matches the signature `(n,k),(k,m)->(n,m)`. If not
-            provided or `None`, a freshly-allocated array is returned.
-            n,k,m
+            A location into which the result is stored. If provided, it must
+            have a shape that matches the signature `(n,k),(k,m)->(n,m)`.
+            If not provided or `None`, a freshly-allocated array is returned.
 
     Returns:
         The matrix product of the inputs. This is a scalar only when both
@@ -66,6 +65,5 @@ def matmul(
     x1 = numpoly.reshape(x1, x1.shape+(1,))
     x2 = numpoly.reshape(x2, x2.shape[:-2]+(1,)+x2.shape[-2:])
     x1, x2 = numpoly.broadcast_arrays(x1, x2)
-    out = numpoly.multiply(x1, x2, out=out, **kwargs)
-    out = numpoly.sum(out, axis=-2)
-    return out
+    out_ = numpoly.multiply(x1, x2, out=out, **kwargs)
+    return numpoly.sum(out_, axis=-2)

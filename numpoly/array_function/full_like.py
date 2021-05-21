@@ -68,7 +68,7 @@ def full_like(
         order = "F" if a.flags["F_CONTIGUOUS"] else "C"
     out = numpoly.ndpoly(
         exponents=fill_value.exponents,
-        shape=shape,
+        shape=tuple(shape),
         names=fill_value.indeterminants,
         dtype=dtype,
         order=order,

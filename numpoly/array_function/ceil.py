@@ -55,7 +55,7 @@ def ceil(
     return simple_dispatch(
         numpy_func=numpy.ceil,
         inputs=(q0,),
-        out=out,
+        out=None if out is None else (out,),
         where=where,
         **kwargs
     )

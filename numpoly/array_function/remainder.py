@@ -55,7 +55,7 @@ def remainder(
     Examples:
         >>> numpoly.remainder([14, 7], 5)
         polynomial([4, 2])
-        >>> numpoly.remainder(numpoly.variable(), 2) # doctest: +IGNORE_EXCEPTION_DETAIL
+        >>> numpoly.remainder(numpoly.variable(), 2)  # doctest: +IGNORE_EXCEPTION_DETAIL
         Traceback (most recent call last):
             ...
         numpoly.baseclass.FeatureNotSupported: Polynomial division ...
@@ -65,5 +65,6 @@ def remainder(
     x1, x2 = numpoly.align_polynomials(x1, x2)
     if not x1.isconstant() or not x2.isconstant():
         raise numpoly.FeatureNotSupported(REMAINDER_ERROR_MSG)
+    where = None if where is None else numpy.asarray(where)
     return numpoly.polynomial(numpy.remainder(
         x1.tonumpy(), x2.tonumpy(), out=out, where=where, **kwargs))

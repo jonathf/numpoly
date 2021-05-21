@@ -1,5 +1,6 @@
 """Implementation wrapper."""
-from typing import Any, Callable, Optional, Sequence
+from typing import Any, Callable, Optional, Sequence, Tuple
+
 import numpoly
 
 from .baseclass import ndpoly
@@ -13,7 +14,8 @@ def implements_function(*array_functions: Callable) -> Callable:
     def decorator(numpoly_function: Callable) -> Callable:
         """Register function."""
         for func in array_functions:
-            assert func not in FUNCTION_COLLECTION, f"{func} already implemented"
+            assert func not in FUNCTION_COLLECTION, (
+                f"{func} already implemented")
             FUNCTION_COLLECTION[func] = numpoly_function
         return numpoly_function
     return decorator
@@ -24,7 +26,8 @@ def implements_ufunc(*array_methods: Callable) -> Callable:
     def decorator(numpoly_function: Callable) -> Callable:
         """Register function."""
         for func in array_methods:
-            assert func not in UFUNC_COLLECTION, f"{func} already implemented"
+            assert func not in UFUNC_COLLECTION, (
+                f"{func} already implemented")
             UFUNC_COLLECTION[func] = numpoly_function
         return numpoly_function
     return decorator
@@ -35,7 +38,8 @@ def implements(*array_functions: Callable) -> Callable:
     def decorator(numpoly_function: Callable) -> Callable:
         """Register function."""
         for func in array_functions:
-            assert func not in FUNCTION_COLLECTION, "{func} already implemented"
+            assert func not in FUNCTION_COLLECTION, (
+                "{func} already implemented")
             FUNCTION_COLLECTION[func] = numpoly_function
             assert func not in UFUNC_COLLECTION, "{func} already implemented"
             UFUNC_COLLECTION[func] = numpoly_function
@@ -47,7 +51,7 @@ def implements(*array_functions: Callable) -> Callable:
 def simple_dispatch(
         numpy_func: Callable,
         inputs: Sequence[Any],
-        out: Optional[ndpoly] = None,
+        out: Optional[Tuple[ndpoly, ...]] = None,
         **kwargs: Any
 ) -> ndpoly:
     """
@@ -76,30 +80,25 @@ def simple_dispatch(
 
     """
     inputs = numpoly.align_polynomials(*inputs)
-    no_output = out is None
-    keys = numpoly.aspolynomial(inputs[0] if no_output else out).keys
-    for key in keys:
+    keys = numpoly.aspolynomial(inputs[0] if out is None else out[0]).keys
 
-        if out is None:
-            tmp = numpy_func(*[poly.values[key]
-                               for poly in inputs], **kwargs)
-            out = numpoly.ndpoly(
-                exponents=inputs[0].exponents,
-                shape=tmp.shape,
-                names=inputs[0].indeterminants,
-                dtype=tmp.dtype,
-            )
-            out[key] = tmp
+    tmp = numpy_func(*[poly.values[keys[0]]for poly in inputs], **kwargs)
+    if out is None:
+        out_ = numpoly.ndpoly(
+            exponents=inputs[0].exponents,
+            shape=tmp.shape,
+            names=inputs[0].indeterminants,
+            dtype=tmp.dtype,
+        )
+    else:
+        assert len(out) == 1
+        out_ = out[0]
+    out_.values[keys[0]] = tmp
 
-        elif no_output:
-            out[key] = numpy_func(*[poly.values[key]
-                                    for poly in inputs], **kwargs)
+    for key in keys[1:]:
+        out_.values[key] = numpy_func(
+            *[poly.values[key] for poly in inputs], **kwargs)
 
-        else:
-            tmp = numpy_func(
-                *[poly.values[key]
-                  for poly in inputs], out=out.values[key], **kwargs)
-
-    if no_output:
-        out = numpoly.clean_attributes(out)
-    return numpoly.aspolynomial(out)
+    if out is None:
+        out_ = numpoly.clean_attributes(out_)
+    return numpoly.aspolynomial(out_)
