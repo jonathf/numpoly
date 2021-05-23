@@ -45,32 +45,35 @@ def multiply(x1, x2, out=None, where=True, **kwargs):
                     [6.0*q0, 7.0*q1, 8.0*q2]])
 
     """
+    x1, x2 = numpoly.align_indeterminants(x1, x2)
     x1, x2 = numpoly.align_polynomials(x1, x2)
-    # x1, x2 = numpoly.broadcast_arrays(
-    #     numpoly.polynomial(x1), numpoly.polynomial(x2))
-    no_output = out is None
-    if no_output:
-        exponents = (numpy.tile(x1.exponents, (len(x2.exponents), 1))+
-                     numpy.repeat(x2.exponents, len(x1.exponents), 0))
-        out = numpoly.ndpoly(
-            exponents=numpy.unique(exponents, axis=0),
-            shape=x1.shape,
-            names=x1.indeterminants,
-            dtype=x1.dtype,
-        )
+    dtype = numpy.find_common_type([x1.dtype, x2.dtype], [])
+    shape = numpy.broadcast_shapes(x1.shape, x2.shape)
+
+    where = numpy.asarray(where)
+    exponents = numpy.unique(
+        numpy.tile(x1.exponents, (len(x2.exponents), 1)) +
+        numpy.repeat(x2.exponents, len(x1.exponents), 0), axis=0)
+    out_ = numpoly.ndpoly(
+        exponents=exponents,
+        shape=shape,
+        names=x1.indeterminants,
+        dtype=dtype,
+    ) if out is None else out
 
     seen = set()
     for expon1, coeff1 in zip(x1.exponents, x1.coefficients):
         for expon2, coeff2 in zip(x2.exponents, x2.coefficients):
-            key = (expon1+expon2+x1.KEY_OFFSET).flatten()
+            key = (expon1+expon2+x1.KEY_OFFSET).ravel()
             key = key.view("U%d" % len(expon1)).item()
             if key in seen:
-                out[key] += numpy.multiply(
+                out_.values[key] += numpy.multiply(
                     coeff1, coeff2, where=where, **kwargs)
             else:
-                numpy.multiply(
-                    coeff1, coeff2, out=out[key], where=where, **kwargs)
+                numpy.multiply(coeff1, coeff2, out=out_.values[key],
+                               where=where, **kwargs)
             seen.add(key)
-    if no_output:
-        out = numpoly.clean_attributes(out)
-    return out
+
+    if out is None:
+        out_ = numpoly.clean_attributes(out_)
+    return out_

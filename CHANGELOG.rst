@@ -1,6 +1,14 @@
 Master Branch
 =============
 
+Version 1.1.5 (2021-05-23)
+==========================
+
+FIXED:
+  * Optimization of `numpoly.multiply`, making it run much faster when exponent
+    count is asymmetric. And in the edge case O(n^2) -> O(n) for polynomial
+    times constant.
+
 Version 1.1.4 (2021-05-18)
 ==========================
 
