@@ -56,7 +56,6 @@ def multiply(
 
     """
     x1, x2 = numpoly.align_indeterminants(x1, x2)
-    x1, x2 = numpoly.align_polynomials(x1, x2)
     dtype = numpy.find_common_type([x1.dtype, x2.dtype], [])
     shape = numpy.broadcast_shapes(x1.shape, x2.shape)
 
@@ -75,7 +74,7 @@ def multiply(
     for expon1, coeff1 in zip(x1.exponents, x1.coefficients):
         for expon2, coeff2 in zip(x2.exponents, x2.coefficients):
             key = (expon1+expon2+x1.KEY_OFFSET).ravel()
-            key = key.view("U%d" % len(expon1)).item()
+            key = key.view(f"U{len(expon1)}").item()
             if key in seen:
                 out_.values[key] += numpy.multiply(
                     coeff1, coeff2, where=where, **kwargs)

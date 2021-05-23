@@ -1,6 +1,13 @@
 Master Branch
 =============
 
+Version 1.2.2 (2021-05-23)
+==========================
+
+FIXED:
+  * Removed redundant calculations from multiplications, drastically improving
+    computational cost in some cases.
+
 Version 1.2.1 (2021-05-23)
 ==========================
 

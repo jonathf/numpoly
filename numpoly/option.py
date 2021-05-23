@@ -104,7 +104,7 @@ def set_options(**kwargs: Any) -> None:
     """
     for key in kwargs:
         if key not in _NUMPOLY_OPTIONS:
-            raise KeyError("option '%s' not recognised." % key)
+            raise KeyError(f"option '{key}' not recognized.")
     _NUMPOLY_OPTIONS.update(**kwargs)
 
 

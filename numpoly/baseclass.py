@@ -14,9 +14,8 @@ structured array directly using the ``values`` attribute:
     >>> q0, q1 = numpoly.variable(2)
     >>> poly = numpoly.polynomial(4*q0+3*q1-1)
     >>> array = poly.values
-    >>> array  # doctest: +NORMALIZE_WHITESPACE
-    array((-1, 4, 3),
-          dtype=[(';;', '<i8'), ('<;', '<i8'), (';<', '<i8')])
+    >>> array
+    array((4, 3, -1), dtype=[('<;', '<i8'), (';<', '<i8'), (';;', '<i8')])
 
 Which, together with the indeterminant names, can be used to cast back the
 array back to a polynomial:
@@ -173,13 +172,13 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
 
         """
         exponents = numpy.array(exponents, dtype=numpy.uint32)
-
         if numpy.prod(exponents.shape):
             keys = (exponents+cls.KEY_OFFSET).flatten()
-            keys = keys.view("U%d" % exponents.shape[-1])
-            keys = numpy.array(keys, dtype="U%d" % (exponents.shape[-1]))
+            keys = keys.view(f"U{exponents.shape[-1]}")
+            keys = numpy.array(keys, dtype=f"U{exponents.shape[-1]}")
         else:
-            keys = numpy.zeros(0, dtype="U1")
+            keys = numpy.full((1,), cls.KEY_OFFSET, dtype="uint32").view("U1")
+        assert len(keys.shape) == 1
 
         dtype = int if dtype is None else dtype
         dtype_ = numpy.dtype([(key, dtype) for key in keys])
@@ -200,7 +199,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         if names is None:
             names = numpoly.get_options()["default_varname"]
             obj.names = numpoly.symbols(
-                "%s:%d" % (names, exponents.shape[-1])).names
+                f"{names}:{exponents.shape[-1]}").names
         elif isinstance(names, str):
             obj.names = numpoly.symbols(names).names
         elif isinstance(names, ndpoly):
@@ -210,7 +209,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         for name in obj.names:
             assert re.search(numpoly.get_options()["varname_filter"], name), (
                 "invalid polynomial name; "
-                "expected format: %r" % numpoly.get_options()["varname_filter"])
+                f"expected format: {numpoly.get_options()['varname_filter']}")
 
         obj._dtype = numpy.dtype(dtype)  # pylint: disable=protected-access
         obj.keys = keys
@@ -238,9 +237,9 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         elif method == "accumulate":
             ufunc = ACCUMULATE_MAPPINGS[ufunc]
         elif method != "__call__":
-            raise FeatureNotSupported("Method '%s' not supported." % method)
+            raise FeatureNotSupported(f"Method '{method}' not supported.")
         if ufunc not in numpoly.UFUNC_COLLECTION:
-            raise FeatureNotSupported("ufunc '%s' not supported." % ufunc)
+            raise FeatureNotSupported(f"ufunc '{ufunc}' not supported.")
         return numpoly.UFUNC_COLLECTION[ufunc](*inputs, **kwargs)
 
     def __array_function__(
@@ -256,19 +255,19 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         fname = func.__name__
         if func not in numpoly.FUNCTION_COLLECTION:
             raise FeatureNotSupported(
-                "function '%s' not supported by numpoly." % fname)
+                f"function '{fname}' not supported by numpoly.")
 
         # notify that numpy.save* works, but numpy.load* fails
         if fname in ("save", "savez", "savez_compressed"):
-            logger.warning("""\
-numpy.%s used to store numpoly.ndpoly (instead of numpoly.%s).
+            logger.warning(f"""\
+numpy.{fname} used to store numpoly.ndpoly (instead of numpoly.{fname}).
 This works, but restoring requires using numpoly.load, \
-as numpy.load will not work as expected.""" % (fname, fname))
+as numpy.load will not work as expected.""")
         elif fname == "savetxt":
-            logger.warning("""\
-numpy.%s used to store numpoly.ndpoly (instead of numpoly.%s).
+            logger.warning(f"""\
+numpy.{fname} used to store numpoly.ndpoly (instead of numpoly.{fname}).
 This works, but restoring requires using numpoly.loadtxt, \
-as numpy.loadtxt will not work as expected.""" % (fname, fname))
+as numpy.loadtxt will not work as expected.""")
         return numpoly.FUNCTION_COLLECTION[func](*args, **kwargs)
 
     # ======================================
@@ -319,7 +318,7 @@ as numpy.loadtxt will not work as expected.""" % (fname, fname))
                    [4, 0]], dtype=uint32)
 
         """
-        exponents = self.keys.astype("U%d" % len(self.names))
+        exponents = self.keys.astype(f"U{len(self.names)}")
         exponents = exponents.view(numpy.uint32)-self.KEY_OFFSET
         if numpy.prod(exponents.shape):
             exponents = exponents.reshape(len(self.keys), -1)

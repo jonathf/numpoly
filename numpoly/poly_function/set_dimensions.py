@@ -46,9 +46,8 @@ def set_dimensions(poly: PolyLike, dimensions: Optional[int] = None) -> ndpoly:
         names_ = list(poly.names)
         idx = 0
         while len(names_) < dimensions:
-            candidate = "%s%d" % (varname, idx)
-            if candidate not in names_:
-                names_.append(candidate)
+            if f"{varname}{idx}" not in names_:
+                names_.append(f"{varname}{idx}")
             idx += 1
 
         indices = numpy.lexsort([names_])

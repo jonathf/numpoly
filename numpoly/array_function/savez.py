@@ -49,8 +49,8 @@ def savez(file: PathLike, *args: PolyLike, **kwargs: PolyLike) -> None:
 
     """
     for idx, arg in enumerate(args):
-        assert "arr_%d" % idx not in kwargs, "naming conflict"
-        kwargs["arr_%d" % idx] = arg
+        assert f"arr_{idx}" not in kwargs, "naming conflict"
+        kwargs[f"arr_{idx}"] = arg
 
     polynomials = {
         key: numpoly.aspolynomial(kwargs.pop(key))

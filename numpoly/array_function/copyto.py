@@ -62,11 +62,10 @@ def copyto(
             if src.isconstant():
                 return numpy.copyto(
                     dst, src.tonumpy(), casting=casting, where=where)
-            raise ValueError(
-                "Could not convert src %s to dst %s" % (src, dst))
+            raise ValueError(f"Could not convert src {src} to dst {dst}")
         if casting != "unsafe":
             raise ValueError(
-                "could not safely convert src %s to dst %s" % (src, dst))
+                f"could not safely convert src {src} to dst {dst}")
         logger.warning("Copying ndpoly input into ndarray")
         logger.warning("You might need to cast `numpoly.polynomial(dst)`.")
         logger.warning("Indeterminant names might be lost.")
@@ -79,7 +78,7 @@ def copyto(
 
     missing_keys = set(src.keys).difference(dst_keys)
     if missing_keys:
-        raise ValueError("memory layouts are incompatible: %s" % missing_keys)
+        raise ValueError(f"memory layouts are incompatible: {missing_keys}")
 
     for key in dst_keys:
         if key in src.keys:
