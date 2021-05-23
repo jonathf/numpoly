@@ -55,7 +55,7 @@ def array_repr(
     suffix = ")"
     arr = numpoly.aspolynomial(arr)
     if not arr.size:
-        return prefix + "[], dtype=%s" % arr.dtype.name + suffix
+        return f"{prefix}[], dtype={arr.dtype.name}{suffix}"
 
     arr = to_string(arr, precision=precision, suppress_small=suppress_small)
 

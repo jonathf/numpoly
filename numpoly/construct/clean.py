@@ -19,10 +19,10 @@ def clean_attributes(
         retain_names: Optional[bool] = None,
 ) -> ndpoly:
     """
-    Clean up polynomial attributes.
+    Clean up polynomial attributes that does not affect representation.
 
     Some operations results in polynomial with structures that are redundant.
-    This includes extra unused indeterminants, and extra terms consisting of
+    This includes extra unused indeterminants and coefficients consisting of
     only zeros.
 
     Args:
@@ -98,14 +98,14 @@ def postprocess_attributes(
     exponents = numpy.asarray(exponents)
     if exponents.ndim != 2:
         raise PolynomialConstructionError(
-            "expected exponents.ndim == 2; found %d" % exponents.ndim)
+            f"expected exponents.ndim == 2; found {exponents.ndim}")
 
     coefficients_ = [numpy.asarray(coefficient)
                      for coefficient in coefficients]
     if coefficients_ and len(exponents) != len(coefficients_):
         raise PolynomialConstructionError(
-            "expected len(exponents) == len(coefficients_); found %d != %d" % (
-                len(exponents), len(coefficients_)))
+            "expected len(exponents) == len(coefficients_); "
+            f"found {len(exponents)} != {len(coefficients_)}")
 
     if retain_coefficients is None:
         retain_coefficients = numpoly.get_options()["retain_coefficients"]
@@ -117,7 +117,7 @@ def postprocess_attributes(
         names = names.names
     if isinstance(names, str):
         if exponents.shape[1] > 1:
-            names = tuple("%s%d" % (names, idx)
+            names = tuple(f"{names}{idx}"
                           for idx in range(exponents.shape[1]))
         else:
             names = (names,)
@@ -125,10 +125,10 @@ def postprocess_attributes(
         if len(names) != exponents.shape[1]:
             raise PolynomialConstructionError(
                 "Name length incompatible exponent length; "
-                "len%s != %d" % (names, exponents.shape[1]))
+                f"len({names}) != {exponents.shape[1]}")
         if sorted(set(names)) != sorted(names):
             raise PolynomialConstructionError(
-                "Duplicate indeterminant names: %s" % names)
+                f"Duplicate indeterminant names: {names}")
 
     if retain_names is None:
         retain_names = numpoly.get_options()["retain_names"]
@@ -138,7 +138,7 @@ def postprocess_attributes(
     exponents_, count = numpy.unique(exponents, return_counts=True, axis=0)
     if numpy.any(count > 1):
         raise PolynomialConstructionError(
-            "Duplicate exponent keys found: %s" % exponents_[count > 1][0])
+            f"Duplicate exponent keys found: {exponents_[count > 1][0]}")
 
     return numpy.asarray(exponents), list(coefficients_), names
 
@@ -176,22 +176,25 @@ def remove_redundant_coefficients(
         >>> remove_redundant_coefficients(
         ...     [[0, 0], [0, 1]], [1, 0])
         (array([[0, 0]]), [array(1)])
-        >>> remove_redundant_coefficients([[0]], [])
-        (array([[0]]), [])
+        >>> remove_redundant_coefficients([[0]], [[]])
+        (array([[0]]), [array([], dtype=float64)])
 
     """
     exponents_ = numpy.asarray(exponents)
-    coefficients_ = [numpy.asarray(coefficient) for coefficient in coefficients]
+    coefficients_ = [
+        numpy.asarray(coefficient) for coefficient in coefficients]
+    assert len(exponents_) == len(coefficients_), (exponents, coefficients)
 
-    if not coefficients_:
-        assert exponents_.shape == (1, 1)
+    elements = list(zip(*[
+        (exponent, coefficient)
+        for exponent, coefficient in zip(exponents_, coefficients_)
+        if numpy.any(coefficient) or not numpy.any(exponent)
+    ]))
+    if not elements:
+        exponents_ = numpy.zeros((1, exponents_.shape[-1]), dtype="uint32")
+        coefficients_ = [numpy.zeros_like(coefficients_[0])]
 
     else:
-        elements = list(zip(*[
-            (exponent, coefficient)
-            for exponent, coefficient in zip(exponents_, coefficients_)
-            if numpy.any(coefficient) or not numpy.any(exponent)
-        ]))
         exponents_ = numpy.asarray(elements[0], dtype=int)
         coefficients_ = list(elements[1])
     return exponents_, coefficients_

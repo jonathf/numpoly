@@ -42,7 +42,7 @@ def variable(
 
     """
     return numpoly.symbols(
-        names="%s:%d" % (numpoly.get_options()["default_varname"], dimensions),
+        names=f"{numpoly.get_options()['default_varname']}:{dimensions:d}",
         asarray=asarray,
         dtype=dtype,
         allocation=allocation,

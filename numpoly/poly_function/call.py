@@ -69,13 +69,12 @@ def call(
         parameters.update(kwargs)
     for arg, name in zip(args, poly.names):
         if name in kwargs:
-            raise TypeError(
-                "multiple values for argument '%s'" % name)
+            raise TypeError(f"multiple values for argument '{name}'")
         if arg is not None:
             parameters[name] = arg
     extra_args = [key for key in parameters if key not in poly.names]
     if extra_args:
-        raise TypeError("unexpected keyword argument '%s'" % extra_args[0])
+        raise TypeError(f"unexpected keyword argument '{extra_args[0]}'")
 
     # There can only be one shape:
     ones = numpy.ones((), dtype=int)
