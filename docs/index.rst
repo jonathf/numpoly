@@ -1,29 +1,18 @@
 .. toctree::
    :hidden:
-   :maxdepth: 1
-   :caption: Quick Overview:
 
-   installation
-   user_guide
-   reference
+   user_guide/index.rst
+   reference/index.rst
+   about_us
 
-numpoly -- numerical polynomials
-================================
+Numpoly
+=======
 
 Numpoly is a generic library for creating, manipulating and evaluating
 arrays of polynomials based on :class:`numpy.ndarray` objects.
 
 The documentation consist of the following parts:
 
-* `Installation instructions <./installation>`_ -- Instruction for getting
-  ``numpoly`` installed on your system, both for user and developers.
-* `User guide <./user_guide>`_ -- In-depth guides to the various concepts in
-  ``numpoly``.
-* `API reference <./reference>`_ -- The collection of public functions and
-  classes.
-
-At a glance
------------
 
 * Intuitive interface for users experienced with `numpy`_, as the library
   provides a high level of compatibility with the :class:`numpy.ndarray`,
@@ -47,15 +36,20 @@ At a glance
   :func:`numpoly.decompose`.
 * Variable substitution through :func:`numpoly.call`.
 
-Questions, bug-reporting and contributing
------------------------------------------
-
-Please feel free to `file an issue
-<https://github.com/jonathf/numpoly/issues>`_ for:
-
-* bug reporting
-* asking questions related to usage
-* requesting new features
-* wanting to contribute with code
-
 .. _numpy: https://numpy.org/
+
+.. _installation:
+
+Installation
+============
+
+Installation should be straight forward from `pip <https://pypi.org/>`_:
+
+.. code-block:: bash
+
+    pip install numpoly
+
+For developer installation, go to the `numpoly repository
+<https://github.com/jonathf/numpoly>`_. Otherwise, check out the `user guide
+<https://numpoly.readthedocs.io/en/master/user_guide>`_ to see how to use the
+toolbox.
