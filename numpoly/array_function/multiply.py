@@ -55,22 +55,26 @@ def multiply(
                     [6.0*q0, 7.0*q1, 8.0*q2]])
 
     """
+    x1, x2 = numpoly.align_indeterminants(x1, x2)
     x1, x2 = numpoly.align_polynomials(x1, x2)
+    dtype = numpy.find_common_type([x1.dtype, x2.dtype], [])
+    shape = numpy.broadcast_shapes(x1.shape, x2.shape)
+
     where = numpy.asarray(where)
-    # x1, x2 = numpoly.broadcast_arrays(
-    #     numpoly.polynomial(x1), numpoly.polynomial(x2))
+    exponents = numpy.unique(
+        numpy.tile(x1.exponents, (len(x2.exponents), 1)) +
+        numpy.repeat(x2.exponents, len(x1.exponents), 0), axis=0)
     out_ = numpoly.ndpoly(
-        exponents=numpy.unique(
-            numpy.tile(x1.exponents, (len(x2.exponents), 1)) +
-            numpy.repeat(x2.exponents, len(x1.exponents), 0), axis=0),
-        shape=x1.shape,
+        exponents=exponents,
+        shape=shape,
         names=x1.indeterminants,
-        dtype=x1.dtype,
+        dtype=dtype,
     ) if out is None else out
+
     seen = set()
     for expon1, coeff1 in zip(x1.exponents, x1.coefficients):
         for expon2, coeff2 in zip(x2.exponents, x2.coefficients):
-            key = (expon1+expon2+x1.KEY_OFFSET).flatten()
+            key = (expon1+expon2+x1.KEY_OFFSET).ravel()
             key = key.view("U%d" % len(expon1)).item()
             if key in seen:
                 out_.values[key] += numpy.multiply(
@@ -79,6 +83,7 @@ def multiply(
                 numpy.multiply(coeff1, coeff2, out=out_.values[key],
                                where=where, **kwargs)
             seen.add(key)
+
     if out is None:
         out_ = numpoly.clean_attributes(out_)
     return out_

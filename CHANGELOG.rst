@@ -1,6 +1,12 @@
 Master Branch
 =============
 
+Version 1.2.1 (2021-05-23)
+==========================
+
+FIXED:
+  * removed redundant and six imports
+
 Version 1.2.0 (2021-05-21)
 ==========================
 

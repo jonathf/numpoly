@@ -31,7 +31,6 @@ from typing import (Any, Callable, Dict, Iterator, List,
                     Optional, Sequence, Tuple, Union)
 import logging
 import re
-from six import string_types
 
 import numpy
 import numpy.typing
@@ -202,7 +201,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
             names = numpoly.get_options()["default_varname"]
             obj.names = numpoly.symbols(
                 "%s:%d" % (names, exponents.shape[-1])).names
-        elif isinstance(names, string_types):
+        elif isinstance(names, str):
             obj.names = numpoly.symbols(names).names
         elif isinstance(names, ndpoly):
             obj.names = names.names
