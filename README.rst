@@ -3,24 +3,21 @@
    :width: 200 px
    :align: center
 
-|circleci| |codecov| |pypi| |readthedocs|
+|circleci| |codecov| |readthedocs| |dow| |pypi|
 
 .. |circleci| image:: https://circleci.com/gh/jonathf/numpoly/tree/master.svg?style=shield
     :target: https://circleci.com/gh/jonathf/numpoly/tree/master
 .. |codecov| image:: https://codecov.io/gh/jonathf/numpoly/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/jonathf/numpoly
-.. |pypi| image:: https://badge.fury.io/py/numpoly.svg
-    :target: https://badge.fury.io/py/numpoly
 .. |readthedocs| image:: https://readthedocs.org/projects/numpoly/badge/?version=master
     :target: http://numpoly.readthedocs.io/en/master/?badge=master
+.. |downloads| image:: https://img.shields.io/pypi/dm/numpoly
+    :target: https://pypistats.org/packages/numpoly
+.. |pypi| image:: https://badge.fury.io/py/numpoly.svg
+    :target: https://badge.fury.io/py/numpoly
 
 Numpoly is a generic library for creating, manipulating and evaluating
 arrays of polynomials based on ``numpy.ndarray`` objects.
-
-.. contents:: Table of Contents:
-
-Feature Overview
-----------------
 
 * Intuitive interface for users experienced with ``numpy``, as the library
   provides a high level of compatibility with the ``numpy.ndarray``, including
@@ -43,7 +40,7 @@ Feature Overview
 * Variable substitution through ``numpoly.call``.
 
 Installation
-------------
+============
 
 Installation should be straight forward:
 
@@ -52,7 +49,7 @@ Installation should be straight forward:
     pip install numpoly
 
 Example Usage
--------------
+=============
 
 Constructing polynomial is typically done using one of the available
 constructors:
@@ -97,3 +94,86 @@ Or manipulated using various numpy functions:
                 [q0**2, q0**3]])
     >>> numpy.sum(numpoly.monomial(13)[::3])
     polynomial(q0**12+q0**9+q0**6+q0**3+1)
+
+Installation
+============
+
+Installation should be straight forward from `pip <https://pypi.org/>`_:
+
+.. code-block:: bash
+
+    pip install numpoly
+
+Alternatively, to get the most current experimental version, the code can be
+installed from `Github <https://github.com/>`_ as follows:
+
+* First time around, download the repository:
+
+  .. code-block:: bash
+
+      git clone git@github.com:jonathf/numpoly.git
+
+* Every time, move into the repository:
+
+  .. code-block:: bash
+
+      cd numpoly/
+
+* After  the first time, you want to update the branch to the most current
+  version of ``master``:
+
+  .. code-block:: bash
+
+      git checkout master
+      git pull
+
+* Install the latest version of ``numpoly`` with:
+
+  .. code-block:: bash
+
+      pip install .
+
+Development
+-----------
+
+Chaospy uses `poetry`_ to manage its development installation. Assuming
+`poetry`_ installed on your system, installing ``numpoly`` for development can
+be done from the repository root with the command::
+
+    poetry install
+
+This will install all required dependencies and numpoly into a virtual
+environment. If you are not already managing your own virtual environment, you
+can use poetry to activate and deactivate with::
+
+    poetry shell
+    exit
+
+.. _poetry: https://poetry.eustace.io/
+
+Testing
+-------
+
+To run test:
+
+.. code-block:: bash
+
+    poetry run pytest --doctest-modules \
+        numpoly test docs/user_guide/*.rst README.rst
+
+Documentation
+-------------
+
+To build documentation locally on your system, use ``make`` from the ``doc/``
+folder:
+
+.. code-block:: bash
+
+    cd doc/
+    make html
+
+Run ``make`` without argument to get a list of build targets. All targets
+stores output to the folder ``doc/.build/html``.
+
+Note that the documentation build assumes that ``pandoc`` is installed on your
+system and available in your path.
