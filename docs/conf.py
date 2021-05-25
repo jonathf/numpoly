@@ -1,5 +1,9 @@
+import sys
+import os
 import time
 import numpoly
+
+sys.path.insert(0, os.path.abspath('..'))
 
 project = 'numpoly'
 author = 'Jonathan Feinberg'
@@ -34,6 +38,8 @@ autodoc_type_aliases = {
     'DTypeLike': 'numpy.typing.DTypeLike',
     'PolyLike': 'numpoly.typing.PolyLike',
 }
+
+coverage_show_missing_items = True
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.

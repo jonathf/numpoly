@@ -3,7 +3,7 @@
    :width: 200 px
    :align: center
 
-|circleci| |codecov| |readthedocs| |dow| |pypi|
+|circleci| |codecov| |readthedocs| |downloads| |pypi|
 
 .. |circleci| image:: https://circleci.com/gh/jonathf/numpoly/tree/master.svg?style=shield
     :target: https://circleci.com/gh/jonathf/numpoly/tree/master
