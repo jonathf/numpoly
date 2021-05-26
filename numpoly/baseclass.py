@@ -15,7 +15,7 @@ structured array directly using the ``values`` attribute:
     >>> poly = numpoly.polynomial(4*q0+3*q1-1)
     >>> array = poly.values
     >>> array
-    array((4, 3, -1), dtype=[('<;', '<i8'), (';<', '<i8'), (';;', '<i8')])
+    array((-1, 3, 4), dtype=[(';;', '<i8'), (';<', '<i8'), ('<;', '<i8')])
 
 Which, together with the indeterminant names, can be used to cast back the
 array back to a polynomial:
@@ -548,6 +548,16 @@ as numpy.loadtxt will not work as expected.""")
         return numpoly.min(self, axis=axis, out=out,
                            keepdims=keepdims, **kwargs)
 
+    def mean(  # type: ignore
+        self,
+        axis: Union[None, int, Sequence[int]] = None,
+        dtype: Optional[numpy.typing.DTypeLike] = None,
+        out: Optional[ndpoly] = None,
+        **kwargs: Any,
+    ) -> "ndpoly":
+        """Wrap ndarray.mean."""
+        return numpoly.mean(self, axis=axis, dtype=dtype, out=out, **kwargs)
+
     # ============================================================
     # Override dunder methods that isn't dealt with by dispatching
     # ============================================================
@@ -647,6 +657,8 @@ as numpy.loadtxt will not work as expected.""")
 
     def __ne__(self, other: object) -> numpy.ndarray:  # type: ignore
         """Not equal."""
+        other = numpoly.polynomial(other)
+        self = numpoly.polynomial(self)
         return numpoly.not_equal(self, other)
 
     def __repr__(self) -> str:

@@ -33,11 +33,12 @@ def assert_equal(results, reference, c_contiguous=None,
 
     """
     if type_ is None:
-        assert isinstance(results, (bool, numpy.bool_, numpy.number, numpy.ndarray)), (
-            "unrecognized results type: %s" % results)
+        assert isinstance(
+            results, (bool, numpy.bool_, numpy.number, numpy.ndarray)), (
+                f"unrecognized results type: {results}")
     else:
         assert isinstance(results, type_), (
-            "invalid results type: %s != %s" % (results, type_))
+            f"invalid results type: {results} != {type_}")
     if isinstance(results, numpoly.ndpoly):
         reference = numpoly.aspolynomial(reference)
     else:
@@ -45,27 +46,28 @@ def assert_equal(results, reference, c_contiguous=None,
         reference = numpy.asarray(reference)
 
     assert results.shape == reference.shape, (
-        "shape mismatch: %s != %s" % (results, reference))
+        f"shape mismatch: {results} != {reference}")
     assert results.dtype == reference.dtype, (
-        "dtype mismatch: %s != %s" % (results, reference))
+        f"dtype mismatch: {results} != {reference}")
 
     if not isinstance(results, numpoly.ndpoly):
-        assert numpy.allclose(results, reference)
+        assert numpy.allclose(results, reference), (
+            f"value mismatch: {results} != {reference}")
     elif results.shape:
         assert numpy.all(results == reference), (
-            "value mismatch: %s != %s" % (results, reference))
+            f"value mismatch: {results} != {reference}")
     else:
         assert results == reference, (
-            "value mismatch: %s != %s" % (results, reference))
+            f"value mismatch: {results} != {reference}")
 
     if c_contiguous is None:
         c_contiguous = reference.flags["C_CONTIGUOUS"]
     assert results.flags["C_CONTIGUOUS"] == c_contiguous, (
-        "c_contiguous mismatch: %s != %s" % (results, reference))
+        f"c_contiguous mismatch: {results} != {reference}")
     if f_contiguous is None:
         f_contiguous = reference.flags["F_CONTIGUOUS"]
     assert results.flags["F_CONTIGUOUS"] == f_contiguous, (
-        "f_contiguous mismatch: %s != %s" % (results, reference))
+        f"f_contiguous mismatch: {results} != {reference}")
 
 
 def test_absolute(interface):
@@ -80,7 +82,8 @@ def test_add(interface):
     assert_equal(interface.add(X, 3), 3+X)
     assert_equal(interface.add(polynomial([1, X, Y]), 4), [5, 4+X, 4+Y])
     assert_equal(interface.add(polynomial([0, X]), polynomial([Y, 0])), [Y, X])
-    assert_equal(interface.add(polynomial([[1, X], [Y, X*Y]]), [2, X]), [[3, 2*X], [2+Y, X+X*Y]])
+    assert_equal(interface.add(polynomial(
+        [[1, X], [Y, X*Y]]), [2, X]), [[3, 2*X], [2+Y, X+X*Y]])
 
 
 def test_any(interface):
@@ -88,7 +91,8 @@ def test_any(interface):
     poly = polynomial([[0, Y], [0, 0]])
     assert_equal(interface.any(poly), True)
     assert_equal(interface.any(poly, axis=0), [False, True])
-    assert_equal(interface.any(poly, axis=-1, keepdims=True), [[True], [False]])
+    assert_equal(
+        interface.any(poly, axis=-1, keepdims=True), [[True], [False]])
 
 
 def test_all(interface):
@@ -96,7 +100,8 @@ def test_all(interface):
     poly = polynomial([[0, Y], [X, 1]])
     assert_equal(interface.all(poly), False)
     assert_equal(interface.all(poly, axis=0), [False, True])
-    assert_equal(interface.all(poly, axis=-1, keepdims=True), [[False], [True]])
+    assert_equal(
+        interface.all(poly, axis=-1, keepdims=True), [[False], [True]])
 
 
 def test_allclose(func_interface):
@@ -162,21 +167,33 @@ def test_argmin(func_interface):
 def test_apply_along_axis(func_interface):
     """Tests for numpoly.apply_along_axis."""
     np_array = numpy.arange(9, dtype=int).reshape(3, 3)
-    assert_equal(func_interface.apply_along_axis(numpy.sum, 0, np_array), [9, 12, 15])
-    assert_equal(func_interface.apply_along_axis(numpy.sum, 1, np_array), [3, 12, 21])
+    assert_equal(
+        func_interface.apply_along_axis(numpy.sum, 0, np_array), [9, 12, 15])
+    assert_equal(
+        func_interface.apply_along_axis(numpy.sum, 1, np_array), [3, 12, 21])
     poly1 = numpoly.polynomial([[X, X, X], [Y, Y, Y], [1, 2, 3]])
-    assert_equal(func_interface.apply_along_axis(numpoly.sum, 0, poly1), [X+Y+1, X+Y+2, X+Y+3])
-    assert_equal(func_interface.apply_along_axis(numpoly.sum, 1, poly1), [3*X, 3*Y, 6])
+    assert_equal(
+        func_interface.apply_along_axis(numpoly.sum, 0, poly1),
+        [X+Y+1, X+Y+2, X+Y+3])
+    assert_equal(
+        func_interface.apply_along_axis(numpoly.sum, 1, poly1), [3*X, 3*Y, 6])
 
 
 def test_apply_over_axes(func_interface):
     """Tests for numpoly.apply_over_axes."""
     np_array = numpy.arange(9).reshape(3, 3)
-    assert_equal(func_interface.apply_over_axes(numpy.sum, np_array, 0), [[9, 12, 15]])
-    assert_equal(func_interface.apply_over_axes(numpy.sum, np_array, 1), [[3], [12], [21]])
+    assert_equal(
+        func_interface.apply_over_axes(numpy.sum, np_array, 0), [[9, 12, 15]])
+    assert_equal(
+        func_interface.apply_over_axes(numpy.sum, np_array, 1),
+        [[3], [12], [21]])
     poly1 = numpoly.polynomial([[X, X, X], [Y, Y, Y], [1, 2, 3]])
-    assert_equal(func_interface.apply_over_axes(numpoly.sum, poly1, 0), [[X+Y+1, X+Y+2, X+Y+3]])
-    assert_equal(func_interface.apply_over_axes(numpoly.sum, poly1, 1), [[3*X], [3*Y], [6]])
+    assert_equal(
+        func_interface.apply_over_axes(
+            numpoly.sum, poly1, 0), [[X+Y+1, X+Y+2, X+Y+3]])
+    assert_equal(
+        func_interface.apply_over_axes(
+            numpoly.sum, poly1, 1), [[3*X], [3*Y], [6]])
 
 
 def test_around(interface):
@@ -222,7 +239,8 @@ def test_array_str(func_interface):
     assert str(4+6*X**2) == "6*q0**2+4"
     assert func_interface.array_str(4+6*X**2) == "6*q0**2+4"
     assert str(polynomial([1., -5*X, 3-X**2])) == "[1.0 -5.0*q0 -q0**2+3.0]"
-    assert func_interface.array_str(polynomial([1., -5*X, 3-X**2])) == "[1.0 -5.0*q0 -q0**2+3.0]"
+    assert func_interface.array_str(
+        polynomial([1., -5*X, 3-X**2])) == "[1.0 -5.0*q0 -q0**2+3.0]"
     assert str(polynomial([[[1, 2], [5, Y]]])) == """\
 [[[1 2]
   [5 q1]]]"""
@@ -286,9 +304,11 @@ def test_ceil(func_interface):
 
 def test_common_type(func_interface):
     """Tests for numpoly.common_type."""
-    assert func_interface.common_type(numpy.array(2, dtype=numpy.float32)) == numpy.float32
+    assert func_interface.common_type(
+        numpy.array(2, dtype=numpy.float32)) == numpy.float32
     assert func_interface.common_type(X) == numpy.float64
-    assert func_interface.common_type(numpy.arange(3), 1j*X, 45) == numpy.complex128
+    assert func_interface.common_type(
+        numpy.arange(3), 1j*X, 45) == numpy.complex128
 
 
 def test_concatenate(func_interface):
@@ -325,7 +345,8 @@ def test_copyto(func_interface):
     poly = numpoly.polynomial([1, 2, 3])
     func_interface.copyto(poly, [3, 2, 1], casting="unsafe")
     assert_equal(poly, [3, 2, 1])
-    func_interface.copyto(poly.values, numpoly.polynomial([1, 2, 3]), casting="unsafe")
+    func_interface.copyto(
+        poly.values, numpoly.polynomial([1, 2, 3]), casting="unsafe")
     assert_equal(poly, [1, 2, 3])
     out = numpy.zeros(3, dtype=float)
     numpoly.copyto(out, poly, casting="unsafe")
@@ -356,7 +377,8 @@ def test_det():
     poly = polynomial([[1, Y], [X, 1]])
     assert_equal(numpoly.det([array, poly]), [-2, 1-X*Y])
     assert_equal(numpy.linalg.det(poly), 1-X*Y)
-    assert_equal(numpoly.det([[1, X, Y], [Y, 1, X], [X, Y, 1]]), X**3+Y**3-3*X*Y+1)
+    assert_equal(
+        numpoly.det([[1, X, Y], [Y, 1, X], [X, Y, 1]]), X**3+Y**3-3*X*Y+1)
 
 
 def test_diag(func_interface):
@@ -405,7 +427,7 @@ def test_diff(func_interface):
     assert_equal(func_interface.diff(poly, n=2),
                  [[X-3], [10-2*Y], [X+Y-9]])
     assert_equal(func_interface.diff(poly, axis=0),
-                 [[3, Y-2, 6-X,], [3, 8-Y, X+Y-6]])
+                 [[3, Y-2, 6-X], [3, 8-Y, X+Y-6]])
     assert_equal(func_interface.diff(poly, append=X),
                  [[1, X-2, 0], [Y-4, 6-Y, X-6], [1, X+Y-8, -Y]])
     assert_equal(func_interface.diff(poly, prepend=Y),
@@ -488,7 +510,8 @@ def test_floor_divide(interface):
     poly = polynomial([[0., 2.*Y], [X, 2.]])
     assert_equal(interface.floor_divide(poly, 2), [[0., Y], [0., 1]])
     assert_equal(interface.floor_divide(poly, [1., 2.]), [[0., Y], [X, 1]])
-    assert_equal(interface.floor_divide(poly, [[1., 2.], [2., 1.]]), [[0., Y], [0., 2.]])
+    assert_equal(interface.floor_divide(
+        poly, [[1., 2.], [2., 1.]]), [[0., Y], [0., 2.]])
     with raises(numpoly.FeatureNotSupported):
         interface.floor_divide(poly, X)
     with raises(numpoly.FeatureNotSupported):
@@ -509,7 +532,8 @@ def test_floor_divide(interface):
 def test_full(func_interface):
     """Tests for numpoly.full."""
     assert_equal(numpoly.full((3,), X), [X, X, X])
-    assert_equal(numpoly.aspolynomial(func_interface.full((3,), 1.*X)), [1.*X, X, X])
+    assert_equal(numpoly.aspolynomial(
+        func_interface.full((3,), 1.*X)), [1.*X, X, X])
     assert_equal(numpoly.full((3,), Y, dtype=float), [1.*Y, Y, Y])
     if func_interface is numpy:  # fails in numpy, but only with func dispatch.
         with raises(ValueError, ):
@@ -557,7 +581,7 @@ def test_greater_equal(interface):
                   [True, True, True, True]])
     assert_equal(interface.greater_equal(poly, Y),
                  [[False, False, False, True],
-                  [ True, False, True, False],
+                  [True, False, True, False],
                   [False, True, False, False],
                   [True, True, True, False]])
 
@@ -674,8 +698,10 @@ def test_matmul(func_interface):
     """Tests for numpoly.matmul."""
     poly1 = numpoly.polynomial([[0, X], [1, Y]])
     poly2 = numpoly.polynomial([X, 2])
-    assert_equal(func_interface.matmul(poly1, poly2), [[X**2, 2*X], [X+X*Y, 2+2*Y]])
-    assert_equal(func_interface.matmul(numpy.ones((2, 5, 6, 4)), numpy.ones((2, 5, 4, 3))),
+    assert_equal(func_interface.matmul(
+        poly1, poly2), [[X**2, 2*X], [X+X*Y, 2+2*Y]])
+    assert_equal(func_interface.matmul(
+        numpy.ones((2, 5, 6, 4)), numpy.ones((2, 5, 4, 3))),
                  4*numpy.ones((2, 5, 6, 3)))
     with raises(ValueError):
         func_interface.matmul(poly1, 4)
@@ -763,7 +789,8 @@ def test_multiply(func_interface):
     assert_equal([X, 1]*poly, [[0, 2+Y], [X*X, 2]])
     assert_equal(func_interface.multiply([X, 1], poly), [[0, 2+Y], [X*X, 2]])
     assert_equal([[X, 1], [Y, 0]]*poly, [[0, 2+Y], [X*Y, 0]])
-    assert_equal(func_interface.multiply([[X, 1], [Y, 0]], poly), [[0, 2+Y], [X*Y, 0]])
+    assert_equal(
+        func_interface.multiply([[X, 1], [Y, 0]], poly), [[0, 2+Y], [X*Y, 0]])
 
 
 def test_negative(func_interface):
@@ -791,7 +818,8 @@ def test_not_equal(interface):
     assert_equal((X != poly), [[True, True], [False, True]])
     assert_equal(interface.not_equal(X, poly), [[True, True], [False, True]])
     assert_equal(poly != poly.T, [[False, True], [True, False]])
-    assert_equal(interface.not_equal(poly, poly.T), [[False, True], [True, False]])
+    assert_equal(
+        interface.not_equal(poly, poly.T), [[False, True], [True, False]])
 
 
 def test_ones_like(func_interface):
@@ -830,13 +858,15 @@ def test_power(func_interface):
     assert_equal(polynomial([X])**[1, 2], [X, X**2])
     assert_equal(func_interface.power(polynomial([X]), [1, 2]), [X, X**2])
     assert_equal((X*Y)**[0, 1, 2, 3], [1, X*Y, X**2*Y**2, X**3*Y**3])
-    assert_equal(func_interface.power(X*Y, [0, 1, 2, 3]), [1, X*Y, X**2*Y**2, X**3*Y**3])
+    assert_equal(func_interface.power(
+        X*Y, [0, 1, 2, 3]), [1, X*Y, X**2*Y**2, X**3*Y**3])
     assert_equal(poly ** 2, [[0, Y**2], [X*X-2*X+1, 4]])
     assert_equal(func_interface.power(poly, 2), [[0, Y**2], [X*X-2*X+1, 4]])
     assert_equal(poly ** [1, 2], [[0, Y**2], [X-1, 4]])
     assert_equal(func_interface.power(poly, [1, 2]), [[0, Y**2], [X-1, 4]])
     assert_equal(poly ** [[1, 2], [2, 1]], [[0, Y**2], [X*X-2*X+1, 2]])
-    assert_equal(func_interface.power(poly, [[1, 2], [2, 1]]), [[0, Y**2], [X*X-2*X+1, 2]])
+    assert_equal(func_interface.power(
+        poly, [[1, 2], [2, 1]]), [[0, Y**2], [X*X-2*X+1, 2]])
 
 
 def test_prod(interface):
@@ -930,21 +960,25 @@ def test_square(func_interface):
 def test_stack(func_interface):
     """Tests for numpoly.stack."""
     poly = polynomial([1, X, Y])
-    assert_equal(func_interface.stack([poly, poly], axis=0), [[1, X, Y], [1, X, Y]])
-    assert_equal(func_interface.stack([poly, poly], axis=1), [[1, 1], [X, X], [Y, Y]])
+    assert_equal(
+        func_interface.stack([poly, poly], axis=0), [[1, X, Y], [1, X, Y]])
+    assert_equal(
+        func_interface.stack([poly, poly], axis=1), [[1, 1], [X, X], [Y, Y]])
 
 
 def test_subtract(func_interface):
     """Tests for numpoly.subtract."""
     assert_equal(-X+3, 3-X)
     assert_equal(4 - polynomial([1, X, Y]), [3, 4-X, 4-Y])
-    assert_equal(func_interface.subtract(4, polynomial([1, X, Y])), [3, 4-X, 4-Y])
+    assert_equal(
+        func_interface.subtract(4, polynomial([1, X, Y])), [3, 4-X, 4-Y])
     assert_equal(polynomial([0, X]) - polynomial([Y, 0]), [-Y, X])
     assert_equal(func_interface.subtract(polynomial([0, X]), [Y, 0]), [-Y, X])
     assert_equal(polynomial([[1, X], [Y, X*Y]]) - [2, X],
                  [[-1, 0], [Y-2, X*Y-X]])
-    assert_equal(func_interface.subtract(polynomial([[1, X], [Y, X*Y]]), [2, X]),
-                 [[-1, 0], [Y-2, X*Y-X]])
+    assert_equal(
+        func_interface.subtract(polynomial([[1, X], [Y, X*Y]]), [2, X]),
+        [[-1, 0], [Y-2, X*Y-X]])
 
 
 def test_sum(interface):
@@ -952,7 +986,8 @@ def test_sum(interface):
     poly = polynomial([[1, 5*X], [X+3, -Y]])
     assert_equal(interface.sum(poly), -Y+X*6+4)
     assert_equal(interface.sum(poly, axis=0), [X+4, -Y+X*5])
-    assert_equal(interface.sum(poly, axis=-1, keepdims=True), [[X*5+1], [X-Y+3]])
+    assert_equal(
+        interface.sum(poly, axis=-1, keepdims=True), [[X*5+1], [X-Y+3]])
 
 
 def test_transpose(func_interface):
@@ -960,15 +995,19 @@ def test_transpose(func_interface):
     poly = numpoly.polynomial([[1, X-1], [X**2, X]])
     assert_equal(func_interface.transpose(poly),
                  [[1, X**2], [X-1, X]])
-    assert_equal(poly.T, [[1, X**2], [X-1, X]], c_contiguous=False, f_contiguous=True)
+    assert_equal(
+        poly.T, [[1, X**2], [X-1, X]], c_contiguous=False, f_contiguous=True)
 
 
 def test_true_divide(func_interface):
     """Tests for numpoly.true_divide."""
     poly = polynomial([[0, Y], [X, 1]])
-    assert_equal(func_interface.true_divide(poly, 2), polynomial([[0, 0.5*Y], [0.5*X, 0.5]]))
-    assert_equal(func_interface.true_divide(poly, [1, 2]), [[0, 0.5*Y], [X, 0.5]])
-    assert_equal(func_interface.true_divide(poly, [[1, 2], [2, 1]]), [[0, 0.5*Y], [0.5*X, 1]])
+    assert_equal(func_interface.true_divide(
+        poly, 2), polynomial([[0, 0.5*Y], [0.5*X, 0.5]]))
+    assert_equal(func_interface.true_divide(
+        poly, [1, 2]), [[0, 0.5*Y], [X, 0.5]])
+    assert_equal(func_interface.true_divide(
+        poly, [[1, 2], [2, 1]]), [[0, 0.5*Y], [0.5*X, 1]])
     with raises(numpoly.FeatureNotSupported):
         func_interface.true_divide(poly, X)
 

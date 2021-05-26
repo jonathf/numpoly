@@ -55,7 +55,12 @@ def not_equal(
                [ True, False]])
 
     """
-    x1, x2 = numpoly.align_polynomials(x1, x2)
+    x1, x2 = numpoly.align_exponents(x1, x2)
+    if not x1.flags["OWNDATA"]:
+        x1 = numpoly.polynomial(x1)
+    if not x2.flags["OWNDATA"]:
+        x2 = numpoly.polynomial(x2)
+    # x1, x2 = numpoly.align_polynomials(x1, x2)
     where = numpy.asarray(where)
     for key in x1.keys:
         tmp = numpy.not_equal(

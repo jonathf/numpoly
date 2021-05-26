@@ -42,8 +42,8 @@ def clean_attributes(
         >>> q0.indeterminants
         polynomial([q0, q1])
         >>> q0.exponents
-        array([[1, 0],
-               [0, 1]], dtype=uint32)
+        array([[0, 1],
+               [1, 0]], dtype=uint32)
         >>> q0 = numpoly.clean_attributes(
         ...     q0, retain_coefficients=False, retain_names=False)
         >>> q0.indeterminants

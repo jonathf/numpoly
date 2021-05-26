@@ -80,7 +80,7 @@ def simple_dispatch(
 
     """
     inputs = numpoly.align_polynomials(*inputs)
-    keys = numpoly.aspolynomial(inputs[0] if out is None else out[0]).keys
+    keys = (inputs[0] if out is None else numpoly.aspolynomial(out[0])).keys
 
     tmp = numpy_func(*[poly.values[keys[0]]for poly in inputs], **kwargs)
     if out is None:
