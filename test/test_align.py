@@ -15,7 +15,6 @@ def test_align_polynomials():
     assert numpy.all(poly1_.exponents == poly2_.exponents)
     assert poly1_.exponents.shape[-1] == 2
     assert poly1_.shape == poly2_.shape
-    assert poly1_.dtype == poly2_.dtype
 
     X_, Y_ = numpoly.align_polynomials(X, Y)
     assert not X_.shape

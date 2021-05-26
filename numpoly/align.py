@@ -31,11 +31,11 @@ def align_polynomials(*polys: PolyLike) -> Tuple[ndpoly, ...]:
         [1]
         >>> q0.indeterminants
         polynomial([q0])
-        >>> q0, _ = numpoly.align_polynomials(q0, q0q1.astype(float))
+        >>> q0, _ = numpoly.align_polynomials(q0, q0q1)
         >>> q0
         polynomial([q0, q0])
         >>> q0.coefficients
-        [array([0., 0.]), array([1., 1.])]
+        [array([0, 0]), array([1, 1])]
         >>> q0.indeterminants
         polynomial([q0, q1])
 
@@ -44,7 +44,6 @@ def align_polynomials(*polys: PolyLike) -> Tuple[ndpoly, ...]:
     polys = align_shape(*polys)
     polys = align_indeterminants(*polys)
     polys = align_exponents(*polys)
-    polys = align_dtype(*polys)
     return polys
 
 
@@ -226,42 +225,4 @@ def align_exponents(*polys: PolyLike) -> Tuple[ndpoly, ...]:
             retain_coefficients=True,
             retain_names=True,
         )
-    return tuple(polys_)
-
-
-def align_dtype(*polys: PolyLike) -> Tuple[ndpoly, ...]:
-    """
-    Align polynomial by shape.
-
-    Args:
-        polys (numpoly.ndpoly):
-            Polynomial to make adjustment to.
-
-    Returns:
-        (Tuple[numpoly.ndpoly, ...]):
-            Same as ``polys``, but internal adjustments made to make them
-            compatible for further operations.
-
-    Examples:
-        >>> q0 = numpoly.variable()
-        >>> q0.dtype.name
-        'int64'
-        >>> poly, _ = numpoly.align_dtype(q0, 4.5)
-        >>> poly.dtype.name
-        'float64'
-
-    """
-    polys_ = [numpoly.aspolynomial(poly) for poly in polys]
-    dtype = numpy.asarray(numpy.sum(numpy.array([
-        numpy.array(True, dtype=poly.dtype) for poly in polys_]))).dtype
-    for idx, poly in enumerate(polys_):
-        if poly.dtype != dtype:
-            polys_[idx] = numpoly.ndpoly.from_attributes(
-                exponents=poly.exponents,
-                coefficients=poly.coefficients,
-                names=poly.indeterminants,
-                dtype=dtype,
-                retain_coefficients=True,
-                retain_names=True,
-            )
     return tuple(polys_)
