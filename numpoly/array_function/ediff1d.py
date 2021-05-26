@@ -50,7 +50,6 @@ def ediff1d(
     arys = tuple(numpoly.aspolynomial(ary) for ary in arys_)
     if len(arys) > 1:
         arys = numpoly.align_exponents(*arys)
-        arys = numpoly.align_indeterminants(*arys)
 
     out = numpoly.ndpoly(
         exponents=arys[0].exponents,

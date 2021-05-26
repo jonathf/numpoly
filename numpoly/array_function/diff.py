@@ -63,14 +63,10 @@ def diff(
     """
     if append is not None:
         if prepend is not None:
-            a, append, prepend = numpoly.align_indeterminants(
-                a, append, prepend)
             a, append, prepend = numpoly.align_exponents(a, append, prepend)
         else:
-            a, append = numpoly.align_indeterminants(a, append)
             a, append = numpoly.align_exponents(a, append)
     elif prepend is not None:
-        a, prepend = numpoly.align_indeterminants(a, prepend)
         a, prepend = numpoly.align_exponents(a, prepend)
     else:
         a = numpoly.aspolynomial(a)

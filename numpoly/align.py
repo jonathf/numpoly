@@ -42,7 +42,7 @@ def align_polynomials(*polys: PolyLike) -> Tuple[ndpoly, ...]:
     """
     # polys = numpoly.broadcast_arrays(*polys)
     polys = align_shape(*polys)
-    polys = align_indeterminants(*polys)
+    # polys = align_indeterminants(*polys)
     polys = align_exponents(*polys)
     return polys
 
