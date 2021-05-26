@@ -100,9 +100,8 @@ def apply_along_axis(
     arr = numpoly.aspolynomial(arr)
     out = numpy.apply_along_axis(wrapper_func, axis=axis, arr=arr.values)
 
-    # align indeterminants and exponents
-    polynomials = numpoly.align.align_indeterminants(*collection)
-    polynomials = numpoly.align.align_exponents(*polynomials)
+    # align exponents
+    polynomials = numpoly.align.align_exponents(*collection)
     dtype = numpoly.result_type(*polynomials)
 
     # Store results into new array

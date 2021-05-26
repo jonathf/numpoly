@@ -9,7 +9,6 @@ Alignment
 .. autosummary::
    :toctree: ../api
 
-   align_dtype
    align_exponents
    align_indeterminants
    align_polynomials

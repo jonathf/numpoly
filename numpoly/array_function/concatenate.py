@@ -48,7 +48,19 @@ def concatenate(
 
     """
     arrays = numpoly.align_exponents(*arrays)
-    arrays = numpoly.align_dtype(*arrays)
-    result = numpy.concatenate(
-        [array.values for array in arrays], axis=axis, out=out)
-    return numpoly.aspolynomial(result, names=arrays[0].indeterminants)
+    if out is None:
+        coefficients = [numpy.concatenate(
+            [array.values[key] for array in arrays], axis=axis)
+                        for key in arrays[0].keys]
+        out = numpoly.polynomial_from_attributes(
+            exponents=arrays[0].exponents,
+            coefficients=coefficients,
+            names=arrays[0].names,
+            dtype=coefficients[0].dtype,
+        )
+    else:
+        for key in out.keys:
+            if key in arrays[0].keys:
+                numpy.concatenate([array.values[key] for array in arrays],
+                                  out=out.values[key], axis=axis)
+    return out

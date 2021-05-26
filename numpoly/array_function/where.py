@@ -51,6 +51,12 @@ def where(condition: numpy.typing.ArrayLike, *args: PolyLike) -> ndpoly:
         return numpy.where(condition)
 
     poly1, poly2 = numpoly.align_polynomials(*args)
-    out = numpy.where(condition, poly1.values, poly2.values)
-    out = numpoly.polynomial(out, names=poly1.indeterminants)
-    return out
+    coefficients = [numpy.where(condition, x1, x2)
+                    for x1, x2 in zip(poly1.coefficients, poly2.coefficients)]
+    dtype = numpy.result_type(poly1.dtype, poly2.dtype)
+    return numpoly.polynomial_from_attributes(
+        exponents=poly1.exponents,
+        coefficients=coefficients,
+        names=poly1.names,
+        dtype=dtype,
+    )

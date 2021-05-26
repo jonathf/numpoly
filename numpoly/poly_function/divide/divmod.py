@@ -77,7 +77,7 @@ def poly_divmod(
 
     if not dividend_.shape:
         floor, remainder = poly_divmod(
-            dividend_.flatten(), divisor.flatten(),
+            dividend_.ravel(), divisor.ravel(),
             out=out, where=where, **kwargs,
         )
         return floor[0], remainder[0]
@@ -95,7 +95,6 @@ def poly_divmod(
             divisor.indeterminants**exponent_diff, 0)
         key = dividend_.keys[idx1]
 
-        # iterate division algorithm
         quotient = numpoly.add(
             quotient, numpoly.where(include, candidate, 0), **kwargs)
         dividend_ = numpoly.subtract(
