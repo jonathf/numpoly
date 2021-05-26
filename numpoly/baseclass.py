@@ -657,8 +657,6 @@ as numpy.loadtxt will not work as expected.""")
 
     def __ne__(self, other: object) -> numpy.ndarray:  # type: ignore
         """Not equal."""
-        other = numpoly.polynomial(other)
-        self = numpoly.polynomial(self)
         return numpoly.not_equal(self, other)
 
     def __repr__(self) -> str:

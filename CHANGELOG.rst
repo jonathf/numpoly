@@ -1,10 +1,18 @@
 Master Branch
 =============
 
+Version 1.2.3 (2021-05-26)
+==========================
+
+Reduce the number of alignments.
+
+ADDED:
+  * Reduce the number memory copies, increasing speed for large arrays.
+
 Version 1.2.2 (2021-05-23)
 ==========================
 
-FIXED:
+ADDED:
   * Removed redundant calculations from multiplications, drastically improving
     computational cost in some cases.
 

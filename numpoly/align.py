@@ -198,12 +198,7 @@ def align_exponents(*polys: PolyLike) -> Tuple[ndpoly, ...]:
     if not all(polys_[0].names == poly.names for poly in polys_):
         polys_ = list(align_indeterminants(*polys_))
 
-    global_exponents = [tuple(exponent) for exponent in polys_[0].exponents]
-    for poly in polys_[1:]:
-        global_exponents.extend([tuple(exponent)
-                                 for exponent in poly.exponents
-                                 if tuple(exponent) not in global_exponents])
-    global_exponents = numpy.vstack([poly.exponents for poly in polys_]) 
+    global_exponents = numpy.vstack([poly.exponents for poly in polys_])
     global_exponents = numpy.unique(global_exponents, axis=0).tolist()
 
     for idx, poly in enumerate(polys_):
