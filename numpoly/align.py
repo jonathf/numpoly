@@ -127,7 +127,7 @@ def align_indeterminants(*polys: PolyLike) -> Tuple[ndpoly, ...]:
     """
     polys_ = [numpoly.aspolynomial(poly) for poly in polys]
     common_names = tuple(sorted({
-        str(name) for poly in polys_ for name in poly.names}))
+        str(name) for poly in polys_ for name in poly.names}, key=lambda x: int(x[1:])))
     if not common_names:
         return tuple(polys_)
 
