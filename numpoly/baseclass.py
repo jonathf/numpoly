@@ -558,6 +558,10 @@ as numpy.loadtxt will not work as expected.""")
         """Wrap ndarray.mean."""
         return numpoly.mean(self, axis=axis, dtype=dtype, out=out, **kwargs)
 
+    @property
+    def flat(self) -> "ndpoly":
+        return self.ravel().copy()
+
     # ============================================================
     # Override dunder methods that isn't dealt with by dispatching
     # ============================================================
