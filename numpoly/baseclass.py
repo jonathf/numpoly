@@ -560,6 +560,13 @@ as numpy.loadtxt will not work as expected.""")
 
     @property
     def flat(self) -> "ndpoly":
+        """
+        A 1-D iterator over the array.
+
+        SeeAlso:
+            flatten:
+                Return a copy of the array collapsed into one dimension.
+        """
         return self.ravel().copy()
 
     # ============================================================
