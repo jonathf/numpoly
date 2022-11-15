@@ -5,6 +5,7 @@ from typing import Tuple
 import numpy
 import numpoly
 from .baseclass import ndpoly, PolyLike
+from .option import get_options
 
 
 def align_polynomials(*polys: PolyLike) -> Tuple[ndpoly, ...]:
@@ -126,8 +127,13 @@ def align_indeterminants(*polys: PolyLike) -> Tuple[ndpoly, ...]:
 
     """
     polys_ = [numpoly.aspolynomial(poly) for poly in polys]
-    common_names = tuple(sorted({
-        str(name) for poly in polys_ for name in poly.names}))
+
+    options = get_options()
+    length = len(options["default_varname"])
+    common_names = tuple(sorted(
+        {str(name) for poly in polys_ for name in poly.names},
+        key=lambda x: int(x[length:] or "0")
+    ))
     if not common_names:
         return tuple(polys_)
 
