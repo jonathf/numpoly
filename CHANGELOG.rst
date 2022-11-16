@@ -1,7 +1,7 @@
 Master Branch
 =============
 
-Version 1.2.4 (2022-11-16)
+Version 1.2.5 (2022-11-16)
 ==========================
 
 Bug and pipeline fixes.
@@ -10,6 +10,12 @@ CHANGED:
   * Update CircleCI to use pip instead of poetry.
 FIXED:
   * Polynomial alignment for more than 10 variables.
+
+Version 1.2.4 (2022-05-07)
+==========================
+
+ADDED:
+  * `ndpoly.flat`
 
 Version 1.2.3 (2021-05-26)
 ==========================
