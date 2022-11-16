@@ -8,9 +8,9 @@ from ..baseclass import PolyLike
 
 
 def lead_coefficient(
-        poly: PolyLike,
-        graded: bool = False,
-        reverse: bool = False,
+    poly: PolyLike,
+    graded: bool = False,
+    reverse: bool = False,
 ) -> numpy.ndarray:
     """
     Find the lead coefficients for each polynomial.
@@ -47,8 +47,7 @@ def lead_coefficient(
     out = numpy.zeros(poly.shape, dtype=poly.dtype)
     if not out.size:
         return out
-    for idx in numpoly.glexsort(
-            poly.exponents.T, graded=graded, reverse=reverse):
+    for idx in numpoly.glexsort(poly.exponents.T, graded=graded, reverse=reverse):
         values = poly.coefficients[idx]
         indices = values != 0
         out[indices] = values[indices]

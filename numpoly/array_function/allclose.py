@@ -74,6 +74,7 @@ def allclose(
     a, b = numpoly.align_polynomials(a, b)
     for coeff1, coeff2 in zip(a.coefficients, b.coefficients):
         if not numpy.allclose(
-                coeff1, coeff2, atol=atol, rtol=rtol, equal_nan=equal_nan):
+            coeff1, coeff2, atol=atol, rtol=rtol, equal_nan=equal_nan
+        ):
             return False
     return True

@@ -11,9 +11,9 @@ from ..dispatch import implements
 
 @implements(numpy.argmin)
 def argmin(
-        a: PolyLike,
-        axis: Optional[int] = None,
-        out: Optional[numpy.ndarray] = None,
+    a: PolyLike,
+    axis: Optional[int] = None,
+    out: Optional[numpy.ndarray] = None,
 ) -> Any:
     """
     Return the indices of the minimum values along an axis.
@@ -56,5 +56,6 @@ def argmin(
     a = numpoly.aspolynomial(a)
     options = numpoly.get_options()
     proxy = numpoly.sortable_proxy(
-        a, graded=options["sort_graded"], reverse=options["sort_reverse"])
+        a, graded=options["sort_graded"], reverse=options["sort_reverse"]
+    )
     return numpy.argmin(proxy, axis=axis, out=out)

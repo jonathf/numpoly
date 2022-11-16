@@ -12,11 +12,11 @@ from .divmod import poly_divmod
 
 @implements_function(numpy.true_divide)
 def poly_divide(
-        x1: PolyLike,
-        x2: PolyLike,
-        out: Optional[ndpoly] = None,
-        where: numpy.typing.ArrayLike = True,
-        **kwargs: Any,
+    x1: PolyLike,
+    x2: PolyLike,
+    out: Optional[ndpoly] = None,
+    where: numpy.typing.ArrayLike = True,
+    **kwargs: Any,
 ) -> ndpoly:
     """
     Return a polynomial division of the inputs, element-wise.

@@ -88,7 +88,7 @@ def savetxt(
             version=numpoly.__version__,
             names=",".join(X.names),
             keys=",".join(X.keys),
-            shape=",".join(str(idx) for idx in X.shape)
+            shape=",".join(str(idx) for idx in X.shape),
         )
         if header:
             header = numpoly_header + "\n" + header
@@ -96,6 +96,14 @@ def savetxt(
             header = numpoly_header
         X = structured_to_unstructured(X.values.ravel())
 
-    numpy.savetxt(fname=fname, X=X, fmt=fmt, delimiter=delimiter,
-                  newline=newline, header=header, footer=footer,
-                  comments=comments, encoding=encoding)
+    numpy.savetxt(
+        fname=fname,
+        X=X,
+        fmt=fmt,
+        delimiter=delimiter,
+        newline=newline,
+        header=header,
+        footer=footer,
+        comments=comments,
+        encoding=encoding,
+    )

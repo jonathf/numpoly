@@ -34,12 +34,15 @@ def decompose(poly: PolyLike) -> ndpoly:
 
     """
     poly = numpoly.aspolynomial(poly)
-    return numpoly.concatenate([
-        numpoly.construct.polynomial_from_attributes(
-            exponents=[expon],
-            coefficients=[numpy.asarray(poly.values[key])],
-            names=poly.indeterminants,
-            retain_coefficients=True,
-            retain_names=True,
-        )[numpy.newaxis] for key, expon in zip(poly.keys, poly.exponents)
-    ])
+    return numpoly.concatenate(
+        [
+            numpoly.construct.polynomial_from_attributes(
+                exponents=[expon],
+                coefficients=[numpy.asarray(poly.values[key])],
+                names=poly.indeterminants,
+                retain_coefficients=True,
+                retain_names=True,
+            )[numpy.newaxis]
+            for key, expon in zip(poly.keys, poly.exponents)
+        ]
+    )

@@ -10,10 +10,10 @@ from ..baseclass import ndpoly
 
 
 def symbols(
-        names: Optional[Sequence[str]] = None,
-        asarray: bool = False,
-        dtype: numpy.typing.DTypeLike = "i8",
-        allocation: Optional[int] = None,
+    names: Optional[Sequence[str]] = None,
+    asarray: bool = False,
+    dtype: numpy.typing.DTypeLike = "i8",
+    allocation: Optional[int] = None,
 ) -> ndpoly:
     """
     Construct symbol variables.
@@ -81,8 +81,7 @@ def symbols(
                 start = int(match.group(1) or 0)
                 end = int(match.group(2))
                 names = tuple(
-                    names.replace(match.group(0), str(idx))
-                    for idx in range(start, end)
+                    names.replace(match.group(0), str(idx)) for idx in range(start, end)
                 )
 
             else:

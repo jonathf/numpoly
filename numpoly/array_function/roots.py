@@ -4,6 +4,7 @@ import numpy
 import numpoly
 
 from ..baseclass import PolyLike
+
 # from ..dispatch import implements
 
 
@@ -50,8 +51,9 @@ def roots(poly: PolyLike) -> numpy.ndarray:
     if len(poly.names) > 1:
         raise ValueError("polynomial is not of rank 1.")
     # align exponents to include all coefficients
-    filled_basis = poly.indeterminants**numpy.arange(
-        numpoly.lead_exponent(poly), dtype=int)
+    filled_basis = poly.indeterminants ** numpy.arange(
+        numpoly.lead_exponent(poly), dtype=int
+    )
     _, poly = numpoly.align_exponents(filled_basis, poly)
     # pass coefficients to numpy
     return numpy.roots(poly.coefficients[::-1])

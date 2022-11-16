@@ -69,5 +69,5 @@ def mean(
         out=None if out is None else (out,),
         axis=axis,
         dtype=dtype,
-        **kwargs
+        **kwargs,
     )

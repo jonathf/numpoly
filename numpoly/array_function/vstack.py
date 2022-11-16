@@ -49,8 +49,9 @@ def vstack(tup: Sequence[PolyLike]) -> ndpoly:
 
     """
     arrays = numpoly.align_exponents(*tup)
-    coefficients = [numpy.vstack([array.values[key] for array in arrays])
-                    for key in arrays[0].keys]
+    coefficients = [
+        numpy.vstack([array.values[key] for array in arrays]) for key in arrays[0].keys
+    ]
     return numpoly.polynomial_from_attributes(
         exponents=arrays[0].exponents,
         coefficients=coefficients,

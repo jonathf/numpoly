@@ -35,6 +35,7 @@ def to_sympy(poly: PolyLike) -> Any:
     if poly.shape:
         return numpy.array([to_sympy(poly_) for poly_ in poly])
     from sympy import symbols  # type: ignore
+
     locals_ = dict(zip(poly.names, symbols(poly.names)))
     polynomial = eval(str(poly), locals_, {})  # pylint: disable=eval-used
     return polynomial

@@ -9,9 +9,9 @@ from ..baseclass import PolyLike, ndpoly
 
 
 def aspolynomial(
-        poly_like: PolyLike,
-        names: Union[None, str, Tuple[str, ...], ndpoly] = None,
-        dtype: Optional[numpy.typing.DTypeLike] = None,
+    poly_like: PolyLike,
+    names: Union[None, str, Tuple[str, ...], ndpoly] = None,
+    dtype: Optional[numpy.typing.DTypeLike] = None,
 ) -> ndpoly:
     """
     Convert the input to an polynomial array.
@@ -40,7 +40,7 @@ def aspolynomial(
     remain = False
     if isinstance(poly_like, numpoly.ndpoly):
 
-        remain = (dtype is None or dtype == poly_like.dtype)
+        remain = dtype is None or dtype == poly_like.dtype
         if names is not None:
             if isinstance(names, numpoly.ndpoly):
                 names_ = names.names
@@ -49,8 +49,9 @@ def aspolynomial(
             else:
                 names_ = tuple(names)
             if len(names_) == 1 and len(poly_like.names) > 1:
-                names_ = tuple(f"{names_[0]}{idx}"
-                               for idx in range(len(poly_like.indeterminants)))
+                names_ = tuple(
+                    f"{names_[0]}{idx}" for idx in range(len(poly_like.indeterminants))
+                )
             remain &= names_ == poly_like.names
 
     if remain:

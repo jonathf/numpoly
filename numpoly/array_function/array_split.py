@@ -48,6 +48,8 @@ def array_split(
     """
     ary = numpoly.aspolynomial(ary)
     results = numpy.array_split(
-        ary.values, indices_or_sections=indices_or_sections, axis=axis)
-    return [numpoly.aspolynomial(result, names=ary.indeterminants)
-            for result in results]
+        ary.values, indices_or_sections=indices_or_sections, axis=axis
+    )
+    return [
+        numpoly.aspolynomial(result, names=ary.indeterminants) for result in results
+    ]

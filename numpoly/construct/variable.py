@@ -8,10 +8,10 @@ from ..baseclass import ndpoly
 
 
 def variable(
-        dimensions: int = 1,
-        asarray: bool = False,
-        dtype: numpy.typing.DTypeLike = "i8",
-        allocation: Optional[int] = None,
+    dimensions: int = 1,
+    asarray: bool = False,
+    dtype: numpy.typing.DTypeLike = "i8",
+    allocation: Optional[int] = None,
 ) -> ndpoly:
     """
     Construct variables that can be used to construct polynomials.

@@ -11,10 +11,10 @@ from ..dispatch import implements, simple_dispatch
 
 @implements(numpy.isfinite)
 def isfinite(
-        x: PolyLike,
-        out: Optional[numpy.ndarray] = None,
-        where: numpy.typing.ArrayLike = True,
-        **kwargs: Any,
+    x: PolyLike,
+    out: Optional[numpy.ndarray] = None,
+    where: numpy.typing.ArrayLike = True,
+    **kwargs: Any,
 ) -> numpy.ndarray:
     """
     Test element-wise for finiteness (not infinity or not Not a Number).
@@ -64,10 +64,7 @@ def isfinite(
 
     """
     out_ = simple_dispatch(
-        numpy_func=numpy.isfinite,
-        inputs=(x,),
-        where=where,
-        **kwargs
+        numpy_func=numpy.isfinite, inputs=(x,), where=where, **kwargs
     )
     if out is None:
         out_ = numpy.all(numpy.asarray(out_.coefficients), axis=0)

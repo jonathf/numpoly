@@ -46,5 +46,5 @@ def polynomial_from_roots(
 
     """
     exponent = numpy.arange(len(seq_of_zeros), -1, -1, dtype=int)
-    basis = numpoly.variable(dtype=dtype)**exponent
-    return numpoly.sum(numpy.poly(seq_of_zeros)*basis)
+    basis = numpoly.variable(dtype=dtype) ** exponent
+    return numpoly.sum(numpy.poly(seq_of_zeros) * basis)

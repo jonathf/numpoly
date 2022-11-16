@@ -11,6 +11,7 @@ from ..dispatch import implements
 Order = Any
 try:
     from typing import Literal, Union
+
     Order = Union[None, Literal["C"], Literal["F"], Literal["A"]]  # type: ignore
 except ImportError:
     pass

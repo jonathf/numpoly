@@ -48,6 +48,7 @@ def hsplit(
     """
     ary = numpoly.aspolynomial(ary)
     results = numpy.hsplit(ary.values, indices_or_sections=indices_or_sections)
-    return [numpoly.polynomial(
-        result, names=ary.indeterminants, allocation=ary.allocation)
-            for result in results]
+    return [
+        numpoly.polynomial(result, names=ary.indeterminants, allocation=ary.allocation)
+        for result in results
+    ]

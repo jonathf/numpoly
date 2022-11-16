@@ -56,6 +56,7 @@ def apply_over_axes(
                      [34*q2+32*q1+30*q0]]])
 
     """
+
     @wraps(func)
     def wrapper_func(array, axis):
         """Wrap func function."""

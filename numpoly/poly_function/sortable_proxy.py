@@ -56,12 +56,11 @@ def sortable_proxy(
     proxy = numpy.tile(-1, poly.shape)
     largest = numpoly.lead_exponent(poly, graded=graded, reverse=reverse)
 
-    for idx in numpoly.glexsort(
-            poly.exponents.T, graded=graded, reverse=reverse):
+    for idx in numpoly.glexsort(poly.exponents.T, graded=graded, reverse=reverse):
 
         indices = numpy.all(largest == poly.exponents[idx], axis=-1)
         values = numpy.argsort(coefficients[idx][indices])
-        proxy[indices] = numpy.argsort(values)+numpy.max(proxy)+1
+        proxy[indices] = numpy.argsort(values) + numpy.max(proxy) + 1
 
     proxy = numpy.argsort(numpy.argsort(proxy.ravel())).reshape(proxy.shape)
     return proxy

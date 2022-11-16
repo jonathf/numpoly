@@ -80,9 +80,9 @@ def apply_along_axis(
         """Wrap func1d function."""
         # Align indeterminants in case slicing changed them
         array = numpoly.polynomial(
-            array, names=arr.indeterminants, allocation=arr.allocation)
-        array, _ = numpoly.align.align_indeterminants(
-            array, arr.indeterminants)
+            array, names=arr.indeterminants, allocation=arr.allocation
+        )
+        array, _ = numpoly.align.align_indeterminants(array, arr.indeterminants)
 
         # Evaluate function
         out = func1d(array, *args, **kwargs)
@@ -92,7 +92,7 @@ def apply_along_axis(
 
         # Return dummy index integer value that will be replaced with
         # polynomials afterwards.
-        ret_val = len(collection)*numpy.ones(out.shape, dtype=int)
+        ret_val = len(collection) * numpy.ones(out.shape, dtype=int)
         collection.append(out)
         return ret_val
 

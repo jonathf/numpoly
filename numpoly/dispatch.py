@@ -11,35 +11,37 @@ UFUNC_COLLECTION = {}
 
 def implements_function(*array_functions: Callable) -> Callable:
     """Register __array_function__."""
+
     def decorator(numpoly_function: Callable) -> Callable:
         """Register function."""
         for func in array_functions:
-            assert func not in FUNCTION_COLLECTION, (
-                f"{func} already implemented")
+            assert func not in FUNCTION_COLLECTION, f"{func} already implemented"
             FUNCTION_COLLECTION[func] = numpoly_function
         return numpoly_function
+
     return decorator
 
 
 def implements_ufunc(*array_methods: Callable) -> Callable:
     """Register __array_ufunc__."""
+
     def decorator(numpoly_function: Callable) -> Callable:
         """Register function."""
         for func in array_methods:
-            assert func not in UFUNC_COLLECTION, (
-                f"{func} already implemented")
+            assert func not in UFUNC_COLLECTION, f"{func} already implemented"
             UFUNC_COLLECTION[func] = numpoly_function
         return numpoly_function
+
     return decorator
 
 
 def implements(*array_functions: Callable) -> Callable:
     """Register __array_function__ and __array_ufunc__."""
+
     def decorator(numpoly_function: Callable) -> Callable:
         """Register function."""
         for func in array_functions:
-            assert func not in FUNCTION_COLLECTION, (
-                "{func} already implemented")
+            assert func not in FUNCTION_COLLECTION, "{func} already implemented"
             FUNCTION_COLLECTION[func] = numpoly_function
             assert func not in UFUNC_COLLECTION, "{func} already implemented"
             UFUNC_COLLECTION[func] = numpoly_function
@@ -49,10 +51,10 @@ def implements(*array_functions: Callable) -> Callable:
 
 
 def simple_dispatch(
-        numpy_func: Callable,
-        inputs: Sequence[Any],
-        out: Optional[Tuple[ndpoly, ...]] = None,
-        **kwargs: Any
+    numpy_func: Callable,
+    inputs: Sequence[Any],
+    out: Optional[Tuple[ndpoly, ...]] = None,
+    **kwargs: Any,
 ) -> ndpoly:
     """
     Dispatch function between numpy and numpoly.
@@ -82,7 +84,7 @@ def simple_dispatch(
     inputs = numpoly.align_polynomials(*inputs)
     keys = (inputs[0] if out is None else numpoly.aspolynomial(out[0])).keys
 
-    tmp = numpy_func(*[poly.values[keys[0]]for poly in inputs], **kwargs)
+    tmp = numpy_func(*[poly.values[keys[0]] for poly in inputs], **kwargs)
     if out is None:
         out_ = numpoly.ndpoly(
             exponents=inputs[0].exponents,
@@ -96,8 +98,7 @@ def simple_dispatch(
     out_.values[keys[0]] = tmp
 
     for key in keys[1:]:
-        out_.values[key] = numpy_func(
-            *[poly.values[key] for poly in inputs], **kwargs)
+        out_.values[key] = numpy_func(*[poly.values[key] for poly in inputs], **kwargs)
 
     if out is None:
         out_ = numpoly.clean_attributes(out_)

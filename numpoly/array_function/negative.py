@@ -53,5 +53,5 @@ def negative(
         inputs=(x,),
         out=None if out is None else (out,),
         where=where,
-        **kwargs
+        **kwargs,
     )

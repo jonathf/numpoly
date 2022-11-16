@@ -57,5 +57,6 @@ def argmax(
     a = numpoly.aspolynomial(a)
     options = numpoly.get_options()
     proxy = numpoly.sortable_proxy(
-        a, graded=options["sort_graded"], reverse=options["sort_reverse"])
+        a, graded=options["sort_graded"], reverse=options["sort_reverse"]
+    )
     return numpy.argmax(proxy, axis=axis, out=out)

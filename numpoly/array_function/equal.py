@@ -12,11 +12,11 @@ from ..dispatch import implements
 
 @implements(numpy.equal)
 def equal(
-        x1: PolyLike,
-        x2: PolyLike,
-        out: Optional[numpy.ndarray] = None,
-        where: numpy.typing.ArrayLike = True,
-        **kwargs: Any,
+    x1: PolyLike,
+    x2: PolyLike,
+    out: Optional[numpy.ndarray] = None,
+    where: numpy.typing.ArrayLike = True,
+    **kwargs: Any,
 ) -> numpy.ndarray:
     """
     Return (x1 == x2) element-wise.
@@ -63,6 +63,5 @@ def equal(
     if not out.shape:
         return equal(x1.ravel(), x2.ravel(), out=out.ravel()).item()
     for coeff1, coeff2 in zip(x1.coefficients, x2.coefficients):
-        out &= numpy.equal(coeff1, coeff2,
-                           where=numpy.asarray(where), **kwargs)
+        out &= numpy.equal(coeff1, coeff2, where=numpy.asarray(where), **kwargs)
     return out

@@ -93,7 +93,8 @@ def floor_divide(
     for key in x1.keys:
         out.values[key] = 0
         numpy.floor_divide(
-            x1.values[key], x2, out=out.values[key], where=where, **kwargs)
+            x1.values[key], x2, out=out.values[key], where=where, **kwargs
+        )
     if no_output:
         out = numpoly.clean_attributes(out)
     return out

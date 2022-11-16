@@ -10,11 +10,11 @@ from ..dispatch import implements
 
 @implements(numpy.isclose)
 def isclose(
-        a: PolyLike,
-        b: PolyLike,
-        rtol: float = 1e-5,
-        atol: float = 1e-8,
-        equal_nan: bool = False,
+    a: PolyLike,
+    b: PolyLike,
+    rtol: float = 1e-5,
+    atol: float = 1e-8,
+    equal_nan: bool = False,
 ) -> numpy.ndarray:
     """
     Return true where two arrays are element-wise equal within a tolerance.
@@ -76,5 +76,6 @@ def isclose(
     out = numpy.ones(a.shape, dtype=bool)
     for key in a.keys:
         out &= numpy.isclose(
-            a.values[key], b.values[key], atol=atol, rtol=rtol, equal_nan=equal_nan)
+            a.values[key], b.values[key], atol=atol, rtol=rtol, equal_nan=equal_nan
+        )
     return out

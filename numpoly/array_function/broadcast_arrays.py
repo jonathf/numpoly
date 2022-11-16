@@ -48,5 +48,7 @@ def broadcast_arrays(*args: PolyLike, **kwargs: Any) -> List[ndpoly]:
     """
     args_ = [numpoly.aspolynomial(arg) for arg in args]
     results = numpy.broadcast_arrays(*[arg.values for arg in args_], **kwargs)
-    return [numpoly.aspolynomial(result, names=arg.indeterminants)
-            for result, arg in zip(results, args_)]
+    return [
+        numpoly.aspolynomial(result, names=arg.indeterminants)
+        for result, arg in zip(results, args_)
+    ]

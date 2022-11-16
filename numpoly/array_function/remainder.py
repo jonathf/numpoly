@@ -66,5 +66,6 @@ def remainder(
     if not x1.isconstant() or not x2.isconstant():
         raise numpoly.FeatureNotSupported(REMAINDER_ERROR_MSG)
     where = None if where is None else numpy.asarray(where)
-    return numpoly.polynomial(numpy.remainder(
-        x1.tonumpy(), x2.tonumpy(), out=out, where=where, **kwargs))
+    return numpoly.polynomial(
+        numpy.remainder(x1.tonumpy(), x2.tonumpy(), out=out, where=where, **kwargs)
+    )

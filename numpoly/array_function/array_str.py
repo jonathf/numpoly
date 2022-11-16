@@ -12,10 +12,10 @@ from .array_repr import to_string
 
 @implements(numpy.array_str)
 def array_str(
-        a: PolyLike,
-        max_line_width: Optional[int] = None,
-        precision: Optional[float] = None,
-        suppress_small: Optional[bool] = None,
+    a: PolyLike,
+    max_line_width: Optional[int] = None,
+    precision: Optional[float] = None,
+    suppress_small: Optional[bool] = None,
 ) -> str:
     """
     Return a string representation of the data in an array.

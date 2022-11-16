@@ -59,7 +59,8 @@ def power(x1: PolyLike, x2: PolyLike, **kwargs: Any) -> ndpoly:
 
     if not x2.shape:
         out = numpoly.ndpoly.from_attributes(
-            [(0,)], [numpy.ones(x1.shape, dtype=x1._dtype)], x1.names[:1])
+            [(0,)], [numpy.ones(x1.shape, dtype=x1._dtype)], x1.names[:1]
+        )
         for _ in range(x2.item()):
             out = numpoly.multiply(out, x1, **kwargs)
 
@@ -68,15 +69,20 @@ def power(x1: PolyLike, x2: PolyLike, **kwargs: Any) -> ndpoly:
             if x1.shape[-1] == 1:
                 out = numpoly.power(x1.T[0].T, x2.T[0].T).T[numpy.newaxis].T
             else:
-                out = numpoly.concatenate([power(x, x2.T[0])[numpy.newaxis]
-                                           for x in x1.T], axis=0).T
+                out = numpoly.concatenate(
+                    [power(x, x2.T[0])[numpy.newaxis] for x in x1.T], axis=0
+                ).T
         elif x1.shape[-1] == 1:
-            out = numpoly.concatenate([power(x1.T[0].T, x.T).T[numpy.newaxis]
-                                       for x in x2.T], axis=0).T
+            out = numpoly.concatenate(
+                [power(x1.T[0].T, x.T).T[numpy.newaxis] for x in x2.T], axis=0
+            ).T
         else:
-            out = numpoly.concatenate([power(x1_, x2_).T[numpy.newaxis]
-                                       for x1_, x2_ in zip(x1.T, x2.T)], axis=0).T
+            out = numpoly.concatenate(
+                [power(x1_, x2_).T[numpy.newaxis] for x1_, x2_ in zip(x1.T, x2.T)],
+                axis=0,
+            ).T
     else:
-        out = numpoly.concatenate([power(x1, x.T).T[numpy.newaxis]
-                                   for x in x2.T], axis=0).T
+        out = numpoly.concatenate(
+            [power(x1, x.T).T[numpy.newaxis] for x in x2.T], axis=0
+        ).T
     return numpoly.polynomial(out)

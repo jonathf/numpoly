@@ -60,6 +60,10 @@ def savez_compressed(
         for key, value in list(kwargs.items())
         if isinstance(value, numpoly.ndpoly)
     }
-    kwargs.update({"-".join(poly.names)+"-"+key: poly.values
-                   for key, poly in polynomials.items()})
+    kwargs.update(
+        {
+            "-".join(poly.names) + "-" + key: poly.values
+            for key, poly in polynomials.items()
+        }
+    )
     numpy.savez_compressed(file, **kwargs)

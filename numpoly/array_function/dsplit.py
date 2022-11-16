@@ -48,7 +48,6 @@ def dsplit(
     ary = numpoly.aspolynomial(ary)
     results = numpy.dsplit(ary.values, indices_or_sections=indices_or_sections)
     return [
-        numpoly.polynomial(
-            result, names=ary.indeterminants, allocation=ary.allocation)
+        numpoly.polynomial(result, names=ary.indeterminants, allocation=ary.allocation)
         for result in results
     ]

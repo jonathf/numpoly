@@ -12,11 +12,11 @@ from .divmod import poly_divmod
 
 @implements_function(numpy.remainder)
 def poly_remainder(
-        x1: PolyLike,
-        x2: PolyLike,
-        out: Optional[ndpoly] = None,
-        where: numpy.typing.ArrayLike = True,
-        **kwargs: Any,
+    x1: PolyLike,
+    x2: PolyLike,
+    out: Optional[ndpoly] = None,
+    where: numpy.typing.ArrayLike = True,
+    **kwargs: Any,
 ) -> ndpoly:
     """
     Return element-wise remainder of polynomial division.

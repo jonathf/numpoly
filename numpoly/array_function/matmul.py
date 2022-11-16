@@ -62,8 +62,8 @@ def matmul(
         raise ValueError(ERROR_MESSAGE % 0)
     if not x2.shape:
         raise ValueError(ERROR_MESSAGE % 1)
-    x1 = numpoly.reshape(x1, x1.shape+(1,))
-    x2 = numpoly.reshape(x2, x2.shape[:-2]+(1,)+x2.shape[-2:])
+    x1 = numpoly.reshape(x1, x1.shape + (1,))
+    x2 = numpoly.reshape(x2, x2.shape[:-2] + (1,) + x2.shape[-2:])
     x1, x2 = numpoly.broadcast_arrays(x1, x2)
     out_ = numpoly.multiply(x1, x2, out=out, **kwargs)
     return numpoly.sum(out_, axis=-2)

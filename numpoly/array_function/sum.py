@@ -71,5 +71,5 @@ def sum(
         axis=axis,
         dtype=dtype,
         keepdims=keepdims,
-        **kwargs
+        **kwargs,
     )

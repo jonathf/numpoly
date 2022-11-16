@@ -12,8 +12,8 @@ from ..dispatch import implements
 Mode = Any
 try:
     from typing import Literal, Union
-    Model = Union[Literal["raise"],  # type: ignore
-                  Literal["wrap"], Literal["clip"]]
+
+    Model = Union[Literal["raise"], Literal["wrap"], Literal["clip"]]  # type: ignore
 except ImportError:
     pass
 

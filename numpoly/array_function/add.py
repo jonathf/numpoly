@@ -62,5 +62,5 @@ def add(
         inputs=(x1, x2),
         out=None if out is None else (out,),
         where=where,
-        **kwargs
+        **kwargs,
     )

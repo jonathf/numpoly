@@ -82,13 +82,14 @@ def align_shape(*polys: PolyLike) -> Tuple[ndpoly, ...]:
     # return tuple(numpoly.broadcast_arrays(*polys))
     polys_ = [numpoly.aspolynomial(poly) for poly in polys]
     common = numpy.ones(
-        numpy.broadcast_shapes(*[poly.shape for poly in polys_]), dtype=int)
+        numpy.broadcast_shapes(*[poly.shape for poly in polys_]), dtype=int
+    )
 
     for idx, poly in enumerate(polys_):
         if poly.shape != common.shape:
             polys_[idx] = poly.from_attributes(
                 exponents=poly.exponents,
-                coefficients=tuple(coeff*common for coeff in poly.coefficients),
+                coefficients=tuple(coeff * common for coeff in poly.coefficients),
                 names=poly.indeterminants,
             )
     return tuple(polys_)
@@ -130,23 +131,22 @@ def align_indeterminants(*polys: PolyLike) -> Tuple[ndpoly, ...]:
 
     options = get_options()
     length = len(options["default_varname"])
-    common_names = tuple(sorted(
-        {str(name) for poly in polys_ for name in poly.names},
-        key=lambda x: int(x[length:] or "0")
-    ))
+    common_names = tuple(
+        sorted(
+            {str(name) for poly in polys_ for name in poly.names},
+            key=lambda x: int(x[length:] or "0"),
+        )
+    )
     if not common_names:
         return tuple(polys_)
 
     for idx, poly in enumerate(polys_):
         if poly.names == common_names:
             continue
-        indices = numpy.array([
-            common_names.index(name)
-            for name in poly.names
-            if name in common_names
-        ])
-        exponents = numpy.zeros(
-            (len(poly.keys), len(common_names)), dtype=int)
+        indices = numpy.array(
+            [common_names.index(name) for name in poly.names if name in common_names]
+        )
+        exponents = numpy.zeros((len(poly.keys), len(common_names)), dtype=int)
         if indices.size:
             exponents[:, indices] = poly.exponents
         polys_[idx] = numpoly.ndpoly.from_attributes(
@@ -212,13 +212,13 @@ def align_exponents(*polys: PolyLike) -> Tuple[ndpoly, ...]:
             continue
         lookup = {
             tuple(exponent): coefficient
-            for exponent, coefficient in zip(
-                poly.exponents, poly.coefficients)
+            for exponent, coefficient in zip(poly.exponents, poly.coefficients)
         }
 
         zeros = numpy.zeros(poly.shape, dtype=poly.dtype)
-        coefficients = [lookup.get(tuple(exponent), zeros)
-                        for exponent in global_exponents]
+        coefficients = [
+            lookup.get(tuple(exponent), zeros) for exponent in global_exponents
+        ]
         polys_[idx] = poly.from_attributes(
             exponents=global_exponents,
             coefficients=coefficients,

@@ -14,17 +14,18 @@ jobs:
             - checkout
             - restore_cache:
                 keys:
-                    - py37-{{ checksum "poetry.lock"}}
+                    - py37-{{ checksum "requirements-dev.txt"}}
                     - py37-
             - run:
                 name: "Installation"
                 command: |
                     python3 -m venv venv
                     source venv/bin/activate
-                    pip install poetry==1.1.5
-                    poetry install
+                    pip install -U pip
+                    pip install -r requirements-dev.txt
+                    pip install .
             - save_cache:
-                key: py37-{{ checksum "poetry.lock"}}
+                key: py37-{{ checksum "requirements-dev.txt"}}
                 paths:
                     - venv
             - run:
@@ -38,9 +39,9 @@ jobs:
                     source venv/bin/activate
                     codecov
                     coverage report --show-missing
-    test-39:
+    test-310:
         docker:
-            - image: circleci/python:3.9.4
+            - image: circleci/python:3.10.5
               auth:
                 username: jonathf
                 password: $DOCKERHUB_PASSWORD
@@ -48,17 +49,18 @@ jobs:
             - checkout
             - restore_cache:
                 keys:
-                    - py39-{{ checksum "poetry.lock"}}
-                    - py39-
+                    - py310-{{ checksum "requirements-dev.txt"}}
+                    - py310-
             - run:
                 name: "Installation"
                 command: |
                     python3 -m venv venv
                     source venv/bin/activate
-                    pip install poetry==1.1.5
-                    poetry install
+                    pip install -U pip
+                    pip install -r requirements-dev.txt
+                    pip install .
             - save_cache:
-                key: py39-{{ checksum "poetry.lock"}}
+                key: py310-{{ checksum "requirements-dev.txt"}}
                 paths:
                     - venv
             - run:
@@ -72,10 +74,10 @@ jobs:
                     source venv/bin/activate
                     pydocstyle numpoly
             - run:
-                name: "Run mypy"
+                name: "Run black"
                 command: |
                     source venv/bin/activate
-                    mypy numpoly
+                    black --check numpoly
             - run:
                 name: "Run Sphinx build"
                 command: |
@@ -91,7 +93,7 @@ jobs:
             - checkout
             - restore_cache:
                 keys:
-                    - py39-{{ checksum "poetry.lock"}}
+                    - py310-{{ checksum "requirements-dev.txt"}}
             - run:
                 name: "Verify tag version"
                 command: |
@@ -104,7 +106,9 @@ jobs:
                 name: "Publish to PyPI"
                 command: |
                     source venv/bin/activate
-                    poetry publish --build -u jonathf -p $PYPI_PASSWORD -n
+                    pip install twine build
+                    python -m build
+                    twine upload -u jonathf -p $PYPI_PASSWORD --non-interactive dist/*
 
 workflows:
     version: 2.1
@@ -113,13 +117,13 @@ workflows:
             - test-37:
                 filters:
                     <<: *version-tags
-            - test-39:
+            - test-310:
                 filters:
                     <<: *version-tags
             - deploy:
                 requires:
                     - test-37
-                    - test-39
+                    - test-310
                 filters:
                     <<: *version-tags
                     branches:

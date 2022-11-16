@@ -11,13 +11,13 @@ from ..baseclass import ndpoly
 
 
 def polynomial_from_attributes(
-        exponents: numpy.typing.ArrayLike,
-        coefficients: Sequence[numpy.typing.ArrayLike],
-        names: Union[None, str, Tuple[str, ...], ndpoly] = None,
-        dtype: Optional[numpy.typing.DTypeLike] = None,
-        allocation: Optional[int] = None,
-        retain_coefficients: Optional[bool] = None,
-        retain_names: Optional[bool] = None,
+    exponents: numpy.typing.ArrayLike,
+    coefficients: Sequence[numpy.typing.ArrayLike],
+    names: Union[None, str, Tuple[str, ...], ndpoly] = None,
+    dtype: Optional[numpy.typing.DTypeLike] = None,
+    allocation: Optional[int] = None,
+    retain_coefficients: Optional[bool] = None,
+    retain_names: Optional[bool] = None,
 ) -> ndpoly:
     """
     Construct polynomial from polynomial attributes.

@@ -37,6 +37,7 @@ And this works the other way around as well. If a polynomial is provided to the
 
 .. code:: python
 
+    >>> q0, q1 = numpoly.variable(2)
     >>> poly_array = numpoly.polynomial([[1, q0-1], [q1**2, 4]])
     >>> numpy.transpose(poly_array)
     polynomial([[1, q1**2],

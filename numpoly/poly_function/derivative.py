@@ -44,15 +44,15 @@ def derivative(poly: PolyLike, *diffvars: Union[ndpoly, str, int]) -> ndpoly:
         else:
             diffvar = numpoly.aspolynomial(diffvar)
             exponents, names = numpoly.remove_redundant_names(
-                diffvar.exponents, diffvar.names)
+                diffvar.exponents, diffvar.names
+            )
             assert names is not None and len(names) == 1, "one at the time"
-            assert numpy.all(exponents == 1), (
-                "derivative variable assumes singletons")
+            assert numpy.all(exponents == 1), "derivative variable assumes singletons"
             idx = poly.names.index(names[0])
 
         exponents = poly.exponents
         coefficients = [
-            (exponent[idx]*coefficient.T).T
+            (exponent[idx] * coefficient.T).T
             for exponent, coefficient in zip(exponents, poly.coefficients)
         ]
         exponents[:, idx] -= 1
@@ -96,8 +96,7 @@ def gradient(poly: PolyLike) -> ndpoly:
 
     """
     poly = numpoly.aspolynomial(poly)
-    polys = [derivative(poly, diffvar)[numpy.newaxis]
-             for diffvar in poly.names]
+    polys = [derivative(poly, diffvar)[numpy.newaxis] for diffvar in poly.names]
     return numpoly.concatenate(polys, axis=0)
 
 

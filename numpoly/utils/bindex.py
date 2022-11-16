@@ -9,11 +9,11 @@ from .glexindex import glexindex
 
 
 def bindex(
-        start: numpy.typing.ArrayLike,
-        stop: Optional[numpy.typing.ArrayLike] = None,
-        dimensions: int = 1,
-        ordering: str = "G",
-        cross_truncation: numpy.typing.ArrayLike = 1.,
+    start: numpy.typing.ArrayLike,
+    stop: Optional[numpy.typing.ArrayLike] = None,
+    dimensions: int = 1,
+    ordering: str = "G",
+    cross_truncation: numpy.typing.ArrayLike = 1.0,
 ) -> numpy.ndarray:
     """
     Generate multi-indices for the monomial exponents.

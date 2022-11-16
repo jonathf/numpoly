@@ -58,6 +58,5 @@ def glexsort(
 
     indices = numpy.array(numpy.lexsort(keys_))
     if graded:
-        indices = indices[numpy.argsort(
-            numpy.sum(keys_[:, indices], axis=0))].T
+        indices = indices[numpy.argsort(numpy.sum(keys_[:, indices], axis=0))].T
     return indices

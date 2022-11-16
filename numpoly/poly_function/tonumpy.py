@@ -30,7 +30,8 @@ def tonumpy(poly: PolyLike) -> numpy.ndarray:
     poly = numpoly.aspolynomial(poly)
     if not poly.isconstant():
         raise numpoly.FeatureNotSupported(
-            "only constant polynomials can be converted to array.")
+            "only constant polynomials can be converted to array."
+        )
     idx = numpy.argwhere(numpy.all(poly.exponents == 0, -1)).item()
     if poly.size:
         return numpy.array(poly.coefficients[idx])

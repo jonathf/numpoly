@@ -16,11 +16,11 @@ division; Use ``numpoly.poly_divmod`` to get polynomial division-remainder."""
 
 @implements_ufunc(numpy.divmod)
 def divmod(
-        x1: PolyLike,
-        x2: PolyLike,
-        out: Union[None, ndpoly, Tuple[ndpoly, ...]] = None,
-        where: Optional[numpy.ndarray] = numpy.array(True),
-        **kwargs: Any,
+    x1: PolyLike,
+    x2: PolyLike,
+    out: Union[None, ndpoly, Tuple[ndpoly, ...]] = None,
+    where: Optional[numpy.ndarray] = numpy.array(True),
+    **kwargs: Any,
 ) -> Tuple[ndpoly, ndpoly]:
     """
     Return element-wise quotient and remainder simultaneously.
@@ -71,5 +71,6 @@ def divmod(
     if not x1.isconstant() or not x2.isconstant():
         raise numpoly.FeatureNotSupported(DIVMOD_ERROR_MSG)
     quotient, remainder = numpy.divmod(
-        x1.tonumpy(), x2.tonumpy(), where=where, **kwargs)
+        x1.tonumpy(), x2.tonumpy(), where=where, **kwargs
+    )
     return numpoly.polynomial(quotient), numpoly.polynomial(remainder)

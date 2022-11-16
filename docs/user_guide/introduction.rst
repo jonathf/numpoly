@@ -88,12 +88,12 @@ scalar coefficients:
     polynomial([q0, q1])
     >>> coeff = poly.coefficients
     >>> coeff
-    [4, 3, -1]
+    [-1, 3, 4]
     >>> expon = poly.exponents
     >>> expon
-    array([[1, 0],
+    array([[0, 0],
            [0, 1],
-           [0, 0]], dtype=uint32)
+           [1, 0]], dtype=uint32)
 
 Because these three properties uniquely define a polynomial array, they can
 also be used to reconstruct the original polynomial:
@@ -102,7 +102,7 @@ also be used to reconstruct the original polynomial:
 
     >>> terms = coeff*numpoly.prod(indet**expon, axis=-1)
     >>> terms
-    polynomial([4*q0, 3*q1, -1])
+    polynomial([-1, 3*q1, 4*q0])
     >>> poly = numpoly.sum(terms, axis=0)
     >>> poly
     polynomial(3*q1+4*q0-1)

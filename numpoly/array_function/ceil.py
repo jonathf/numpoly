@@ -57,5 +57,5 @@ def ceil(
         inputs=(q0,),
         out=None if out is None else (out,),
         where=where,
-        **kwargs
+        **kwargs,
     )

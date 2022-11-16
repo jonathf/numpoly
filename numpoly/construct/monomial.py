@@ -10,13 +10,13 @@ from ..baseclass import ndpoly
 
 
 def monomial(
-        start: numpy.typing.ArrayLike,
-        stop: Optional[numpy.typing.ArrayLike] = None,
-        dimensions: int = 1,
-        cross_truncation: numpy.typing.ArrayLike = 1.,
-        graded: bool = False,
-        reverse: bool = False,
-        allocation: Optional[int] = None,
+    start: numpy.typing.ArrayLike,
+    stop: Optional[numpy.typing.ArrayLike] = None,
+    dimensions: int = 1,
+    cross_truncation: numpy.typing.ArrayLike = 1.0,
+    graded: bool = False,
+    reverse: bool = False,
+    allocation: Optional[int] = None,
 ) -> ndpoly:
     """
     Create an polynomial monomial expansion.
@@ -103,7 +103,6 @@ def monomial(
         names=names,
         allocation=allocation,
     )
-    for coeff, key in zip(
-            numpy.eye(len(indices), dtype=int), poly.keys):
+    for coeff, key in zip(numpy.eye(len(indices), dtype=int), poly.keys):
         numpy.ndarray.__setitem__(poly, key, coeff)
     return poly

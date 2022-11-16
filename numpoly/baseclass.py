@@ -26,8 +26,7 @@ array back to a polynomial:
     polynomial(3*q1+4*q0-1)
 """
 from __future__ import annotations
-from typing import (Any, Callable, Dict, Iterator, List,
-                    Optional, Sequence, Tuple, Union)
+from typing import Any, Callable, Dict, Iterator, List, Optional, Sequence, Tuple, Union
 import logging
 import re
 
@@ -137,13 +136,13 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     """
 
     def __new__(
-            cls,
-            exponents: numpy.typing.ArrayLike = ((0,),),
-            shape: Tuple[int, ...] = (),
-            names: Union[None, str, Tuple[str, ...], "ndpoly"] = None,
-            dtype: Optional[numpy.typing.DTypeLike] = None,
-            allocation: Optional[int] = None,
-            **kwargs: Any
+        cls,
+        exponents: numpy.typing.ArrayLike = ((0,),),
+        shape: Tuple[int, ...] = (),
+        names: Union[None, str, Tuple[str, ...], "ndpoly"] = None,
+        dtype: Optional[numpy.typing.DTypeLike] = None,
+        allocation: Optional[int] = None,
+        **kwargs: Any,
     ) -> "ndpoly":
         """
         Class constructor.
@@ -173,7 +172,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         """
         exponents = numpy.array(exponents, dtype=numpy.uint32)
         if numpy.prod(exponents.shape):
-            keys = (exponents+cls.KEY_OFFSET).flatten()
+            keys = (exponents + cls.KEY_OFFSET).flatten()
             keys = keys.view(f"U{exponents.shape[-1]}")
             keys = numpy.array(keys, dtype=f"U{exponents.shape[-1]}")
         else:
@@ -183,23 +182,22 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         dtype = int if dtype is None else dtype
         dtype_ = numpy.dtype([(key, dtype) for key in keys])
 
-        obj = super(ndpoly, cls).__new__(
-            cls, shape=shape, dtype=dtype_, **kwargs)
+        obj = super(ndpoly, cls).__new__(cls, shape=shape, dtype=dtype_, **kwargs)
 
         if allocation is None:
-            allocation = 2*len(keys)
-        assert isinstance(allocation, int) and allocation >= len(keys), (
-            "Not enough memory allocated; increase 'allocation'")
+            allocation = 2 * len(keys)
+        assert isinstance(allocation, int) and allocation >= len(
+            keys
+        ), "Not enough memory allocated; increase 'allocation'"
         if allocation > len(keys):
-            allocation_ = numpy.arange(allocation-len(keys), len(keys))
+            allocation_ = numpy.arange(allocation - len(keys), len(keys))
             allocation_ = [str(s) for s in allocation_]
             keys = numpy.concatenate([keys, allocation_])
         obj.allocation = allocation
 
         if names is None:
             names = numpoly.get_options()["default_varname"]
-            obj.names = numpoly.symbols(
-                f"{names}:{exponents.shape[-1]}").names
+            obj.names = numpoly.symbols(f"{names}:{exponents.shape[-1]}").names
         elif isinstance(names, str):
             obj.names = numpoly.symbols(names).names
         elif isinstance(names, ndpoly):
@@ -209,7 +207,8 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         for name in obj.names:
             assert re.search(numpoly.get_options()["varname_filter"], name), (
                 "invalid polynomial name; "
-                f"expected format: {numpoly.get_options()['varname_filter']}")
+                f"expected format: {numpoly.get_options()['varname_filter']}"
+            )
 
         obj._dtype = numpy.dtype(dtype)  # pylint: disable=protected-access
         obj.keys = keys
@@ -254,20 +253,23 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
         logger = logging.getLogger(__name__)
         fname = func.__name__
         if func not in numpoly.FUNCTION_COLLECTION:
-            raise FeatureNotSupported(
-                f"function '{fname}' not supported by numpoly.")
+            raise FeatureNotSupported(f"function '{fname}' not supported by numpoly.")
 
         # notify that numpy.save* works, but numpy.load* fails
         if fname in ("save", "savez", "savez_compressed"):
-            logger.warning(f"""\
+            logger.warning(
+                f"""\
 numpy.{fname} used to store numpoly.ndpoly (instead of numpoly.{fname}).
 This works, but restoring requires using numpoly.load, \
-as numpy.load will not work as expected.""")
+as numpy.load will not work as expected."""
+            )
         elif fname == "savetxt":
-            logger.warning(f"""\
+            logger.warning(
+                f"""\
 numpy.{fname} used to store numpoly.ndpoly (instead of numpoly.{fname}).
 This works, but restoring requires using numpoly.loadtxt, \
-as numpy.loadtxt will not work as expected.""")
+as numpy.loadtxt will not work as expected."""
+            )
         return numpoly.FUNCTION_COLLECTION[func](*args, **kwargs)
 
     # ======================================
@@ -319,7 +321,7 @@ as numpy.loadtxt will not work as expected.""")
 
         """
         exponents = self.keys.astype(f"U{len(self.names)}")
-        exponents = exponents.view(numpy.uint32)-self.KEY_OFFSET
+        exponents = exponents.view(numpy.uint32) - self.KEY_OFFSET
         if numpy.prod(exponents.shape):
             exponents = exponents.reshape(len(self.keys), -1)
         assert len(exponents) >= 0
@@ -328,13 +330,13 @@ as numpy.loadtxt will not work as expected.""")
 
     @staticmethod
     def from_attributes(
-            exponents: numpy.typing.ArrayLike,
-            coefficients: Sequence[numpy.typing.ArrayLike],
-            names: Union[None, str, Tuple[str, ...], "ndpoly"] = None,
-            dtype: Optional[numpy.typing.DTypeLike] = None,
-            allocation: Optional[int] = None,
-            retain_coefficients: Optional[bool] = None,
-            retain_names: Optional[bool] = None,
+        exponents: numpy.typing.ArrayLike,
+        coefficients: Sequence[numpy.typing.ArrayLike],
+        names: Union[None, str, Tuple[str, ...], "ndpoly"] = None,
+        dtype: Optional[numpy.typing.DTypeLike] = None,
+        allocation: Optional[int] = None,
+        retain_coefficients: Optional[bool] = None,
+        retain_names: Optional[bool] = None,
     ) -> "ndpoly":
         """
         Construct polynomial from polynomial attributes.
@@ -432,7 +434,7 @@ as numpy.loadtxt will not work as expected.""")
         return numpy.ndarray(
             shape=self.shape,
             dtype=[(key, self.dtype) for key in self.keys],
-            buffer=self.data
+            buffer=self.data,
         )
 
     def isconstant(self) -> bool:
@@ -470,9 +472,10 @@ as numpy.loadtxt will not work as expected.""")
             True
 
         """
-        return {tuple(exponent): coefficient
-                for exponent, coefficient in zip(
-                    self.exponents, self.coefficients)}
+        return {
+            tuple(exponent): coefficient
+            for exponent, coefficient in zip(self.exponents, self.coefficients)
+        }
 
     def tonumpy(self) -> numpy.ndarray:
         """
@@ -503,8 +506,9 @@ as numpy.loadtxt will not work as expected.""")
 
     def astype(self, dtype: Any, **kwargs: Any) -> "ndpoly":  # type: ignore
         """Wrap ndarray.astype."""
-        coefficients = [coefficient.astype(dtype, **kwargs)
-                        for coefficient in self.coefficients]
+        coefficients = [
+            coefficient.astype(dtype, **kwargs) for coefficient in self.coefficients
+        ]
         return numpoly.polynomial_from_attributes(
             exponents=self.exponents,
             coefficients=coefficients,
@@ -514,39 +518,42 @@ as numpy.loadtxt will not work as expected.""")
         )
 
     def diagonal(  # type: ignore
-        self, offset: int = 0, axis1: int = 0, axis2: int = 1,
+        self,
+        offset: int = 0,
+        axis1: int = 0,
+        axis2: int = 1,
     ) -> "ndpoly":
         """Wrap ndarray.diagonal."""
         return numpoly.diagonal(self, offset=offset, axis1=axis1, axis2=axis2)
 
     def round(  # type: ignore
-        self, decimals: int = 0, out: Optional["ndpoly"] = None,
+        self,
+        decimals: int = 0,
+        out: Optional["ndpoly"] = None,
     ) -> "ndpoly":
         """Wrap ndarray.round."""
         # Not sure why it is required. Likely a numpy bug.
         return numpoly.around(self, decimals=decimals, out=out)
 
     def max(  # type: ignore
-            self,
-            axis: Optional[numpy.typing.ArrayLike] = None,
-            out: Optional["ndpoly"] = None,
-            keepdims: bool = False,
-            **kwargs: Any,
+        self,
+        axis: Optional[numpy.typing.ArrayLike] = None,
+        out: Optional["ndpoly"] = None,
+        keepdims: bool = False,
+        **kwargs: Any,
     ) -> "ndpoly":
         """Wrap ndarray.max."""
-        return numpoly.max(self, axis=axis, out=out,
-                           keepdims=keepdims, **kwargs)
+        return numpoly.max(self, axis=axis, out=out, keepdims=keepdims, **kwargs)
 
     def min(  # type: ignore
-            self,
-            axis: Optional[numpy.typing.ArrayLike] = None,
-            out: Optional["ndpoly"] = None,
-            keepdims: bool = False,
-            **kwargs: Any,
+        self,
+        axis: Optional[numpy.typing.ArrayLike] = None,
+        out: Optional["ndpoly"] = None,
+        keepdims: bool = False,
+        **kwargs: Any,
     ) -> "ndpoly":
         """Wrap ndarray.min."""
-        return numpoly.min(self, axis=axis, out=out,
-                           keepdims=keepdims, **kwargs)
+        return numpoly.min(self, axis=axis, out=out, keepdims=keepdims, **kwargs)
 
     def mean(  # type: ignore
         self,
@@ -574,9 +581,9 @@ as numpy.loadtxt will not work as expected.""")
     # ============================================================
 
     def __call__(
-            self,
-            *args: "PolyLike",
-            **kwargs: "PolyLike",
+        self,
+        *args: "PolyLike",
+        **kwargs: "PolyLike",
     ) -> Union[numpy.ndarray, "ndpoly"]:
         """
         Evaluate polynomial by inserting new values in to the indeterminants.
@@ -660,11 +667,14 @@ as numpy.loadtxt will not work as expected.""")
     def __iter__(self) -> Iterator["ndpoly"]:
         """Iterate polynomial array."""
         coefficients = numpy.array(list(self.coefficients))
-        return iter(numpoly.polynomial_from_attributes(
-            exponents=self.exponents,
-            coefficients=coefficients[:, idx],
-            names=self.names,
-        ) for idx in range(len(self)))
+        return iter(
+            numpoly.polynomial_from_attributes(
+                exponents=self.exponents,
+                coefficients=coefficients[:, idx],
+                names=self.names,
+            )
+            for idx in range(len(self))
+        )
 
     def __ne__(self, other: object) -> numpy.ndarray:  # type: ignore
         """Not equal."""
@@ -712,9 +722,17 @@ as numpy.loadtxt will not work as expected.""")
 
     def __reduce__(self) -> Tuple[Callable, Tuple]:
         """Extract state to be pickled."""
-        return (numpoly.polynomial_from_attributes,
-                (self.exponents, self.coefficients, self.names,
-                 self.dtype, self.allocation, False))
+        return (
+            numpoly.polynomial_from_attributes,
+            (
+                self.exponents,
+                self.coefficients,
+                self.names,
+                self.dtype,
+                self.allocation,
+                False,
+            ),
+        )
 
 
 PolyLike = Union[numpy.typing.ArrayLike, ndpoly]

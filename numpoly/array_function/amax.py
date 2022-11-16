@@ -66,7 +66,8 @@ def amax(
     a = numpoly.aspolynomial(a)
     options = numpoly.get_options()
     proxy = numpoly.sortable_proxy(
-        a, graded=options["sort_graded"], reverse=options["sort_reverse"])
+        a, graded=options["sort_graded"], reverse=options["sort_reverse"]
+    )
     indices = numpy.amax(proxy, axis=axis, **kwargs)
     out = a[numpy.isin(proxy, indices)]
     out = out[numpy.argsort(indices.ravel())]
