@@ -139,8 +139,12 @@ Development
 Installing ``numpoly`` for development can
 be done from the repository root with the command::
 
+    pip install -e .[dev]
+
+The deployment of the code is done with Python 3.10 and dependencies are then
+fixed using::
+
     pip install -r requirements-dev.txt
-    pip install -e .
 
 Testing
 -------
