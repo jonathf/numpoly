@@ -39,10 +39,10 @@ def array_str(
             numbers smaller (in absolute value) than 5e-9 are represented as
             zero. Defaults to ``numpy.get_printoptions()['suppress']``.
 
-    Returns:
+    Return:
         The string representation of an array.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.array_str(numpoly.polynomial([1, q0]))
         '[1 q0]'

@@ -47,11 +47,11 @@ def maximum(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         The maximum of `x1` and `x2`, element-wise. This is a scalar if
         both `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.maximum(3, 4)
         polynomial(4)

@@ -36,10 +36,10 @@ def outer(
         out:
             A location where the result is stored.
 
-    Returns:
+    Return:
         ``out[i, j] = a[i] * b[j]``
 
-    Examples:
+    Example:
         >>> poly = numpoly.variable(3)
         >>> const = numpy.arange(5)
         >>> numpoly.outer(poly, const)

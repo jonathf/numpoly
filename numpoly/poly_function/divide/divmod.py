@@ -26,7 +26,7 @@ def poly_divmod(
     because it avoids redundant work. It is used to implement the Python
     built-in function ``divmod`` on Numpoly arrays.
 
-    Notes:
+    Note:
         Unlike numbers, this returns the polynomial division and polynomial
         remainder. This means that this function is _not_ backwards compatible
         with ``numpy.divmod`` for constants. For example:
@@ -54,11 +54,11 @@ def poly_divmod(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         Element-wise quotient and remainder resulting from floor division. This
         is a scalar if both `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> denominator = [q0*q1**2+2*q0**3*q1**2, -2+q0*q1**2]
         >>> numerator = -2+q0*q1**2
@@ -128,7 +128,7 @@ def get_division_candidate(
             Threshold for when a value is so small that it is no longer a valid
             candidate. Required to avoid infinity loops in some edge cases.
 
-    Returns:
+    Return:
         Indices to the exponent candidate in respectively `x1` and `x2`
         that should be used in the divide process, and an boolean array to
         indicate for which coefficients these candidates are valid.

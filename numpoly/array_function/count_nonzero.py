@@ -27,11 +27,11 @@ def count_nonzero(
             None, meaning that non-zeros will be counted along a flattened
             version of a.
 
-    Returns:
+    Return:
         Number of non-zero values in the array along a given axis. Otherwise,
         the total number of non-zero values in the array is returned.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.count_nonzero([q0])
         1

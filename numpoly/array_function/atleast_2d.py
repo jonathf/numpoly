@@ -20,12 +20,12 @@ def atleast_2d(*arys: PolyLike) -> Union[ndpoly, List[ndpoly]]:
             to arrays. Arrays that already have two or more dimensions are
             preserved.
 
-    Returns:
+    Return:
         An array, or list of arrays, each with ``a.ndim >= 2``. Copies are
         avoided where possible, and views with two or more dimensions are
         returned.
 
-    Examples:
+    Example:
         >>> numpoly.atleast_2d(numpoly.variable())
         polynomial([[q0]])
         >>> numpoly.atleast_2d(1, [2], [[3]])

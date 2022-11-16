@@ -81,21 +81,21 @@ def choose(
               * 'wrap': value becomes value mod `n`.
               * 'clip': values<0 are mapped to 0, values>n-1 are mapped to n-1.
 
-    Returns:
+    Return:
         The merged result.
 
-    Raises:
+    Raise:
         ValueError: shape mismatch
             If `a` and each choice array are not all broadcastable to the same
             shape.
 
-    Notes:
+    Note:
         To reduce the chance of misinterpretation, even though the following
         "abuse" is nominally supported, `choices` should neither be, nor be
         thought of as, a single array, i.e., the outermost sequence-like
         container should be either a list or a tuple.
 
-    Examples:
+    Example:
         >>> poly1 = numpoly.monomial(3, dimensions="q0")
         >>> poly2 = numpoly.monomial(3, dimensions="q1")
         >>> choices = numpoly.outer(poly1, poly2)

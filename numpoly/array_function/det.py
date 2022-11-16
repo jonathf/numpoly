@@ -18,14 +18,14 @@ def det(a: PolyLike) -> ndpoly:
             Input array to compute determinants for.
             Shape on form `(..., M, M)`.
 
-    Returns:
+    Return:
         Determinant of `a`. Shape `(...)`.
 
-    Notes:
+    Note:
         Broadcasting rules apply, see the `numpy.linalg` documentation for
         details.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> a = numpoly.polynomial([[[1, 2], [3, 4]], [[1, q0], [q1, 1]]])
         >>> numpoly.det(a)

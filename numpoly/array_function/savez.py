@@ -35,7 +35,7 @@ def savez(file: PathLike, *args: PolyLike, **kwargs: PolyLike) -> None:
             Arrays to save to the file. Arrays will be saved in the file with
             the keyword names.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([q0, q1-1])
         >>> array = numpy.array([1, 2])

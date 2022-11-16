@@ -32,11 +32,11 @@ def sortable_proxy(
             Reverses lexicographical sorting meaning that ``q0*q1**3`` is
             considered bigger than ``q0**3*q1``, instead of the opposite.
 
-    Returns:
+    Return:
         Integer array where ``a > b`` is retained for the giving rule of
         ``ordering``.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial(
         ...     [q0**2, 2*q0, 3*q1, 4*q0, 5])

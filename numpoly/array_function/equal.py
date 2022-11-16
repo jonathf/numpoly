@@ -42,12 +42,12 @@ def equal(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         Output array, element-wise comparison of `x1` and `x2`. Typically of
         type bool, unless ``dtype=object`` is passed. This is a scalar if both
         `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> q0, q1, q2 = q0q1q2 = numpoly.variable(3)
         >>> numpoly.equal(q0q1q2, q0)
         array([ True, False, False])

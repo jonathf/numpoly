@@ -38,10 +38,10 @@ def symbols(
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
 
-    Returns:
+    Return:
         Polynomial array with unit components in each dimension.
 
-    Examples:
+    Example:
         >>> numpoly.symbols()
         polynomial(q0)
         >>> numpoly.symbols("q4")

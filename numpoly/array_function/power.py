@@ -41,11 +41,11 @@ def power(x1: PolyLike, x2: PolyLike, **kwargs: Any) -> ndpoly:
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         The bases in `x1` raised to the exponents in `x2`.
         This is a scalar if both `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> (q0+1)**3
         polynomial(q0**3+3*q0**2+3*q0+1)

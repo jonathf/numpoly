@@ -20,21 +20,21 @@ def roots(poly: PolyLike) -> numpy.ndarray:
             Polynomial to take roots of, or if constant, the coefficients of
             said polynomial. This to be compatible with :func:`numpy.roots`.
 
-    Returns:
+    Return:
         An array containing the roots of the polynomial.
 
-    Raises:
+    Raise:
         ValueError:
             When `poly` cannot be converted to a rank-1 polynomial.
 
-    Notes:
+    Note:
         The algorithm relies on computing the eigenvalues of the companion
         matrix [1]_.
 
     .. [1] R. A. Horn & C. R. Johnson, *Matrix Analysis*.  Cambridge, UK:
         Cambridge University Press, 1999, pp. 146-7.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> poly = 3.2*q0**2+2*q0+1
         >>> numpoly.roots(poly)

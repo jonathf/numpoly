@@ -22,10 +22,10 @@ def vsplit(
     to ``split`` with `axis=0` (default), the array is always split along the
     first axis regardless of the array dimension.
 
-    See Also:
+    Note:
         split : Split an array into multiple sub-arrays of equal size.
 
-    Examples:
+    Example:
         >>> poly = numpoly.monomial(8).reshape(4, 2)
         >>> poly
         polynomial([[1, q0],

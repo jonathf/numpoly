@@ -48,11 +48,11 @@ def remainder(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
         This is a scalar if both `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> numpoly.remainder([14, 7], 5)
         polynomial([4, 2])
         >>> numpoly.remainder(numpoly.variable(), 2)  # doctest: +IGNORE_EXCEPTION_DETAIL

@@ -15,14 +15,14 @@ def tonumpy(poly: PolyLike) -> numpy.ndarray:
         poly:
             polynomial to cast.
 
-    Returns:
+    Return:
         Numpy array.
 
-    Raises:
+    Raise:
         numpoly.baseclass.FeatureNotSupported:
             Only constant polynomials can be cast to numpy.ndarray.
 
-    Examples:
+    Example:
         >>> numpoly.tonumpy(numpoly.polynomial([1, 2]))
         array([1, 2])
 

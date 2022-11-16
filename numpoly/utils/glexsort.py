@@ -26,10 +26,10 @@ def glexsort(
             Reverse lexicographical sorting meaning that ``(1, 3)`` is
             considered smaller than ``(3, 1)``, instead of the opposite.
 
-    Returns:
+    Return:
         Array of indices that sort the keys along the specified axis.
 
-    Examples:
+    Example:
         >>> indices = numpy.array([[0, 0, 0, 1, 2, 1],
         ...                        [1, 2, 0, 0, 0, 1]])
         >>> indices[:, numpy.lexsort(indices)]

@@ -34,10 +34,10 @@ def clean_attributes(
         retain_names:
             Do not remove redundant names. If omitted use global defaults.
 
-    Returns:
+    Return:
         Same as `poly`, but with attributes cleaned up.
 
-    Examples:
+    Example:
         >>> q0, _ = numpoly.align_polynomials(*numpoly.variable(2))
         >>> q0.indeterminants
         polynomial([q0, q1])
@@ -90,7 +90,7 @@ def postprocess_attributes(
         retain_names:
             Do not remove redundant names. If omitted use global defaults.
 
-    Returns:
+    Return:
         Same as inputs `exponents`, `coefficients` and `names`, but
         post-processed.
 
@@ -163,11 +163,11 @@ def remove_redundant_coefficients(
             The polynomial coefficients. Must correspond to `exponents` by
             having the same length ``N``.
 
-    Returns:
+    Return:
         Same as inputs, but with redundant exponent rows and coefficients
         removed. This corresponds to ``N`` being lowered.
 
-    Examples:
+    Example:
         >>> exponents, coefficients = remove_redundant_coefficients(
         ...     [[0, 0], [0, 1]], [1, 2])
         >>> exponents
@@ -224,11 +224,11 @@ def remove_redundant_names(
             simple polynomials. Must correspond to the exponents by having
             length ``D``.
 
-    Returns:
+    Return:
         Same as inputs, but with redundant exponent columns and names removed.
         This corresponds to ``D`` being lowered.
 
-    Examples:
+    Example:
         >>> exponents, names = remove_redundant_names(
         ...     [[0, 0], [1, 1]], ["q0", "q1"])
         >>> exponents

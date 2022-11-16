@@ -42,11 +42,11 @@ def not_equal(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         Output array, element-wise comparison of `x1` and `x2`.
         Typically of type bool, unless ``dtype=object`` is passed.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.not_equal([q0, q0], [q0, q1])
         array([False,  True])

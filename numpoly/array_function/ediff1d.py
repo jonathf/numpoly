@@ -27,10 +27,10 @@ def ediff1d(
             Polynomial(s) to prepend at the beginning of the returned
             differences.
 
-    Returns:
+    Return:
         The differences. Loosely, this is ``ary.flat[1:] - ary.flat[:-1]``.
 
-    Examples:
+    Example:
         >>> poly = numpoly.monomial(4)
         >>> poly
         polynomial([1, q0, q0**2, q0**3])

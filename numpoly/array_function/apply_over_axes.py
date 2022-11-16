@@ -35,12 +35,12 @@ def apply_over_axes(
         axes:
             Axes over which `func` is applied; the elements must be integers.
 
-    Returns:
+    Return:
         The output array.  The number of dimensions is the same as `a`, but
         the shape can be different.  This depends on whether `func` changes
         the shape of its output with respect to its input.
 
-    Examples:
+    Example:
         >>> polynomial = numpy.arange(24).reshape(2, 4, 3)
         >>> polynomial = polynomial*numpoly.variable(3)
         >>> numpoly.apply_over_axes(

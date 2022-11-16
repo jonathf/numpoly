@@ -32,16 +32,16 @@ def matmul(
             have a shape that matches the signature `(n,k),(k,m)->(n,m)`.
             If not provided or `None`, a freshly-allocated array is returned.
 
-    Returns:
+    Return:
         The matrix product of the inputs. This is a scalar only when both
         x1, x2 are 1-d vectors.
 
-    Raises:
+    Raise:
         ValueError:
             If the last dimension of `x1` is not the same size as
             the second-to-last dimension of `x2`.
 
-    Examples:
+    Example:
         >>> poly = numpoly.variable(4).reshape(2, 2)
         >>> poly
         polynomial([[q0, q1],

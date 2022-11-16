@@ -46,10 +46,10 @@ def polynomial_from_attributes(
         retain_names:
             Do not remove redundant names. If omitted use global defaults.
 
-    Returns:
+    Return:
         Polynomial array with attributes determined by the input.
 
-    Examples:
+    Example:
         >>> numpoly.ndpoly.from_attributes(
         ...     exponents=[(0,), (1,)],
         ...     coefficients=[[1, 0], [0, 1]],

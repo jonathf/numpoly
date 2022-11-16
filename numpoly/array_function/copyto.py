@@ -42,7 +42,7 @@ def copyto(
             of `dst`, and selects elements to copy from `src` to `dst`
             wherever it contains the value True.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> poly1 = numpoly.polynomial([1, q0**2, q0])
         >>> poly2 = numpoly.polynomial([2, q0, 3])

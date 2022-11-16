@@ -37,11 +37,11 @@ def square(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         Element-wise `x*x`, of the same shape and dtype as `x`.
         This is a scalar if `x` is a scalar.
 
-    Examples:
+    Example:
         >>> numpoly.square([1j, 1])
         polynomial([(-1+0j), (1+0j)])
         >>> poly = numpoly.sum(numpoly.variable(2))

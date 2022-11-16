@@ -43,11 +43,11 @@ def glexindex(
             Reversed lexicographical sorting meaning that ``(1, 3)`` is
             considered smaller than ``(3, 1)``, instead of the opposite.
 
-    Returns:
+    Return:
         list:
             Order list of indices.
 
-    Examples:
+    Example:
         >>> numpoly.glexindex(4).tolist()
         [[0], [1], [2], [3]]
         >>> numpoly.glexindex(2, dimensions=2).tolist()

@@ -40,12 +40,12 @@ def greater_equal(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         Output array, element-wise comparison of `x1` and `x2`. Typically of
         type bool, unless ``dtype=object`` is passed. This is a scalar if both
         `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.greater_equal(3, 4)
         False

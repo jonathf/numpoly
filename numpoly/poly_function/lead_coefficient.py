@@ -31,11 +31,11 @@ def lead_coefficient(
             Reverses lexicographical sorting meaning that ``q0*q1**3`` is
             considered bigger than ``q0**3*q1``, instead of the opposite.
 
-    Returns:
+    Return:
         Array of same shape and type as `poly`, containing all the lead
         coefficients.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.lead_coefficient(q0+2*q0**2+3*q0**3)
         3

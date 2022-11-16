@@ -25,10 +25,10 @@ def array_split(
     l that should be split into n sections, it returns l % n sub-arrays of size
     l//n + 1 and the rest of size l//n.
 
-    See Also:
+    Note:
         split : Split an array into multiple sub-arrays of equal size.
 
-    Examples:
+    Example:
         >>> poly = numpoly.monomial(8).reshape(2, 4)
         >>> poly
         polynomial([[1, q0, q0**2, q0**3],

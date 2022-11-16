@@ -69,7 +69,7 @@ class ndpoly(numpy.ndarray):  # pylint: disable=invalid-name
     be consider using construction functions like `variable`, `monomial`,
     `polynomial`, etc.
 
-    Examples:
+    Example:
         >>> poly = ndpoly(
         ...     exponents=[(0, 1), (0, 0)], shape=(3,))
         >>> poly.values[";<"] = 4, 5, 6
@@ -283,7 +283,7 @@ as numpy.loadtxt will not work as expected."""
 
         Together with exponents defines the polynomial form.
 
-        Examples:
+        Example:
             >>> q0, q1 = numpoly.variable(2)
             >>> poly = numpoly.polynomial([2*q0**4, -3*q1**2+14])
             >>> poly
@@ -309,7 +309,7 @@ as numpy.loadtxt will not work as expected."""
         2-dimensional where the first axis is the same length as coefficients
         and the second is the length of the indeterminant names.
 
-        Examples:
+        Example:
             >>> q0, q1 = numpoly.variable(2)
             >>> poly = numpoly.polynomial([2*q0**4, -3*q1**2+14])
             >>> poly
@@ -366,10 +366,10 @@ as numpy.loadtxt will not work as expected."""
             retain_names:
                 Do not remove redundant names. If omitted use global defaults.
 
-        Returns:
+        Return:
             Polynomials with attributes defined by input.
 
-        Examples:
+        Example:
             >>> numpoly.ndpoly.from_attributes(
             ...     exponents=[[0]], coefficients=[4])
             polynomial(4)
@@ -402,7 +402,7 @@ as numpy.loadtxt will not work as expected."""
         Secondary polynomial only consisting of an array of simple independent
         variables found in the polynomial array.
 
-        Examples:
+        Example:
             >>> q0, q1 = numpoly.variable(2)
             >>> poly = numpoly.polynomial([2*q0**4, -3*q1**2+14])
             >>> poly
@@ -424,7 +424,7 @@ as numpy.loadtxt will not work as expected."""
 
         Typically used for operator dispatching and not for use to conversion.
 
-        Examples:
+        Example:
             >>> numpoly.variable(1).values
             array((1,), dtype=[('<', '<i8')])
             >>> numpoly.variable(2).values
@@ -441,10 +441,10 @@ as numpy.loadtxt will not work as expected."""
         """
         Check if a polynomial is constant or not.
 
-        Returns:
+        Return:
             True if all elements in array are constant.
 
-        Examples:
+        Example:
             >>> q0 = numpoly.variable()
             >>> q0.isconstant()
             False
@@ -460,10 +460,10 @@ as numpy.loadtxt will not work as expected."""
         """
         Cast to dict where keys are exponents and values are coefficients.
 
-        Returns:
+        Return:
             Dictionary where keys are exponents and values are coefficients.
 
-        Examples:
+        Example:
             >>> q0, q1 = numpoly.variable(2)
             >>> poly = 2*q0**4-3*q1**2+14
             >>> poly
@@ -481,14 +481,14 @@ as numpy.loadtxt will not work as expected."""
         """
         Cast polynomial to numpy.ndarray, if possible.
 
-        Returns:
+        Return:
             Same as object, but cast to `numpy.ndarray`.
 
-        Raises:
+        Raise:
             numpoly.baseclass.FeatureNotSupported:
                 When polynomial include indeterminats, casting to numpy.
 
-        Examples:
+        Example:
             >>> numpoly.polynomial([1, 2]).tonumpy()
             array([1, 2])
 
@@ -595,11 +595,11 @@ as numpy.loadtxt will not work as expected."""
             kwargs:
                 Same as ``args``, but positioned by name.
 
-        Returns:
+        Return:
             Evaluated polynomial. If the resulting array does not contain any
             indeterminants, an array is returned instead of a polynomial.
 
-        Examples:
+        Example:
             >>> q0, q1 = numpoly.variable(2)
             >>> poly = numpoly.polynomial(
             ...     [[q0, q0-1], [q1, q1+q0]])
@@ -625,10 +625,10 @@ as numpy.loadtxt will not work as expected."""
             index:
                 The index to extract.
 
-        Returns:
+        Return:
             Polynomial array element.
 
-        Examples:
+        Example:
             >>> q0, q1 = numpoly.variable(2)
             >>> poly = numpoly.polynomial([[1-4*q0, q0**2], [q1-3, q0*q1*q1]])
             >>> poly

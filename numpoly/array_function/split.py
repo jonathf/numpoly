@@ -40,15 +40,15 @@ def split(
         axis:
             The axis along which to split, default is 0.
 
-    Returns:
+    Return:
         A list of sub-arrays.
 
-    Raises:
+    Raise:
         ValueError:
             If `indices_or_sections` is given as an integer, but a split does
             not result in equal division.
 
-    See Also:
+    Note:
         array_split:
             Split an array into multiple sub-arrays of equal or near-equal
             size. Does not raise an exception if an equal division cannot be
@@ -60,7 +60,7 @@ def split(
         dsplit:
             Split array into multiple sub-arrays along the 3rd axis (depth).
 
-    Examples:
+    Example:
         >>> poly = numpoly.monomial(16).reshape(4, 4)
         >>> poly
         polynomial([[1, q0, q0**2, q0**3],

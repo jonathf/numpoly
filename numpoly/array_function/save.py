@@ -41,7 +41,7 @@ def save(
             names used in Python 2, so that the pickle data stream is readable
             with Python 2.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([1, q0, q1**2-1])
         >>> numpoly.save("/tmp/example1.npy", poly)

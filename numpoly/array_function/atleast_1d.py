@@ -21,11 +21,11 @@ def atleast_1d(*arys: PolyLike) -> Union[ndpoly, List[ndpoly]]:
         arys:
             One or more input arrays.
 
-    Returns:
+    Return:
         An array, or list of arrays, each with ``a.ndim >= 1``.
         Copies are made only if necessary.
 
-    Examples:
+    Example:
         >>> numpoly.atleast_1d(numpoly.variable())
         polynomial([q0])
         >>> numpoly.atleast_1d(1, [2, 3])

@@ -33,15 +33,15 @@ def argmin(
             If provided, the result will be inserted into this array. It should
             be of the appropriate shape and dtype.
 
-    Returns:
+    Return:
         Array of indices into the array. It has the same shape as `a.shape`
         with the dimension along `axis` removed.
 
-    Notes:
+    Note:
         In case of multiple occurrences of the minimum values, the
         indices corresponding to the first occurrence are returned.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.argmin([13, 7])
         1

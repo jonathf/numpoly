@@ -38,12 +38,12 @@ def isclose(
             Whether to compare NaN's as equal.  If True, NaN's in `a` will be
             considered equal to NaN's in `b` in the output array.
 
-    Returns:
+    Return:
         Returns a boolean array of where `a` and `b` are equal within the
         given tolerance. If both `a` and `b` are scalars, returns a single
         boolean value.
 
-    Notes:
+    Note:
         For finite values, isclose uses the following equation to test whether
         two floating point values are equivalent.
 
@@ -59,7 +59,7 @@ def isclose(
         `atol` should be carefully selected for the use case at hand. A zero
         value for `atol` will result in `False` if either `a` or `b` is zero.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.isclose([1e10*q0, 1e-7], [1.00001e10*q0, 1e-8])
         array([ True, False])

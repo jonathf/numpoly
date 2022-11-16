@@ -42,11 +42,11 @@ def multiply(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         The product of `x1` and `x2`, element-wise. This is a scalar if
         both `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> poly = numpy.arange(9.0).reshape((3, 3))
         >>> q0q1q2 = numpoly.variable(3)
         >>> numpoly.multiply(poly, q0q1q2)

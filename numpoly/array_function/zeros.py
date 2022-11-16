@@ -38,10 +38,10 @@ def zeros(
             (C-style) or column-major (Fortran-style) order in
             memory.
 
-    Returns:
+    Return:
         Array of zeros with the given shape, dtype, and order.
 
-    Examples:
+    Example:
         >>> numpoly.zeros(5)
         polynomial([0.0, 0.0, 0.0, 0.0, 0.0])
 

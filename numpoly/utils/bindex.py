@@ -47,10 +47,10 @@ def bindex(
             truncation, while the latter upper bound. If only one value, upper
             bound is assumed.
 
-    Returns:
+    Return:
         Order indices.
 
-    Examples:
+    Example:
         >>> numpoly.bindex(4).tolist()
         [[0], [1], [2], [3]]
         >>> numpoly.bindex(2, dimensions=2).tolist()

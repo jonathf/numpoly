@@ -33,10 +33,10 @@ def stack(
             correct, matching that of what stack would have returned if no out
             argument were specified.
 
-    Returns:
+    Return:
         The stacked array has one more dimension than the input arrays.
 
-    Examples:
+    Example:
         >>> poly = numpoly.variable(3)
         >>> const = numpoly.polynomial([1, 2, 3])
         >>> numpoly.stack([poly, const])

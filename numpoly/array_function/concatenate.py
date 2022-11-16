@@ -30,10 +30,10 @@ def concatenate(
             correct, matching that of what concatenate would have returned if
             no out argument were specified.
 
-    Returns:
+    Return:
         The concatenated array.
 
-    Examples:
+    Example:
         >>> const = numpy.array([[1, 2], [3, 4]])
         >>> poly = numpoly.variable(2).reshape(1, 2)
         >>> numpoly.concatenate((const, poly), axis=0)

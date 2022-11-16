@@ -26,11 +26,11 @@ def cross_truncate(
         norm:
             The `p` in the `L_p`-norm. Support includes both `L_0` and `L_inf`.
 
-    Returns:
+    Return:
         Boolean indices to ``indices`` with True for each index where the
         truncation criteria holds.
 
-    Examples:
+    Example:
         >>> indices = numpy.array(numpy.mgrid[:10, :10]).reshape(2, -1).T
         >>> indices[cross_truncate(indices, 2, norm=0.)].T
         array([[0, 0, 0, 1, 2],

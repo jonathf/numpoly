@@ -47,12 +47,12 @@ def reshape(
             / write the elements in Fortran-like index order if `a` is Fortran
             *contiguous* in memory, C-like order otherwise.
 
-    Returns:
+    Return:
         This will be a new view object if possible; otherwise, it will be a
         copy.  Note there is no guarantee of the *memory layout* (C- or
         Fortran- contiguous) of the returned array.
 
-    Examples:
+    Example:
         >>> numpoly.reshape([1, 2, 3, 4], (2, 2))
         polynomial([[1, 2],
                     [3, 4]])

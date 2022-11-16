@@ -20,14 +20,14 @@ def atleast_3d(*arys: PolyLike) -> Union[ndpoly, List[ndpoly]]:
             to arrays. Arrays that already have three or more dimensions are
             preserved.
 
-    Returns:
+    Return:
         An array, or list of arrays, each with ``a.ndim >= 3``.  Copies are
         avoided where possible, and views with three or more dimensions are
         returned.  For example, a 1-D array of shape ``(N,)`` becomes a view of
         shape ``(1, N, 1)``, and a 2-D array of shape ``(M, N)`` becomes a view
         of shape ``(M, N, 1)``.
 
-    Examples:
+    Example:
         >>> numpoly.atleast_3d(numpoly.variable())
         polynomial([[[q0]]])
         >>> a, b = numpoly.atleast_3d(1, [2, 3])

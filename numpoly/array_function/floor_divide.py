@@ -53,16 +53,16 @@ def floor_divide(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         This is a scalar if both `x1` and `x2` are scalars.
 
-    Raises:
+    Raise:
         ValueError:
             If `x2` contains indeterminants, numerical division is no longer
             possible and an error is raised instead. For polynomial
             division see ``numpoly.poly_divide``.
 
-    Examples:
+    Example:
         >>> numpoly.floor_divide([1, 3, 5], 2)
         polynomial([0, 1, 2])
         >>> poly = [1, 2, 4]*numpoly.variable(3)

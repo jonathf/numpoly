@@ -17,11 +17,11 @@ def decompose(poly: PolyLike) -> ndpoly:
         poly:
             Polynomial to decompose.
 
-    Returns:
+    Return:
         Decomposed polynomial with ``poly.shape==(M,)+output.shape``,
         where ``M`` is the number of components in `poly`.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> poly = numpoly.polynomial([q0**2-1, 2])
         >>> poly

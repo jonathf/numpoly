@@ -51,10 +51,10 @@ def monomial(
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
 
-    Returns:
+    Return:
         Monomial expansion.
 
-    Examples:
+    Example:
         >>> numpoly.monomial(4)
         polynomial([1, q0, q0**2, q0**3])
         >>> numpoly.monomial(start=4, stop=5, dimensions=2,

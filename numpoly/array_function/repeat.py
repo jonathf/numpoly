@@ -28,11 +28,11 @@ def repeat(
             The axis along which to repeat values. By default, use the
             flattened input array, and return a flat output array.
 
-    Returns:
+    Return:
         Output array which has the same shape as `a`, except along the
         given axis.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.repeat(q0, 4)
         polynomial([q0, q0, q0, q0])

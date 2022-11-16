@@ -38,7 +38,7 @@ def diagonal(
             Axis to be used as the second axis of the 2-D sub-arrays from
             which the diagonals should be taken. Defaults to second axis (1).
 
-    Returns:
+    Return:
         If `a` is 2-D, then a 1-D array containing the diagonal and of the same
         type as `a` is returned unless `a` is a `matrix`, in which case a 1-D
         array rather than a (2-D) `matrix` is returned in order to maintain
@@ -48,11 +48,11 @@ def diagonal(
         are removed, and a new axis inserted at the end corresponding to the
         diagonal.
 
-    Raises:
+    Raise:
         ValueError:
             If the dimension of `a` is less than 2.
 
-    Examples:
+    Example:
         >>> poly = numpoly.monomial(9).reshape(3, 3)
         >>> poly
         polynomial([[1, q0, q0**2],

@@ -55,14 +55,14 @@ def apply_along_axis(
         kwargs:
             Additional named arguments to `func1d`.
 
-    Returns:
+    Return:
         The output array. The shape of `out` is identical to the shape of
         `arr`, except along the `axis` dimension. This axis is removed, and
         replaced with new dimensions equal to the shape of the return value of
         `func1d`. So if `func1d` returns a scalar `out` will have one fewer
         dimensions than `arr`.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> b = numpoly.polynomial([[1, 2, 3*q0],
         ...                         [3, 6*q1, 6],

@@ -52,11 +52,11 @@ def prod(
         where : array_like of bool, optional
             Elements to include in the product.
 
-    Returns:
+    Return:
         An array shaped as `a` but with the specified axis removed.
         Returns a reference to `out` if specified.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([[[1, q0, q0**2],
         ...                             [q0+q1, q1, q1]]])
@@ -108,7 +108,7 @@ def _prod(a: ndpoly, axis: int) -> ndpoly:
         axis:
             The axis to take product over.
 
-    Returns:
+    Return:
         An array shaped as `a` but with the specified axis removed.
 
     """

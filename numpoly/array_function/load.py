@@ -48,11 +48,11 @@ def load(
             'latin1', 'ASCII', and 'bytes' are not allowed, as they can corrupt
             numerical data.
 
-    Returns:
+    Return:
         Data stored in the file. For ``.npz`` files, the returned dictionary
         class must be closed to avoid leaking file descriptors.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([q0, q1-1])
         >>> array = numpy.array([1, 2])

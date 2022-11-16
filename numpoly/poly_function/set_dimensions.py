@@ -19,11 +19,11 @@ def set_dimensions(poly: PolyLike, dimensions: Optional[int] = None) -> ndpoly:
             The dimensions of the output polynomial. If omitted, increase
             polynomial with one dimension.
 
-    Returns:
+    Return:
         Polynomials with no internal dimensions. Unless the new dim is smaller
         then `poly`'s dimensions, the polynomial should have the same content.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = q0*q1-q0**2
         >>> numpoly.set_dimensions(poly, 1)

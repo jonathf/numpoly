@@ -40,15 +40,15 @@ def isfinite(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         True where ``x`` is not positive infinity, negative infinity, or NaN;
         false otherwise. This is a scalar if `x` is a scalar.
 
-    Notes:
+    Note:
         Not a Number, positive infinity and negative infinity are considered to
         be non-finite.
 
-    Examples:
+    Example:
         >>> numpoly.isfinite(1)
         True
         >>> numpoly.isfinite(0)

@@ -52,16 +52,16 @@ def divmod(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         Element-wise quotient and remainder resulting from floor division.
 
-    Raises:
+    Raise:
         numpoly.baseclass.FeatureNotSupported:
             If either `x1` or `x2` contains indeterminants, numerical division
             is no longer possible and an error is raised instead. For
             polynomial division-remainder see ``numpoly.poly_divmod``.
 
-    Examples:
+    Example:
         >>> numpoly.divmod([1, 22, 444], 4)
         (polynomial([0, 5, 111]), polynomial([1, 2, 0]))
 

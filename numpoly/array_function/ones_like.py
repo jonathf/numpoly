@@ -48,10 +48,10 @@ def ones_like(
             dimensions is unchanged, will try to keep order, otherwise,
             order='C' is implied.
 
-    Returns:
+    Return:
         Array of ones with the same shape and type as `a`.
 
-    Examples:
+    Example:
         >>> poly = numpoly.monomial(3)
         >>> poly
         polynomial([1, q0, q0**2])

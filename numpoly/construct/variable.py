@@ -28,10 +28,10 @@ def variable(
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
 
-    Returns:
+    Return:
         Polynomial array with unit components in each dimension.
 
-    Examples:
+    Example:
         >>> numpoly.variable()
         polynomial(q0)
         >>> q0, q1, q2 = numpoly.variable(3)

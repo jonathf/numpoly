@@ -48,10 +48,10 @@ def poly_divide(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         This is a scalar if both `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> poly = numpoly.polynomial([14, q0**2-3])
         >>> numpoly.poly_divide(poly, 4)

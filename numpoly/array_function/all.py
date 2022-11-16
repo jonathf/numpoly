@@ -41,11 +41,11 @@ def all(
             in the result as dimensions with size one. With this option,
             the result will broadcast correctly against the input array.
 
-    Returns:
+    Return:
         A new boolean or array is returned unless `out` is specified, in which
         case a reference to `out` is returned.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.all(q0)
         True

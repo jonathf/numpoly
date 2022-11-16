@@ -25,11 +25,11 @@ def aspolynomial(
         dtype:
             Data type used for the polynomial coefficients.
 
-    Returns:
+    Return:
         Array interpretation of `poly_like`. No copy is performed if the input
         is already an ndpoly with matching indeterminants names and dtype.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.polynomial(q0) is q0
         False

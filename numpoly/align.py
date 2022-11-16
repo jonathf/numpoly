@@ -19,11 +19,11 @@ def align_polynomials(*polys: PolyLike) -> Tuple[ndpoly, ...]:
         polys:
             Polynomial to make adjustment to.
 
-    Returns:
+    Return:
         Same as ``polys``, but internal adjustments made to make them
         compatible for further operations.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> q0q1 = numpoly.variable(2)
         >>> q0
@@ -56,11 +56,11 @@ def align_shape(*polys: PolyLike) -> Tuple[ndpoly, ...]:
         polys:
             Polynomial to make adjustment to.
 
-    Returns:
+    Return:
         Same as ``polys``, but internal adjustments made to make them
         compatible for further operations.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly1 = 4*q0
         >>> poly2 = numpoly.polynomial([[2*q0+1, 3*q0-q1]])
@@ -103,11 +103,11 @@ def align_indeterminants(*polys: PolyLike) -> Tuple[ndpoly, ...]:
         polys:
             Polynomial to make adjustment to.
 
-    Returns:
+    Return:
         Same as ``polys``, but internal adjustments made to make them
         compatible for further operations.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> poly1 = numpoly.polynomial(2*q0+1)
         >>> q0, q1 = numpoly.variable(2)
@@ -169,11 +169,11 @@ def align_exponents(*polys: PolyLike) -> Tuple[ndpoly, ...]:
         polys:
             Polynomial to make adjustment to.
 
-    Returns:
+    Return:
         Same as ``polys``, but internal adjustments made to make them
         compatible for further operations.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly1 = q0*q1
         >>> poly2 = numpoly.polynomial([q0**5, q1**3-1])

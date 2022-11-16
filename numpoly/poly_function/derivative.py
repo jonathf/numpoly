@@ -18,10 +18,10 @@ def derivative(poly: PolyLike, *diffvars: Union[ndpoly, str, int]) -> ndpoly:
         diffvars:
             Singleton variables to take derivative off.
 
-    Returns:
+    Return:
         Same as ``poly`` but differentiated with respect to ``diffvars``.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([1, q0, q0*q1**2+1])
         >>> poly
@@ -76,11 +76,11 @@ def gradient(poly: PolyLike) -> ndpoly:
             Polynomial to differentiate. If polynomial vector is provided,
             the Jacobi-matrix is returned instead.
 
-    Returns:
+    Return:
         Same as ``poly`` but with an extra first dimensions, one for each
         variable in ``poly.indeterminants``, filled with gradient values.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> poly = 5*q0**5+4
         >>> numpoly.gradient(poly)
@@ -111,11 +111,11 @@ def hessian(poly: PolyLike) -> ndpoly:
         poly:
             Polynomial to differentiate.
 
-    Returns:
+    Return:
         Same as ``poly`` but with two extra dimensions, one for each
         variable in ``poly.indeterminants``, filled with Hessian values.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> poly = 5*q0**5+4
         >>> numpoly.hessian(poly)

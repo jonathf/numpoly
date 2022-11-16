@@ -29,11 +29,11 @@ def call(
         kwargs:
             Same as ``args``, but positioned by name.
 
-    Returns:
+    Return:
         Evaluated polynomial. If the resulting array does not contain any
         indeterminants, an array is returned instead of a polynomial.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([[q0, q0-1], [q1, q1+q0]])
         >>> numpoly.call(poly)

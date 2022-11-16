@@ -27,10 +27,10 @@ def moveaxis(
             Destination positions for each of the original axes. These must
             also be unique.
 
-    Returns:
+    Return:
         Array with moved axes. This array is a view of the input array.
 
-    Examples:
+    Example:
         >>> poly = numpoly.monomial(6).reshape(1, 2, 3)
         >>> numpoly.moveaxis(poly, 0, -1).shape
         (2, 3, 1)

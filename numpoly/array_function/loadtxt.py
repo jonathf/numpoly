@@ -89,10 +89,10 @@ def loadtxt(
             Read `max_rows` lines of content after `skiprows` lines. The
             default is to read all the lines.
 
-    Returns:
+    Return:
         Data read from the text file.
 
-    Examples:
+    Example:
         >>> q0, q1, q2 = numpoly.variable(3)
         >>> poly = numpoly.polynomial([[1, q0], [q0, q2**2-1]])
         >>> numpoly.savetxt("/tmp/poly.txt", poly)

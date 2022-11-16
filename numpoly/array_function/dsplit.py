@@ -22,7 +22,7 @@ def dsplit(
     to `split` with ``axis=2``, the array is always split along the third
     axis provided the array dimension is greater than or equal to 3.
 
-    Examples:
+    Example:
         >>> poly = numpoly.monomial(8).reshape(2, 2, 2)
         >>> poly
         polynomial([[[1, q0],

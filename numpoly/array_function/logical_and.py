@@ -41,12 +41,12 @@ def logical_and(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         Boolean result of the logical OR operation applied to the elements of
         `x1` and `x2`; the shape is determined by broadcasting. This is a
         scalar if both `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.logical_and(q0, 0)
         False

@@ -76,7 +76,7 @@ def simple_dispatch(
         kwargs:
             Keyword args passed to `numpy_func`.
 
-    Returns:
+    Return:
         Polynomial, where the coefficients from `input` are passed to
         `numpy_func` to create the output coefficients.
 

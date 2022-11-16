@@ -21,10 +21,10 @@ def diag(y: PolyLike, k: int = 0) -> ndpoly:
             Diagonal in question. Use `k > 0` for diagonals above the main
             diagonal, and `k < 0` for diagonals below the main diagonal.
 
-    Returns:
+    Return:
         The extracted diagonal or constructed diagonal array.
 
-    Examples:
+    Example:
         >>> poly = numpoly.monomial(9).reshape(3, 3)
         >>> poly
         polynomial([[1, q0, q0**2],

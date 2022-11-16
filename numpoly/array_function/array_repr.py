@@ -34,10 +34,10 @@ def array_repr(
             numbers smaller (in absolute value) than 5e-9 are represented as
             zero. Defaults to ``numpy.get_printoptions()['suppress']``.
 
-    Returns:
+    Return:
         The string representation of an array.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.array_repr(numpoly.polynomial([1, q0]))
         'polynomial([1, q0])'
@@ -93,10 +93,10 @@ def to_string(
             numbers smaller (in absolute value) than 5e-9 are represented as
             zero. Defaults to ``numpy.get_printoptions()['suppress']``.
 
-    Returns:
+    Return:
         If scalar, a string, or if array, numpy.array with string values.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([[1, q0**3], [q1-1, -3*q0]])
         >>> string_array = to_string(poly)

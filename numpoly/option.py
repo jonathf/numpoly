@@ -28,16 +28,16 @@ def get_options(defaults: bool = False) -> Dict[str, Any]:
             Return the options for the global option defaults, instead of the
             options currently in use.
 
-    Returns:
+    Return:
         Collection of values that affect the numpoly machinery.
         See `numpoly.set_options` for details.
 
-    Examples:
+    Example:
         >>> options = get_options()
         >>> options["default_varname"]
         'q'
 
-    See also:
+    Note:
         `set_options`, `global_options`
 
     """
@@ -91,14 +91,14 @@ def set_options(**kwargs: Any) -> None:
         varname_filter:
             Regular expression defining valid indeterminant names.
 
-    Examples:
+    Example:
         >>> numpoly.monomial([3, 3])
         polynomial([1, q0, q0**2, q1, q0*q1, q1**2])
         >>> numpoly.set_options(default_varname="z", varname_filter=".+")
         >>> numpoly.monomial([3, 3])
         polynomial([1, z0, z0**2, z1, z0*z1, z1**2])
 
-    See also:
+    Note:
         `get_options`, `global_options`
 
     """
@@ -118,11 +118,11 @@ def global_options(**kwargs: Any) -> Iterator[Dict[str, Any]]:
             Collection of values that deviate from the defaults.
             See `numpoly.set_options` for details.
 
-    Yields:
+    Yield:
         Collection of values that affect the numpoly machinery.
         See `numpoly.set_options` for details.
 
-    Examples:
+    Example:
         >>> numpoly.get_options()["default_varname"]
         'q'
         >>> with numpoly.global_options(default_varname="X"):
@@ -131,7 +131,7 @@ def global_options(**kwargs: Any) -> Iterator[Dict[str, Any]]:
         >>> numpoly.get_options()["default_varname"]
         'q'
 
-    See also:
+    Note:
         `get_options`, `set_options`
 
     """

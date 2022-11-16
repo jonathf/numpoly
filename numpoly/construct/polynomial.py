@@ -48,10 +48,10 @@ def polynomial(
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
 
-    Returns:
+    Return:
         Polynomial based on input ``poly_like``.
 
-    Examples:
+    Example:
         >>> numpoly.polynomial({(1,): 1})
         polynomial(q0)
         >>> q0, q1 = numpoly.variable(2)
