@@ -8,9 +8,9 @@ from ..baseclass import PolyLike
 
 
 def lead_coefficient(
-        poly: PolyLike,
-        graded: bool = False,
-        reverse: bool = False,
+    poly: PolyLike,
+    graded: bool = False,
+    reverse: bool = False,
 ) -> numpy.ndarray:
     """
     Find the lead coefficients for each polynomial.
@@ -31,11 +31,11 @@ def lead_coefficient(
             Reverses lexicographical sorting meaning that ``q0*q1**3`` is
             considered bigger than ``q0**3*q1``, instead of the opposite.
 
-    Returns:
+    Return:
         Array of same shape and type as `poly`, containing all the lead
         coefficients.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.lead_coefficient(q0+2*q0**2+3*q0**3)
         3
@@ -47,8 +47,7 @@ def lead_coefficient(
     out = numpy.zeros(poly.shape, dtype=poly.dtype)
     if not out.size:
         return out
-    for idx in numpoly.glexsort(
-            poly.exponents.T, graded=graded, reverse=reverse):
+    for idx in numpoly.glexsort(poly.exponents.T, graded=graded, reverse=reverse):
         values = poly.coefficients[idx]
         indices = values != 0
         out[indices] = values[indices]

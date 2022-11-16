@@ -27,7 +27,7 @@ def common_type(*arrays: PolyLike) -> numpy.dtype:
     Return:
         Data type code.
 
-    Examples:
+    Example:
         >>> scalar = numpy.array(2, dtype=numpy.float32)
         >>> numpoly.common_type(scalar) is numpy.float32
         True

@@ -21,10 +21,10 @@ def expand_dims(a: PolyLike, axis: int) -> ndpoly:
         axis:
             Position in the expanded axes where the new axis is placed.
 
-    Returns:
+    Return:
         View of `a` with the number of dimensions increased by one.
 
-    Examples:
+    Example:
         >>> poly = numpoly.variable(2)
         >>> numpoly.expand_dims(poly, axis=0)
         polynomial([[q0, q1]])

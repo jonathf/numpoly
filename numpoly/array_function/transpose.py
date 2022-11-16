@@ -24,10 +24,10 @@ def transpose(
             By default, reverse the dimensions, otherwise permute the axes
             according to the values given.
 
-    Returns:
+    Return:
         `a` with its axes permuted. A view is returned whenever possible.
 
-    Examples:
+    Example:
         >>> poly = numpoly.monomial([3, 3]).reshape(2, 3)
         >>> poly
         polynomial([[1, q0, q0**2],

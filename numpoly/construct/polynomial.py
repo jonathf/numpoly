@@ -12,10 +12,10 @@ from ..baseclass import ndpoly, PolyLike
 
 
 def polynomial(
-        poly_like: PolyLike = 0,
-        names: Union[None, str, Tuple[str, ...], ndpoly] = None,
-        dtype: Optional[numpy.typing.DTypeLike] = None,
-        allocation: Optional[int] = None,
+    poly_like: PolyLike = 0,
+    names: Union[None, str, Tuple[str, ...], ndpoly] = None,
+    dtype: Optional[numpy.typing.DTypeLike] = None,
+    allocation: Optional[int] = None,
 ) -> ndpoly:
     """
     Attempt to cast an object into a polynomial array.
@@ -48,10 +48,10 @@ def polynomial(
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
 
-    Returns:
+    Return:
         Polynomial based on input ``poly_like``.
 
-    Examples:
+    Example:
         >>> numpoly.polynomial({(1,): 1})
         polynomial(q0)
         >>> q0, q1 = numpoly.variable(2)
@@ -96,9 +96,8 @@ def polynomial(
 
         keys = numpy.asarray(poly_like.dtype.names, dtype="U")
         keys = numpy.array([key for key in keys if not key.isdigit()])
-        keys = numpy.array(
-            keys, dtype=f"U{numpy.max(numpy.char.str_len(keys))}")
-        exponents = keys.view(numpy.uint32)-numpoly.ndpoly.KEY_OFFSET
+        keys = numpy.array(keys, dtype=f"U{numpy.max(numpy.char.str_len(keys))}")
+        exponents = keys.view(numpy.uint32) - numpoly.ndpoly.KEY_OFFSET
         exponents = exponents.reshape(len(keys), -1)
 
         coefficients = [poly_like[key] for key in poly_like.dtype.names]

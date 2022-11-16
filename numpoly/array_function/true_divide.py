@@ -53,16 +53,16 @@ def true_divide(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         This is a scalar if both `x1` and `x2` are scalars.
 
-    Raises:
+    Raise:
         numpoly.baseclass.FeatureNotSupported:
             If `x2` contains indeterminants, numerical division is no longer
             possible and an error is raised instead. For polynomial
             division see ``numpoly.poly_divide``.
 
-    Examples:
+    Example:
         >>> q0q1q2 = numpoly.variable(3)
         >>> numpoly.true_divide(q0q1q2, 4)
         polynomial([0.25*q0, 0.25*q1, 0.25*q2])
@@ -79,7 +79,7 @@ def true_divide(
             exponents=x1.exponents,
             shape=x1.shape,
             names=x1.indeterminants,
-            dtype=numpy.common_type(x1, numpy.array(1.)),
+            dtype=numpy.common_type(x1, numpy.array(1.0)),
         )
     else:
         assert len(out) == 1
@@ -87,8 +87,13 @@ def true_divide(
     assert isinstance(out_, numpoly.ndpoly)
     for key in x1.keys:
         out_[key] = 0
-        numpy.true_divide(x1.values[key], x2, out=out_.values[key],
-                          where=numpy.asarray(where), **kwargs)
+        numpy.true_divide(
+            x1.values[key],
+            x2,
+            out=out_.values[key],
+            where=numpy.asarray(where),
+            **kwargs,
+        )
     if out is None:
         out_ = numpoly.clean_attributes(out_)
     return out_

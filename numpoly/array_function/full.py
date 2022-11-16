@@ -32,10 +32,10 @@ def full(
             Whether to store multidimensional data in C- or Fortran-contiguous
             (row- or column-wise) order in memory. Valid values: "C", "F".
 
-    Returns:
+    Return:
         Array of `fill_value` with the given shape, dtype, and order.
 
-    Examples:
+    Example:
         >>> numpoly.full((2, 4), 4)
         polynomial([[4, 4, 4, 4],
                     [4, 4, 4, 4]])

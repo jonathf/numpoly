@@ -136,20 +136,15 @@ installed from `Github <https://github.com/>`_ as follows:
 Development
 -----------
 
-Chaospy uses `poetry`_ to manage its development installation. Assuming
-`poetry`_ installed on your system, installing ``numpoly`` for development can
+Installing ``numpoly`` for development can
 be done from the repository root with the command::
 
-    poetry install
+    pip install -e .[dev]
 
-This will install all required dependencies and numpoly into a virtual
-environment. If you are not already managing your own virtual environment, you
-can use poetry to activate and deactivate with::
+The deployment of the code is done with Python 3.10 and dependencies are then
+fixed using::
 
-    poetry shell
-    exit
-
-.. _poetry: https://poetry.eustace.io/
+    pip install -r requirements-dev.txt
 
 Testing
 -------
@@ -158,8 +153,7 @@ To run test:
 
 .. code-block:: bash
 
-    poetry run pytest --doctest-modules \
-        numpoly test docs/user_guide/*.rst README.rst
+    pytest --doctest-modules numpoly test docs/user_guide/*.rst README.rst
 
 Documentation
 -------------

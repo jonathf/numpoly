@@ -10,11 +10,11 @@ from ..baseclass import ndpoly
 
 
 def load(
-        file: Union[BinaryIO, PathLike],
-        mmap_mode: Optional[str] = None,
-        allow_pickle: bool = False,
-        fix_imports: bool = True,
-        encoding: str = "ASCII",
+    file: Union[BinaryIO, PathLike],
+    mmap_mode: Optional[str] = None,
+    allow_pickle: bool = False,
+    fix_imports: bool = True,
+    encoding: str = "ASCII",
 ) -> Union[ndpoly, Dict[str, ndpoly]]:
     """
     Load polynomial or pickled objects from ``.np{y,z}`` or pickled files.
@@ -48,11 +48,11 @@ def load(
             'latin1', 'ASCII', and 'bytes' are not allowed, as they can corrupt
             numerical data.
 
-    Returns:
+    Return:
         Data stored in the file. For ``.npz`` files, the returned dictionary
         class must be closed to avoid leaking file descriptors.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([q0, q1-1])
         >>> array = numpy.array([1, 2])
@@ -63,12 +63,21 @@ def load(
     """
     if isinstance(file, (str, bytes, PathLike)):
         with open(file, "rb") as src:
-            return load(file=src, mmap_mode=mmap_mode,
-                        allow_pickle=allow_pickle,
-                        fix_imports=fix_imports, encoding=encoding)
+            return load(
+                file=src,
+                mmap_mode=mmap_mode,
+                allow_pickle=allow_pickle,
+                fix_imports=fix_imports,
+                encoding=encoding,
+            )
 
-    out = numpy.load(file=file, mmap_mode=mmap_mode, allow_pickle=allow_pickle,
-                     fix_imports=fix_imports, encoding=encoding)
+    out = numpy.load(
+        file=file,
+        mmap_mode=mmap_mode,
+        allow_pickle=allow_pickle,
+        fix_imports=fix_imports,
+        encoding=encoding,
+    )
     if isinstance(out, numpy.lib.npyio.NpzFile):  # type: ignore
         out = dict(out)
         for key, value in list(out.items()):
@@ -89,8 +98,12 @@ def load(
             out[key] = numpoly.polynomial(value, names=names)
 
     elif out.dtype.names:
-        names = numpy.load(file=file, mmap_mode=mmap_mode,
-                           allow_pickle=allow_pickle,
-                           fix_imports=fix_imports, encoding=encoding).tolist()
+        names = numpy.load(
+            file=file,
+            mmap_mode=mmap_mode,
+            allow_pickle=allow_pickle,
+            fix_imports=fix_imports,
+            encoding=encoding,
+        ).tolist()
         out = numpoly.polynomial(out, names=names)
     return out

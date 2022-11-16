@@ -28,10 +28,10 @@ def vstack(tup: Sequence[PolyLike]) -> ndpoly:
             The arrays must have the same shape along all but the first axis.
             1-D arrays must have the same length.
 
-    Returns:
+    Return:
         The array formed by stacking the given arrays, will be at least 2-D.
 
-    Examples:
+    Example:
         >>> poly1 = numpoly.variable(3)
         >>> const1 = numpoly.polynomial([1, 2, 3])
         >>> numpoly.vstack([poly1, const1])
@@ -49,8 +49,9 @@ def vstack(tup: Sequence[PolyLike]) -> ndpoly:
 
     """
     arrays = numpoly.align_exponents(*tup)
-    coefficients = [numpy.vstack([array.values[key] for array in arrays])
-                    for key in arrays[0].keys]
+    coefficients = [
+        numpy.vstack([array.values[key] for array in arrays]) for key in arrays[0].keys
+    ]
     return numpoly.polynomial_from_attributes(
         exponents=arrays[0].exponents,
         coefficients=coefficients,

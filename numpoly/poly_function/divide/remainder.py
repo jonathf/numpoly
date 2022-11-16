@@ -12,11 +12,11 @@ from .divmod import poly_divmod
 
 @implements_function(numpy.remainder)
 def poly_remainder(
-        x1: PolyLike,
-        x2: PolyLike,
-        out: Optional[ndpoly] = None,
-        where: numpy.typing.ArrayLike = True,
-        **kwargs: Any,
+    x1: PolyLike,
+    x2: PolyLike,
+    out: Optional[ndpoly] = None,
+    where: numpy.typing.ArrayLike = True,
+    **kwargs: Any,
 ) -> ndpoly:
     """
     Return element-wise remainder of polynomial division.
@@ -44,18 +44,18 @@ def poly_remainder(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
         This is a scalar if both `x1` and `x2` are scalars.
 
-    Notes:
+    Note:
         Unlike numbers, this returns the polynomial division and polynomial
         remainder. This means that this function is _not_ backwards compatible
         with ``numpy.remainder`` for constants. For example:
         ``numpoly.remainder(11, 2) == 1`` while
         ``numpoly.poly_remainder(11, 2) == 0``.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> denominator = [q0*q1**2+2*q0**3*q1**2, -2+q0*q1**2]
         >>> numerator = -2+q0*q1**2

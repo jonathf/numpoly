@@ -33,10 +33,10 @@ def tile(A: PolyLike, reps: numpy.typing.ArrayLike) -> ndpoly:
         reps:
             The number of repetitions of `A` along each axis.
 
-    Returns:
+    Return:
         The tiled output array.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.tile(q0, 4)
         polynomial([q0, q0, q0, q0])

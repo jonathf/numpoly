@@ -12,10 +12,10 @@ from ..dispatch import implements
 
 @implements(numpy.copyto)
 def copyto(
-        dst: ndpoly,
-        src: PolyLike,
-        casting: str = "same_kind",
-        where: numpy.typing.ArrayLike = True,
+    dst: ndpoly,
+    src: PolyLike,
+    casting: str = "same_kind",
+    where: numpy.typing.ArrayLike = True,
 ) -> None:
     """
     Copy values from one array to another, broadcasting as necessary.
@@ -42,7 +42,7 @@ def copyto(
             of `dst`, and selects elements to copy from `src` to `dst`
             wherever it contains the value True.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> poly1 = numpoly.polynomial([1, q0**2, q0])
         >>> poly2 = numpoly.polynomial([2, q0, 3])
@@ -60,12 +60,10 @@ def copyto(
     if not isinstance(dst, numpoly.ndpoly):
         if dst.dtype.names is None:
             if src.isconstant():
-                return numpy.copyto(
-                    dst, src.tonumpy(), casting=casting, where=where)
+                return numpy.copyto(dst, src.tonumpy(), casting=casting, where=where)
             raise ValueError(f"Could not convert src {src} to dst {dst}")
         if casting != "unsafe":
-            raise ValueError(
-                f"could not safely convert src {src} to dst {dst}")
+            raise ValueError(f"could not safely convert src {src} to dst {dst}")
         logger.warning("Copying ndpoly input into ndarray")
         logger.warning("You might need to cast `numpoly.polynomial(dst)`.")
         logger.warning("Indeterminant names might be lost.")
@@ -82,9 +80,11 @@ def copyto(
 
     for key in dst_keys:
         if key in src.keys:
-            numpy.copyto(dst_[key], src.values[key],
-                         casting=casting, where=where)
+            numpy.copyto(dst_[key], src.values[key], casting=casting, where=where)
         else:
-            numpy.copyto(dst_[key],
-                         numpy.array(False, dtype=dst_[key].dtype),
-                         casting=casting, where=where)
+            numpy.copyto(
+                dst_[key],
+                numpy.array(False, dtype=dst_[key].dtype),
+                casting=casting,
+                where=where,
+            )

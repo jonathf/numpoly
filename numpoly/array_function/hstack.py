@@ -28,10 +28,10 @@ def hstack(tup: Sequence[PolyLike]) -> ndpoly:
             The arrays must have the same shape along all but the second axis,
             except 1-D arrays which can be any length.
 
-    Returns:
+    Return:
         The array formed by stacking the given arrays.
 
-    Examples:
+    Example:
         >>> poly1 = numpoly.variable(3)
         >>> const1 = numpoly.polynomial([1, 2, 3])
         >>> numpoly.hstack([poly1, const1])
@@ -45,8 +45,9 @@ def hstack(tup: Sequence[PolyLike]) -> ndpoly:
 
     """
     arrays = numpoly.align_exponents(*tup)
-    coefficients = [numpy.hstack([array.values[key] for array in arrays])
-                    for key in arrays[0].keys]
+    coefficients = [
+        numpy.hstack([array.values[key] for array in arrays]) for key in arrays[0].keys
+    ]
     return numpoly.polynomial_from_attributes(
         exponents=arrays[0].exponents,
         coefficients=coefficients,

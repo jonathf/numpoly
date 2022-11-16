@@ -29,16 +29,16 @@ def polynomial_from_roots(
         dtype:
             Any object that can be interpreted as a numpy data type.
 
-    Returns:
+    Return:
         1-D polynomial which have `seq_of_zeros` as roots.
         Leading coefficient is always 1.
 
-    Raises:
+    Raise:
         ValueError:
             If input is the wrong shape (the input must be a 1-D or square
             2-D array).
 
-    Examples:
+    Example:
         >>> numpoly.polynomial_from_roots((0, 0, 0))
         polynomial(q0**3)
         >>> numpoly.polynomial_from_roots((-0.5, 0, 0.5))
@@ -46,5 +46,5 @@ def polynomial_from_roots(
 
     """
     exponent = numpy.arange(len(seq_of_zeros), -1, -1, dtype=int)
-    basis = numpoly.variable(dtype=dtype)**exponent
-    return numpoly.sum(numpy.poly(seq_of_zeros)*basis)
+    basis = numpoly.variable(dtype=dtype) ** exponent
+    return numpoly.sum(numpy.poly(seq_of_zeros) * basis)

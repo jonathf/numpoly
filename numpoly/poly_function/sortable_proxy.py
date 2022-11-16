@@ -32,11 +32,11 @@ def sortable_proxy(
             Reverses lexicographical sorting meaning that ``q0*q1**3`` is
             considered bigger than ``q0**3*q1``, instead of the opposite.
 
-    Returns:
+    Return:
         Integer array where ``a > b`` is retained for the giving rule of
         ``ordering``.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial(
         ...     [q0**2, 2*q0, 3*q1, 4*q0, 5])
@@ -56,12 +56,11 @@ def sortable_proxy(
     proxy = numpy.tile(-1, poly.shape)
     largest = numpoly.lead_exponent(poly, graded=graded, reverse=reverse)
 
-    for idx in numpoly.glexsort(
-            poly.exponents.T, graded=graded, reverse=reverse):
+    for idx in numpoly.glexsort(poly.exponents.T, graded=graded, reverse=reverse):
 
         indices = numpy.all(largest == poly.exponents[idx], axis=-1)
         values = numpy.argsort(coefficients[idx][indices])
-        proxy[indices] = numpy.argsort(values)+numpy.max(proxy)+1
+        proxy[indices] = numpy.argsort(values) + numpy.max(proxy) + 1
 
     proxy = numpy.argsort(numpy.argsort(proxy.ravel())).reshape(proxy.shape)
     return proxy

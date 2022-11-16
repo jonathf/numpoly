@@ -44,11 +44,11 @@ def amin(
         where:
             Elements to compare for the maximum.
 
-    Returns:
+    Return:
         Minimum of `a`. If `axis` is None, the result is a scalar value.
         If `axis` is given, the result is an array of dimension ``a.ndim-1``.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.amin([13, 7])
         polynomial(7)
@@ -65,7 +65,8 @@ def amin(
     poly = numpoly.aspolynomial(a)
     options = numpoly.get_options()
     proxy = numpoly.sortable_proxy(
-        poly, graded=options["sort_graded"], reverse=options["sort_reverse"])
+        poly, graded=options["sort_graded"], reverse=options["sort_reverse"]
+    )
     indices = numpy.amin(proxy, axis=axis, **kwargs)
     out = poly[numpy.isin(proxy, indices)]
     out = out[numpy.argsort(indices.ravel())]

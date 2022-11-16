@@ -38,12 +38,12 @@ def absolute(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         An ndarray containing the absolute value of. each element in `x`.
         For complex input, ``a + ib``, the absolute value is
         :math:`\sqrt{a^2+b^2}`. This is a scalar if `x` is a scalar.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> poly = numpoly.polynomial([-1, 1, -2.3*q0, 2.3*q0])
         >>> poly
@@ -62,5 +62,5 @@ def absolute(
         inputs=(x,),
         out=None if out is None else (out,),
         where=where,
-        **kwargs
+        **kwargs,
     )

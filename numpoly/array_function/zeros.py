@@ -12,6 +12,7 @@ from ..dispatch import implements
 Order = Any
 try:
     from typing import Literal, Union
+
     Order = Union[Literal["C"], Literal["F"], None]  # type: ignore
 except ImportError:
     pass
@@ -37,10 +38,10 @@ def zeros(
             (C-style) or column-major (Fortran-style) order in
             memory.
 
-    Returns:
+    Return:
         Array of zeros with the given shape, dtype, and order.
 
-    Examples:
+    Example:
         >>> numpoly.zeros(5)
         polynomial([0.0, 0.0, 0.0, 0.0, 0.0])
 

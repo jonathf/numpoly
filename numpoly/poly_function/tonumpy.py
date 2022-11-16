@@ -15,14 +15,14 @@ def tonumpy(poly: PolyLike) -> numpy.ndarray:
         poly:
             polynomial to cast.
 
-    Returns:
+    Return:
         Numpy array.
 
-    Raises:
+    Raise:
         numpoly.baseclass.FeatureNotSupported:
             Only constant polynomials can be cast to numpy.ndarray.
 
-    Examples:
+    Example:
         >>> numpoly.tonumpy(numpoly.polynomial([1, 2]))
         array([1, 2])
 
@@ -30,7 +30,8 @@ def tonumpy(poly: PolyLike) -> numpy.ndarray:
     poly = numpoly.aspolynomial(poly)
     if not poly.isconstant():
         raise numpoly.FeatureNotSupported(
-            "only constant polynomials can be converted to array.")
+            "only constant polynomials can be converted to array."
+        )
     idx = numpy.argwhere(numpy.all(poly.exponents == 0, -1)).item()
     if poly.size:
         return numpy.array(poly.coefficients[idx])

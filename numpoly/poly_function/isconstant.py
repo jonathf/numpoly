@@ -15,10 +15,10 @@ def isconstant(poly: PolyLike) -> bool:
         poly:
             polynomial to check if is constant or not.
 
-    Returns:
+    Return:
         True if polynomial has no indeterminants.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.isconstant(numpoly.polynomial([q0]))
         False

@@ -8,10 +8,10 @@ from ..baseclass import ndpoly
 
 
 def variable(
-        dimensions: int = 1,
-        asarray: bool = False,
-        dtype: numpy.typing.DTypeLike = "i8",
-        allocation: Optional[int] = None,
+    dimensions: int = 1,
+    asarray: bool = False,
+    dtype: numpy.typing.DTypeLike = "i8",
+    allocation: Optional[int] = None,
 ) -> ndpoly:
     """
     Construct variables that can be used to construct polynomials.
@@ -28,10 +28,10 @@ def variable(
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
 
-    Returns:
+    Return:
         Polynomial array with unit components in each dimension.
 
-    Examples:
+    Example:
         >>> numpoly.variable()
         polynomial(q0)
         >>> q0, q1, q2 = numpoly.variable(3)

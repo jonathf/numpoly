@@ -39,11 +39,11 @@ def allclose(
             Whether to compare NaN's as equal.  If True, NaN's in `a` will be
             considered equal to NaN's in `b` in the output array.
 
-    Returns:
+    Return:
         Returns True if the two arrays are equal within the given tolerance;
         False otherwise.
 
-    Notes:
+    Note:
         If the following equation is element-wise True, then allclose returns
         True.
 
@@ -58,7 +58,7 @@ def allclose(
         ``allclose(a, b)`` to evaluate to True.  The same is true for `equal`
         but not `array_equal`.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.allclose([1e9*q0, 1e-7], [1.00001e9*q0, 1e-8])
         False
@@ -74,6 +74,7 @@ def allclose(
     a, b = numpoly.align_polynomials(a, b)
     for coeff1, coeff2 in zip(a.coefficients, b.coefficients):
         if not numpy.allclose(
-                coeff1, coeff2, atol=atol, rtol=rtol, equal_nan=equal_nan):
+            coeff1, coeff2, atol=atol, rtol=rtol, equal_nan=equal_nan
+        ):
             return False
     return True

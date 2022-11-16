@@ -38,11 +38,11 @@ def negative(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         Returned array or scalar: `y = -x`.
         This is a scalar if `x` is a scalar.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.negative([-q0, q0])
         polynomial([q0, -q0])
@@ -53,5 +53,5 @@ def negative(
         inputs=(x,),
         out=None if out is None else (out,),
         where=where,
-        **kwargs
+        **kwargs,
     )

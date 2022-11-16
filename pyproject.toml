@@ -1,15 +1,12 @@
 [build-system]
-requires = ["poetry>=1.0"]
-build-backend = "poetry.masonry.api"
+requires = ["setuptools>=40.9.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
-[tool.poetry]
+[project]
 name = "numpoly"
-version = "1.2.3"
+version = "1.2.5"
 description = "Polynomials as a numpy datatype"
-license = "BSD-2-Clause"
-authors = ["Jonathan Feinberg"]
-repository = "https://github.com/jonathf/numpoly"
-documentation = "https://numpoly.readthedocs.io"
+license = {text = "BSD-2-Clause"}
 readme = "README.rst"
 classifiers = [
         "Development Status :: 5 - Production/Stable",
@@ -19,23 +16,23 @@ classifiers = [
         "Natural Language :: English",
 ]
 
-[tool.poetry.dependencies]
-python = ">=3.7,<4.0"
-numpy = ">=1.20"
+requires-python = ">=3.7"
+dependencies = [
+  "numpy >=1.20",
+  "setuptools >=40.9.0",
+]
 
-[tool.poetry.dev-dependencies]
-sympy = "*"
-pylint = "*"
-pytest = "*"
-pytest-cov = "*"
-mypy = "*"
-codecov = "*"
-coverage = "^5.0"
-Sphinx = "*"
-pydocstyle = "3.0.0"
-sphinx_automodapi = "*"
-pydata_sphinx_theme = "*"
-
-[tool.mypy]
-ignore_missing_imports = true
-plugins = "numpy.typing.mypy_plugin"
+[project.optional-dependencies]
+dev = [
+  "black ==22.10.0",
+  "pylint ==2.15.5",
+  "pydocstyle ==3.0.0",
+  "pydata_sphinx_theme ==0.11.0",
+  "sympy",
+  "pytest",
+  "pytest-cov",
+  "codecov",
+  "coverage >=5.0",
+  "Sphinx",
+  "sphinx_automodapi",
+]

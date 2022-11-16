@@ -42,7 +42,7 @@ def get_version(name: str) -> str:
     """
     Get distribution version number, if it exists.
 
-    Examples:
+    Example:
         >>> get_version("numpy") == ""
         False
         >>> get_version("not_an_distribution") == ""

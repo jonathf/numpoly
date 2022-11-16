@@ -39,13 +39,13 @@ def diff(
             of the input array in along all other axes.  Otherwise the
             dimension and shape must match `a` except along axis.
 
-    Returns:
+    Return:
         The n-th differences. The shape of the output is the same as `a` except
         along `axis` where the dimension is smaller by `n`. The type of the
         output is the same as the type of the difference between any two
         elements of `a`. This is the same as the type of `a` in most cases.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([1, q0, q1, q0**2, q1-1])
         >>> numpoly.diff(poly)

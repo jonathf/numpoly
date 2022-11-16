@@ -41,10 +41,10 @@ def floor(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         The floor of each element in `x`. This is a scalar if `x` is a scalar.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.floor([-1.7*q0, q0-1.5, -0.2,
         ...                3.2+1.5*q0, 1.7, 2.0])
@@ -56,5 +56,5 @@ def floor(
         inputs=(x,),
         out=None if out is None else (out,),
         where=where,
-        **kwargs
+        **kwargs,
     )

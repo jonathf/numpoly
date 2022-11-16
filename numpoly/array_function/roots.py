@@ -4,6 +4,7 @@ import numpy
 import numpoly
 
 from ..baseclass import PolyLike
+
 # from ..dispatch import implements
 
 
@@ -19,21 +20,21 @@ def roots(poly: PolyLike) -> numpy.ndarray:
             Polynomial to take roots of, or if constant, the coefficients of
             said polynomial. This to be compatible with :func:`numpy.roots`.
 
-    Returns:
+    Return:
         An array containing the roots of the polynomial.
 
-    Raises:
+    Raise:
         ValueError:
             When `poly` cannot be converted to a rank-1 polynomial.
 
-    Notes:
+    Note:
         The algorithm relies on computing the eigenvalues of the companion
         matrix [1]_.
 
     .. [1] R. A. Horn & C. R. Johnson, *Matrix Analysis*.  Cambridge, UK:
         Cambridge University Press, 1999, pp. 146-7.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> poly = 3.2*q0**2+2*q0+1
         >>> numpoly.roots(poly)
@@ -50,8 +51,9 @@ def roots(poly: PolyLike) -> numpy.ndarray:
     if len(poly.names) > 1:
         raise ValueError("polynomial is not of rank 1.")
     # align exponents to include all coefficients
-    filled_basis = poly.indeterminants**numpy.arange(
-        numpoly.lead_exponent(poly), dtype=int)
+    filled_basis = poly.indeterminants ** numpy.arange(
+        numpoly.lead_exponent(poly), dtype=int
+    )
     _, poly = numpoly.align_exponents(filled_basis, poly)
     # pass coefficients to numpy
     return numpy.roots(poly.coefficients[::-1])

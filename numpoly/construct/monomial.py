@@ -10,13 +10,13 @@ from ..baseclass import ndpoly
 
 
 def monomial(
-        start: numpy.typing.ArrayLike,
-        stop: Optional[numpy.typing.ArrayLike] = None,
-        dimensions: int = 1,
-        cross_truncation: numpy.typing.ArrayLike = 1.,
-        graded: bool = False,
-        reverse: bool = False,
-        allocation: Optional[int] = None,
+    start: numpy.typing.ArrayLike,
+    stop: Optional[numpy.typing.ArrayLike] = None,
+    dimensions: int = 1,
+    cross_truncation: numpy.typing.ArrayLike = 1.0,
+    graded: bool = False,
+    reverse: bool = False,
+    allocation: Optional[int] = None,
 ) -> ndpoly:
     """
     Create an polynomial monomial expansion.
@@ -51,10 +51,10 @@ def monomial(
             The maximum number of polynomial exponents. If omitted, use
             length of exponents for allocation.
 
-    Returns:
+    Return:
         Monomial expansion.
 
-    Examples:
+    Example:
         >>> numpoly.monomial(4)
         polynomial([1, q0, q0**2, q0**3])
         >>> numpoly.monomial(start=4, stop=5, dimensions=2,
@@ -103,7 +103,6 @@ def monomial(
         names=names,
         allocation=allocation,
     )
-    for coeff, key in zip(
-            numpy.eye(len(indices), dtype=int), poly.keys):
+    for coeff, key in zip(numpy.eye(len(indices), dtype=int), poly.keys):
         numpy.ndarray.__setitem__(poly, key, coeff)
     return poly

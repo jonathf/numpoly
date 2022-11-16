@@ -29,13 +29,13 @@ def around(
             the same shape as the expected output, but the type of the output
             values will be cast if necessary.
 
-    Returns:
+    Return:
         An array of the same type as `a`, containing the rounded values. Unless
         `out` was specified, a new array is created.  A reference to the result
         is returned. The real and imaginary parts of complex numbers are
         rounded separately.  The result of rounding a float is a float.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.around([0.37, 1.64*q0-2.45])
         polynomial([0.0, 2.0*q0-2.0])

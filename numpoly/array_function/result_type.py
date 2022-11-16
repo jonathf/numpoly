@@ -33,10 +33,10 @@ def result_type(
         arrays_and_dtypes:
             The operands of some operation whose result type is needed.
 
-    Returns:
+    Return:
         The result type.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable(dtype="i1")
         >>> numpoly.result_type(3, numpy.arange(7, dtype="i1"), q0)
         dtype('int8')

@@ -12,6 +12,7 @@ from ..dispatch import implements
 Order = Any
 try:
     from typing import Literal, Union
+
     Order = Union[None, Literal["C"], Literal["F"]]  # type: ignore
 except ImportError:
     pass
@@ -19,11 +20,11 @@ except ImportError:
 
 @implements(numpy.zeros_like)
 def zeros_like(
-        a: PolyLike,
-        dtype: Optional[numpy.typing.DTypeLike] = None,
-        order: Order = None,
-        subok: bool = True,
-        shape: Optional[Sequence[int]] = None,
+    a: PolyLike,
+    dtype: Optional[numpy.typing.DTypeLike] = None,
+    order: Order = None,
+    subok: bool = True,
+    shape: Optional[Sequence[int]] = None,
 ) -> ndpoly:
     """
     Return an array of zeros with the same shape and type as a given array.
@@ -47,10 +48,10 @@ def zeros_like(
             dimensions is unchanged, will try to keep order, otherwise,
             order='C' is implied.
 
-    Returns:
+    Return:
         Array of zeros with the same shape and type as `a`.
 
-    Examples:
+    Example:
         >>> poly = numpoly.monomial(3)
         >>> poly
         polynomial([1, q0, q0**2])
@@ -60,5 +61,8 @@ def zeros_like(
     """
     del subok
     a = numpoly.aspolynomial(a)
-    return numpoly.polynomial(numpy.zeros_like(  # pylint: disable=unexpected-keyword-arg
-        a.values[a.keys[0]], dtype=dtype, order=order, shape=shape))
+    return numpoly.polynomial(
+        numpy.zeros_like(  # pylint: disable=unexpected-keyword-arg
+            a.values[a.keys[0]], dtype=dtype, order=order, shape=shape
+        )
+    )

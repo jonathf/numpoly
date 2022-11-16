@@ -47,11 +47,11 @@ def maximum(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         The maximum of `x1` and `x2`, element-wise. This is a scalar if
         both `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.maximum(3, 4)
         polynomial(4)
@@ -74,8 +74,9 @@ def maximum(
     out_ = numpy.zeros(x1.shape, dtype=bool)
 
     options = numpoly.get_options()
-    for idx in numpoly.glexsort(x1.exponents.T, graded=options["sort_graded"],
-                                reverse=options["sort_reverse"]):
+    for idx in numpoly.glexsort(
+        x1.exponents.T, graded=options["sort_graded"], reverse=options["sort_reverse"]
+    ):
 
         indices = (coefficients1[idx] != 0) | (coefficients2[idx] != 0)
         indices &= coefficients1[idx] != coefficients2[idx]

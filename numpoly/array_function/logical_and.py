@@ -11,11 +11,11 @@ from ..dispatch import implements
 
 @implements(numpy.logical_and)
 def logical_and(
-        x1: PolyLike,
-        x2: PolyLike,
-        out: Optional[numpy.ndarray] = None,
-        where: Union[bool, Sequence[bool]] = True,
-        **kwargs: Any,
+    x1: PolyLike,
+    x2: PolyLike,
+    out: Optional[numpy.ndarray] = None,
+    where: Union[bool, Sequence[bool]] = True,
+    **kwargs: Any,
 ) -> numpy.ndarray:
     """
     Compute the truth value of x1 AND x2 element-wise.
@@ -41,12 +41,12 @@ def logical_and(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         Boolean result of the logical OR operation applied to the elements of
         `x1` and `x2`; the shape is determined by broadcasting. This is a
         scalar if both `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.logical_and(q0, 0)
         False
@@ -63,4 +63,5 @@ def logical_and(
     coefficients2 = numpy.any(numpy.asarray(x2.coefficients), 0)
     where_ = numpy.asarray(where)
     return numpy.logical_and(
-        coefficients1, coefficients2, out=out, where=where_, **kwargs)
+        coefficients1, coefficients2, out=out, where=where_, **kwargs
+    )

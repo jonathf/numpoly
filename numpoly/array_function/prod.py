@@ -52,11 +52,11 @@ def prod(
         where : array_like of bool, optional
             Elements to include in the product.
 
-    Returns:
+    Return:
         An array shaped as `a` but with the specified axis removed.
         Returns a reference to `out` if specified.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([[[1, q0, q0**2],
         ...                             [q0+q1, q1, q1]]])
@@ -78,7 +78,7 @@ def prod(
     if keepdims:
         if axis is None:
             out = _prod(numpoly.reshape(a, -1), axis=0)
-            out = numpoly.reshape(out, (1,)*len(a.shape))
+            out = numpoly.reshape(out, (1,) * len(a.shape))
             return out
         elif isinstance(axis, int):
             axis = [axis]
@@ -92,7 +92,7 @@ def prod(
     else:
         for idx in axis:
             a = _prod(a, axis=idx)
-            a = a[(slice(None),)*idx+(numpy.newaxis,)]
+            a = a[(slice(None),) * idx + (numpy.newaxis,)]
         out = a
 
     return out
@@ -108,15 +108,15 @@ def _prod(a: ndpoly, axis: int) -> ndpoly:
         axis:
             The axis to take product over.
 
-    Returns:
+    Return:
         An array shaped as `a` but with the specified axis removed.
 
     """
-    axis = axis+a.ndim if axis < 0 else axis
+    axis = axis + a.ndim if axis < 0 else axis
     assert a.ndim > axis, (a, axis)
-    indices = (slice(None),)*axis
-    out = a[indices+(0,)]
+    indices = (slice(None),) * axis
+    out = a[indices + (0,)]
     for idx in range(1, a.shape[axis]):
-        out = numpoly.multiply(out, a[indices+(idx,)])
-    assert len(out.shape)+1 == len(a.shape)
+        out = numpoly.multiply(out, a[indices + (idx,)])
+    assert len(out.shape) + 1 == len(a.shape)
     return out

@@ -42,7 +42,7 @@ def cumsum(
         size as `a`, and the same shape as `a` if `axis` is not None or `a` is
         a 1-d array.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([[1, q0, 3], [4, 5, q1]])
         >>> poly

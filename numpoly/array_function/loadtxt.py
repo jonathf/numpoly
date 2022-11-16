@@ -12,8 +12,11 @@ import numpoly
 from .savetxt import HEADER_TEMPLATE
 from ..baseclass import ndpoly
 
-HEADER_REGEX = re.compile(HEADER_TEMPLATE.format(
-    version=r"\S+", names=r"(\S+)", keys=r"(\S+)", shape=r"(\S+)"))
+HEADER_REGEX = re.compile(
+    HEADER_TEMPLATE.format(
+        version=r"\S+", names=r"(\S+)", keys=r"(\S+)", shape=r"(\S+)"
+    )
+)
 
 
 def loadtxt(
@@ -86,10 +89,10 @@ def loadtxt(
             Read `max_rows` lines of content after `skiprows` lines. The
             default is to read all the lines.
 
-    Returns:
+    Return:
         Data read from the text file.
 
-    Examples:
+    Example:
         >>> q0, q1, q2 = numpoly.variable(3)
         >>> poly = numpoly.polynomial([[1, q0], [q0, q2**2-1]])
         >>> numpoly.savetxt("/tmp/poly.txt", poly)
@@ -106,12 +109,21 @@ def loadtxt(
     if isinstance(header, bytes):
         header = header.decode("utf-8")
 
-    array = numpy.loadtxt(fname, dtype=dtype, comments=comments,
-                          delimiter=delimiter, converters=converters,
-                          skiprows=skiprows, usecols=usecols, unpack=unpack,
-                          ndmin=ndmin, max_rows=max_rows, encoding=encoding)
+    array = numpy.loadtxt(
+        fname,
+        dtype=dtype,
+        comments=comments,
+        delimiter=delimiter,
+        converters=converters,
+        skiprows=skiprows,
+        usecols=usecols,
+        unpack=unpack,
+        ndmin=ndmin,
+        max_rows=max_rows,
+        encoding=encoding,
+    )
 
-    if header.startswith(comments+"numpoly:"):
+    if header.startswith(comments + "numpoly:"):
         match = re.search(HEADER_REGEX, header)
         assert match is not None
         groups = match.groups()

@@ -41,11 +41,11 @@ def subtract(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         The difference of `x1` and `x2`, element-wise.
         This is a scalar if both `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.subtract(q0, 4)
         polynomial(q0-4)
@@ -62,5 +62,5 @@ def subtract(
         inputs=(x1, x2),
         out=None if out is None else (out,),
         where=where,
-        **kwargs
+        **kwargs,
     )

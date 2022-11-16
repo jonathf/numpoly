@@ -18,14 +18,14 @@ def det(a: PolyLike) -> ndpoly:
             Input array to compute determinants for.
             Shape on form `(..., M, M)`.
 
-    Returns:
+    Return:
         Determinant of `a`. Shape `(...)`.
 
-    Notes:
+    Note:
         Broadcasting rules apply, see the `numpy.linalg` documentation for
         details.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> a = numpoly.polynomial([[[1, 2], [3, 4]], [[1, q0], [q1, 1]]])
         >>> numpoly.det(a)
@@ -36,13 +36,16 @@ def det(a: PolyLike) -> ndpoly:
     assert a.ndim >= 2, a
     assert a.shape[-2] == a.shape[-1], a.shape
     dims = a.shape[-1]
-    index = (slice(None),)*(a.ndim-2)
+    index = (slice(None),) * (a.ndim - 2)
     if dims == 2:
-        return a[index+(0, 0)]*a[index+(1, 1)]-a[index+(1, 0)]*a[index+(0, 1)]
+        return (
+            a[index + (0, 0)] * a[index + (1, 1)]
+            - a[index + (1, 0)] * a[index + (0, 1)]
+        )
     out = numpoly.zeros_like(a, shape=a.shape[:-2])
     r = numpy.arange(1, dims, dtype=int)
     for idx in range(dims):
-        idx0 = index+(0, idx)
-        idx1 = index+(slice(1, None), (r+idx)%dims)
-        out = out+a[idx0]*det(a[idx1])
+        idx0 = index + (0, idx)
+        idx1 = index + (slice(1, None), (r + idx) % dims)
+        out = out + a[idx0] * det(a[idx1])
     return out

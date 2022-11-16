@@ -19,11 +19,11 @@ def set_dimensions(poly: PolyLike, dimensions: Optional[int] = None) -> ndpoly:
             The dimensions of the output polynomial. If omitted, increase
             polynomial with one dimension.
 
-    Returns:
+    Return:
         Polynomials with no internal dimensions. Unless the new dim is smaller
         then `poly`'s dimensions, the polynomial should have the same content.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = q0*q1-q0**2
         >>> numpoly.set_dimensions(poly, 1)
@@ -36,8 +36,8 @@ def set_dimensions(poly: PolyLike, dimensions: Optional[int] = None) -> ndpoly:
     """
     poly = numpoly.aspolynomial(poly)
     if dimensions is None:
-        dimensions = len(poly.names)+1
-    diff = dimensions-len(poly.names)
+        dimensions = len(poly.names) + 1
+    diff = dimensions - len(poly.names)
     if diff > 0:
         padding = numpy.zeros((len(poly.exponents), diff), dtype="uint32")
         exponents = numpy.hstack([poly.exponents, padding])
@@ -58,8 +58,7 @@ def set_dimensions(poly: PolyLike, dimensions: Optional[int] = None) -> ndpoly:
         indices = True ^ numpy.any(poly.exponents[:, dimensions:], -1)
         exponents = poly.exponents[:, :dimensions]
         exponents = exponents[indices]
-        coefficients = [
-            coeff for coeff, idx in zip(poly.coefficients, indices) if idx]
+        coefficients = [coeff for coeff, idx in zip(poly.coefficients, indices) if idx]
         names = poly.names[:dimensions]
 
     else:

@@ -48,11 +48,11 @@ def mean(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         If `out=None`, returns a new array containing the mean values,
         otherwise a reference to the output array is returned.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([[1, 2*q0], [3*q1+q0, 4]])
         >>> numpoly.mean(poly)
@@ -69,5 +69,5 @@ def mean(
         out=None if out is None else (out,),
         axis=axis,
         dtype=dtype,
-        **kwargs
+        **kwargs,
     )

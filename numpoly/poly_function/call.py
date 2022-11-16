@@ -10,9 +10,9 @@ from ..baseclass import ndpoly, PolyLike
 
 
 def call(
-        poly: PolyLike,
-        args: Sequence[Optional[PolyLike]] = (),
-        kwargs: Dict[str, PolyLike] = None,
+    poly: PolyLike,
+    args: Sequence[Optional[PolyLike]] = (),
+    kwargs: Dict[str, PolyLike] = None,
 ) -> Union[numpy.ndarray, ndpoly]:
     """
     Evaluate polynomial by inserting new values in to the indeterminants.
@@ -29,11 +29,11 @@ def call(
         kwargs:
             Same as ``args``, but positioned by name.
 
-    Returns:
+    Return:
         Evaluated polynomial. If the resulting array does not contain any
         indeterminants, an array is returned instead of a polynomial.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([[q0, q0-1], [q1, q1+q0]])
         >>> numpoly.call(poly)
@@ -79,8 +79,8 @@ def call(
     # There can only be one shape:
     ones = numpy.ones((), dtype=int)
     for value in parameters.values():
-        ones = ones*numpy.ones(numpoly.polynomial(value).shape, dtype=int)
-    shape = poly.shape+ones.shape
+        ones = ones * numpy.ones(numpoly.polynomial(value).shape, dtype=int)
+    shape = poly.shape + ones.shape
 
     logger.debug("poly shape: %s", poly.shape)
     logger.debug("parameter common shape: %s", ones.shape)
@@ -91,12 +91,12 @@ def call(
     for exponent, coefficient in zip(poly.exponents, poly.coefficients):
         term = ones
         for power, name in zip(exponent, poly.names):
-            term = term*parameters[name]**power
+            term = term * parameters[name] ** power
         if isinstance(term, numpoly.ndpoly):
             tmp = numpoly.outer(coefficient, term)
         else:
             tmp = numpy.outer(coefficient, term)
-        out = out+tmp.reshape(shape)
+        out = out + tmp.reshape(shape)
 
     if isinstance(out, numpoly.ndpoly):
         if out.isconstant():

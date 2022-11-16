@@ -28,11 +28,11 @@ def where(condition: numpy.typing.ArrayLike, *args: PolyLike) -> ndpoly:
             Values from which to choose. `x`, `y` and `condition` need to be
             broadcastable to some shape.
 
-    Returns:
+    Return:
         An array with elements from `x` where `condition` is True,
         and elements from `y` elsewhere.
 
-    Examples:
+    Example:
         >>> poly = numpoly.variable()*numpy.arange(4)
         >>> poly
         polynomial([0, q0, 2*q0, 3*q0])
@@ -45,14 +45,15 @@ def where(condition: numpy.typing.ArrayLike, *args: PolyLike) -> ndpoly:
 
     """
     if isinstance(condition, numpoly.ndpoly):
-        condition = numpy.any(numpy.asarray(
-            condition.coefficients), 0).astype(bool)
+        condition = numpy.any(numpy.asarray(condition.coefficients), 0).astype(bool)
     if not args:
         return numpy.where(condition)
 
     poly1, poly2 = numpoly.align_polynomials(*args)
-    coefficients = [numpy.where(condition, x1, x2)
-                    for x1, x2 in zip(poly1.coefficients, poly2.coefficients)]
+    coefficients = [
+        numpy.where(condition, x1, x2)
+        for x1, x2 in zip(poly1.coefficients, poly2.coefficients)
+    ]
     dtype = numpy.result_type(poly1.dtype, poly2.dtype)
     return numpoly.polynomial_from_attributes(
         exponents=poly1.exponents,

@@ -12,10 +12,10 @@ from .array_repr import to_string
 
 @implements(numpy.array_str)
 def array_str(
-        a: PolyLike,
-        max_line_width: Optional[int] = None,
-        precision: Optional[float] = None,
-        suppress_small: Optional[bool] = None,
+    a: PolyLike,
+    max_line_width: Optional[int] = None,
+    precision: Optional[float] = None,
+    suppress_small: Optional[bool] = None,
 ) -> str:
     """
     Return a string representation of the data in an array.
@@ -39,10 +39,10 @@ def array_str(
             numbers smaller (in absolute value) than 5e-9 are represented as
             zero. Defaults to ``numpy.get_printoptions()['suppress']``.
 
-    Returns:
+    Return:
         The string representation of an array.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.array_str(numpoly.polynomial([1, q0]))
         '[1 q0]'

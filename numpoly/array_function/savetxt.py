@@ -72,7 +72,7 @@ def savetxt(
             'latin1' you will not be able to load the file in NumPy versions <
             1.14. Default is 'latin1'.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([1, q0, q1**2-1])
         >>> numpoly.savetxt("/tmp/poly.txt", poly)
@@ -88,7 +88,7 @@ def savetxt(
             version=numpoly.__version__,
             names=",".join(X.names),
             keys=",".join(X.keys),
-            shape=",".join(str(idx) for idx in X.shape)
+            shape=",".join(str(idx) for idx in X.shape),
         )
         if header:
             header = numpoly_header + "\n" + header
@@ -96,6 +96,14 @@ def savetxt(
             header = numpoly_header
         X = structured_to_unstructured(X.values.ravel())
 
-    numpy.savetxt(fname=fname, X=X, fmt=fmt, delimiter=delimiter,
-                  newline=newline, header=header, footer=footer,
-                  comments=comments, encoding=encoding)
+    numpy.savetxt(
+        fname=fname,
+        X=X,
+        fmt=fmt,
+        delimiter=delimiter,
+        newline=newline,
+        header=header,
+        footer=footer,
+        comments=comments,
+        encoding=encoding,
+    )

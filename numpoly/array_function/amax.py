@@ -45,11 +45,11 @@ def amax(
         where:
             Elements to compare for the maximum.
 
-    Returns:
+    Return:
         Maximum of `a`. If `axis` is None, the result is a scalar value.
         If `axis` is given, the result is an array of dimension ``a.ndim-1``.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.amax([13, 7])
         polynomial(13)
@@ -66,7 +66,8 @@ def amax(
     a = numpoly.aspolynomial(a)
     options = numpoly.get_options()
     proxy = numpoly.sortable_proxy(
-        a, graded=options["sort_graded"], reverse=options["sort_reverse"])
+        a, graded=options["sort_graded"], reverse=options["sort_reverse"]
+    )
     indices = numpy.amax(proxy, axis=axis, **kwargs)
     out = a[numpy.isin(proxy, indices)]
     out = out[numpy.argsort(indices.ravel())]

@@ -13,11 +13,11 @@ from ...dispatch import implements_function
 
 @implements_function(numpy.divmod)
 def poly_divmod(
-        dividend: PolyLike,
-        divisor: PolyLike,
-        out: Tuple[Optional[ndpoly], Optional[ndpoly]] = (None, None),
-        where: numpy.typing.ArrayLike = True,
-        **kwargs: Any,
+    dividend: PolyLike,
+    divisor: PolyLike,
+    out: Tuple[Optional[ndpoly], Optional[ndpoly]] = (None, None),
+    where: numpy.typing.ArrayLike = True,
+    **kwargs: Any,
 ) -> Tuple[ndpoly, ndpoly]:
     """
     Return element-wise quotient and remainder simultaneously.
@@ -26,7 +26,7 @@ def poly_divmod(
     because it avoids redundant work. It is used to implement the Python
     built-in function ``divmod`` on Numpoly arrays.
 
-    Notes:
+    Note:
         Unlike numbers, this returns the polynomial division and polynomial
         remainder. This means that this function is _not_ backwards compatible
         with ``numpy.divmod`` for constants. For example:
@@ -54,11 +54,11 @@ def poly_divmod(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         Element-wise quotient and remainder resulting from floor division. This
         is a scalar if both `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> denominator = [q0*q1**2+2*q0**3*q1**2, -2+q0*q1**2]
         >>> numerator = -2+q0*q1**2
@@ -77,8 +77,11 @@ def poly_divmod(
 
     if not dividend_.shape:
         floor, remainder = poly_divmod(
-            dividend_.ravel(), divisor.ravel(),
-            out=out, where=where, **kwargs,
+            dividend_.ravel(),
+            divisor.ravel(),
+            out=out,
+            where=where,
+            **kwargs,
         )
         return floor[0], remainder[0]
 
@@ -90,15 +93,14 @@ def poly_divmod(
             break
         idx1, idx2, include, candidate = candidates
 
-        exponent_diff = dividend_.exponents[idx1]-divisor.exponents[idx2]
-        candidate = candidate*numpoly.prod(
-            divisor.indeterminants**exponent_diff, 0)
+        exponent_diff = dividend_.exponents[idx1] - divisor.exponents[idx2]
+        candidate = candidate * numpoly.prod(divisor.indeterminants**exponent_diff, 0)
         key = dividend_.keys[idx1]
 
-        quotient = numpoly.add(
-            quotient, numpoly.where(include, candidate, 0), **kwargs)
+        quotient = numpoly.add(quotient, numpoly.where(include, candidate, 0), **kwargs)
         dividend_ = numpoly.subtract(
-            dividend_, numpoly.where(include, divisor*candidate, 0), **kwargs)
+            dividend_, numpoly.where(include, divisor * candidate, 0), **kwargs
+        )
 
         # ensure the candidate values are actual zero
         if key in dividend_.keys:
@@ -110,7 +112,9 @@ def poly_divmod(
 
 
 def get_division_candidate(
-    x1: ndpoly, x2: ndpoly, cutoff: float = 1e-30,
+    x1: ndpoly,
+    x2: ndpoly,
+    cutoff: float = 1e-30,
 ) -> Optional[Tuple[int, int, numpy.ndarray, numpy.ndarray]]:
     """
     Find the next exponent candidate pair in the iterative subtraction process.
@@ -124,7 +128,7 @@ def get_division_candidate(
             Threshold for when a value is so small that it is no longer a valid
             candidate. Required to avoid infinity loops in some edge cases.
 
-    Returns:
+    Return:
         Indices to the exponent candidate in respectively `x1` and `x2`
         that should be used in the divide process, and an boolean array to
         indicate for which coefficients these candidates are valid.
@@ -160,8 +164,9 @@ def get_division_candidate(
                 continue
 
             # construct candidate
-            candidate = x1.coefficients[idx1]/numpy.where(
-                include, x2.coefficients[idx2], 1)
+            candidate = x1.coefficients[idx1] / numpy.where(
+                include, x2.coefficients[idx2], 1
+            )
 
             # really big relative error makes division algorithm
             # into a convergence strategy which needs a cutoff.

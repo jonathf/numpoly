@@ -12,11 +12,11 @@ from ..dispatch import implements
 
 @implements(numpy.equal)
 def equal(
-        x1: PolyLike,
-        x2: PolyLike,
-        out: Optional[numpy.ndarray] = None,
-        where: numpy.typing.ArrayLike = True,
-        **kwargs: Any,
+    x1: PolyLike,
+    x2: PolyLike,
+    out: Optional[numpy.ndarray] = None,
+    where: numpy.typing.ArrayLike = True,
+    **kwargs: Any,
 ) -> numpy.ndarray:
     """
     Return (x1 == x2) element-wise.
@@ -42,12 +42,12 @@ def equal(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         Output array, element-wise comparison of `x1` and `x2`. Typically of
         type bool, unless ``dtype=object`` is passed. This is a scalar if both
         `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> q0, q1, q2 = q0q1q2 = numpoly.variable(3)
         >>> numpoly.equal(q0q1q2, q0)
         array([ True, False, False])
@@ -63,6 +63,5 @@ def equal(
     if not out.shape:
         return equal(x1.ravel(), x2.ravel(), out=out.ravel()).item()
     for coeff1, coeff2 in zip(x1.coefficients, x2.coefficients):
-        out &= numpy.equal(coeff1, coeff2,
-                           where=numpy.asarray(where), **kwargs)
+        out &= numpy.equal(coeff1, coeff2, where=numpy.asarray(where), **kwargs)
     return out

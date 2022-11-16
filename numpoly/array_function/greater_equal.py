@@ -11,10 +11,10 @@ from ..dispatch import implements
 
 @implements(numpy.greater_equal)
 def greater_equal(
-        x1: PolyLike,
-        x2: PolyLike,
-        out: Optional[numpy.ndarray] = None,
-        **kwargs: Any,
+    x1: PolyLike,
+    x2: PolyLike,
+    out: Optional[numpy.ndarray] = None,
+    **kwargs: Any,
 ) -> numpy.ndarray:
     """
     Return the truth value of (x1 >= x2) element-wise.
@@ -40,12 +40,12 @@ def greater_equal(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         Output array, element-wise comparison of `x1` and `x2`. Typically of
         type bool, unless ``dtype=object`` is passed. This is a scalar if both
         `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.greater_equal(3, 4)
         False
@@ -72,11 +72,13 @@ def greater_equal(
         return greater_equal(x1.ravel(), x2.ravel(), out=out.ravel()).item()
 
     options = numpoly.get_options()
-    for idx in numpoly.glexsort(x1.exponents.T, graded=options["sort_graded"],
-                                reverse=options["sort_reverse"]):
+    for idx in numpoly.glexsort(
+        x1.exponents.T, graded=options["sort_graded"], reverse=options["sort_reverse"]
+    ):
 
         indices = (coefficients1[idx] != 0) | (coefficients2[idx] != 0)
         indices &= coefficients1[idx] != coefficients2[idx]
         out[indices] = numpy.greater_equal(
-            coefficients1[idx], coefficients2[idx], **kwargs)[indices]
+            coefficients1[idx], coefficients2[idx], **kwargs
+        )[indices]
     return out

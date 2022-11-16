@@ -22,10 +22,10 @@ def hsplit(
     `split` with ``axis=1``, the array is always split along the second axis
     regardless of the array dimension.
 
-    See Also:
+    Note:
         split : Split an array into multiple sub-arrays of equal size.
 
-    Examples:
+    Example:
         >>> poly = numpoly.monomial(8).reshape(2, 4)
         >>> poly
         polynomial([[1, q0, q0**2, q0**3],
@@ -48,6 +48,7 @@ def hsplit(
     """
     ary = numpoly.aspolynomial(ary)
     results = numpy.hsplit(ary.values, indices_or_sections=indices_or_sections)
-    return [numpoly.polynomial(
-        result, names=ary.indeterminants, allocation=ary.allocation)
-            for result in results]
+    return [
+        numpoly.polynomial(result, names=ary.indeterminants, allocation=ary.allocation)
+        for result in results
+    ]

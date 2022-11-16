@@ -12,11 +12,11 @@ from .divmod import poly_divmod
 
 @implements_function(numpy.true_divide)
 def poly_divide(
-        x1: PolyLike,
-        x2: PolyLike,
-        out: Optional[ndpoly] = None,
-        where: numpy.typing.ArrayLike = True,
-        **kwargs: Any,
+    x1: PolyLike,
+    x2: PolyLike,
+    out: Optional[ndpoly] = None,
+    where: numpy.typing.ArrayLike = True,
+    **kwargs: Any,
 ) -> ndpoly:
     """
     Return a polynomial division of the inputs, element-wise.
@@ -48,10 +48,10 @@ def poly_divide(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         This is a scalar if both `x1` and `x2` are scalars.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> poly = numpoly.polynomial([14, q0**2-3])
         >>> numpoly.poly_divide(poly, 4)

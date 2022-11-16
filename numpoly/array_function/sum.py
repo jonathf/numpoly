@@ -50,12 +50,12 @@ def sum(
         where:
             Elements to include in the sum.
 
-    Returns:
+    Return:
         An array with the same shape as `a`, with the specified axis removed.
         If `a` is a 0-d array, or if `axis` is None, a scalar is returned. If
         an output array is specified, a reference to `out` is returned.
 
-    Examples:
+    Example:
         >>> q0, q1, q2 = numpoly.variable(3)
         >>> poly = numpoly.polynomial([[1, q0], [q1, q2]])
         >>> numpoly.sum(poly)
@@ -71,5 +71,5 @@ def sum(
         axis=axis,
         dtype=dtype,
         keepdims=keepdims,
-        **kwargs
+        **kwargs,
     )

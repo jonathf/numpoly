@@ -18,10 +18,10 @@ def nonzero(x: PolyLike, **kwargs: Any) -> Tuple[numpy.ndarray, ...]:
         x:
             Input array.
 
-    Returns:
+    Return:
         Indices of elements that are non-zero.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([[3*q0, 0, 0],
         ...                            [0, 4*q1, 0],

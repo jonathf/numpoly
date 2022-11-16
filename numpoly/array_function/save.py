@@ -11,10 +11,10 @@ from ..dispatch import implements
 
 @implements(numpy.save)
 def save(
-        file: PathLike,
-        arr: PolyLike,
-        allow_pickle: bool = True,
-        fix_imports: bool = True,
+    file: PathLike,
+    arr: PolyLike,
+    allow_pickle: bool = True,
+    fix_imports: bool = True,
 ) -> None:
     """
     Save polynomial array to a binary file in NumPy ``.npy`` format.
@@ -41,7 +41,7 @@ def save(
             names used in Python 2, so that the pickle data stream is readable
             with Python 2.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([1, q0, q1**2-1])
         >>> numpoly.save("/tmp/example1.npy", poly)
@@ -51,10 +51,16 @@ def save(
     """
     if isinstance(file, (str, bytes, PathLike)):
         with open(file, "wb") as src:
-            return save(src, arr=arr,
-                        allow_pickle=allow_pickle, fix_imports=fix_imports)
+            return save(
+                src, arr=arr, allow_pickle=allow_pickle, fix_imports=fix_imports
+            )
     arr = numpoly.aspolynomial(arr)
-    numpy.save(file=file, arr=arr.values,
-               allow_pickle=allow_pickle, fix_imports=fix_imports)
-    numpy.save(file=file, arr=numpy.array(arr.names),
-               allow_pickle=allow_pickle, fix_imports=fix_imports)
+    numpy.save(
+        file=file, arr=arr.values, allow_pickle=allow_pickle, fix_imports=fix_imports
+    )
+    numpy.save(
+        file=file,
+        arr=numpy.array(arr.names),
+        allow_pickle=allow_pickle,
+        fix_imports=fix_imports,
+    )

@@ -8,9 +8,9 @@ from ..baseclass import PolyLike
 
 
 def lead_exponent(
-        poly: PolyLike,
-        graded: bool = False,
-        reverse: bool = False,
+    poly: PolyLike,
+    graded: bool = False,
+    reverse: bool = False,
 ) -> numpy.ndarray:
     """
     Find the lead exponents for each polynomial.
@@ -31,12 +31,12 @@ def lead_exponent(
             Reverses lexicographical sorting meaning that ``q0*q1**3`` is
             considered bigger than ``q0**3*q1``, instead of the opposite.
 
-    Returns:
+    Return:
         Integer array with the largest exponents in the polynomials. The
         shape is ``poly.shape + (len(poly.names),)``. The extra dimension
         is used to indicate the exponent for the different indeterminants.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.lead_exponent([1, q0+1, q0**2+q0+1]).T
         array([[0, 1, 2]])
@@ -50,10 +50,9 @@ def lead_exponent(
     poly_ = numpoly.aspolynomial(poly)
     shape = poly_.shape
     poly = poly_.ravel()
-    out = numpy.zeros(poly_.shape+(len(poly_.names),), dtype=int)
+    out = numpy.zeros(poly_.shape + (len(poly_.names),), dtype=int)
     if not poly_.size:
         return out
-    for idx in numpoly.glexsort(
-            poly_.exponents.T, graded=graded, reverse=reverse):
+    for idx in numpoly.glexsort(poly_.exponents.T, graded=graded, reverse=reverse):
         out[poly_.coefficients[idx] != 0] = poly_.exponents[idx]
-    return out.reshape(shape+(len(poly_.names),))
+    return out.reshape(shape + (len(poly_.names),))

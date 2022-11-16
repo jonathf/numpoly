@@ -11,10 +11,10 @@ from ..dispatch import implements
 
 @implements(numpy.array_repr)
 def array_repr(
-        arr: PolyLike,
-        max_line_width: Optional[int] = None,
-        precision: Optional[int] = None,
-        suppress_small: Optional[bool] = None,
+    arr: PolyLike,
+    max_line_width: Optional[int] = None,
+    precision: Optional[int] = None,
+    suppress_small: Optional[bool] = None,
 ) -> str:
     """
     Return the string representation of an array.
@@ -34,10 +34,10 @@ def array_repr(
             numbers smaller (in absolute value) than 5e-9 are represented as
             zero. Defaults to ``numpy.get_printoptions()['suppress']``.
 
-    Returns:
+    Return:
         The string representation of an array.
 
-    Examples:
+    Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.array_repr(numpoly.polynomial([1, q0]))
         'polynomial([1, q0])'
@@ -59,20 +59,24 @@ def array_repr(
 
     arr = to_string(arr, precision=precision, suppress_small=suppress_small)
 
-    return prefix + numpy.array2string(
-        numpy.array(arr),
-        max_line_width=max_line_width,
-        separator=", ",
-        formatter={"all": str},
-        prefix=prefix,
-        suffix=suffix,
-    ) + suffix
+    return (
+        prefix
+        + numpy.array2string(
+            numpy.array(arr),
+            max_line_width=max_line_width,
+            separator=", ",
+            formatter={"all": str},
+            prefix=prefix,
+            suffix=suffix,
+        )
+        + suffix
+    )
 
 
 def to_string(
-        poly: ndpoly,
-        precision: Optional[float] = None,
-        suppress_small: Optional[bool] = None,
+    poly: ndpoly,
+    precision: Optional[float] = None,
+    suppress_small: Optional[bool] = None,
 ) -> Union[str, List]:
     """
     Convert numpoly object to string object, or array of string objects.
@@ -89,10 +93,10 @@ def to_string(
             numbers smaller (in absolute value) than 5e-9 are represented as
             zero. Defaults to ``numpy.get_printoptions()['suppress']``.
 
-    Returns:
+    Return:
         If scalar, a string, or if array, numpy.array with string values.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> poly = numpoly.polynomial([[1, q0**3], [q1-1, -3*q0]])
         >>> string_array = to_string(poly)
@@ -108,9 +112,10 @@ def to_string(
         suppress_small = numpy.get_printoptions()["suppress"]
 
     if poly.shape:
-        return [to_string(poly_, precision=precision,
-                          suppress_small=suppress_small)
-                for poly_ in poly]
+        return [
+            to_string(poly_, precision=precision, suppress_small=suppress_small)
+            for poly_ in poly
+        ]
 
     output = _to_string(poly, precision, suppress_small)
     if output:
@@ -119,9 +124,9 @@ def to_string(
 
 
 def _to_string(
-        poly: ndpoly,
-        precision: float,
-        suppress_small: bool,
+    poly: ndpoly,
+    precision: float,
+    suppress_small: bool,
 ) -> List[str]:
     """Backend for to_string."""
     exponents = poly.exponents.copy()
@@ -156,9 +161,9 @@ def _to_string(
                     out += options["display_multiply"]
                 out += indeterminant
             if exponent > 1:
-                out += options["display_exponent"]+str(exponent)
+                out += options["display_exponent"] + str(exponent)
         if output and float(coefficients[idx]) >= 0:
-            out = "+"+out
+            out = "+" + out
         output.append(out)
 
     return output

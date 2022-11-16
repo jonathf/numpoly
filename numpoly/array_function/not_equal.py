@@ -12,11 +12,11 @@ from ..dispatch import implements
 
 @implements(numpy.not_equal)
 def not_equal(
-        x1: PolyLike,
-        x2: PolyLike,
-        out: Optional[numpy.ndarray] = None,
-        where: numpy.typing.ArrayLike = True,
-        **kwargs: Any,
+    x1: PolyLike,
+    x2: PolyLike,
+    out: Optional[numpy.ndarray] = None,
+    where: numpy.typing.ArrayLike = True,
+    **kwargs: Any,
 ) -> numpy.ndarray:
     """
     Return (x1 != x2) element-wise.
@@ -42,11 +42,11 @@ def not_equal(
         kwargs:
             Keyword args passed to numpy.ufunc.
 
-    Returns:
+    Return:
         Output array, element-wise comparison of `x1` and `x2`.
         Typically of type bool, unless ``dtype=object`` is passed.
 
-    Examples:
+    Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.not_equal([q0, q0], [q0, q1])
         array([False,  True])
@@ -63,8 +63,7 @@ def not_equal(
     # x1, x2 = numpoly.align_polynomials(x1, x2)
     where = numpy.asarray(where)
     for key in x1.keys:
-        tmp = numpy.not_equal(
-            x1.values[key], x2.values[key], where=where, **kwargs)
+        tmp = numpy.not_equal(x1.values[key], x2.values[key], where=where, **kwargs)
         if out is None:
             out = tmp
         else:

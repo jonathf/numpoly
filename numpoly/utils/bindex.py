@@ -9,11 +9,11 @@ from .glexindex import glexindex
 
 
 def bindex(
-        start: numpy.typing.ArrayLike,
-        stop: Optional[numpy.typing.ArrayLike] = None,
-        dimensions: int = 1,
-        ordering: str = "G",
-        cross_truncation: numpy.typing.ArrayLike = 1.,
+    start: numpy.typing.ArrayLike,
+    stop: Optional[numpy.typing.ArrayLike] = None,
+    dimensions: int = 1,
+    ordering: str = "G",
+    cross_truncation: numpy.typing.ArrayLike = 1.0,
 ) -> numpy.ndarray:
     """
     Generate multi-indices for the monomial exponents.
@@ -47,10 +47,10 @@ def bindex(
             truncation, while the latter upper bound. If only one value, upper
             bound is assumed.
 
-    Returns:
+    Return:
         Order indices.
 
-    Examples:
+    Example:
         >>> numpoly.bindex(4).tolist()
         [[0], [1], [2], [3]]
         >>> numpoly.bindex(2, dimensions=2).tolist()

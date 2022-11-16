@@ -21,7 +21,7 @@ def broadcast_arrays(*args: PolyLike, **kwargs: Any) -> List[ndpoly]:
             If True, then sub-classes will be passed-through, otherwise the
             returned arrays will be forced to be a base-class array (default).
 
-    Returns:
+    Return:
         These arrays are views on the original arrays.  They are typically not
         contiguous.  Furthermore, more than one element of a broadcasted array
         may refer to a single memory location. If you need to write to the
@@ -29,7 +29,7 @@ def broadcast_arrays(*args: PolyLike, **kwargs: Any) -> List[ndpoly]:
         True, writing to a single output value may end up changing more than
         one location in the output array.
 
-    Examples:
+    Example:
         >>> poly1 = numpoly.monomial(3).reshape(1, 3)
         >>> poly1
         polynomial([[1, q0, q0**2]])
@@ -48,5 +48,7 @@ def broadcast_arrays(*args: PolyLike, **kwargs: Any) -> List[ndpoly]:
     """
     args_ = [numpoly.aspolynomial(arg) for arg in args]
     results = numpy.broadcast_arrays(*[arg.values for arg in args_], **kwargs)
-    return [numpoly.aspolynomial(result, names=arg.indeterminants)
-            for result, arg in zip(results, args_)]
+    return [
+        numpoly.aspolynomial(result, names=arg.indeterminants)
+        for result, arg in zip(results, args_)
+    ]
