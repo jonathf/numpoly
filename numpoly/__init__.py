@@ -2,7 +2,11 @@
 """Numpoly -- Multivariate polynomials as numpy elements."""
 import logging
 import os
-import importlib_metadata
+import sys
+if sys.version_info >= (3,10):
+    from importlib import metadata as importlib_metadata
+else:
+    import importlib_metadata
 
 from .baseclass import ndpoly, FeatureNotSupported, PolyLike
 
