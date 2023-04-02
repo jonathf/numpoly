@@ -2,7 +2,7 @@
 """Numpoly -- Multivariate polynomials as numpy elements."""
 import logging
 import os
-import pkg_resources
+import importlib_metadata
 
 from .baseclass import ndpoly, FeatureNotSupported, PolyLike
 
@@ -49,11 +49,10 @@ def get_version(name: str) -> str:
         True
 
     """
-    version = ""
     try:
-        version = pkg_resources.get_distribution(name).version
-    except pkg_resources.DistributionNotFound:
-        pass
+        version = importlib_metadata.version(name)
+    except importlib_metadata.PackageNotFoundError:
+        version = ""
     return version
 
 
