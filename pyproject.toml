@@ -36,3 +36,10 @@ dev = [
   "Sphinx",
   "sphinx_automodapi",
 ]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+  "error::DeprecationWarning",
+  "ignore:elementwise:DeprecationWarning",
+  "ignore:Calling nonzero on 0d arrays:DeprecationWarning"
+]
