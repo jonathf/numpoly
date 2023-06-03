@@ -20,6 +20,7 @@ requires-python = ">=3.7"
 dependencies = [
   "numpy >=1.20",
   "setuptools >=40.9.0",
+  "importlib-metadata",
 ]
 
 [project.optional-dependencies]
