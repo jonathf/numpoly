@@ -38,9 +38,9 @@ jobs:
                     source venv/bin/activate
                     codecov
                     coverage report --show-missing
-    test-311:
+    test-310:
         docker:
-            - image: circleci/python:3.11.1
+            - image: circleci/python:3.10.1
               auth:
                 username: jonathf
                 password: $DOCKERHUB_PASSWORD
@@ -48,8 +48,8 @@ jobs:
             - checkout
             - restore_cache:
                 keys:
-                    - py311-{{ checksum "requirements-dev.txt"}}
-                    - py311-
+                    - py310-{{ checksum "requirements-dev.txt"}}
+                    - py310-
             - run:
                 name: "Installation"
                 command: |
@@ -59,7 +59,7 @@ jobs:
                     pip install -r requirements-dev.txt
                     pip install .
             - save_cache:
-                key: py311-{{ checksum "requirements-dev.txt"}}
+                key: py310-{{ checksum "requirements-dev.txt"}}
                 paths:
                     - venv
             - run:
@@ -84,7 +84,7 @@ jobs:
                     sphinx-build docs/ docs/.build -b html -v --color -T -W --keep-going
     deploy:
         docker:
-            - image: circleci/python:3.11.1
+            - image: circleci/python:3.10.1
               auth:
                 username: jonathf
                 password: $DOCKERHUB_PASSWORD
@@ -92,7 +92,7 @@ jobs:
             - checkout
             - restore_cache:
                 keys:
-                    - py311-{{ checksum "requirements-dev.txt"}}
+                    - py310-{{ checksum "requirements-dev.txt"}}
             - run:
                 name: "Verify tag version"
                 command: |
@@ -116,13 +116,13 @@ workflows:
             - test-37:
                 filters:
                     <<: *version-tags
-            - test-311:
+            - test-310:
                 filters:
                     <<: *version-tags
             - deploy:
                 requires:
                     - test-37
-                    - test-311
+                    - test-310
                 filters:
                     <<: *version-tags
                     branches:
