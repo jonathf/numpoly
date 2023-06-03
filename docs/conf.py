@@ -45,6 +45,11 @@ coverage_show_missing_items = True
 # a list of builtin themes.
 html_theme = "pydata_sphinx_theme"
 html_theme_options = {
+    "logo": {
+        "link": "https://numpoly.readthedocs.io",
+        "image_light": ".static/numpoly_logo2.svg",
+        "image_dark": ".static/numpoly_logo2.svg",
+    },
     "collapse_navigation": True,
     "external_links":
         [{"name": "Github", "url": "https://github.com/jonathf/numpoly"}],
@@ -56,7 +61,6 @@ html_theme_options = {
 }
 html_short_title = "numpoly"
 html_context = {"doc_path": "docs"}
-html_logo = ".static/numpoly_logo2.svg"
 html_static_path = ['.static']
 html_sidebars = {"**": ["sidebar-nav-bs.html"]}
 
