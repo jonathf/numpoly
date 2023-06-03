@@ -40,7 +40,7 @@ jobs:
                     coverage report --show-missing
     test-311:
         docker:
-            - image: circleci/python:3.11.2
+            - image: circleci/python:3.11.1
               auth:
                 username: jonathf
                 password: $DOCKERHUB_PASSWORD
@@ -84,7 +84,7 @@ jobs:
                     sphinx-build docs/ docs/.build -b html -v --color -T -W --keep-going
     deploy:
         docker:
-            - image: circleci/python:3.11.2
+            - image: circleci/python:3.11.1
               auth:
                 username: jonathf
                 password: $DOCKERHUB_PASSWORD
