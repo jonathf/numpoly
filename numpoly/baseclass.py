@@ -640,11 +640,12 @@ as numpy.loadtxt will not work as expected."""
             polynomial([q0**2, q0*q1**2])
 
         """
-        return numpoly.polynomial_from_attributes(
-            exponents=self.exponents,
-            coefficients=[coeff[index] for coeff in self.coefficients],
-            names=self.names,
-        )
+        with numpoly.global_options(retain_names=True):
+            return numpoly.polynomial_from_attributes(
+                exponents=self.exponents,
+                coefficients=[coeff[index] for coeff in self.coefficients],
+                names=self.names,
+            )
 
     # def __setitem__(self, index, other):
     #     other = numpoly.aspolynomial(other)
