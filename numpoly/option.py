@@ -10,7 +10,7 @@ GLOBAL_OPTIONS_DEFAULTS = {
     "display_exponent": "**",
     "display_multiply": "*",
     "force_number_suffix": True,
-    "retain_names": False,
+    "retain_names": True,
     "retain_coefficients": False,
     "sort_graded": True,
     "sort_reverse": False,

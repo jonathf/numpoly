@@ -48,6 +48,7 @@ def roots(poly: PolyLike) -> numpy.ndarray:
     if poly.isconstant():
         return numpy.roots(poly.tonumpy())
     # only rank-1
+    poly = numpoly.clean_attributes(poly, retain_names=False)
     if len(poly.names) > 1:
         raise ValueError("polynomial is not of rank 1.")
     # align exponents to include all coefficients
