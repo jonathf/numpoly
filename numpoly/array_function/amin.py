@@ -9,6 +9,7 @@ from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
+@implements(numpy.min)
 @implements(numpy.amin)
 def amin(
     a: PolyLike,

@@ -56,7 +56,7 @@ def multiply(
 
     """
     x1, x2 = numpoly.align_indeterminants(x1, x2)
-    dtype = numpy.find_common_type([x1.dtype, x2.dtype], [])
+    dtype = numpy.result_type(x1, x2)
     shape = numpy.broadcast_shapes(x1.shape, x2.shape)
 
     where = numpy.asarray(where)

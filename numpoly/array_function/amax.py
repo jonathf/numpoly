@@ -9,6 +9,7 @@ from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
+@implements(numpy.max)
 @implements(numpy.amax)
 def amax(
     a: PolyLike,
