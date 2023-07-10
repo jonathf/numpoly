@@ -57,7 +57,7 @@ jobs:
                     source venv/bin/activate
                     pip install -U pip
                     pip install -r requirements-dev.txt
-                    pip install .
+                    pip install .[dev]
             - save_cache:
                 key: py310-{{ checksum "requirements-dev.txt"}}
                 paths:

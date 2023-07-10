@@ -65,7 +65,7 @@ def compose_polynomial_array(
             dtypes.append(type(array))
 
     if dtype is None:
-        dtype = numpy.find_common_type(dtypes, [])
+        dtype = numpy.result_type(*dtypes)
     length = max(1, max([len(key) for key in keys]))
 
     collection = {}

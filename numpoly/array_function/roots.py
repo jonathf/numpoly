@@ -53,7 +53,7 @@ def roots(poly: PolyLike) -> numpy.ndarray:
         raise ValueError("polynomial is not of rank 1.")
     # align exponents to include all coefficients
     filled_basis = poly.indeterminants ** numpy.arange(
-        numpoly.lead_exponent(poly), dtype=int
+        numpoly.lead_exponent(poly).item(), dtype=int
     )
     _, poly = numpoly.align_exponents(filled_basis, poly)
     # pass coefficients to numpy

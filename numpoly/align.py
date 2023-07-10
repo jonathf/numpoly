@@ -208,8 +208,6 @@ def align_exponents(*polys: PolyLike) -> Tuple[ndpoly, ...]:
     global_exponents = numpy.unique(global_exponents, axis=0).tolist()
 
     for idx, poly in enumerate(polys_):
-        if numpy.all(poly.exponents == global_exponents):
-            continue
         lookup = {
             tuple(exponent): coefficient
             for exponent, coefficient in zip(poly.exponents, poly.coefficients)

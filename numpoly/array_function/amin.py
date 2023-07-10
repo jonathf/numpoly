@@ -8,8 +8,13 @@ import numpoly
 from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
+if tuple(int(v) for v in numpy.__version__.split(".")) >= (1, 25, 0):
+    impls = [numpy.amin, numpy.min, min]
+else:
+    impls = [numpy.min, min]
 
-@implements(numpy.amin)
+
+@implements(*impls)
 def amin(
     a: PolyLike,
     axis: Union[None, int, Sequence[int]] = None,

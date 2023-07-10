@@ -543,7 +543,7 @@ as numpy.loadtxt will not work as expected."""
         **kwargs: Any,
     ) -> "ndpoly":
         """Wrap ndarray.max."""
-        return numpoly.max(self, axis=axis, out=out, keepdims=keepdims, **kwargs)
+        return numpoly.amax(self, axis=axis, out=out, keepdims=keepdims, **kwargs)
 
     def min(  # type: ignore
         self,
@@ -553,7 +553,7 @@ as numpy.loadtxt will not work as expected."""
         **kwargs: Any,
     ) -> "ndpoly":
         """Wrap ndarray.min."""
-        return numpoly.min(self, axis=axis, out=out, keepdims=keepdims, **kwargs)
+        return numpoly.amin(self, axis=axis, out=out, keepdims=keepdims, **kwargs)
 
     def mean(  # type: ignore
         self,
