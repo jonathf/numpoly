@@ -41,7 +41,9 @@ def implements(*array_functions: Callable) -> Callable:
     def decorator(numpoly_function: Callable) -> Callable:
         """Register function."""
         for func in array_functions:
-            assert func not in FUNCTION_COLLECTION, f"{func} already implemented: {FUNCTION_COLLECTION[func].__code__}"
+            assert (
+                func not in FUNCTION_COLLECTION
+            ), f"{func} already implemented: {FUNCTION_COLLECTION[func].__code__}"
             FUNCTION_COLLECTION[func] = numpoly_function
             assert func not in UFUNC_COLLECTION, f"{func} already implemented"
             UFUNC_COLLECTION[func] = numpoly_function
