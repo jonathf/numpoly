@@ -58,7 +58,6 @@ jobs:
                     pip install -U pip
                     pip install -r requirements-dev.txt
                     pip install .[dev]
-                    pip install -U numpy
             - save_cache:
                 key: py310-{{ checksum "requirements-dev.txt"}}
                 paths:
