@@ -8,9 +8,13 @@ import numpoly
 from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
+if tuple(int(v) for v in numpy.__version__.split(".")) >= (1, 25, 0):
+    impls = [numpy.amax, numpy.max, max]
+else:
+    impls = [numpy.amax, max]
 
-@implements(numpy.max)
-@implements(numpy.amax)
+
+@implements(*impls)
 def amax(
     a: PolyLike,
     axis: Union[None, int, Sequence[int]] = None,
