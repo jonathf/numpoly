@@ -28,7 +28,7 @@ dev = [
   "black ==23.3.0",
   "pylint ==2.15.5",
   "pydocstyle ==3.0.0",
-  "pydata_sphinx_theme ==0.11.0",
+  "pydata_sphinx_theme ==0.15.2",
   "sympy",
   "pytest",
   "pytest-cov",

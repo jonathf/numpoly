@@ -4,40 +4,6 @@ version-tags: &version-tags
 
 version: 2.1
 jobs:
-    test-37:
-        docker:
-            - image: circleci/python:3.7.10
-              auth:
-                username: jonathf
-                password: $DOCKERHUB_PASSWORD
-        steps:
-            - checkout
-            - restore_cache:
-                keys:
-                    - py37-{{ checksum "requirements-dev.txt"}}
-                    - py37-
-            - run:
-                name: "Installation"
-                command: |
-                    python3 -m venv venv
-                    source venv/bin/activate
-                    pip install -U pip
-                    pip install .[dev]
-            - save_cache:
-                key: py37-{{ checksum "requirements-dev.txt"}}
-                paths:
-                    - venv
-            - run:
-                name: "Run tests"
-                command: |
-                    source venv/bin/activate
-                    coverage run --source numpoly/ --module pytest --doctest-modules numpoly/ test/ docs/*.rst README.rst
-            - run:
-                name: "Report home"
-                command: |
-                    source venv/bin/activate
-                    codecov
-                    coverage report --show-missing
     test-310:
         docker:
             - image: circleci/python:3.10.1
@@ -113,15 +79,11 @@ workflows:
     version: 2.1
     workflow:
         jobs:
-            - test-37:
-                filters:
-                    <<: *version-tags
             - test-310:
                 filters:
                     <<: *version-tags
             - deploy:
                 requires:
-                    - test-37
                     - test-310
                 filters:
                     <<: *version-tags
