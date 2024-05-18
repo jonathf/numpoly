@@ -73,7 +73,7 @@ jobs:
                     source venv/bin/activate
                     pip install twine build
                     python -m build
-                    twine upload -u jonathf -p $PYPI_PASSWORD --non-interactive dist/*
+                    twine upload -u __token__ -p $PYPI_PASSWORD --non-interactive dist/*
 
 workflows:
     version: 2.1
