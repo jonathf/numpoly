@@ -1,5 +1,5 @@
 numpy
-alabaster==0.7.13
+alabaster==0.7.16
 astroid==2.13.5
 Babel==2.12.1
 beautifulsoup4==4.12.2
@@ -44,7 +44,7 @@ sphinxcontrib-devhelp==1.0.2
 sphinxcontrib-htmlhelp==2.0.1
 sphinxcontrib-jsmath==1.0.1
 sphinxcontrib-qthelp==1.0.3
-sphinxcontrib-serializinghtml==1.1.5
+sphinxcontrib-serializinghtml==1.1.10
 sympy==1.12
 tomli==2.0.1
 tomlkit==0.11.8
