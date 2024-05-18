@@ -95,7 +95,6 @@ def polynomial(
     elif isinstance(poly_like, numpy.ndarray) and poly_like.dtype.names:
 
         keys = numpy.asarray(poly_like.dtype.names, dtype="U")
-        keys = numpy.array([key for key in keys if not key.isdigit()])
         keys = numpy.array(keys, dtype=f"U{numpy.max(numpy.char.str_len(keys))}")
         exponents = keys.view(numpy.uint32) - numpoly.ndpoly.KEY_OFFSET
         exponents = exponents.reshape(len(keys), -1)
