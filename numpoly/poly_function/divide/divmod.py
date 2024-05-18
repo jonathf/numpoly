@@ -87,7 +87,6 @@ def poly_divmod(
 
     quotient = numpoly.zeros(dividend_.shape)
     while True:
-
         candidates = get_division_candidate(dividend_, divisor)
         if candidates is None:
             break

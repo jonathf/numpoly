@@ -141,7 +141,6 @@ def _to_string(
     if options["display_inverse"]:
         indices = indices[::-1]
     for idx in indices:
-
         if not coefficients[idx]:
             continue
         if suppress_small and abs(coefficients[idx]) < 10**-precision:

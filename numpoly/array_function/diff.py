@@ -73,7 +73,6 @@ def diff(
 
     out = None
     for key in a.keys:
-
         kwargs = {}
         if append is not None:
             kwargs["append"] = append.values[key]

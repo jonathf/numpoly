@@ -86,7 +86,6 @@ def _glexindex(start, stop, cross_truncation=1.0):
     indices = range_[:, numpy.newaxis]
 
     for idx in range(dimensions - 1):
-
         # Truncate at each step to keep memory usage low
         if idx:
             indices = indices[cross_truncate(indices, bound - 1, cross_truncation[1])]

@@ -81,7 +81,6 @@ def load(
     if isinstance(out, numpy.lib.npyio.NpzFile):  # type: ignore
         out = dict(out)
         for key, value in list(out.items()):
-
             # Classical arrays untouched
             if not value.dtype.names:
                 continue

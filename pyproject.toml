@@ -25,7 +25,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "black ==24.3.0",
+  "black ==23.3.0",
   "pylint ==2.15.5",
   "pydocstyle ==3.0.0",
   "pydata_sphinx_theme ==0.11.0",

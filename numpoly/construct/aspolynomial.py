@@ -39,7 +39,6 @@ def aspolynomial(
     """
     remain = False
     if isinstance(poly_like, numpoly.ndpoly):
-
         remain = dtype is None or dtype == poly_like.dtype
         if names is not None:
             if isinstance(names, numpoly.ndpoly):

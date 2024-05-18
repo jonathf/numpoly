@@ -75,7 +75,6 @@ def greater_equal(
     for idx in numpoly.glexsort(
         x1.exponents.T, graded=options["sort_graded"], reverse=options["sort_reverse"]
     ):
-
         indices = (coefficients1[idx] != 0) | (coefficients2[idx] != 0)
         indices &= coefficients1[idx] != coefficients2[idx]
         out[indices] = numpy.greater_equal(

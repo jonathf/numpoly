@@ -93,7 +93,6 @@ def polynomial(
 
     # assume polynomial converted to structured array
     elif isinstance(poly_like, numpy.ndarray) and poly_like.dtype.names:
-
         keys = numpy.asarray(poly_like.dtype.names, dtype="U")
         keys = numpy.array(keys, dtype=f"U{numpy.max(numpy.char.str_len(keys))}")
         exponents = keys.view(numpy.uint32) - numpoly.ndpoly.KEY_OFFSET
