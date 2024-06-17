@@ -10,7 +10,7 @@ from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
 
 
-@implements(numpy.prod, numpy.product)
+@implements(numpy.prod)
 def prod(
     a: PolyLike,
     axis: Union[None, int, Sequence[int]] = None,
