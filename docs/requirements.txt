@@ -1,4 +1,4 @@
-setuptools==69.5.1
+setuptools==70.0.0
 Sphinx==7.3.7
 pydata_sphinx_theme==0.15.2
 sphinx_automodapi==0.17.0
