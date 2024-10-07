@@ -45,7 +45,7 @@ def cross_truncate(
     """
     assert norm >= 0, "negative L_p norm not allowed"
     indices = numpy.asarray(indices)
-    bound_ = numpy.broadcast_to(numpy.asfarray(bound).ravel(), (indices.shape[1],))
+    bound_ = numpy.broadcast_to(numpy.asarray(bound, float).ravel(), (indices.shape[1],))
     nudge_factor = 1e-12 * indices.shape[1]
 
     if numpy.any(bound_ < 0):
