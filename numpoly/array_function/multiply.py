@@ -1,10 +1,13 @@
 """Multiply arguments element-wise."""
+
 from __future__ import annotations
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 import numpy
 import numpy.typing
 import numpoly
+import time
+import copy
 
 from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
@@ -76,21 +79,45 @@ def multiply(
         else out
     )
 
-    seen = set()
-    for expon1, coeff1 in zip(x1.exponents, x1.coefficients):
-        for expon2, coeff2 in zip(x2.exponents, x2.coefficients):
-            key = (expon1 + expon2 + x1.KEY_OFFSET).ravel()
-            key = key.view(f"U{len(expon1)}").item()
-            if key in seen:
-                out_.values[key] += numpy.multiply(
-                    coeff1, coeff2, where=where, **kwargs
-                )
-            else:
-                numpy.multiply(
-                    coeff1, coeff2, out=out_.values[key], where=where, **kwargs
-                )
-            seen.add(key)
+#    seen = set()
+#    for expon1, coeff1 in zip(x1.exponents, x1.coefficients):
+#        for expon2, coeff2 in zip(x2.exponents, x2.coefficients):
+#            key = (expon1 + expon2 + x1.KEY_OFFSET).ravel()
+#            key = key.view(f"U{len(expon1)}").item()
+#            if key in seen:
+#                out_.values[key] += numpy.multiply(
+#                    coeff1, coeff2, where=where, **kwargs
+#                )
+#            else:
+#                numpy.multiply(
+#                    coeff1, coeff2, out=out_.values[key], where=where, **kwargs
+#                )
+#            seen.add(key)
+#
+#    if out is None:
+#        out_ = numpoly.clean_attributes(out_)
+#
+#    return out_
 
+
+    names = out_.values.dtype.names
+    values = numpy.asarray([out_.values[name] for name in names])
+
+    output = numpoly.cmultiply(
+        x1.exponents,
+        x2.exponents,
+        x1.coefficients,
+        x2.coefficients,
+        x1.KEY_OFFSET,
+        names,
+        values,
+    )
+
+    out_ = numpoly.polynomial(
+        numpy.array([tuple(value) for value in output.T], dtype=out_.values.dtype)
+    )
     if out is None:
         out_ = numpoly.clean_attributes(out_)
+
     return out_
+

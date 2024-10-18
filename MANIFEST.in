@@ -1,3 +1,5 @@
 include README.rst
 include LICENSE.txt
 global-exclude *.pyc
+recursive-include numpoly/cfunctions *.pyx
+recursive-include numpoly/cfunctions *.pxd
