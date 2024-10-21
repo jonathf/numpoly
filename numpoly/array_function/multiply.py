@@ -59,6 +59,7 @@ def multiply(
 
     """
     x1, x2 = numpoly.align_indeterminants(x1, x2)
+
     dtype = numpy.result_type(x1, x2)
     shape = numpy.broadcast_shapes(x1.shape, x2.shape)
 
@@ -79,45 +80,53 @@ def multiply(
         else out
     )
 
-#    seen = set()
-#    for expon1, coeff1 in zip(x1.exponents, x1.coefficients):
-#        for expon2, coeff2 in zip(x2.exponents, x2.coefficients):
-#            key = (expon1 + expon2 + x1.KEY_OFFSET).ravel()
-#            key = key.view(f"U{len(expon1)}").item()
-#            if key in seen:
-#                out_.values[key] += numpy.multiply(
-#                    coeff1, coeff2, where=where, **kwargs
-#                )
-#            else:
-#                numpy.multiply(
-#                    coeff1, coeff2, out=out_.values[key], where=where, **kwargs
-#                )
-#            seen.add(key)
-#
-#    if out is None:
-#        out_ = numpoly.clean_attributes(out_)
-#
-#    return out_
+    coeffs1 = numpy.asarray(x1.coefficients)
+    if coeffs1.ndim == 1:
+        coeffs1 = numpy.repeat(
+            coeffs1[numpy.newaxis, :], x1.exponents.shape[1], axis=1
+        ).astype(numpy.float64)
 
+    coeffs2 = numpy.asarray(x2.coefficients)
+    if coeffs2.ndim == 1:
+        coeffs2 = numpy.repeat(
+            coeffs2[numpy.newaxis, :], x2.exponents.shape[1], axis=1
+        ).astype(numpy.float64)
 
-    names = out_.values.dtype.names
-    values = numpy.asarray([out_.values[name] for name in names])
+    out1 = copy.deepcopy(out_)
+    start = time.time()
+    seen = set()
+    for expon1, coeff1 in zip(x1.exponents, x1.coefficients):
+        for expon2, coeff2 in zip(x2.exponents, x2.coefficients):
+            key = (expon1 + expon2 + x1.KEY_OFFSET).ravel()
+            key = key.view(f"U{len(expon1)}").item()
+            if key in seen:
+                out_.values[key] += numpy.multiply(
+                    coeff1, coeff2, where=where, **kwargs
+                )
+            else:
+                numpy.multiply(
+                    coeff1, coeff2, out=out_.values[key], where=where, **kwargs
+                )
+            seen.add(key)
 
-    output = numpoly.cmultiply(
-        x1.exponents,
-        x2.exponents,
-        x1.coefficients,
-        x2.coefficients,
-        x1.KEY_OFFSET,
-        names,
-        values,
-    )
-
-    out_ = numpoly.polynomial(
-        numpy.array([tuple(value) for value in output.T], dtype=out_.values.dtype)
-    )
     if out is None:
         out_ = numpoly.clean_attributes(out_)
+    end = time.time()
+    print("PYTHON", end - start)
+
+    start = time.time()
+    numpoly.cmultiply(
+        x1.exponents,
+        x2.exponents,
+        coeffs1,
+        coeffs2,
+        x1.KEY_OFFSET,
+        out1.values,
+    )
+    end = time.time()
+    print("CYTHON", end - start)
+    print(numpy.all(out_ == out1))
+    if out is None:
+        out1 = numpoly.clean_attributes(out1)
 
     return out_
-

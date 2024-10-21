@@ -7,27 +7,33 @@ from libc.stdlib cimport free
 from libc.stdio cimport sprintf
 from cpython cimport bool as cbool
 
-ctypedef fused int_or_array1:
-    list[np.int64_t] 
-    np.ndarray[np.float64_t, ndim=2] 
-
-ctypedef fused int_or_array2:
-    list[np.int64_t] 
-    np.ndarray[np.float64_t, ndim=2] 
 
 cdef void cmultiply_cdef(
         np.ndarray[np.uint32_t, ndim=2] expons1, 
         np.ndarray[np.uint32_t, ndim=2] expons2,
-        int_or_array1 coeffs1, 
-        int_or_array2 coeffs2,
+        np.ndarray[np.float64_t, ndim=2] coeffs1, 
+        np.ndarray[np.float64_t, ndim=2] coeffs2,
         int offset,
-        poly
+        np.ndarray out,
 ):
+  
+    cdef Py_ssize_t i, j, k, idx, byte_row, nrow
+
+    # Declare pointers to the structured array 'out'
+    cdef char *base_ptr = <char *> np.PyArray_DATA(out) 
+    cdef char *data_ptr
+    cdef double *value_ptr
+
+    # Declare variables for string representation of polynomials
     cdef set seen = set()
-    cdef int i, j, k, idx
     cdef char key[256]
-    cdef int key_len
+    cdef Py_ssize_t key_len
     cdef str key_str
+    cdef Py_ssize_t value_offset
+
+    # Size for rows (in Bytes and Int)
+    byte_row = out.strides[0]
+    nrow = out.shape[0]
 
     for i in range(expons1.shape[0]):
         for j in range(expons2.shape[0]):
@@ -35,21 +41,34 @@ cdef void cmultiply_cdef(
 
             for k in range(expons1.shape[1]):
                 key_len += sprintf(key + key_len, "%c", expons1[i, k] + expons2[j, k] + offset)
-
+            
             key_str = key[:key_len].decode('utf-8')
-
+            value_offset = <Py_ssize_t> out.dtype.fields[key_str][1]
             if key_str in seen:
-                poly.values[key_str] += coeffs1[i] * coeffs2[j]
+                for k in range(nrow):
+                    # Get the pointers to the specific memory location
+                    data_ptr = base_ptr + k * byte_row
+
+                    # Access fields with offsets
+                    value_ptr = <double *> (data_ptr + value_offset)
+                    value_ptr[0] += coeffs1[i, k] * coeffs2[j, k]
+
             else:
-                poly.values[key_str] = coeffs1[i] * coeffs2[j]
+                for k in range(nrow):
+                    # Get the pointers to the specific memory location
+                    data_ptr = base_ptr + k * byte_row
+
+                    # Access fields with offsets
+                    value_ptr = <double *> (data_ptr + value_offset)
+                    value_ptr[0] = coeffs1[i, k] * coeffs2[j, k]
                 seen.add(key_str)
 
 def cmultiply(
         np.ndarray[np.uint32_t, ndim=2] expons1, 
         np.ndarray[np.uint32_t, ndim=2] expons2,
-        int_or_array1 coeffs1, 
-        int_or_array2 coeffs2,
+        np.ndarray[np.float64_t, ndim=2] coeffs1, 
+        np.ndarray[np.float64_t, ndim=2] coeffs2,
         int offset,
-        poly
+        np.ndarray out,
 ):
-    cmultiply_cdef(expons1, expons2, coeffs1, coeffs2, offset, poly)
+    cmultiply_cdef(expons1, expons2, coeffs1, coeffs2, offset, out)
