@@ -1,14 +1,15 @@
 from setuptools import setup, Extension
 from Cython.Build import cythonize
 import numpy as np
+import os
 
-# Define the Cython extension module
 extensions = [
     Extension(
-        name="numpoly.cfunctions.cmultiply",  # Name of the extension module
-        sources=["numpoly/cfunctions/cmultiply.pyx"],  # Path to your `.pyx` file
+        name="numpoly.cfunctions." + item.replace(".pyx", ""),  # Name of the extension module
+        sources=["./numpoly/cfunctions/" + item],  # Path to your `.pyx` file
         include_dirs=[np.get_include()],  # Include NumPy headers
     )
+    for item in os.listdir("./numpoly/cfunctions/") if ".pyx" in item
 ]
 
 # Setup configuration

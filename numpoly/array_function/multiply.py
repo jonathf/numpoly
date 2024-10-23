@@ -1,13 +1,13 @@
 """Multiply arguments element-wise."""
 
 from __future__ import annotations
-from typing import Any, Optional, Union
+from typing import Any, Optional
 
 import numpy
 import numpy.typing
 import numpoly
-import time
 import copy
+import time
 
 from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
@@ -80,46 +80,46 @@ def multiply(
         else out
     )
 
-    seen = set()
-    for expon1, coeff1 in zip(x1.exponents, x1.coefficients):
-        for expon2, coeff2 in zip(x2.exponents, x2.coefficients):
-            key = (expon1 + expon2 + x1.KEY_OFFSET).ravel()
-            key = key.view(f"U{len(expon1)}").item()
-            if key in seen:
-                out_.values[key] += numpy.multiply(
-                    coeff1, coeff2, where=where, **kwargs
-                )
-            else:
-                numpy.multiply(
-                    coeff1, coeff2, out=out_.values[key], where=where, **kwargs
-                )
-            seen.add(key)
-
-    if out is None:
-        out_ = numpoly.clean_attributes(out_)
-
-#    coeffs1 = numpy.asarray(x1.coefficients)
-#    if coeffs1.ndim == 1:
-#        coeffs1 = numpy.repeat(
-#            coeffs1[numpy.newaxis, :], x1.exponents.shape[1], axis=1
-#        ).astype(numpy.float64)
-#
-#    coeffs2 = numpy.asarray(x2.coefficients)
-#    if coeffs2.ndim == 1:
-#        coeffs2 = numpy.repeat(
-#            coeffs2[numpy.newaxis, :], x2.exponents.shape[1], axis=1
-#        ).astype(numpy.float64)
-#
-#    numpoly.cmultiply(
-#        x1.exponents,
-#        x2.exponents,
-#        coeffs1,
-#        coeffs2,
-#        x1.KEY_OFFSET,
-#        out_.values,
-#    )
+#    seen = set()
+#    for expon1, coeff1 in zip(x1.exponents, x1.coefficients):
+#        for expon2, coeff2 in zip(x2.exponents, x2.coefficients):
+#            key = (expon1 + expon2 + x1.KEY_OFFSET).ravel()
+#            key = key.view(f"U{len(expon1)}").item()
+#            if key in seen:
+#                out_.values[key] += numpy.multiply(
+#                    coeff1, coeff2, where=where, **kwargs
+#                )
+#            else:
+#                numpy.multiply(
+#                    coeff1, coeff2, out=out_.values[key], where=where, **kwargs
+#                )
+#            seen.add(key)
 #
 #    if out is None:
 #        out_ = numpoly.clean_attributes(out_)
+
+    coeffs1 = numpy.asarray(x1.coefficients)
+    if coeffs1.ndim == 1:
+        coeffs1 = numpy.repeat(
+            coeffs1[numpy.newaxis, :], x1.exponents.shape[1], axis=1
+        ).astype(numpy.float64)
+
+    coeffs2 = numpy.asarray(x2.coefficients)
+    if coeffs2.ndim == 1:
+        coeffs2 = numpy.repeat(
+            coeffs2[numpy.newaxis, :], x2.exponents.shape[1], axis=1
+        ).astype(numpy.float64)
+
+    numpoly.cmultiply(
+        x1.exponents,
+        x2.exponents,
+        coeffs1,
+        coeffs2,
+        x1.KEY_OFFSET,
+        out_.values,
+    )
+
+    if out is None:
+        out_ = numpoly.clean_attributes(out_)
 
     return out_

@@ -9,6 +9,9 @@ import numpoly
 from . import clean
 from ..baseclass import ndpoly
 
+import time
+import copy
+
 
 def polynomial_from_attributes(
     exponents: numpy.typing.ArrayLike,
@@ -82,6 +85,7 @@ def polynomial_from_attributes(
     else:
         dtype = dtype if dtype else int
         shape = ()
+
     poly = numpoly.ndpoly(
         exponents=exponents,
         shape=shape,
@@ -89,6 +93,13 @@ def polynomial_from_attributes(
         dtype=dtype,
         allocation=allocation,
     )
-    for key, values in zip(poly.keys, coefficients):
-        poly.values[key] = values
+
+    coeffs = numpy.asarray(coefficients)
+
+    #for key, values in zip(poly.keys, coefficients):
+    #    poly.values[key] = values
+
+    numpoly.cfrom_attributes(coeffs, poly.values)
+
+
     return poly

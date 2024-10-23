@@ -3,9 +3,8 @@
 # Import Cython and types from standard Python
 import numpy as np
 cimport numpy as np
-from libc.stdlib cimport free
 from libc.stdio cimport sprintf
-from cpython cimport bool as cbool
+cimport numpoly
 
 
 cdef void cmultiply_cdef(
@@ -62,6 +61,7 @@ cdef void cmultiply_cdef(
                     value_ptr = <double *> (data_ptr + value_offset)
                     value_ptr[0] = coeffs1[i, k] * coeffs2[j, k]
                 seen.add(key_str)
+
 
 def cmultiply(
         np.ndarray[np.uint32_t, ndim=2] expons1, 
