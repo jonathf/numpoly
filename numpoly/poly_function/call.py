@@ -62,13 +62,9 @@ def call(
     """
     logger = logging.getLogger(__name__)
 
-    start = time.time()
     poly = numpoly.aspolynomial(poly)
     kwargs = kwargs if kwargs else {}
-    end = time.time()
-    print("ASPOLY", end - start)
 
-    start = time.time()
     parameters = dict(zip(poly.names, poly.indeterminants))
     if kwargs:
         parameters.update(kwargs)
@@ -80,26 +76,18 @@ def call(
     extra_args = [key for key in parameters if key not in poly.names]
     if extra_args:
         raise TypeError(f"unexpected keyword argument '{extra_args[0]}'")
-    end = time.time()
-    print("PARAMETER", end - start)
 
-    start = time.time()
     # There can only be one shape:
     ones = numpy.ones((), dtype=int)
     for value in parameters.values():
         ones = ones * numpy.ones(numpoly.polynomial(value).shape, dtype=int)
     shape = poly.shape + ones.shape
-    end = time.time()
-    print("SHAPE", end - start)
 
     logger.debug("poly shape: %s", poly.shape)
     logger.debug("parameter common shape: %s", ones.shape)
     logger.debug("output shape: %s", shape)
-    start = time.time()
     # main loop:
     out = numpy.zeros((), dtype=int)
-    print(poly.exponents.shape)
-    print(len(poly.coefficients))
     for exponent, coefficient in zip(poly.exponents, poly.coefficients):
         term = ones
         for power, name in zip(exponent, poly.names):
@@ -109,16 +97,11 @@ def call(
         else:
             tmp = numpy.outer(coefficient, term)
         out = out + tmp.reshape(shape)
-    end = time.time()
-    print("MAIN LOOP", end - start)
 
-    start = time.time()
     if isinstance(out, numpoly.ndpoly):
         if out.isconstant():
             out = out.tonumpy()
         else:
             out, _ = numpoly.align_indeterminants(out, poly.indeterminants)
-    end = time.time()
-    print("END", end - start)
 
     return out
