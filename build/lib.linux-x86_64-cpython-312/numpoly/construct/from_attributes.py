@@ -9,9 +9,6 @@ import numpoly
 from . import clean
 from ..baseclass import ndpoly
 
-import time
-import copy
-
 
 def polynomial_from_attributes(
     exponents: numpy.typing.ArrayLike,
