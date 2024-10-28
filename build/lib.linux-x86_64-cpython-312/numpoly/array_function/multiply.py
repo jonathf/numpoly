@@ -6,6 +6,8 @@ from typing import Any, Optional
 import numpy
 import numpy.typing
 import numpoly
+import copy
+import time
 
 from ..baseclass import ndpoly, PolyLike
 from ..dispatch import implements
