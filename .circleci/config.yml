@@ -24,6 +24,8 @@ jobs:
                     pip install -U pip build
                     pip install -r requirements-dev.txt
                     pip install .[dev]
+                    python -m build
+                    pip install dist/*.whl
             # - save_cache:
             #     key: py310-{{ checksum "requirements-dev.txt"}}
             #     paths:
