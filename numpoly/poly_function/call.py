@@ -5,7 +5,6 @@ import logging
 
 import numpy
 import numpoly
-import time
 
 from ..baseclass import ndpoly, PolyLike
 

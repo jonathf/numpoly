@@ -5,6 +5,7 @@ import numpy as np
 cimport numpy as np
 from libc.stdio cimport sprintf
 import numpoly
+from typing import List
 
 
 cdef void cmultiply_cdef(

@@ -96,18 +96,8 @@ def multiply(
 #    if out is None:
 #        out_ = numpoly.clean_attributes(out_)
     
-
     coeffs1 = numpy.asarray(x1.coefficients)
-    if coeffs1.ndim == 1:
-        coeffs1 = numpy.repeat(
-            coeffs1[numpy.newaxis, :], x1.exponents.shape[1], axis=1
-        ).astype(numpy.float64)
-
     coeffs2 = numpy.asarray(x2.coefficients)
-    if coeffs2.ndim == 1:
-        coeffs2 = numpy.repeat(
-            coeffs2[numpy.newaxis, :], x2.exponents.shape[1], axis=1
-        ).astype(numpy.float64)
 
     numpoly.cmultiply(
         x1.exponents,
@@ -117,7 +107,6 @@ def multiply(
         x1.KEY_OFFSET,
         out_.values,
     )
-
     if out is None:
         out_ = numpoly.clean_attributes(out_)
 
