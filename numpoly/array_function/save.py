@@ -34,12 +34,6 @@ def save(
             loadable on different Python installations, for example if the
             stored objects require libraries that are not available, and not
             all pickled data is compatible between Python 2 and Python 3).
-        fix_imports:
-            Only useful in forcing objects in object arrays on Python 3 to be
-            pickled in a Python 2 compatible way. If `fix_imports` is True,
-            pickle will try to map the new Python 3 names to the old module
-            names used in Python 2, so that the pickle data stream is readable
-            with Python 2.
 
     Example:
         >>> q0, q1 = numpoly.variable(2)
@@ -51,13 +45,9 @@ def save(
     """
     if isinstance(file, (str, bytes, PathLike)):
         with open(file, "wb") as src:
-            return save(
-                src, arr=arr, allow_pickle=allow_pickle, fix_imports=fix_imports
-            )
+            return save(src, arr=arr, allow_pickle=allow_pickle)
     arr = numpoly.aspolynomial(arr)
-    numpy.save(
-        file=file, arr=arr.values, allow_pickle=allow_pickle, fix_imports=fix_imports
-    )
+    numpy.save(file=file, arr=arr.values, allow_pickle=allow_pickle)
     numpy.save(
         file=file,
         arr=numpy.array(arr.names),

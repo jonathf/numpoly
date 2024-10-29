@@ -19,9 +19,10 @@ except ImportError:
 
 @implements(numpy.reshape)
 def reshape(
-    a: PolyLike,
-    newshape: Union[int, Sequence[int]],
+    a: PolyLike, /,
+    shape: Union[int, Sequence[int]] = None,
     order: Order = "C",
+    newshape: Union[int, Sequence[int]] = None,
 ) -> ndpoly:
     """
     Give a new shape to an array without changing its data.
@@ -29,7 +30,7 @@ def reshape(
     Args:
         a:
             Array to be reshaped.
-        newshape:
+        shape:
             The new shape should be compatible with the original shape. If an
             integer, then the result will be a 1-D array of that length. One
             shape dimension can be -1. In this case, the value is inferred from
@@ -63,5 +64,5 @@ def reshape(
 
     """
     poly = numpoly.aspolynomial(a)
-    array = numpy.reshape(poly.values, newshape=newshape, order=order)
+    array = numpy.reshape(poly.values, shape=shape, newshape=newshape, order=order)
     return numpoly.aspolynomial(array, names=poly.indeterminants)
