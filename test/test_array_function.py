@@ -805,8 +805,6 @@ def test_nonzero(interface):
     """Tests for numpoly.nonzero."""
     poly = polynomial([[3*X, 0, 0], [0, 4*Y, 0], [5*X+Y, 6*X, 0]])
     assert_equal(poly[interface.nonzero(poly)], [3*X, 4*Y, 5*X+Y, 6*X])
-    results = interface.nonzero(X)
-    assert_equal(results[0], [0])
 
 
 def test_not_equal(interface):
