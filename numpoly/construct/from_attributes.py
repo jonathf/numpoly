@@ -91,12 +91,10 @@ def polynomial_from_attributes(
         allocation=allocation,
     )
 
-    coeffs = numpy.asarray(coefficients)
+    if coefficients:
+        numpoly.cfrom_attributes(coefficients, poly.values.ravel())
 
     #for key, values in zip(poly.keys, coefficients):
     #    poly.values[key] = values
-
-    numpoly.cfrom_attributes(coeffs, poly.values)
-
 
     return poly

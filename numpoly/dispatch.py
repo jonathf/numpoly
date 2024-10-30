@@ -99,9 +99,9 @@ def simple_dispatch(
         out_ = out[0]
     out_.values[keys[0]] = tmp
 
-    #for key in keys[1:]:
-    #    out_.values[key] = numpy_func(*[poly.values[key] for poly in inputs], **kwargs)
-    numpoly.cloop_function(numpy_func, list(inputs), keys, out_.values, **kwargs)
+    for key in keys[1:]:
+        out_.values[key] = numpy_func(*[poly.values[key] for poly in inputs], **kwargs)
+    #numpoly.cloop_function(numpy_func, list(inputs), keys, out_.values, **kwargs)
 
     if out is None:
         out_ = numpoly.clean_attributes(out_)

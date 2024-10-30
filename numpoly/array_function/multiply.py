@@ -96,18 +96,15 @@ def multiply(
 #    if out is None:
 #        out_ = numpoly.clean_attributes(out_)
     
-    coeffs1 = numpy.asarray(x1.coefficients)
-    coeffs2 = numpy.asarray(x2.coefficients)
-
     numpoly.cmultiply(
         x1.exponents,
         x2.exponents,
-        coeffs1,
-        coeffs2,
+        x1.coefficients,
+        x2.coefficients,
         x1.KEY_OFFSET,
-        out_.values,
+        out_.values.ravel(),
     )
     if out is None:
         out_ = numpoly.clean_attributes(out_)
-
+    
     return out_

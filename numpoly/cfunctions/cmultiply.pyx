@@ -11,8 +11,8 @@ from typing import List
 cdef void cmultiply_cdef(
         np.ndarray[np.uint32_t, ndim=2] expons1, 
         np.ndarray[np.uint32_t, ndim=2] expons2,
-        np.ndarray coeffs1, 
-        np.ndarray coeffs2,
+        List[np.ndarray] coeffs1, 
+        List[np.ndarray] coeffs2,
         int offset,
         np.ndarray out,
 ):
@@ -33,17 +33,17 @@ cdef void cmultiply_cdef(
             
             key_str = key[:key_len].decode('utf-8')
             if key_str in seen:
-                numpoly.cadd_values(coeffs1[i] * coeffs2[j], key_str, out)
+                numpoly.cadd_values((coeffs1[i] * coeffs2[j]).ravel(), key_str, out)
             else:
-                numpoly.cset_values(coeffs1[i] * coeffs2[j], key_str, out)
+                numpoly.cset_values((coeffs1[i] * coeffs2[j]).ravel(), key_str, out)
                 seen.add(key_str)
 
 
 def cmultiply(
         np.ndarray[np.uint32_t, ndim=2] expons1, 
         np.ndarray[np.uint32_t, ndim=2] expons2,
-        np.ndarray coeffs1, 
-        np.ndarray coeffs2,
+        List[np.ndarray] coeffs1, 
+        List[np.ndarray] coeffs2,
         int offset,
         np.ndarray out,
 ):
