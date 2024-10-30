@@ -128,7 +128,7 @@ cpdef cset_values(
 ):
     if coeffs.dtype == np.bool:
         cset_bool_values_1d(coeffs, name, out)
-    if coeffs.dtype == np.uint32:
+    elif coeffs.dtype == np.uint32:
         cset_uint32_values_1d(coeffs, name, out)
     elif coeffs.dtype == np.int64:
         cset_int_values_1d(coeffs, name, out)
@@ -262,7 +262,7 @@ cpdef cadd_values(
 ):
     if coeffs.dtype == np.bool:
         cadd_bool_values_1d(coeffs, name, out)
-    if coeffs.dtype == np.uint32:
+    elif coeffs.dtype == np.uint32:
         cadd_uint32_values_1d(coeffs, name, out)
     elif coeffs.dtype == np.int64:
         cadd_int_values_1d(coeffs, name, out)
