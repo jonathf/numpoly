@@ -48,7 +48,7 @@ def logical_or(
 
     Example:
         >>> numpoly.logical_or(True, False)
-        True
+        np.True_
         >>> numpoly.logical_or([True, False], [False, False])
         array([ True, False])
         >>> x = numpy.arange(5)

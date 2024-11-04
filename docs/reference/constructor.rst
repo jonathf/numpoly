@@ -40,9 +40,5 @@ Save/Load
 .. autosummary::
    :toctree: ../api
 
-   load
    loadtxt
-   save
    savetxt
-   savez
-   savez_compressed

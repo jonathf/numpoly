@@ -49,7 +49,7 @@ def logical_and(
     Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.logical_and(q0, 0)
-        False
+        np.False_
         >>> numpoly.logical_and([q0, False], [q0, q1])
         array([ True, False])
         >>> const = numpy.arange(5)

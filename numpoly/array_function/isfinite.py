@@ -50,15 +50,15 @@ def isfinite(
 
     Example:
         >>> numpoly.isfinite(1)
-        True
+        np.True_
         >>> numpoly.isfinite(0)
-        True
+        np.True_
         >>> numpoly.isfinite(numpy.nan*numpoly.variable())
-        False
+        np.False_
         >>> numpoly.isfinite(numpy.inf)
-        False
-        >>> numpoly.isfinite(numpy.NINF)
-        False
+        np.False_
+        >>> numpoly.isfinite(-numpy.inf)
+        np.False_
         >>> numpoly.isfinite([numpy.log(-1.), 1., numpy.log(0)])
         array([False,  True, False])
 

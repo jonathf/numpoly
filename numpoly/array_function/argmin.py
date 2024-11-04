@@ -44,11 +44,11 @@ def argmin(
     Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.argmin([13, 7])
-        1
+        np.int64(1)
         >>> numpoly.argmin([1, q0, q0**2, q1])
-        0
+        np.int64(0)
         >>> numpoly.argmin([q0*q1, q0, q1])
-        1
+        np.int64(1)
         >>> numpoly.argmin([[3*q0**2, q0**2], [2*q0**2, 4*q0**2]], axis=0)
         array([1, 0])
 

@@ -50,11 +50,11 @@ def any(
     Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.any(q0)
-        True
+        np.True_
         >>> numpoly.any(0*q0)
-        False
+        np.False_
         >>> numpoly.any([1, q0, 0])
-        True
+        np.True_
         >>> numpoly.any([[True*q0, False], [True, True]], axis=0)
         array([ True,  True])
 

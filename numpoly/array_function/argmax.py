@@ -44,11 +44,11 @@ def argmax(
     Example:
         >>> q0, q1 = numpoly.variable(2)
         >>> numpoly.argmax([13, 7])
-        0
+        np.int64(0)
         >>> numpoly.argmax([1, q0, q0**2, q1])
-        2
+        np.int64(2)
         >>> numpoly.argmax([1, q0, q1])
-        2
+        np.int64(2)
         >>> numpoly.argmax([[3*q0**2, q0**2],
         ...                 [2*q0**2, 4*q0**2]], axis=0)
         array([0, 1])

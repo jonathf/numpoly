@@ -48,11 +48,11 @@ def all(
     Example:
         >>> q0 = numpoly.variable()
         >>> numpoly.all(q0)
-        True
+        np.True_
         >>> numpoly.all(0*q0)
-        False
+        np.False_
         >>> numpoly.all([1, q0, 0])
-        False
+        np.False_
         >>> numpoly.all([[True*q0, False], [True, True]], axis=0)
         array([ True, False])
 

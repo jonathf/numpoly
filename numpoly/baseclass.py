@@ -15,7 +15,8 @@ structured array directly using the ``values`` attribute:
     >>> poly = numpoly.polynomial(4*q0+3*q1-1)
     >>> array = poly.values
     >>> array
-    array((-1, 3, 4), dtype=[(';;', '<i8'), (';<', '<i8'), ('<;', '<i8')])
+    array((-1, 3, 4),
+          dtype=[(np.str_(';;'), '<i8'), (np.str_(';<'), '<i8'), (np.str_('<;'), '<i8')])
 
 Which, together with the indeterminant names, can be used to cast back the
 array back to a polynomial:
@@ -426,9 +427,10 @@ as numpy.loadtxt will not work as expected."""
 
         Example:
             >>> numpoly.variable(1).values
-            array((1,), dtype=[('<', '<i8')])
+            array((1,), dtype=[(np.str_('<'), '<i8')])
             >>> numpoly.variable(2).values
-            array([(1, 0), (0, 1)], dtype=[('<;', '<i8'), (';<', '<i8')])
+            array([(1, 0), (0, 1)],
+                  dtype=[(np.str_('<;'), '<i8'), (np.str_(';<'), '<i8')])
 
         """
         return numpy.ndarray(

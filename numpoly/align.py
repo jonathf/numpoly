@@ -29,7 +29,7 @@ def align_polynomials(*polys: PolyLike) -> Tuple[ndpoly, ...]:
         >>> q0
         polynomial(q0)
         >>> q0.coefficients
-        [1]
+        [np.int64(1)]
         >>> q0.indeterminants
         polynomial([q0])
         >>> q0, _ = numpoly.align_polynomials(q0, q0q1)
