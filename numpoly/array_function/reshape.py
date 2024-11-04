@@ -19,7 +19,8 @@ except ImportError:
 
 @implements(numpy.reshape)
 def reshape(
-    a: PolyLike, /,
+    a: PolyLike,
+    /,
     shape: Union[int, Sequence[int]] = None,
     order: Order = "C",
     newshape: Union[int, Sequence[int]] = None,

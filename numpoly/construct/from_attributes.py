@@ -94,7 +94,7 @@ def polynomial_from_attributes(
     if coefficients:
         numpoly.cfrom_attributes(coefficients, poly.values.ravel())
 
-    #for key, values in zip(poly.keys, coefficients):
+    # for key, values in zip(poly.keys, coefficients):
     #    poly.values[key] = values
 
     return poly

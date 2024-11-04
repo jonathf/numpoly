@@ -78,24 +78,24 @@ def multiply(
         else out
     )
 
-#    seen = set()
-#    for expon1, coeff1 in zip(x1.exponents, x1.coefficients):
-#        for expon2, coeff2 in zip(x2.exponents, x2.coefficients):
-#            key = (expon1 + expon2 + x1.KEY_OFFSET).ravel()
-#            key = key.view(f"U{len(expon1)}").item()
-#            if key in seen:
-#                out_.values[key] += numpy.multiply(
-#                    coeff1, coeff2, where=where, **kwargs
-#                )
-#            else:
-#                numpy.multiply(
-#                    coeff1, coeff2, out=out_.values[key], where=where, **kwargs
-#                )
-#            seen.add(key)
-#
-#    if out is None:
-#        out_ = numpoly.clean_attributes(out_)
-    
+    #    seen = set()
+    #    for expon1, coeff1 in zip(x1.exponents, x1.coefficients):
+    #        for expon2, coeff2 in zip(x2.exponents, x2.coefficients):
+    #            key = (expon1 + expon2 + x1.KEY_OFFSET).ravel()
+    #            key = key.view(f"U{len(expon1)}").item()
+    #            if key in seen:
+    #                out_.values[key] += numpy.multiply(
+    #                    coeff1, coeff2, where=where, **kwargs
+    #                )
+    #            else:
+    #                numpy.multiply(
+    #                    coeff1, coeff2, out=out_.values[key], where=where, **kwargs
+    #                )
+    #            seen.add(key)
+    #
+    #    if out is None:
+    #        out_ = numpoly.clean_attributes(out_)
+
     numpoly.cmultiply(
         x1.exponents,
         x2.exponents,
@@ -106,5 +106,5 @@ def multiply(
     )
     if out is None:
         out_ = numpoly.clean_attributes(out_)
-    
+
     return out_
