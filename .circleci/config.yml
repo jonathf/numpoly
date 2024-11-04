@@ -71,7 +71,7 @@ jobs:
                 command: |
                     source venv/bin/activate
                     pip install twine build
-                    python -m build
+                    python -m build -s
                     twine upload -u __token__ -p $PYPI_PASSWORD --non-interactive dist/*
 
 workflows:
