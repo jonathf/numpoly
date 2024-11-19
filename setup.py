@@ -12,8 +12,7 @@ extensions = [
     for item in os.listdir("./numpoly/cfunctions/") if ".pyx" in item
 ]
 
-# Setup configuration
 setup(
-    ext_modules=cythonize(extensions),  # Compile the Cython files
-    include_dirs=[np.get_include()],  # Include NumPy headers
+    ext_modules=cythonize(extensions, compiler_directives={"language_level": "3"}),
+    include_dirs=[np.get_include()],
 )
