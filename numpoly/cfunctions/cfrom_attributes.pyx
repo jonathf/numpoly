@@ -8,7 +8,7 @@ from typing import List
 
 
 def cfrom_attributes(
-    List[np.ndarray] coeffs,
+    list coeffs,
     np.ndarray poly
 ):
     cdef Py_ssize_t i, nfields
