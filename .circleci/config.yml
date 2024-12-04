@@ -59,13 +59,9 @@ jobs:
                 keys:
                     - py310-{{ checksum "requirements-dev.txt"}}
             - run:
-                name: "Verify tag version"
+                name: "Set tag version"
                 command: |
-                    PROJECT_TAG=$(cat pyproject.toml \
-                        | grep 'version\s*=' \
-                        | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+\(-[a-z0-9]\+\)\{0,1\}')
-                    echo "$CIRCLE_TAG == v$PROJECT_TAG"
-                    test "$CIRCLE_TAG" = "v$PROJECT_TAG"
+                    sed -i 's/version = "0\.1\.0"/version = "'$CIRCLE_TAG'"' pyproject.toml
             - run:
                 name: "Publish to PyPI"
                 command: |
