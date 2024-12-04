@@ -126,7 +126,7 @@ cpdef cset_values(
         str name,
         np.ndarray out,
 ):
-    if coeffs.dtype == np.bool:
+    if coeffs.dtype == np.bool_:
         cset_bool_values_1d(coeffs, name, out)
     elif coeffs.dtype == np.uint32:
         cset_uint32_values_1d(coeffs, name, out)
@@ -260,7 +260,7 @@ cpdef cadd_values(
         str name,
         np.ndarray out,
 ):
-    if coeffs.dtype == np.bool:
+    if coeffs.dtype == np.bool_:
         cadd_bool_values_1d(coeffs, name, out)
     elif coeffs.dtype == np.uint32:
         cadd_uint32_values_1d(coeffs, name, out)
