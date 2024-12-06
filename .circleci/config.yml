@@ -1,6 +1,6 @@
 version-tags: &version-tags
     tags:
-        only: /v\d+\.\d+\.\d+(-(alpha|beta|rc|dev|post)\d+)?/
+        only: /\d+\.\d+\.\d+(-(alpha|beta|rc|dev|post)\d+)?/
 
 version: 2.1
 jobs:
