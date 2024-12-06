@@ -61,7 +61,7 @@ jobs:
             - run:
                 name: "Set tag version"
                 command: |
-                    sed -i 's/version = "0\.1\.0"/version = "'$CIRCLE_TAG'"' pyproject.toml
+                    sed -i 's/version = "0\.1\.0"/version = "'$CIRCLE_TAG'"/' pyproject.toml
             - run:
                 name: "Publish to PyPI"
                 command: |
