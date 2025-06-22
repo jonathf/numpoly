@@ -4,7 +4,7 @@ version-tags: &version-tags
 
 version: 2.1
 jobs:
-    test-310:
+    test-313:
         docker:
             - image: circleci/python:3.10.1
               auth:

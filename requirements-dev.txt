@@ -30,7 +30,7 @@ Pygments==2.18.0
 pylint==2.15.5
 pytest==8.3.3
 pytest-cov==5.0.0
-requests==2.32.3
+requests==2.32.4
 six==1.16.0
 snowballstemmer==2.2.0
 soupsieve==2.6
@@ -45,6 +45,6 @@ sphinxcontrib-serializinghtml==2.0.0
 sympy==1.13.3
 tomlkit==0.13.2
 typing_extensions==4.12.2
-urllib3==2.2.3
+urllib3==2.5.0
 wrapt==1.16.0
 zipp==3.20.2
