@@ -30,7 +30,7 @@ Pygments==2.18.0
 pylint==2.15.5
 pytest==8.3.3
 pytest-cov==5.0.0
-requests==2.32.3
+requests==2.32.4
 six==1.16.0
 snowballstemmer==2.2.0
 soupsieve==2.6
