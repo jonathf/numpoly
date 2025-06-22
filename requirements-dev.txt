@@ -45,6 +45,6 @@ sphinxcontrib-serializinghtml==2.0.0
 sympy==1.13.3
 tomlkit==0.13.2
 typing_extensions==4.12.2
-urllib3==2.2.3
+urllib3==2.5.0
 wrapt==1.16.0
 zipp==3.20.2
