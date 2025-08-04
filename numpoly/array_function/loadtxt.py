@@ -1,4 +1,5 @@
 """Load data from a text file."""
+
 from __future__ import annotations
 from typing import Callable, Dict, Optional, Sequence, Union
 import re
@@ -14,7 +15,7 @@ from ..baseclass import ndpoly
 
 HEADER_REGEX = re.compile(
     HEADER_TEMPLATE.format(
-        version=r"\S+", names=r"(\S+)", keys=r"(\S+)", shape=r"(\S+)"
+        version=r"\S+", names=r"(\S+)", keys=r"(\S+)", shape=r"(\S*)"
     )
 )
 
@@ -94,7 +95,10 @@ def loadtxt(
 
     Example:
         >>> q0, q1, q2 = numpoly.variable(3)
-        >>> poly = numpoly.polynomial([[1, q0], [q0, q2**2-1]])
+        >>> numpoly.savetxt("/tmp/poly.txt", q1)
+        >>> numpoly.loadtxt("/tmp/poly.txt")
+        polynomial(q1)
+        >>> poly = numpoly.polynomial([[1, q0], [q0, q2**2 - 1]])
         >>> numpoly.savetxt("/tmp/poly.txt", poly)
         >>> numpoly.loadtxt("/tmp/poly.txt")
         polynomial([[1.0, q0],
@@ -129,7 +133,9 @@ def loadtxt(
         groups = match.groups()
         names = tuple(groups[0].split(","))
         keys = groups[1].split(",")
-        shape = [int(idx) for idx in groups[2].split(",")]
+        shape = [int(idx) for idx in groups[2].split(",") if groups[2]]
+        if not shape:
+            array = array.reshape(-1)
         dtype = numpy.dtype([(key, array.dtype) for key in keys])
         struct = unstructured_to_structured(array, dtype)
         array = numpoly.polynomial(struct, names=names)
