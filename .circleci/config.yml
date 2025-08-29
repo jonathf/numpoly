@@ -2,16 +2,20 @@ version-tags: &version-tags
     tags:
         only: /\d+\.\d+\.\d+(-(alpha|beta|rc|dev|post)\d+)?/
 
-version: 2.1
-orbs:
-  python: circleci/python@3.0.0
+version: '2.1'
 jobs:
     test-310:
-        executor: python/default
+        docker:
+            - image: cimg/python:3.10.1
+              auth:
+                username: jonathf
+                password: $DOCKERHUB_PASSWORD
         steps:
             - checkout
-            - python/install-packages:
-                pkg-manager: uv
+            - restore_cache:
+                keys:
+                    - py310-{{ checksum "uv.lock"}}
+                    - py310-
             - run:
                 name: "Installation"
                 command: uv sync --extra dev
@@ -28,11 +32,17 @@ jobs:
                 name: "Run Sphinx build"
                 command: uv run sphinx-build docs/ docs/.build -b html -v --color -T -W --keep-going
     deploy:
-        executor: python/default
+        docker:
+            - image: cimg/python:3.10.1
+              auth:
+                username: jonathf
+                password: $DOCKERHUB_PASSWORD
         steps:
             - checkout
-            - python/install-packages:
-                pkg-manager: uv
+            - restore_cache:
+                keys:
+                    - py310-{{ checksum "uv.lock"}}
+                    - py310-
             - run:
                 name: "Set tag version"
                 command: sed -i 's/version = "0\.1\.0"/version = "'$CIRCLE_TAG'"/' pyproject.toml
