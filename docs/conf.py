@@ -53,7 +53,6 @@ html_theme_options = {
     "collapse_navigation": True,
     "external_links":
         [{"name": "Github", "url": "https://github.com/jonathf/numpoly"}],
-    "footer_items": ["sphinx-version.html"],
     "navbar_align": "left",
     "navbar_end": ["search-field.html"],
     "navigation_depth": 2,
