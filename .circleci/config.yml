@@ -6,7 +6,7 @@ version: '2.1'
 jobs:
     test-310:
         docker:
-            - image: cimg/python:3.10.1
+            - image: cimg/python:3.10
               auth:
                 username: jonathf
                 password: $DOCKERHUB_PASSWORD
@@ -33,7 +33,7 @@ jobs:
                 command: uv run sphinx-build docs/ docs/.build -b html -v --color -T -W --keep-going
     deploy:
         docker:
-            - image: cimg/python:3.10.1
+            - image: cimg/python:3.10
               auth:
                 username: jonathf
                 password: $DOCKERHUB_PASSWORD
