@@ -1,4 +1,5 @@
 """Compute the outer product of two vectors."""
+
 from __future__ import annotations
 from typing import Optional
 

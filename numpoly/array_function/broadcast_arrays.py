@@ -1,4 +1,5 @@
 """Broadcast any number of arrays against each other."""
+
 from __future__ import annotations
 from typing import Any, List
 

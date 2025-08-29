@@ -1,4 +1,5 @@
 """Return a new array of given shape and type, filled with ones."""
+
 from __future__ import annotations
 from typing import Any, Sequence
 

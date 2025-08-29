@@ -1,4 +1,5 @@
 """Return the element-wise square of the input."""
+
 from __future__ import annotations
 from typing import Any, Optional
 import numpy

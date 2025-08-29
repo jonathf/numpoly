@@ -1,4 +1,5 @@
 """View inputs as arrays with at least two dimensions."""
+
 from __future__ import annotations
 from typing import List, Union
 

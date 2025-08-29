@@ -1,4 +1,5 @@
 """Return a string representation of the data in an array."""
+
 from __future__ import annotations
 from typing import Optional
 

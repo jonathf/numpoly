@@ -1,4 +1,5 @@
 """Find the lead coefficients for each polynomial."""
+
 from __future__ import annotations
 
 import numpy

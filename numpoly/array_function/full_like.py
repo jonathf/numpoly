@@ -1,4 +1,5 @@
 """Return a full array with the same shape and type as a given array."""
+
 from __future__ import annotations
 from typing import Optional, Sequence
 

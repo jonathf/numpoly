@@ -1,4 +1,5 @@
 """Return True if two arrays are element-wise equal within a tolerance."""
+
 from __future__ import annotations
 
 import numpy

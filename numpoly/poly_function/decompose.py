@@ -1,4 +1,5 @@
 """Decompose a polynomial to component form."""
+
 from __future__ import annotations
 import numpy
 import numpoly

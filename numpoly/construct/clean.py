@@ -1,4 +1,5 @@
 """Clean up polynomial attributes."""
+
 from __future__ import annotations
 from typing import List, Optional, Sequence, Tuple, Union
 

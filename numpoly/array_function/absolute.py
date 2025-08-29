@@ -1,4 +1,5 @@
 """Calculate the absolute value element-wise."""
+
 from __future__ import annotations
 from typing import Any, Optional
 

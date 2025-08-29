@@ -1,4 +1,5 @@
 """Adjust the dimensions of a polynomial."""
+
 from __future__ import annotations
 from typing import Optional
 

@@ -1,4 +1,5 @@
 """Simple constructor to create single variables to create polynomials."""
+
 from typing import Optional
 
 import numpy.typing

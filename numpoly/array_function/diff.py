@@ -1,4 +1,5 @@
 """Calculate the n-th discrete difference along the given axis."""
+
 from __future__ import annotations
 from typing import Optional
 

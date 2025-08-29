@@ -1,4 +1,5 @@
 """Truncation rules for indices."""
+
 from __future__ import annotations
 
 import numpy

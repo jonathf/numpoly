@@ -1,4 +1,5 @@
 """Construct array from an index array and a set of arrays to choose from."""
+
 from __future__ import annotations
 from typing import Any, Optional
 

@@ -1,4 +1,5 @@
 """Apply a function repeatedly over multiple axes."""
+
 from __future__ import annotations
 from functools import wraps
 from typing import Callable

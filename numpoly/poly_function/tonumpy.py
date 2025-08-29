@@ -1,4 +1,5 @@
 """Cast polynomial to numpy.ndarray, if possible."""
+
 from __future__ import annotations
 
 import numpy

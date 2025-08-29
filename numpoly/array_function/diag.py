@@ -1,4 +1,5 @@
 """Extract a diagonal or construct a diagonal array."""
+
 from __future__ import annotations
 import numpy
 import numpoly

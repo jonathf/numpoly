@@ -1,4 +1,5 @@
 """Counts the number of non-zero values in the array a."""
+
 from __future__ import annotations
 from typing import Any, Sequence, Union
 

@@ -1,4 +1,5 @@
 """Functions for constructing polynomials."""
+
 from .polynomial import polynomial
 from .aspolynomial import aspolynomial
 from .clean import (

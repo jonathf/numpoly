@@ -1,4 +1,5 @@
 """Returns the type that results from applying type promotion rules."""
+
 from __future__ import annotations
 from typing import Union
 

@@ -1,4 +1,5 @@
 """Return the cumulative sum of the elements along a given axis."""
+
 from __future__ import annotations
 from typing import Optional
 

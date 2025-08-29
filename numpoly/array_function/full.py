@@ -1,4 +1,5 @@
 """Return a new array of given shape and type, filled with `fill_value`."""
+
 from __future__ import annotations
 from typing import Optional, Sequence, Union
 

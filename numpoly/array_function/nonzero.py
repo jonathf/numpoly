@@ -1,4 +1,5 @@
 """Return the indices of the elements that are non-zero."""
+
 from __future__ import annotations
 from typing import Any, Tuple
 

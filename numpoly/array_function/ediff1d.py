@@ -1,4 +1,5 @@
 """Difference between consecutive elements of an array."""
+
 from __future__ import annotations
 from typing import Optional
 

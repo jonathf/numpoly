@@ -1,4 +1,5 @@
 """Test whether any array element along a given axis evaluates to True."""
+
 from __future__ import annotations
 from typing import Any, Optional, Sequence, Union
 

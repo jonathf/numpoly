@@ -1,4 +1,5 @@
 """Return a true division of the inputs, element-wise."""
+
 from __future__ import annotations
 from typing import Any, Optional
 

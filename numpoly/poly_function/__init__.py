@@ -1,4 +1,5 @@
 """Polynomial functionality."""
+
 from .call import call
 from .decompose import decompose
 from .derivative import derivative, gradient, hessian

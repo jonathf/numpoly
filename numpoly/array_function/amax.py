@@ -1,4 +1,5 @@
 """Return the maximum of an array or maximum along an axis."""
+
 from __future__ import annotations
 from typing import Any, Optional, Sequence, Union
 

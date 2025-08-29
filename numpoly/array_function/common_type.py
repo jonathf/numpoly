@@ -1,4 +1,5 @@
 """Return a scalar type which is common to the input arrays."""
+
 from __future__ import annotations
 import numpy
 import numpoly

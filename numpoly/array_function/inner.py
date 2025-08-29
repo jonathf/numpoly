@@ -1,4 +1,5 @@
 """Inner product of two arrays."""
+
 from __future__ import annotations
 
 import numpy

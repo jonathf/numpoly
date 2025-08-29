@@ -1,4 +1,5 @@
 """Evaluate polynomial by inserting new values in to the indeterminants."""
+
 from __future__ import annotations
 from typing import Dict, Sequence, Optional, Union
 import logging

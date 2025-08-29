@@ -1,4 +1,5 @@
 """Return elements chosen from `x` or `y` depending on `condition`."""
+
 from __future__ import annotations
 
 import numpy

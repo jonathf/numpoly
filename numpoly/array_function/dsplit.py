@@ -1,4 +1,5 @@
 """Split array into multiple sub-arrays along the 3rd axis (depth)."""
+
 from __future__ import annotations
 from typing import List
 

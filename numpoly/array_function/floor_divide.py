@@ -1,4 +1,5 @@
 """Return the largest integer smaller or equal to the division of the inputs."""
+
 from __future__ import annotations
 from typing import Any, Optional
 

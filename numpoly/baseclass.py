@@ -26,6 +26,7 @@ array back to a polynomial:
     >>> numpoly.aspolynomial(array, names=("q0", "q1"))
     polynomial(3*q1+4*q0-1)
 """
+
 from __future__ import annotations
 from typing import Any, Callable, Dict, Iterator, List, Optional, Sequence, Tuple, Union
 import logging

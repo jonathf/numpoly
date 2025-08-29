@@ -1,4 +1,5 @@
 """Repeat elements of an array."""
+
 from __future__ import annotations
 
 import numpy

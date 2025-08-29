@@ -1,4 +1,5 @@
 """Implementation wrapper."""
+
 from typing import Any, Callable, Optional, Sequence, Tuple
 
 import numpoly

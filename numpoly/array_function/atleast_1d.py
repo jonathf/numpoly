@@ -1,4 +1,5 @@
 """Convert inputs to arrays with at least one dimension."""
+
 from __future__ import annotations
 from typing import List, Union
 

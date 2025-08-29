@@ -1,4 +1,5 @@
 """Test element-wise for finiteness (not infinity or not Not a Number)."""
+
 from __future__ import annotations
 from typing import Any, Optional
 

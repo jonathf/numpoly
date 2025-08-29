@@ -1,4 +1,5 @@
 """Global numpoly options."""
+
 from typing import Any, Dict, Iterator
 from contextlib import contextmanager
 

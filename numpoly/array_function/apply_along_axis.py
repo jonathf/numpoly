@@ -1,4 +1,5 @@
 """Apply a function to 1-D slices along the given axis."""
+
 from __future__ import annotations
 from functools import wraps
 from typing import Any, Callable, List

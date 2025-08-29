@@ -1,4 +1,5 @@
 """Round elements of the array to the nearest integer."""
+
 from __future__ import annotations
 from typing import Any, Optional
 

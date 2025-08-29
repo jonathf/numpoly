@@ -1,4 +1,5 @@
 """Compose polynomial from array of arrays of polynomials."""
+
 from __future__ import annotations
 from typing import List, Optional, Sequence, Set, Tuple
 

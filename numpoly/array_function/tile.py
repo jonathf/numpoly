@@ -1,4 +1,5 @@
 """Construct an array by repeating A the number of times given by reps."""
+
 from __future__ import annotations
 
 import numpy

@@ -1,4 +1,5 @@
 """Construct symbol variables."""
+
 from typing import Optional, Sequence
 import re
 

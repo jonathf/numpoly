@@ -1,4 +1,5 @@
 """Create a numerical proxy for a polynomial to allow compare."""
+
 from __future__ import annotations
 
 import numpy

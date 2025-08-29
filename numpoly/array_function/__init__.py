@@ -1,4 +1,5 @@
 """Collection of numpy wrapper functions."""
+
 from .absolute import absolute as abs, absolute
 from .add import add
 from .amax import amax, amax as max

@@ -1,4 +1,5 @@
 """Stack arrays in sequence depth wise (along third axis)."""
+
 from __future__ import annotations
 from typing import Sequence
 import numpy

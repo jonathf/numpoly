@@ -1,4 +1,5 @@
 """Gives a new shape to an array without changing its data."""
+
 from __future__ import annotations
 from typing import Any, Sequence
 

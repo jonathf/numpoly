@@ -1,4 +1,5 @@
 """Find a polynomial with the given sequence of roots."""
+
 from typing import Optional, Sequence
 
 import numpy

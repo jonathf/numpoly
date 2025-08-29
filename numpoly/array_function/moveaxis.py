@@ -1,4 +1,5 @@
 """Move axes of an array to new positions."""
+
 from __future__ import annotations
 from typing import Sequence, Union
 import numpy

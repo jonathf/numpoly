@@ -1,4 +1,5 @@
 """Join a sequence of arrays along an existing axis."""
+
 from __future__ import annotations
 from typing import Optional, Sequence
 

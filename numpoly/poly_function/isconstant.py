@@ -1,4 +1,5 @@
 """Check if a polynomial is constant or not."""
+
 from __future__ import annotations
 
 import numpy

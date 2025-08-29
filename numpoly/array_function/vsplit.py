@@ -1,4 +1,5 @@
 """Split an array into multiple sub-arrays vertically (row-wise)."""
+
 from __future__ import annotations
 from typing import List
 
