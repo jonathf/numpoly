@@ -26,7 +26,7 @@ dependencies = [
 dev = [
   "black",
   "pylint",
-  "pydocstyle",
+  "pydocstyle ==3.0.0",
   "pydata_sphinx_theme",
   "sympy",
   "pytest",
