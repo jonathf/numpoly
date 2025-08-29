@@ -3,72 +3,48 @@ version-tags: &version-tags
         only: /\d+\.\d+\.\d+(-(alpha|beta|rc|dev|post)\d+)?/
 
 version: 2.1
+orbs:
+  python: circleci/python@3.0.0
 jobs:
     test-310:
-        docker:
-            - image: cimg/python:3.10.1
-              auth:
-                username: jonathf
-                password: $DOCKERHUB_PASSWORD
+        executor: python/default
         steps:
             - checkout
-            - restore_cache:
-                keys:
-                    - py310-{{ checksum "requirements-dev.txt"}}
-                    - py310-
+            - python/install-packages:
+                pkg-manager: uv
             - run:
                 name: "Installation"
-                command: |
-                    python3 -m venv venv
-                    source venv/bin/activate
-                    pip install -r requirements-dev.txt
-                    pip install -e .[dev]
-            - save_cache:
-                key: py310-{{ checksum "requirements-dev.txt"}}
-                paths:
-                    - venv
+                command: uv sync --extra dev
             - run:
                 name: "Run pytest"
-                command: |
-                    source venv/bin/activate
-                    pytest --doctest-modules numpoly/ test/
+                command: uv run pytest --doctest-modules numpoly/ test/
             - run:
                 name: "Run pydocstyle"
-                command: |
-                    source venv/bin/activate
-                    pydocstyle --ignore=D202,D203,D212 numpoly
+                command: uv run pydocstyle --ignore=D202,D203,D212 numpoly
             - run:
                 name: "Run black"
-                command: |
-                    source venv/bin/activate
-                    black --check numpoly
+                command: uv run black --check numpoly
             - run:
                 name: "Run Sphinx build"
-                command: |
-                    source venv/bin/activate
-                    sphinx-build docs/ docs/.build -b html -v --color -T -W --keep-going
+                command: uv run sphinx-build docs/ docs/.build -b html -v --color -T -W --keep-going
     deploy:
-        docker:
-            - image: cimg/python:3.10.1
-              auth:
-                username: jonathf
-                password: $DOCKERHUB_PASSWORD
+        executor: python/default
         steps:
             - checkout
-            - restore_cache:
-                keys:
-                    - py310-{{ checksum "requirements-dev.txt"}}
+            - python/install-packages:
+                pkg-manager: uv
             - run:
                 name: "Set tag version"
-                command: |
-                    sed -i 's/version = "0\.1\.0"/version = "'$CIRCLE_TAG'"/' pyproject.toml
+                command: sed -i 's/version = "0\.1\.0"/version = "'$CIRCLE_TAG'"/' pyproject.toml
+            - run:
+                name: "Installation"
+                command: uv sync --extra dev
             - run:
                 name: "Publish to PyPI"
                 command: |
-                    source venv/bin/activate
-                    pip install twine build
-                    python -m build -s
-                    twine upload -u __token__ -p $PYPI_PASSWORD --non-interactive dist/*
+                    uv pip install twine build
+                    uv run python -m build -s
+                    uv run twine upload -u __token__ -p $PYPI_PASSWORD --non-interactive dist/*
 
 workflows:
     version: 2.1

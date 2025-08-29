@@ -141,10 +141,9 @@ be done from the repository root with the command::
 
     pip install -e .[dev]
 
-The deployment of the code is done with Python 3.10 and dependencies are then
-fixed using::
+The deployment of the code is done with Python 3.10 and uses ``uv``::
 
-    pip install -r requirements-dev.txt
+    uv sync --extra dev
 
 Testing
 -------

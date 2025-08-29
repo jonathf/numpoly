@@ -2,6 +2,10 @@
 __pycache__/
 *.py[cod]
 
+# Cython
+*.so
+*.c
+
 # Distribution / packaging
 dist/
 *.egg-info/
