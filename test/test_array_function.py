@@ -4,6 +4,7 @@ from pytest import raises
 import numpy
 from numpoly import polynomial
 import numpoly
+from packaging.version import Version
 
 X, Y = numpoly.variable(2)
 
@@ -357,10 +358,16 @@ def test_count_nonzero(func_interface):
     """Tests for numpoly.count_nonzero."""
     poly1 = polynomial([[0, Y], [X, 1]])
     poly2 = polynomial([[0, Y, X, 0, 0], [3, 0, 0, 2, 19]])
-    assert_equal(func_interface.count_nonzero(poly1), 3, type_=int)
     assert_equal(func_interface.count_nonzero(poly1, axis=0), [1, 2])
     assert_equal(func_interface.count_nonzero(poly2, axis=0), [1, 1, 1, 1, 1])
-    assert_equal(func_interface.count_nonzero(X), 1, type_=int)
+    # As of NumPy 2.3.0 `count_nonzero` returns a scalar instead of int
+    # https://github.com/jonathf/numpoly/issues/126
+    if Version(numpy.__version__) >= Version("2.3.0"):
+        assert_equal(func_interface.count_nonzero(poly1), 3, type_=numpy.intp)
+        assert_equal(func_interface.count_nonzero(X), 1, type_=numpy.intp)
+    else:
+        assert_equal(func_interface.count_nonzero(poly1), 3, type_=int)
+        assert_equal(func_interface.count_nonzero(X), 1, type_=int)
 
 
 def test_cumsum(interface):
