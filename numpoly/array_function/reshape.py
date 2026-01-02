@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 from typing import Any, Sequence
+import logging
 
 import numpy
 import numpoly
@@ -65,6 +66,14 @@ def reshape(
                     [q0**4, q0**5]])
 
     """
+    logger = logging.getLogger(__name__)
     poly = numpoly.aspolynomial(a)
-    array = numpy.reshape(poly.values, shape=shape, newshape=newshape, order=order)
+    if newshape:  # assume old code.
+        assert not shape, "do not use shape and newshape at the same time."
+        logger.warning(
+            "deprecation working: replace 'newshape' with 'shape' in numpoly.reshape."
+        )
+        array = numpy.reshape(poly.values, newshape=newshape, order=order)
+    else:
+        array = numpy.reshape(poly.values, shape=shape, order=order)
     return numpoly.aspolynomial(array, names=poly.indeterminants)
